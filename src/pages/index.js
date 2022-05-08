@@ -4,15 +4,12 @@ import Layout from '@/components/layout'
 import { authOptions } from './api/auth/[...nextauth]'
 import prisma from '@/lib/prisma'
 
-export default function Home({ session, bookmarks }) {
-  console.log('client sess', session, bookmarks)
-  // const { session, bookmarks } = props
-  // console.log('sess', session)
+export default function Home({ sesh, bookmarks }) {
   return (
     <Layout>
       <aside className="">Nav</aside>
       <section className="grid grid-cols-1 justify-items-center gap-4 sm:grid-cols-2  md:grid-cols-3">
-        {session &&
+        {sesh &&
           bookmarks.map((bookmark) => (
             <BookmarkCard bookmark={bookmark} key={bookmark.id} />
           ))}
@@ -23,26 +20,31 @@ export default function Home({ session, bookmarks }) {
 
 export async function getServerSideProps(context) {
   const session = await getServerSession(context, authOptions)
-  console.log('server sess', session)
 
   // if (!session) {
   //   return {
   //     redirect: {
-  //       destination: '/',
+  //       destination: '/auth/signin',
   //       permanent: false,
   //     },
   //   }
   // }
 
-  const bookmarks = await prisma.bookmark.findMany({
+  const data = await prisma.bookmark.findMany({
     include: {
       category: true,
+      tags: { include: { tag: true } },
     },
   })
 
-  console.log('server bookmarks', bookmarks)
+  // Convert 'createdAt' to string to pass through as json
+  const bookmarks = data.map((boomark) => ({
+    ...boomark,
+    createdAt: boomark.createdAt.toString(),
+    tags: boomark.tags.map((tag) => tag.tag),
+  }))
 
   return {
-    props: { session, bookmarks },
+    props: { sesh: session, bookmarks },
   }
 }

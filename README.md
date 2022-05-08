@@ -33,9 +33,14 @@ $ vim .env
 $ npm run dev
 ```
 
+## 🔗 Bookmarklet
+
+You can copy this [link](javascript: {(function(){ window.fetch("http://localhost:3000/api/bookmarks/new",{method:"POST",body:JSON.stringify({url:document.location.href,user_id:'cl2xsndr00060fdbhomcxg4l8',title:document.title})})})();}) to your bookmarks bar, to add URLs to your instance!
+
 ## 👷 Contributing
 
 This project is open to any and all contributions! Please stick to the ESLint / Prettier settings and I'll be happy to take a look at your issue / PR 😀
 
-## 📝 License 
+## 📝 License
+
 MIT

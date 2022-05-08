@@ -11,22 +11,38 @@ datasource db {
 
 model Bookmark {
     id          String       @id @default(cuid())
-    title       String
-    url         String
-    image       String
+    title       String?
+    url         String    @unique
+    image       String?
     category    Category? @relation(fields: [category_id], references: [id])
-    category_id String
-    tag         Tag? @relation(fields: [tag_id], references: [id])
-    tag_id      String
+    category_id String?
+    tags        TagsOnBookmarks[]
+    user        User? @relation(fields: [user_id], references: [id], onDelete: Cascade)
+    user_id     String
+    createdAt   DateTime     @default(now())
 
     @@index([category_id])
+    @@index([user_id])
+}
+
+model TagsOnBookmarks {
+  bookmark_id  String
+  bookmark     Bookmark  @relation(fields: [bookmark_id], references: [id])
+  tag_id       String
+  tag          Tag       @relation(fields: [tag_id], references: [id])
+
+  @@id([bookmark_id, tag_id])
 }
 
 model Tag {
     id          String       @id @default(cuid())
     name        String
     color       String
-    bookmarks   Bookmark[]
+    bookmarks   TagsOnBookmarks[]
+    user        User? @relation(fields: [user_id], references: [id], onDelete: Cascade)
+    user_id     String
+
+    @@index([user_id])
 }
 
 model Category {
@@ -34,6 +50,10 @@ model Category {
     name        String
     description String
     bookmarks   Bookmark[]
+    user        User? @relation(fields: [user_id], references: [id], onDelete: Cascade)
+    user_id     String
+
+    @@index([user_id])
 }
 
 // NextAuth
@@ -72,6 +92,9 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  bookmarks     Bookmark[]
+  tags          Tag[]
+  categories    Category[]
 }
 
 model VerificationToken {
