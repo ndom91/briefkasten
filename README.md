@@ -35,7 +35,7 @@ $ npm run dev
 
 ## 🔗 Bookmarklet
 
-You can copy this [link](javascript: {(function(){ window.fetch("http://localhost:3000/api/bookmarks/new",{method:"POST",body:JSON.stringify({url:document.location.href,user_id:'cl2xsndr00060fdbhomcxg4l8',title:document.title})})})();}) to your bookmarks bar, to add URLs to your instance!
+You can copy this <a href='javascript:{(function(){ window.fetch("http://localhost:3000/api/bookmarks/new",{method:"POST",body:JSON.stringify({url:document.location.href,user_id:"cl2xsndr00060fdbhomcxg4l8",title:document.title})})})();}'>link</a> to your bookmarks bar, to add URLs to your instance!
 
 ## 👷 Contributing
 
