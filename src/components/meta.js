@@ -65,11 +65,13 @@ const Meta = () => {
         {/*   }} */}
         {/* /> */}
       </Head>
-      <Script
-        src="/p.js"
-        data-domain="briefkasten.vercel.app"
-        data-api="/a/e"
-      />
+      {process.env.NODE_ENV === 'production' && (
+        <Script
+          src="/p.js"
+          data-domain="briefkasten.vercel.app"
+          data-api="/a/e"
+        />
+      )}
     </>
   )
 }

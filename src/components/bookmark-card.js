@@ -3,7 +3,7 @@ export default function BookmarkCard({ bookmark }) {
 
   return (
     <div
-      className="max-w-[250px] overflow-hidden rounded shadow-lg"
+      className="h-72 max-w-[250px] overflow-hidden rounded shadow-lg"
       key={bookmark.id}
     >
       <div className="px-6 py-4">
