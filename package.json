@@ -23,7 +23,6 @@
     "lint-staged": "^12.4.1",
     "postcss": "^8.4.5",
     "prettier": "^2.6.2",
-    "prettier-plugin-tailwind": "^2.2.12",
     "prettier-plugin-tailwindcss": "^0.1.10",
     "prisma": "^3.8.1",
     "simple-git-hooks": "^2.7.0",
@@ -41,11 +40,15 @@
     ]
   },
   "simple-git-hooks": {
+    "commit-msg": "npx commitlint --edit",
     "pre-commit": "npx lint-staged"
   },
   "lint-staged": {
-    "*.{js,mjs,jsx,ts,tsx}": [
+    "*.{js,jsx,ts,tsx,css,json}": [
       "prettier --write"
+    ],
+    "*.js": [
+      "eslint --fix"
     ]
   }
 }
