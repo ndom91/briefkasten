@@ -1,0 +1,37 @@
+---
+- - :permit
+  - bsd-2-clause
+  - :who:
+    :why:
+    :versions: []
+    :when: 2022-01-29 15:22:40.108914000 Z
+- - :permit
+  - bsd-3-clause
+  - :who:
+    :why:
+    :versions: []
+    :when: 2022-01-29 15:22:40.416566000 Z
+- - :permit
+  - apache-2.0
+  - :who:
+    :why:
+    :versions: []
+    :when: 2022-01-29 15:22:40.678592000 Z
+- - :permit
+  - MIT
+  - :who:
+    :why:
+    :versions: []
+    :when: 2022-01-29 15:22:40.943407000 Z
+- - :permit
+  - ISC
+  - :who:
+    :why:
+    :versions: []
+    :when: 2022-01-29 15:22:41.204596000 Z
+- - :permit
+  - mpl-2.0
+  - :who:
+    :why:
+    :versions: []
+    :when: 2022-01-29 15:22:41.463837000 Z

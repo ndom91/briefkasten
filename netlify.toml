@@ -1,0 +1,2 @@
+[template.environment]
+DATABASE_URL = "Database URL"
