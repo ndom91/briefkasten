@@ -1,6 +1,7 @@
 {
   "name": "nextjs-starter",
-  "private": true,
+  "author": "ndom91 <yo@ndo.dev>",
+  "version": "0.0.1",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
