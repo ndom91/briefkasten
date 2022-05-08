@@ -21,16 +21,19 @@ export default function Home({ sesh, bookmarks }) {
 export async function getServerSideProps(context) {
   const session = await getServerSession(context, authOptions)
 
-  // if (!session) {
-  //   return {
-  //     redirect: {
-  //       destination: '/auth/signin',
-  //       permanent: false,
-  //     },
-  //   }
-  // }
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/auth/signin',
+        permanent: false,
+      },
+    }
+  }
 
   const data = await prisma.bookmark.findMany({
+    where: {
+      user_id: session.user.userId,
+    },
     include: {
       category: true,
       tags: { include: { tag: true } },

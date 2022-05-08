@@ -14,6 +14,12 @@ export const authOptions = {
   pages: {
     signIn: '/auth/signin',
   },
+  callbacks: {
+    async session({ session, user }) {
+      session.user.userId = user.id
+      return session
+    },
+  },
   secret: process.env.NEXTAUTH_SECRET,
   debug: process.env.NODE_ENV !== 'production',
 }
