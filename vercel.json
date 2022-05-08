@@ -1,0 +1,43 @@
+{
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        }
+      ]
+    },
+    {
+      "source": "/(.*).(bmp|ico|icns|jpeg|pct|png|tiff|webp|svg)",
+      "headers": [
+        {
+          "key": "cache-control",
+          "value": "max-age=86400, s-maxage=86400"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/a/b.js",
+      "destination": "https://stats.ndo.dev/js/plausible.outbound-links.js"
+    },
+    {
+      "source": "/a/e",
+      "destination": "https://stats.ndo.dev/api/event"
+    }
+  ],
+  "github": {
+    "autoJobCancelation": true
+  }
+}
