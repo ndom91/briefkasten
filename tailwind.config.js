@@ -5,10 +5,13 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors: {
+        primary: '#6366f1',
+      },
       maxWidth: {
         '8xl': '90rem',
       },
     },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/forms')],
 }

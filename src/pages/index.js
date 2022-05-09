@@ -1,19 +1,23 @@
 import { getServerSession } from 'next-auth/next'
 import BookmarkCard from '@/components/bookmark-card'
 import Layout from '@/components/layout'
+import QuickAdd from '@/components/quick-add'
 import { authOptions } from './api/auth/[...nextauth]'
 import prisma from '@/lib/prisma'
 
 export default function Home({ sesh, bookmarks }) {
   return (
     <Layout>
-      <aside className="">Nav</aside>
-      <section className="grid grid-cols-1 justify-items-center gap-4 sm:grid-cols-2  md:grid-cols-3">
-        {sesh &&
-          bookmarks.map((bookmark) => (
-            <BookmarkCard bookmark={bookmark} key={bookmark.id} />
-          ))}
-      </section>
+      <aside className="">Sidebar</aside>
+      <div className="flex flex-col space-y-4">
+        <QuickAdd />
+        <section className="grid grid-cols-1 justify-items-stretch gap-4 sm:grid-cols-3  md:grid-cols-4">
+          {sesh &&
+            bookmarks.map((bookmark) => (
+              <BookmarkCard bookmark={bookmark} key={bookmark.id} />
+            ))}
+        </section>
+      </div>
     </Layout>
   )
 }
