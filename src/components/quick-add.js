@@ -6,17 +6,14 @@ export default function QuickAdd() {
   const { data: session } = useSession()
 
   async function submitUrl() {
-    let data
     try {
-      data = await fetch('/api/bookmarks/new', {
+      await fetch('/api/bookmarks/new', {
         method: 'POST',
         body: JSON.stringify({ url, userId: session?.user?.userId }),
       })
     } catch (error) {
       console.error(error)
     }
-
-    console.log(data)
   }
 
   return (
