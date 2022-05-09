@@ -15,10 +15,10 @@ model Bookmark {
   url         String
   image       String?
   desc        String?
-  category    Category?    @relation(fields: [categoryId], references: [id])
+  category    Category?    @relation(fields: [categoryId], references: [id], onUpdate: NoAction)
   categoryId  String?
   tags        TagsOnBookmarks[]
-  user        User?        @relation(fields: [userId], references: [id])
+  user        User?        @relation(fields: [userId], references: [id], onUpdate: NoAction)
   userId      String
   createdAt   DateTime     @default(now())
 
@@ -29,9 +29,9 @@ model Bookmark {
 
 model TagsOnBookmarks {
   bookmarkId   String
-  bookmark     Bookmark      @relation(fields: [bookmarkId], references: [id])
+  bookmark     Bookmark      @relation(fields: [bookmarkId], references: [id], onUpdate: NoAction)
   tagId        String
-  tag          Tag           @relation(fields: [tagId], references: [id])
+  tag          Tag           @relation(fields: [tagId], references: [id], onUpdate: NoAction)
 
   @@id([bookmarkId, tagId])
   @@index([bookmarkId])
@@ -43,7 +43,7 @@ model Tag {
   name        String
   color       String?
   bookmarks   TagsOnBookmarks[]
-  user        User?        @relation(fields: [userId], references: [id])
+  user        User?        @relation(fields: [userId], references: [id], onUpdate: NoAction)
   userId      String
 
   @@index([userId])
@@ -54,7 +54,7 @@ model Category {
   name        String
   description String?
   bookmarks   Bookmark[]
-  user        User?        @relation(fields: [userId], references: [id])
+  user        User?        @relation(fields: [userId], references: [id], onUpdate: NoAction)
   userId      String
 
   @@index([userId])
@@ -74,7 +74,7 @@ model Account {
   scope              String?
   id_token           String? @db.Text
   session_state      String?
-  user               User    @relation(fields: [userId], references: [id])
+  user               User    @relation(fields: [userId], references: [id], onUpdate: NoAction)
 
   @@unique([provider, providerAccountId])
   @@index([userId])
@@ -85,7 +85,7 @@ model Session {
   sessionToken String        @unique
   userId       String
   expires      DateTime
-  user         User          @relation(fields: [userId], references: [id])
+  user         User          @relation(fields: [userId], references: [id], onUpdate: NoAction)
 
   @@index([userId])
 }
