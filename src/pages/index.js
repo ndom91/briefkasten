@@ -36,7 +36,7 @@ export async function getServerSideProps(context) {
 
   const data = await prisma.bookmark.findMany({
     where: {
-      user_id: session.user.userId,
+      userId: session.user.userId,
     },
     include: {
       category: true,

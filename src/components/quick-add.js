@@ -10,7 +10,7 @@ export default function QuickAdd() {
     try {
       data = await fetch('/api/bookmarks/new', {
         method: 'POST',
-        body: JSON.stringify({ url, user_id: session?.user?.userId }),
+        body: JSON.stringify({ url, userId: session?.user?.userId }),
       })
     } catch (error) {
       console.error(error)

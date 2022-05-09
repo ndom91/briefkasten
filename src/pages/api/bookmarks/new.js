@@ -6,7 +6,7 @@ const metascraper = require('metascraper')([
 ])
 
 export default async function handler(req, res) {
-  const { user_id, title, url, desc, image } = JSON.parse(req.body)
+  const { userId, title, url, desc, image } = JSON.parse(req.body)
 
   try {
     let metadata = {
@@ -21,7 +21,7 @@ export default async function handler(req, res) {
     }
 
     await prisma.user.update({
-      where: { id: user_id },
+      where: { id: userId },
       data: {
         bookmarks: {
           upsert: {
