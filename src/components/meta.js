@@ -26,14 +26,17 @@ const Meta = () => {
         <link
           rel="mask-icon"
           href="/favicon/safari-pinned-tab.svg"
-          color="#000000"
+          color="#5bbad5"
         />
-        <link rel="shortcut icon" href="/favicon.ico" />
-        <meta name="msapplication-TileColor" content="#000000" />
+        <link rel="shortcut icon" href="/favicon/favicon.ico" />
+        <meta name="msapplication-TileColor" content="#00aba9" />
         <meta
           name="msapplication-config"
           content="/favicon/browserconfig.xml"
         />
+
+        <meta name="apple-mobile-web-app-title" content="Briefkasten" />
+        <meta name="application-name" content="Briefkasten" />
         <meta name="theme-color" content="#FCE7F3" />
 
         <meta property="og:title" content="Briefkasten" />
