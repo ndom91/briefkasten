@@ -37,7 +37,7 @@ export default async function handler(req, res) {
               image: image ?? metadata.image,
               desc: desc ?? metadata.description,
             },
-            where: { url },
+            where: { url_userId: { url: url, userId: userId } },
           },
         },
       },
