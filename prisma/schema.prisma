@@ -12,51 +12,51 @@ datasource db {
 model Bookmark {
   id          String       @id @default(cuid())
   title       String?
-  url         String       @unique
+  url         String
   image       String?
   desc        String?
-  category    Category?    @relation(fields: [category_id], references: [id])
-  category_id String?
+  category    Category?    @relation(fields: [categoryId], references: [id])
+  categoryId  String?
   tags        TagsOnBookmarks[]
-  user        User?        @relation(fields: [user_id], references: [id])
-  user_id     String
+  user        User?        @relation(fields: [userId], references: [id])
+  userId      String
   createdAt   DateTime     @default(now())
 
-  @@index([category_id])
-  @@index([user_id])
+  @@index([categoryId])
+  @@index([userId])
 }
 
 model TagsOnBookmarks {
-  bookmark_id  String
-  bookmark     Bookmark      @relation(fields: [bookmark_id], references: [id])
-  tag_id       String
-  tag          Tag           @relation(fields: [tag_id], references: [id])
+  bookmarkId   String
+  bookmark     Bookmark      @relation(fields: [bookmarkId], references: [id])
+  tagId        String
+  tag          Tag           @relation(fields: [tagId], references: [id])
 
-  @@id([bookmark_id, tag_id])
-  @@index([bookmark_id])
-  @@index([tag_id])
+  @@id([bookmarkId, tagId])
+  @@index([bookmarkId])
+  @@index([tagId])
 }
 
 model Tag {
   id          String       @id @default(cuid())
   name        String
-  color       String
+  color       String?
   bookmarks   TagsOnBookmarks[]
-  user        User?        @relation(fields: [user_id], references: [id])
-  user_id     String
+  user        User?        @relation(fields: [userId], references: [id])
+  userId      String
 
-  @@index([user_id])
+  @@index([userId])
 }
 
 model Category {
   id          String       @id @default(cuid())
   name        String
-  description String
+  description String?
   bookmarks   Bookmark[]
-  user        User?        @relation(fields: [user_id], references: [id])
-  user_id     String
+  user        User?        @relation(fields: [userId], references: [id])
+  userId      String
 
-  @@index([user_id])
+  @@index([userId])
 }
 
 // NextAuth
@@ -73,7 +73,6 @@ model Account {
   scope              String?
   id_token           String? @db.Text
   session_state      String?
-
   user               User    @relation(fields: [userId], references: [id])
 
   @@unique([provider, providerAccountId])
