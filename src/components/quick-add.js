@@ -1,10 +1,22 @@
 import { useState } from 'react'
+import { useSession } from 'next-auth/react'
 
 export default function QuickAdd() {
   const [url, setUrl] = useState('')
+  const { data: session } = useSession()
 
-  const submitUrl = async () => {
-    console.log('URL', url)
+  async function submitUrl() {
+    let data
+    try {
+      data = await fetch('/api/bookmarks/new', {
+        method: 'POST',
+        body: JSON.stringify({ url, user_id: session?.user?.userId }),
+      })
+    } catch (error) {
+      console.error(error)
+    }
+
+    console.log(data)
   }
 
   return (
@@ -15,7 +27,7 @@ export default function QuickAdd() {
           className="block w-full transform rounded-md border border-transparent bg-gray-100 px-5 py-3 text-base text-neutral-600 placeholder-gray-300 transition duration-500 ease-in-out focus:border-transparent focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-300"
           placeholder="https://"
           value={url}
-          onChange={(value) => setUrl(value)}
+          onChange={(event) => setUrl(event.target.value)}
         />
       </div>
       <div className="mt-4 sm:mt-0 sm:ml-3">
