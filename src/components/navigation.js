@@ -33,18 +33,24 @@ export default function Navigation() {
         </div>
       </Link>
       <nav className="flex flex-wrap items-center justify-center space-x-8 text-base md:ml-auto">
-        <Link href="/tags" className="mr-5 hover:text-gray-900">
-          Categories
+        <Link href="/categories" passHref>
+          <a className="rounded p-2 outline-none hover:outline-none hover:ring-2 hover:ring-slate-200 hover:ring-offset-transparent focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-transparent">
+            Categories
+          </a>
         </Link>
-        <Link href="/categories" className="mr-5 hover:text-gray-900">
-          Tags
+        <Link href="/tags" passHref>
+          <a className="rounded p-2 outline-none hover:outline-none hover:ring-2 hover:ring-slate-200 hover:ring-offset-transparent focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-transparent">
+            Tags
+          </a>
         </Link>
-        <Link href="/settings" className="mr-5 hover:text-gray-900">
-          Settings
+        <Link href="/settings" passHref>
+          <a className="rounded p-2 outline-none hover:outline-none hover:ring-2 hover:ring-slate-200 hover:ring-offset-transparent focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-transparent">
+            Settings
+          </a>
         </Link>
         <button
           onClick={() => signinHandler()}
-          className="mt-4 inline-flex items-center rounded border-0 bg-gray-100 py-1 px-3 text-base hover:bg-gray-200 focus:outline-none md:mt-0"
+          className="mt-4 inline-flex items-center rounded border-0 bg-gray-100 py-1 px-3 text-base hover:bg-gray-200 focus:bg-gray-200 focus:outline-none md:mt-0"
         >
           {session && (
             <Image
