@@ -83,34 +83,51 @@ export default function QuickAdd() {
         </div>
       </div>
       {open && (
-        <section className="rounded-md bg-gray-100 p-4">
-          <div className="flex flex-col space-y-4">
+        <section className="rounded-md bg-gray-100 p-4 transition duration-500 ease-in-out">
+          <div className="flex flex-col space-y-1">
             <div className="w-full space-y-0.5">
               <label
-                htmlFor="basic"
+                htmlFor="category"
                 className="text-xs font-medium text-gray-500"
               >
                 Category
               </label>
               <select
-                id="basic"
-                name="basic"
-                className="block w-full truncate rounded-md border-gray-200 pr-8 text-sm transition focus:border-blue-600 focus:ring-blue-600 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:opacity-75"
+                id="category"
+                name="category"
+                className="block w-full truncate rounded-md border-gray-200 pr-8 text-sm transition focus:border-slate-200 focus:ring-slate-200 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:opacity-75"
               >
                 <option selected>Tech</option>
                 <option>Politics</option>
                 <option>Web</option>
               </select>
             </div>
-            <div className="w-full overflow-hidden rounded-md border border-gray-200 transition focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600">
-              <label htmlFor="editor" className="sr-only">
+            <div className="w-full space-y-0.5">
+              <label
+                htmlFor="tags"
+                className="text-xs font-medium text-gray-500"
+              >
+                Tags
+              </label>
+              <input
+                id="tags"
+                name="tags"
+                type="text"
+                className="block w-full truncate rounded-md border-gray-200 pr-8 text-sm transition focus:border-slate-200 focus:ring-slate-200 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:opacity-75"
+              />
+            </div>
+            <div className="w-full overflow-hidden rounded-md border border-gray-200 transition focus-within:border-slate-200 focus-within:ring-1 focus-within:ring-slate-200">
+              <label
+                htmlFor="description"
+                className="text-xs font-medium text-gray-500"
+              >
                 Description
               </label>
               <textarea
-                rows="4"
-                id="editor"
+                rows="3"
+                id="description"
                 placeholder="Write a comment"
-                className="block w-full border-0 bg-transparent bg-white text-sm transition focus:border-blue-600 focus:ring-0 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:opacity-75"
+                className="block w-full border-0 bg-white text-sm transition focus:border-slate-200 focus:ring-0 disabled:cursor-not-allowed disabled:bg-gray-900 disabled:opacity-75"
               ></textarea>
               <div className="flex items-center justify-between p-2">
                 <div className="flex space-x-1">
@@ -198,7 +215,7 @@ export default function QuickAdd() {
                     </svg>
                   </button>
                 </div>
-                <span className="rounded-full bg-gray-100 px-2 py-1 text-sm leading-tight text-gray-400">
+                <span className="rounded-lg bg-gray-200 px-2 py-1 text-xs uppercase tracking-tight text-gray-400">
                   Leave blank to use the default page description
                 </span>
               </div>
