@@ -9,9 +9,9 @@ export default function Home({ sesh, bookmarks }) {
   return (
     <Layout>
       <aside className="">Sidebar</aside>
-      <div className="flex flex-col space-y-8">
+      <div className="flex flex-col space-y-4">
         <QuickAdd />
-        <section className="grid grid-cols-1 justify-items-stretch gap-4 sm:grid-cols-3  md:grid-cols-4">
+        <section className="grid grid-cols-1 justify-items-stretch gap-4 sm:grid-cols-3 md:grid-cols-4">
           {sesh &&
             bookmarks.map((bookmark) => (
               <BookmarkCard bookmark={bookmark} key={bookmark.id} />

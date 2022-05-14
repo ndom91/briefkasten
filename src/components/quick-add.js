@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { useToggle } from 'react-use'
+import Chip from '@/components/chip'
 
 export default function QuickAdd() {
   const [url, setUrl] = useState('')
@@ -81,7 +82,130 @@ export default function QuickAdd() {
           </button>
         </div>
       </div>
-      <section className=""></section>
+      {open && (
+        <section className="rounded-md bg-gray-100 p-4">
+          <div className="flex flex-col space-y-4">
+            <div className="w-full space-y-0.5">
+              <label
+                htmlFor="basic"
+                className="text-xs font-medium text-gray-500"
+              >
+                Category
+              </label>
+              <select
+                id="basic"
+                name="basic"
+                className="block w-full truncate rounded-md border-gray-200 pr-8 text-sm transition focus:border-blue-600 focus:ring-blue-600 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:opacity-75"
+              >
+                <option selected>Tech</option>
+                <option>Politics</option>
+                <option>Web</option>
+              </select>
+            </div>
+            <div className="w-full overflow-hidden rounded-md border border-gray-200 transition focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600">
+              <label htmlFor="editor" className="sr-only">
+                Description
+              </label>
+              <textarea
+                rows="4"
+                id="editor"
+                placeholder="Write a comment"
+                className="block w-full border-0 bg-transparent bg-white text-sm transition focus:border-blue-600 focus:ring-0 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:opacity-75"
+              ></textarea>
+              <div className="flex items-center justify-between p-2">
+                <div className="flex space-x-1">
+                  <button
+                    type="button"
+                    className="inline-flex w-auto cursor-pointer select-none appearance-none items-center justify-center rounded bg-white px-2 py-2 text-xs font-medium text-gray-800 transition hover:bg-gray-100 focus:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                  >
+                    <svg
+                      className="h-4 w-4 shrink-0 stroke-gray-500"
+                      viewBox="0 0 256 256"
+                    >
+                      <path
+                        d="M96,176l95.8-92.2a28,28,0,0,0-39.6-39.6L54.1,142.1a47.9,47.9,0,0,0,67.8,67.8L204,128"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="24"
+                      ></path>
+                    </svg>
+                  </button>
+                  <button
+                    type="button"
+                    className="inline-flex w-auto cursor-pointer select-none appearance-none items-center justify-center rounded bg-white px-2 py-2 text-xs font-medium text-gray-800 transition hover:bg-gray-100 focus:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                  >
+                    <svg
+                      className="h-4 w-4 shrink-0 stroke-gray-500"
+                      viewBox="0 0 256 256"
+                    >
+                      <rect
+                        x="88"
+                        y="24"
+                        width="80"
+                        height="136"
+                        rx="40"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="24"
+                      ></rect>
+                      <path
+                        d="M208,120a80,80,0,0,1-160,0"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="24"
+                      ></path>
+                      <line
+                        x1="128"
+                        y1="200"
+                        x2="128"
+                        y2="232"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="24"
+                      ></line>
+                    </svg>
+                  </button>
+                  <button
+                    type="button"
+                    className="inline-flex w-auto cursor-pointer select-none appearance-none items-center justify-center rounded bg-white px-2 py-2 text-xs font-medium text-gray-800 transition hover:bg-gray-100 focus:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                  >
+                    <svg
+                      className="h-4 w-4 shrink-0 fill-gray-500 stroke-gray-500"
+                      viewBox="0 0 256 256"
+                    >
+                      <circle
+                        cx="128"
+                        cy="128"
+                        r="96"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="24"
+                      ></circle>
+                      <circle cx="92" cy="108" r="16"></circle>
+                      <circle cx="164" cy="108" r="16"></circle>
+                      <path
+                        d="M169.6,152a48.1,48.1,0,0,1-83.2,0"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="24"
+                      ></path>
+                    </svg>
+                  </button>
+                </div>
+                <span className="rounded-full bg-gray-100 px-2 py-1 text-sm leading-tight text-gray-400">
+                  Leave blank to use the default page description
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
     </>
   )
 }
