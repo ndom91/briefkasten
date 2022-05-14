@@ -24,7 +24,7 @@ export default function Navigation() {
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth="2"
-            className="h-10 w-10 rounded-full bg-slate-400 p-2 text-white"
+            className="h-10 w-10 rounded-full bg-slate-800 p-2 text-white"
             viewBox="0 0 24 24"
           >
             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
@@ -34,23 +34,23 @@ export default function Navigation() {
       </Link>
       <nav className="flex flex-wrap items-center justify-center space-x-8 text-base md:ml-auto">
         <Link href="/categories" passHref>
-          <a className="rounded p-2 outline-none hover:outline-none hover:ring-2 hover:ring-slate-200 hover:ring-offset-transparent focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-transparent">
+          <a className="rounded p-2 outline-none transition duration-300 ease-in-out hover:outline-none hover:ring-2 hover:ring-slate-200 hover:ring-offset-transparent focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-transparent">
             Categories
           </a>
         </Link>
         <Link href="/tags" passHref>
-          <a className="rounded p-2 outline-none hover:outline-none hover:ring-2 hover:ring-slate-200 hover:ring-offset-transparent focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-transparent">
+          <a className="rounded p-2 outline-none transition duration-300 ease-in-out hover:outline-none hover:ring-2 hover:ring-slate-200 hover:ring-offset-transparent focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-transparent">
             Tags
           </a>
         </Link>
         <Link href="/settings" passHref>
-          <a className="rounded p-2 outline-none hover:outline-none hover:ring-2 hover:ring-slate-200 hover:ring-offset-transparent focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-transparent">
+          <a className="rounded p-2 outline-none transition duration-300 ease-in-out hover:outline-none hover:ring-2 hover:ring-slate-200 hover:ring-offset-transparent focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-transparent">
             Settings
           </a>
         </Link>
         <button
           onClick={() => signinHandler()}
-          className="mt-4 inline-flex items-center rounded border-0 bg-gray-100 py-1 px-3 text-base hover:bg-gray-200 focus:bg-gray-200 focus:outline-none md:mt-0"
+          className="mt-4 inline-flex items-center rounded border-0 bg-gray-100 px-3 py-1 text-base transition duration-300 ease-in-out hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-white md:mt-0"
         >
           {session && (
             <Image
