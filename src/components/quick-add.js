@@ -3,7 +3,7 @@ import { useSession } from 'next-auth/react'
 import { useToggle } from 'react-use'
 import Chip from '@/components/chip'
 
-export default function QuickAdd() {
+export default function QuickAdd({ categories }) {
   const [url, setUrl] = useState('')
   const [open, toggleOpen] = useToggle(false)
   const { data: session } = useSession()
@@ -83,9 +83,9 @@ export default function QuickAdd() {
         </div>
       </div>
       {open && (
-        <section className="rounded-md bg-gray-100 p-4 transition duration-500 ease-in-out">
+        <section className="rounded-md bg-gray-100 p-3 transition duration-500 ease-in-out">
           <div className="flex flex-col space-y-1">
-            <div className="w-full space-y-0.5">
+            <div className="w-full space-y-0.5 px-2">
               <label
                 htmlFor="category"
                 className="text-xs font-medium text-gray-500"
@@ -97,12 +97,16 @@ export default function QuickAdd() {
                 name="category"
                 className="block w-full truncate rounded-md border-gray-200 pr-8 text-sm transition focus:border-slate-200 focus:ring-slate-200 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:opacity-75"
               >
-                <option selected>Tech</option>
-                <option>Politics</option>
-                <option>Web</option>
+                {categories.map((category, i) => {
+                  return (
+                    <option defaultValue={i === 0} key={i}>
+                      {category.name}
+                    </option>
+                  )
+                })}
               </select>
             </div>
-            <div className="w-full space-y-0.5">
+            <div className="w-full space-y-0.5 px-2">
               <label
                 htmlFor="tags"
                 className="text-xs font-medium text-gray-500"
@@ -116,7 +120,7 @@ export default function QuickAdd() {
                 className="block w-full truncate rounded-md border-gray-200 pr-8 text-sm transition focus:border-slate-200 focus:ring-slate-200 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:opacity-75"
               />
             </div>
-            <div className="w-full overflow-hidden rounded-md border border-gray-200 transition focus-within:border-slate-200 focus-within:ring-1 focus-within:ring-slate-200">
+            <div className="w-full overflow-hidden rounded-md px-2 transition focus-within:border-slate-200 focus-within:ring-0">
               <label
                 htmlFor="description"
                 className="text-xs font-medium text-gray-500"
@@ -126,11 +130,11 @@ export default function QuickAdd() {
               <textarea
                 rows="3"
                 id="description"
-                placeholder="Write a comment"
-                className="block w-full border-0 bg-white text-sm transition focus:border-slate-200 focus:ring-0 disabled:cursor-not-allowed disabled:bg-gray-900 disabled:opacity-75"
+                placeholder=""
+                className="block w-full rounded-md border-2 border-transparent bg-white text-sm transition focus:border-slate-200 focus:ring-transparent disabled:cursor-not-allowed disabled:bg-gray-900 disabled:opacity-75"
               ></textarea>
-              <div className="flex items-center justify-between p-2">
-                <div className="flex space-x-1">
+              <div className="flex items-center justify-between pb-[0.2rem] pt-3">
+                <div className="flex space-x-2">
                   <button
                     type="button"
                     className="inline-flex w-auto cursor-pointer select-none appearance-none items-center justify-center rounded bg-white px-2 py-2 text-xs font-medium text-gray-800 transition hover:bg-gray-100 focus:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300"
@@ -215,7 +219,7 @@ export default function QuickAdd() {
                     </svg>
                   </button>
                 </div>
-                <span className="rounded-lg bg-gray-200 px-2 py-1 text-xs uppercase tracking-tight text-gray-400">
+                <span className="rounded-lg bg-gray-200 px-2 py-1 text-[0.6rem] uppercase tracking-tight text-gray-400">
                   Leave blank to use the default page description
                 </span>
               </div>

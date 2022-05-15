@@ -1,7 +1,7 @@
 import { useToggle } from 'react-use'
 import { useSession } from 'next-auth/react'
 
-export default function BookmarkCard({ bookmark }) {
+export default function BookmarkCard({ bookmark, categories }) {
   const { data: session } = useSession()
   const [on, toggle] = useToggle(false)
   const { id, title, url, description, category, tags } = bookmark
@@ -79,7 +79,7 @@ export default function BookmarkCard({ bookmark }) {
           {tags.map((tag) => (
             <span
               key={tag.id}
-              className="mr-2 mb-2 inline-block rounded-full bg-gray-200 px-3 py-1 text-sm font-semibold text-gray-700"
+              className="mb-2 mr-2 inline-block rounded-full bg-gray-200 px-3 py-1 text-sm font-semibold text-gray-700"
             >
               {tag.name}
             </span>

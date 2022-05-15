@@ -5,17 +5,21 @@ import QuickAdd from '@/components/quick-add'
 import { authOptions } from './api/auth/[...nextauth]'
 import prisma from '@/lib/prisma'
 
-export default function Home({ sesh, bookmarks }) {
+export default function Home({ session, bookmarks, categories }) {
+  console.log('session', session)
   return (
     <Layout>
       <aside className="">Sidebar</aside>
       <div className="flex flex-col space-y-2">
-        <QuickAdd />
+        <QuickAdd categories={categories} />
         <section className="grid grid-cols-1 justify-items-stretch gap-4 sm:grid-cols-3 md:grid-cols-4">
-          {sesh &&
-            bookmarks.map((bookmark) => (
-              <BookmarkCard bookmark={bookmark} key={bookmark.id} />
-            ))}
+          {bookmarks.map((bookmark) => (
+            <BookmarkCard
+              bookmark={bookmark}
+              key={bookmark.id}
+              categories={categories}
+            />
+          ))}
         </section>
       </div>
     </Layout>
@@ -24,6 +28,7 @@ export default function Home({ sesh, bookmarks }) {
 
 export async function getServerSideProps(context) {
   const session = await getServerSession(context, authOptions)
+  // @TODO: Session still undefined sometimes?!
 
   if (!session) {
     return {
@@ -51,7 +56,9 @@ export async function getServerSideProps(context) {
     tags: boomark.tags.map((tag) => tag.tag),
   }))
 
+  const categories = data.map((boomark) => boomark.category).filter(Boolean)
+
   return {
-    props: { sesh: session, bookmarks },
+    props: { session, bookmarks, categories },
   }
 }
