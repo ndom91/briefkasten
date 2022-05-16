@@ -2,14 +2,15 @@ import { getServerSession } from 'next-auth/next'
 import BookmarkCard from '@/components/bookmark-card'
 import Layout from '@/components/layout'
 import QuickAdd from '@/components/quick-add'
+import Sidebar from '@/components/sidebar'
 import { authOptions } from './api/auth/[...nextauth]'
 import prisma from '@/lib/prisma'
 
-export default function Home({ session, bookmarks, categories }) {
+export default function Home({ session, bookmarks, categories, tags }) {
   console.log('session', session)
   return (
     <Layout>
-      <aside className="">Sidebar</aside>
+      <Sidebar categories={categories} tags={tags} />
       <div className="flex flex-col space-y-2">
         <QuickAdd categories={categories} />
         <section className="grid grid-cols-1 justify-items-stretch gap-4 pt-4 sm:grid-cols-3 md:grid-cols-4">
@@ -50,6 +51,7 @@ export async function getServerSideProps(context) {
   })
 
   const categories = await prisma.category.findMany()
+  const tags = await prisma.tag.findMany()
 
   // Convert 'createdAt' to string to pass through as json
   const bookmarks = bookmarkData.map((boomark) => ({
@@ -59,6 +61,6 @@ export async function getServerSideProps(context) {
   }))
 
   return {
-    props: { session, bookmarks, categories },
+    props: { session, bookmarks, categories, tags },
   }
 }
