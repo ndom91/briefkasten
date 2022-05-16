@@ -23,13 +23,13 @@ export default function BookmarkCard({ bookmark, categories }) {
 
   return (
     <div
-      className="relative h-fit max-w-[250px] overflow-hidden rounded shadow-lg"
+      className="group relative h-fit max-w-[250px] overflow-hidden rounded shadow-lg"
       key={id}
     >
       <button
         onClick={() => toggle()}
         name="edit"
-        className="absolute top-3 right-3 text-slate-500 outline-none transition hover:text-slate-800 hover:outline-none focus:text-slate-800"
+        className="absolute top-3 right-3 text-slate-500 opacity-0 outline-none transition hover:text-slate-800 hover:outline-none focus:text-slate-800 group-hover:opacity-100"
       >
         <svg
           className="h-5 w-5"
@@ -50,7 +50,7 @@ export default function BookmarkCard({ bookmark, categories }) {
         <button
           name="delete"
           onClick={handleDelete}
-          className="absolute top-10 right-3 text-rose-300 outline-none animate-in slide-in-from-top hover:text-rose-800 hover:outline-none"
+          className="absolute top-10 right-3 text-rose-300 opacity-0 outline-none transition animate-in slide-in-from-top hover:text-rose-800 hover:outline-none group-hover:opacity-100"
         >
           <svg
             className="h-5 w-5"
@@ -68,11 +68,17 @@ export default function BookmarkCard({ bookmark, categories }) {
           </svg>
         </button>
       )}
-      <div className="px-6 py-4">
-        <div className="mb-2 text-xl font-bold">{title}</div>
-        <div className="mb-2 truncate text-sm font-light">{url}</div>
-        <p className="text-base text-gray-700">{description}</p>
-        <p className="text-base text-gray-700">{category?.name}</p>
+      <div className="space-y-2 p-6">
+        <div className="text-xl font-bold line-clamp-2">{title}</div>
+        <div className="text-sm font-light line-clamp-1">{url}</div>
+        {description && (
+          <p className="text-base text-gray-700 line-clamp-3">{description}</p>
+        )}
+        {category?.name && (
+          <p className="text-base text-gray-700 line-clamp-1">
+            {category?.name}
+          </p>
+        )}
       </div>
       {tags.length > 0 ? (
         <div className="px-6 pt-2 pb-2">

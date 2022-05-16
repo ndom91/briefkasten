@@ -9,7 +9,7 @@ export default function Sidebar({ categories, tags }) {
       </p>
       <div>
         <h2 className="font-semibold uppercase">Categories</h2>
-        <div>
+        <div className="flex flex-wrap gap-2">
           {categories?.map((cat) => {
             return (
               <Link
@@ -17,7 +17,9 @@ export default function Sidebar({ categories, tags }) {
                 key={cat.name}
                 passHref
               >
-                <a className="text-slate-400">{cat.name}</a>
+                <a className="text-slate-400 first-letter:font-bold">
+                  {cat.name}
+                </a>
               </Link>
             )
           })}
@@ -33,7 +35,9 @@ export default function Sidebar({ categories, tags }) {
                 passHref
                 key={tag.name}
               >
-                <a className="text-slate-400">{tag.name}</a>
+                <a className="text-slate-400 first-letter:font-bold">
+                  {tag.name}
+                </a>
               </Link>
             )
           })}

@@ -19,7 +19,9 @@ export default function Footer() {
         </a> */}
         <nav className="mt-6 flex items-center space-x-3">
           <a
-            href="#"
+            href="https://twitter.com/ndom91"
+            target="_blank"
+            rel="noopener noreferrer"
             className="rounded-lg bg-gray-100 p-1 text-gray-500 outline-none transition hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:ring-offset-2 focus:ring-offset-white"
           >
             <svg name="twitter" className="h-6 w-6" viewBox="0 0 512 512">
@@ -30,19 +32,29 @@ export default function Footer() {
             </svg>
           </a>
           <a
-            href="#"
+            href="https://github.com/ndom91/briefkasten"
+            target="_blank"
+            rel="noopener noreferrer"
             className="rounded-lg bg-gray-100 p-1 text-gray-500 transition hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:ring-offset-2 focus:ring-offset-white"
           >
-            <svg name="youtube" className="h-6 w-6" viewBox="0 0 512 512">
+            <svg
+              name="github"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              width="24"
+              height="24"
+            >
+              <path fill="none" d="M0 0h24v24H0z" />
               <path
-                d="m427 169c-4-15-17-27-32-31-34-9-239-10-278 0-15 4-28 16-32 31-9 38-10 135 0 174 4 15 17 27 32 31 36 10 241 10 278 0 15-4 28-16 32-31 9-36 9-137 0-174"
                 fill="currentColor"
-              ></path>
-              <path d="m220 203v106l93-53" fill="white"></path>
+                d="M12 2C6.475 2 2 6.475 2 12a9.994 9.994 0 0 0 6.838 9.488c.5.087.687-.213.687-.476 0-.237-.013-1.024-.013-1.862-2.512.463-3.162-.612-3.362-1.175-.113-.288-.6-1.175-1.025-1.413-.35-.187-.85-.65-.013-.662.788-.013 1.35.725 1.538 1.025.9 1.512 2.338 1.087 2.912.825.088-.65.35-1.087.638-1.337-2.225-.25-4.55-1.113-4.55-4.938 0-1.088.387-1.987 1.025-2.688-.1-.25-.45-1.275.1-2.65 0 0 .837-.262 2.75 1.026a9.28 9.28 0 0 1 2.5-.338c.85 0 1.7.112 2.5.337 1.912-1.3 2.75-1.024 2.75-1.024.55 1.375.2 2.4.1 2.65.637.7 1.025 1.587 1.025 2.687 0 3.838-2.337 4.688-4.562 4.938.362.312.675.912.675 1.85 0 1.337-.013 2.412-.013 2.75 0 .262.188.574.688.474A10.016 10.016 0 0 0 22 12c0-5.525-4.475-10-10-10z"
+              />
             </svg>
           </a>
           <a
-            href="#"
+            href="https://linkedin.com/in/ndom91"
+            target="_blank"
+            rel="noopener noreferrer"
             className="rounded-lg bg-gray-100 p-1 text-gray-500 transition hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:ring-offset-2 focus:ring-offset-white"
           >
             <svg
@@ -60,22 +72,6 @@ export default function Footer() {
               <path d="M276 282c0-20 13-40 36-40 24 0 33 18 33 45v105h66V279c0-61-32-89-76-89-34 0-51 19-59 32"></path>
             </svg>
           </a>
-          <a
-            href="#"
-            className="rounded-lg bg-gray-100 p-1 text-gray-500 transition hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:ring-offset-2 focus:ring-offset-white"
-          >
-            <svg
-              name="discord"
-              className="h-6 w-6"
-              fill="currentColor"
-              viewBox="0 0 512 512"
-            >
-              <path
-                d="m386 137c-24-11-49.5-19-76.3-23.7c-.5 0-1 0-1.2.6c-3.3 5.9-7 13.5-9.5 19.5c-29-4.3-57.5-4.3-85.7 0c-2.6-6.2-6.3-13.7-10-19.5c-.3-.4-.7-.7-1.2-.6c-23 4.6-52.4 13-76 23.7c-.2 0-.4.2-.5.4c-49 73-62 143-55 213c0 .3.2.7.5 1c32 23.6 63 38 93.6 47.3c.5 0 1 0 1.3-.4c7.2-9.8 13.6-20.2 19.2-31.2c.3-.6 0-1.4-.7-1.6c-10-4-20-8.6-29.3-14c-.7-.4-.8-1.5 0-2c2-1.5 4-3 5.8-4.5c.3-.3.8-.3 1.2-.2c61.4 28 128 28 188 0c.4-.2.9-.1 1.2.1c1.9 1.6 3.8 3.1 5.8 4.6c.7.5.6 1.6 0 2c-9.3 5.5-19 10-29.3 14c-.7.3-1 1-.6 1.7c5.6 11 12.1 21.3 19 31c.3.4.8.6 1.3.4c30.6-9.5 61.7-23.8 93.8-47.3c.3-.2.5-.5.5-1c7.8-80.9-13.1-151-55.4-213c0-.2-.3-.4-.5-.4Zm-192 171c-19 0-34-17-34-38c0-21 15-38 34-38c19 0 34 17 34 38c0 21-15 38-34 38zm125 0c-19 0-34-17-34-38c0-21 15-38 34-38c19 0 34 17 34 38c0 21-15 38-34 38z"
-                fill="currentColor"
-              ></path>
-            </svg>
-          </a>
         </nav>
         <nav className="mt-6 flex w-full flex-col-reverse items-center justify-between space-y-4 space-y-reverse text-xs font-medium text-gray-500 sm:flex-row sm:space-y-0">
           <p>
@@ -83,7 +79,7 @@ export default function Footer() {
               href="https://github.com/ndom91"
               alt="ndom91 Github Profile"
               target="_blank"
-              rel="noopener noreferer noreferrer"
+              rel="noopener noreferrer"
             >
               .domino 2022
             </a>

@@ -1,9 +1,10 @@
 import { getServerSession } from 'next-auth/next'
+import { authOptions } from './api/auth/[...nextauth]'
+
 import BookmarkCard from '@/components/bookmark-card'
 import Layout from '@/components/layout'
 import QuickAdd from '@/components/quick-add'
 import Sidebar from '@/components/sidebar'
-import { authOptions } from './api/auth/[...nextauth]'
 import prisma from '@/lib/prisma'
 
 export default function Home({ session, bookmarks, categories, tags }) {
