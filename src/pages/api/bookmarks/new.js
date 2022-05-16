@@ -7,6 +7,9 @@ const metascraper = require('metascraper')([
 
 export default async function handler(req, res) {
   const { userId, title, url, desc, image } = JSON.parse(req.body)
+  if (!url) {
+    return res.status(400).json({ message: 'Missing required field: url' })
+  }
 
   try {
     let metadata = {

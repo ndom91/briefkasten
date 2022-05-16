@@ -75,9 +75,9 @@ export default function QuickAdd({ categories }) {
             type="submit"
             onClick={() => submitUrl()}
             name="addBookmark"
-            className="block w-full rounded-lg border border-transparent bg-slate-400 px-5 py-3 text-base font-medium text-white shadow transition duration-500 ease-in-out hover:bg-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-white sm:px-10"
+            className="block w-full rounded-md border border-transparent bg-slate-800 p-3 text-base font-medium text-white shadow transition duration-500 ease-in-out hover:bg-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-white sm:px-8"
           >
-            Add
+            Save
           </button>
         </div>
       </div>
