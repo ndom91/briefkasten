@@ -21,6 +21,17 @@ export default async function handler(req, res) {
     if (!title || !desc || !image) {
       const resp = await fetch(url)
       metadata = await metascraper({ html: await resp.text(), url: url })
+
+      // if (!image) {
+      if (true) {
+        const imageData = await fetch(
+          new URL(`/api/bookmarks/image?url=${url}`)
+        )
+        console.log('data', imageData)
+        const imageRaw = await imageData.text()
+        console.log('raw', imageData)
+        metadata.image = imageRaw
+      }
     }
 
     await prisma.user.update({
