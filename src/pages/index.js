@@ -12,7 +12,7 @@ export default function Home({ session, bookmarks, categories }) {
       <aside className="">Sidebar</aside>
       <div className="flex flex-col space-y-2">
         <QuickAdd categories={categories} />
-        <section className="grid grid-cols-1 justify-items-stretch gap-4 sm:grid-cols-3 md:grid-cols-4">
+        <section className="grid grid-cols-1 justify-items-stretch gap-4 pt-4 sm:grid-cols-3 md:grid-cols-4">
           {bookmarks.map((bookmark) => (
             <BookmarkCard
               bookmark={bookmark}
@@ -39,7 +39,7 @@ export async function getServerSideProps(context) {
     }
   }
 
-  const data = await prisma.bookmark.findMany({
+  const bookmarkData = await prisma.bookmark.findMany({
     where: {
       userId: session.user.userId,
     },
@@ -49,14 +49,14 @@ export async function getServerSideProps(context) {
     },
   })
 
+  const categories = await prisma.category.findMany()
+
   // Convert 'createdAt' to string to pass through as json
-  const bookmarks = data.map((boomark) => ({
+  const bookmarks = bookmarkData.map((boomark) => ({
     ...boomark,
     createdAt: boomark.createdAt.toString(),
     tags: boomark.tags.map((tag) => tag.tag),
   }))
-
-  const categories = data.map((boomark) => boomark.category).filter(Boolean)
 
   return {
     props: { session, bookmarks, categories },

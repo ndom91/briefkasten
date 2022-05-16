@@ -78,7 +78,17 @@ export default function Footer() {
           </a>
         </nav>
         <nav className="mt-6 flex w-full flex-col-reverse items-center justify-between space-y-4 space-y-reverse text-xs font-medium text-gray-500 sm:flex-row sm:space-y-0">
-          <p>.domino 2022 © | All Rights Reserved.</p>
+          <p>
+            <a
+              href="https://github.com/ndom91"
+              alt="ndom91 Github Profile"
+              target="_blank"
+              rel="noopener noreferer noreferrer"
+            >
+              .domino 2022
+            </a>
+          </p>
+          {/* © | All Rights Reserved.</p> */}
           <p>
             <a
               href="#"
