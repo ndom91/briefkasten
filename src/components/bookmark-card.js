@@ -1,5 +1,7 @@
 import { useToggle } from 'react-use'
+import { useState } from 'react'
 import { useSession } from 'next-auth/react'
+import { asyncFileReader, getBase64StringFromDataURL } from '@/lib/helpers'
 import Image from 'next/image'
 
 export default function BookmarkCard({ bookmark, categories }) {
@@ -7,6 +9,9 @@ export default function BookmarkCard({ bookmark, categories }) {
   const [on, toggle] = useToggle(false)
   const { id, title, url, description, category, tags, createdAt, image } =
     bookmark
+  const [imageUrl, setImageUrl] = useState(
+    image || 'https://source.unsplash.com/random/300x201'
+  )
 
   async function handleDelete() {
     try {
@@ -20,6 +25,24 @@ export default function BookmarkCard({ bookmark, categories }) {
       })
     } catch (error) {
       console.error(error)
+    }
+  }
+
+  async function fetchFallbackImage(url) {
+    try {
+      const res = await fetch(`/api/bookmarks/image?url=${url}`)
+      const data = await res.blob()
+      const dataUrl = await asyncFileReader(data)
+      setImageUrl(dataUrl)
+      await fetch(`/api/bookmarks/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+          image: dataUrl,
+        }),
+      })
+    } catch (e) {
+      console.error(e)
+      setImageUrl('https://source.unsplash.com/random/300x201')
     }
   }
 
@@ -76,11 +99,8 @@ export default function BookmarkCard({ bookmark, categories }) {
               width="250"
               height="120"
               // src="https://images.unsplash.com/photo-1516245556508-7d60d4ff0f39?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDN8fHxlbnwwfHx8fA%3D%3D&amp;auto=format&amp;fit=crop&amp;w=900&amp;q=60"
-              src={
-                typeof image === 'string'
-                  ? image
-                  : 'https://source.unsplash.com/random/300x201'
-              }
+              src={imageUrl}
+              onError={() => fetchFallbackImage(url)}
               alt=""
             />
           </a>

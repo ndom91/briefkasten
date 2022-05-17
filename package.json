@@ -1,7 +1,7 @@
 {
   "name": "briefkasten",
   "author": "ndom91 <yo@ndo.dev>",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "scripts": {
     "dev": "next dev -p 3001",
     "build": "next build",
@@ -13,12 +13,14 @@
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.3",
     "@prisma/client": "^3.13.0",
+    "chrome-aws-lambda": "^10.1.0",
     "metascraper": "^5.29.3",
     "metascraper-description": "^5.29.3",
     "metascraper-image": "^5.29.3",
     "metascraper-title": "^5.29.3",
     "next": "12.1.6",
     "next-auth": "^4.3.4",
+    "playwright-core": "^1.22.1",
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-use": "^17.3.2",

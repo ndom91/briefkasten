@@ -13,8 +13,8 @@ model Bookmark {
   id          String       @id @default(cuid())
   title       String?
   url         String
-  image       String?
-  desc        String?
+  image       String?      @db.Text
+  desc        String?      @db.Text
   category    Category?    @relation(fields: [categoryId], references: [id], onUpdate: NoAction)
   categoryId  String?
   tags        TagsOnBookmarks[]

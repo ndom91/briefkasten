@@ -1,7 +1,6 @@
 import Link from 'next/link'
 
 export default function Sidebar({ categories, tags }) {
-  console.log(categories, tags)
   return (
     <aside className="space-y-4 px-4">
       <p className="text-sm italic tracking-tight text-slate-300">
@@ -35,7 +34,12 @@ export default function Sidebar({ categories, tags }) {
                 passHref
                 key={tag.name}
               >
-                <a className="text-slate-400 first-letter:font-bold">
+                <a
+                  className="py rounded-md px-2 text-white first-letter:font-bold"
+                  style={{
+                    backgroundColor: tag.color,
+                  }}
+                >
                   {tag.name}
                 </a>
               </Link>

@@ -7,8 +7,7 @@ import QuickAdd from '@/components/quick-add'
 import Sidebar from '@/components/sidebar'
 import prisma from '@/lib/prisma'
 
-export default function Home({ session, bookmarks, categories, tags }) {
-  console.log('session', session)
+export default function Home({ bookmarks, categories, tags }) {
   return (
     <Layout>
       <Sidebar categories={categories} tags={tags} />
@@ -29,10 +28,9 @@ export default function Home({ session, bookmarks, categories, tags }) {
 }
 
 export async function getServerSideProps(context) {
-  const session = await getServerSession(context, authOptions)
-  // @TODO: Session still undefined sometimes?!
+  const nextauth = await getServerSession(context, authOptions)
 
-  if (!session) {
+  if (!nextauth) {
     return {
       redirect: {
         destination: '/auth/signin',
@@ -43,7 +41,7 @@ export async function getServerSideProps(context) {
 
   const bookmarkData = await prisma.bookmark.findMany({
     where: {
-      userId: session.user.userId,
+      userId: nextauth.user.userId,
     },
     include: {
       category: true,
@@ -62,6 +60,6 @@ export async function getServerSideProps(context) {
   }))
 
   return {
-    props: { session, bookmarks, categories, tags },
+    props: { nextauth, bookmarks, categories, tags },
   }
 }
