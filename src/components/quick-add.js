@@ -12,11 +12,12 @@ export default function QuickAdd({ categories }) {
 
   async function submitUrl() {
     try {
-      await fetch('/api/bookmarks/new', {
+      const res = await fetch('/api/bookmarks/new', {
         method: 'POST',
         body: JSON.stringify({ url, userId: session?.user?.userId }),
       })
-      addBookmark({ url })
+      const data = await res.json()
+      addBookmark({ url, createdAt: data.createdAt, id: data.id })
     } catch (error) {
       console.error('[ERROR] Submitting URL', error)
     }

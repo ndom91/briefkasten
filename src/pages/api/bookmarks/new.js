@@ -28,8 +28,7 @@ export default async function handler(req, res) {
       metadata = await metascraper({ html: await resp.text(), url: url })
 
       console.log('METADATA', metadata)
-      // if (!image)
-      if (true) {
+      if (!metadata.image) {
         console.log(
           'IMAGE FETCH URL',
           `${baseUrl}/api/bookmarks/image?url=${encodeURIComponent(url)}`
@@ -45,28 +44,31 @@ export default async function handler(req, res) {
       }
     }
 
-    await prisma.user.update({
-      where: { id: userId },
-      data: {
-        bookmarks: {
-          upsert: {
-            create: {
-              url,
-              title: title ?? metadata.title,
-              image: image ?? metadata.image,
-              desc: desc ?? metadata.description,
-            },
-            update: {
-              url,
-              title: title ?? metadata.title,
-              image: image ?? metadata.image,
-              desc: desc ?? metadata.description,
-            },
-            where: { url_userId: { url: url, userId: userId } },
-          },
-        },
+    const upsertResult = await prisma.bookmark.upsert({
+      create: {
+        url,
+        title: title ?? metadata.title,
+        image: image ?? metadata.image,
+        desc: desc ?? metadata.description,
+        userId,
       },
+      update: {
+        url,
+        title: title ?? metadata.title,
+        image: image ?? metadata.image,
+        desc: desc ?? metadata.description,
+      },
+      select: {
+        id: true,
+        createdAt: true,
+      },
+      where: { url_userId: { url: url, userId: userId } },
     })
+
+    console.log(upsertResult)
+
+    res.setHeader('Access-Control-Allow-Origin', '*')
+    return res.status(200).json({ ...upsertResult })
   } catch (error) {
     console.error('ERR', error)
     console.error('ERR', error.syscall)
@@ -77,7 +79,4 @@ export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*')
     return res.status(500).json({ message: error })
   }
-
-  res.setHeader('Access-Control-Allow-Origin', '*')
-  return res.status(200).json({ message: 'Added' })
 }

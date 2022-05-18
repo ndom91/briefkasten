@@ -7,6 +7,7 @@ module.exports = {
       'avatars.githubusercontent.com',
       's.yimg.com',
       'ndo.dev',
+      'www.facebook.com',
     ],
   },
 }

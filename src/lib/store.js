@@ -47,27 +47,6 @@ export const initializeStore = (preloadedState = {}) => {
         ],
       })),
     resetCategories: () => set({ categories: initialState.categories }),
-    // tick: (lastUpdate, light) => {
-    //   set({
-    //     lastUpdate,
-    //     light: !!light,
-    //   })
-    // },
-    // increment: () => {
-    //   set({
-    //     count: get().count + 1,
-    //   })
-    // },
-    // decrement: () => {
-    //   set({
-    //     count: get().count - 1,
-    //   })
-    // },
-    // reset: () => {
-    //   set({
-    //     count: initialState.count,
-    //   })
-    // },
   }))
 }
 

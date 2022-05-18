@@ -2,9 +2,11 @@ import { useToggle } from 'react-use'
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { asyncFileReader } from '@/lib/helpers'
+import { useStore } from '@/lib/store'
 import Image from 'next/image'
 
 export default function BookmarkCard({ bookmark, categories }) {
+  const removeBookmark = useStore((state) => state.removeBookmark)
   const { data: session } = useSession()
   const [on, toggle] = useToggle(false)
   const { id, title, url, description, category, tags, createdAt, image } =
@@ -19,10 +21,11 @@ export default function BookmarkCard({ bookmark, categories }) {
         console.error('No userId available')
         return
       }
-      await fetch('/api/bookmarks/', {
+      await fetch('/api/bookmarks', {
         method: 'DELETE',
         body: JSON.stringify({ id }),
       })
+      removeBookmark({ id })
     } catch (error) {
       console.error(error)
     }
@@ -128,7 +131,7 @@ export default function BookmarkCard({ bookmark, categories }) {
                   {description}
                 </p>
               )}
-              {tags.length > 0 && (
+              {tags?.length > 0 && (
                 <div className="px-6 pt-2 pb-2">
                   {tags.map((tag) => (
                     <span
