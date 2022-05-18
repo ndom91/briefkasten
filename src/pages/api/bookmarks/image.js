@@ -8,8 +8,8 @@ export default async function Imge(req, res) {
     executablePath:
       process.env.NODE_ENV !== 'development'
         ? await chromium.executablePath
-        : '/usr/bin/chromium',
-    headless: process.env.NODE_ENV !== 'development' ? chromium.headless : true,
+        : '/bin/chromium',
+    headless: true,
   })
 
   // Create a page with the recommended Open Graph image size
@@ -21,23 +21,24 @@ export default async function Imge(req, res) {
   })
 
   // Extract the url from the query parameter `path`
-  const url = req.query.url
+  const url = decodeURIComponent(req.query.url)
 
-  // Pass current color-scheme to headless chrome
-  const colorScheme = req.query.colorScheme
-
-  await page.emulateMedia({ colorScheme })
+  console.log('IMAGE URL', url)
 
   await page.goto(url)
 
-  const data = await page.screenshot({
+  const buffer = await page.screenshot({
     type: 'png',
   })
+  console.log('IMAGE DATA', buffer.length)
 
   await browser.close()
+  await page.close()
+
+  console.log('IMAGE FINISHED')
 
   // Set the `s-maxage` property to cache at the CDN layer
   res.setHeader('Cache-Control', 's-maxage=31536000, public')
   res.setHeader('Content-Type', 'image/png')
-  res.end(data)
+  return res.end(buffer)
 }

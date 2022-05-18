@@ -1,7 +1,7 @@
 import { useToggle } from 'react-use'
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
-import { asyncFileReader, getBase64StringFromDataURL } from '@/lib/helpers'
+import { asyncFileReader } from '@/lib/helpers'
 import Image from 'next/image'
 
 export default function BookmarkCard({ bookmark, categories }) {
@@ -30,7 +30,9 @@ export default function BookmarkCard({ bookmark, categories }) {
 
   async function fetchFallbackImage(url) {
     try {
-      const res = await fetch(`/api/bookmarks/image?url=${url}`)
+      const res = await fetch(
+        `/api/bookmarks/image?url=${encodeURIComponent(url)}`
+      )
       const data = await res.blob()
       const dataUrl = await asyncFileReader(data)
       setImageUrl(dataUrl)

@@ -11,6 +11,11 @@ export default async function handler(req, res) {
     return res.status(400).json({ message: 'Missing required field: url' })
   }
 
+  const protocol = req.headers['x-forwarded-proto'] || 'http'
+  const baseUrl = req
+    ? `${protocol}://${req.headers.host}`
+    : 'http://localhost:3001'
+
   try {
     let metadata = {
       title: '',
@@ -22,10 +27,16 @@ export default async function handler(req, res) {
       const resp = await fetch(url)
       metadata = await metascraper({ html: await resp.text(), url: url })
 
-      // if (!image) {
+      console.log('METADATA', metadata)
+      // if (!image)
       if (true) {
+        console.log(
+          'IMAGE FETCH URL',
+          `${baseUrl}/api/bookmarks/image?url=${encodeURIComponent(url)}`
+        )
+
         const imageData = await fetch(
-          new URL(`/api/bookmarks/image?url=${url}`)
+          `${baseUrl}/api/bookmarks/image?url=${encodeURIComponent(url)}`
         )
         console.log('data', imageData)
         const imageRaw = await imageData.text()
@@ -58,6 +69,11 @@ export default async function handler(req, res) {
     })
   } catch (error) {
     console.error('ERR', error)
+    console.error('ERR', error.syscall)
+    console.error('ERR', error.address)
+    console.error('ERR', error.stack)
+    console.error('ERR', error.info)
+    console.error('ERR', error.code)
     res.setHeader('Access-Control-Allow-Origin', '*')
     return res.status(500).json({ message: error })
   }

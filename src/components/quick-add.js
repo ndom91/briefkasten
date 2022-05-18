@@ -1,12 +1,14 @@
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { useToggle } from 'react-use'
-import Chip from '@/components/chip'
+import { useStore } from '@/lib/store'
+// import Chip from '@/components/chip'
 
 export default function QuickAdd({ categories }) {
   const [url, setUrl] = useState('')
   const [open, toggleOpen] = useToggle(false)
   const { data: session } = useSession()
+  const addBookmark = useStore((state) => state.addBookmark)
 
   async function submitUrl() {
     try {
@@ -14,6 +16,7 @@ export default function QuickAdd({ categories }) {
         method: 'POST',
         body: JSON.stringify({ url, userId: session?.user?.userId }),
       })
+      addBookmark({ url })
     } catch (error) {
       console.error('[ERROR] Submitting URL', error)
     }

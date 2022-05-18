@@ -1,5 +1,6 @@
 import { getServerSession } from 'next-auth/next'
-import { authOptions } from './api/auth/[...nextauth]'
+import { authOptions } from '@/api/auth/[...nextauth]'
+import { useStore, initializeStore } from '@/lib/store'
 
 import BookmarkCard from '@/components/bookmark-card'
 import Layout from '@/components/layout'
@@ -7,7 +8,11 @@ import QuickAdd from '@/components/quick-add'
 import Sidebar from '@/components/sidebar'
 import prisma from '@/lib/prisma'
 
-export default function Home({ bookmarks, categories, tags }) {
+export default function Home() {
+  const bookmarks = useStore((state) => state.bookmarks)
+  const categories = useStore((state) => state.categories)
+  const tags = useStore((state) => state.tags)
+
   return (
     <Layout>
       <Sidebar categories={categories} tags={tags} />
@@ -17,7 +22,7 @@ export default function Home({ bookmarks, categories, tags }) {
           {bookmarks.map((bookmark) => (
             <BookmarkCard
               bookmark={bookmark}
-              key={bookmark.id}
+              key={bookmark.url}
               categories={categories}
             />
           ))}
@@ -29,6 +34,7 @@ export default function Home({ bookmarks, categories, tags }) {
 
 export async function getServerSideProps(context) {
   const nextauth = await getServerSession(context, authOptions)
+  const zustandStore = initializeStore()
 
   if (!nextauth) {
     return {
@@ -49,8 +55,16 @@ export async function getServerSideProps(context) {
     },
   })
 
-  const categories = await prisma.category.findMany()
-  const tags = await prisma.tag.findMany()
+  const categories = await prisma.category.findMany({
+    where: {
+      userId: nextauth.user.userId,
+    },
+  })
+  const tags = await prisma.tag.findMany({
+    where: {
+      userId: nextauth.user.userId,
+    },
+  })
 
   // Convert 'createdAt' to string to pass through as json
   const bookmarks = bookmarkData.map((boomark) => ({
@@ -59,7 +73,14 @@ export async function getServerSideProps(context) {
     tags: boomark.tags.map((tag) => tag.tag),
   }))
 
+  zustandStore.getState().setBookmarks(bookmarks)
+  zustandStore.getState().setCategories(categories)
+  zustandStore.getState().setTags(tags)
+
   return {
-    props: { nextauth, bookmarks, categories, tags },
+    props: {
+      nextauth,
+      initialZustandState: JSON.parse(JSON.stringify(zustandStore.getState())),
+    },
   }
 }
