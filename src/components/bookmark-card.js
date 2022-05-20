@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { asyncFileReader } from '@/lib/helpers'
 import { useStore } from '@/lib/store'
-import Image from 'next/image'
+// import Image from 'next/image'
 
 export default function BookmarkCard({ bookmark, categories }) {
   const removeBookmark = useStore((state) => state.removeBookmark)
@@ -98,15 +98,12 @@ export default function BookmarkCard({ bookmark, categories }) {
         )}
         <div className="flex-shrink-0">
           <a href={url} target="_blank" rel="noopener noreferrer">
-            <Image
-              className="aspect-6 rounded-lg object-cover"
-              layout="responsive"
-              width="250"
-              height="120"
-              // src="https://images.unsplash.com/photo-1516245556508-7d60d4ff0f39?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDN8fHxlbnwwfHx8fA%3D%3D&amp;auto=format&amp;fit=crop&amp;w=900&amp;q=60"
+            {/* eslint-disable @next/next/no-img-element */}
+            <img
+              className="aspect-6 h-48 rounded-lg object-contain "
               src={imageUrl}
               onError={() => fetchFallbackImage(url)}
-              alt=""
+              alt={`${url} Image`}
             />
           </a>
         </div>

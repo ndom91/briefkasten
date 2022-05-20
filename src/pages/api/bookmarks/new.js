@@ -6,7 +6,7 @@ const metascraper = require('metascraper')([
 ])
 
 export default async function handler(req, res) {
-  const { userId, title, url, desc, image } = JSON.parse(req.body)
+  const { userId, title, url, desc, image } = req.body
   if (!url) {
     return res.status(400).json({ message: 'Missing required field: url' })
   }
@@ -27,19 +27,11 @@ export default async function handler(req, res) {
       const resp = await fetch(url)
       metadata = await metascraper({ html: await resp.text(), url: url })
 
-      console.log('METADATA', metadata)
       if (!metadata.image) {
-        console.log(
-          'IMAGE FETCH URL',
-          `${baseUrl}/api/bookmarks/image?url=${encodeURIComponent(url)}`
-        )
-
         const imageData = await fetch(
           `${baseUrl}/api/bookmarks/image?url=${encodeURIComponent(url)}`
         )
-        console.log('data', imageData)
         const imageRaw = await imageData.text()
-        console.log('raw', imageData)
         metadata.image = imageRaw
       }
     }
@@ -58,14 +50,8 @@ export default async function handler(req, res) {
         image: image ?? metadata.image,
         desc: desc ?? metadata.description,
       },
-      select: {
-        id: true,
-        createdAt: true,
-      },
       where: { url_userId: { url: url, userId: userId } },
     })
-
-    console.log(upsertResult)
 
     res.setHeader('Access-Control-Allow-Origin', '*')
     return res.status(200).json({ ...upsertResult })

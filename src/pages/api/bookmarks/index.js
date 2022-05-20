@@ -7,13 +7,14 @@ export default async function handler(req, res) {
   const { method } = req
 
   if (session) {
-    const { id } = JSON.parse(req.body)
-    if (!id) {
-      return res.status(400).json({ message: 'Missing required field: id' })
-    }
-
     switch (method) {
+      case 'GET':
+        return res.status(200).json({ results: ['Hello', 'World'] })
       case 'DELETE':
+        const { id } = JSON.parse(req.body)
+        if (!id) {
+          return res.status(400).json({ message: 'Missing required field: id' })
+        }
         try {
           await prisma.bookmark.delete({
             where: { id },
@@ -24,7 +25,7 @@ export default async function handler(req, res) {
         }
         return res.status(200).json({ message: 'Deleted' })
       default:
-        res.setHeader('Allow', ['DELETE'])
+        res.setHeader('Allow', ['GET', 'DELETE'])
         res.status(405).end(`Method ${method} Not Allowed`)
     }
   } else {
