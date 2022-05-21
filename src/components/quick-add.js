@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { useToggle } from 'react-use'
 import { useStore } from '@/lib/store'
+import { useToast, toastTypes } from '@/lib/hooks'
 // import Chip from '@/components/chip'
 
 export default function QuickAdd({ categories }) {
@@ -13,6 +14,7 @@ export default function QuickAdd({ categories }) {
   const [open, toggleOpen] = useToggle(false)
   const { data: session } = useSession()
   const addBookmark = useStore((state) => state.addBookmark)
+  const toast = useToast(5000)
 
   async function submitUrl() {
     try {
@@ -31,25 +33,28 @@ export default function QuickAdd({ categories }) {
           title,
         }),
       })
-      const data = await res.json()
+      if (res.status === 200) {
+        toast(toastTypes.SUCCESS, `Successfully added ${new URL(url).hostname}`)
+        const data = await res.json()
 
-      // Add new Bookmark to UI
-      addBookmark({
-        url,
-        createdAt: data.createdAt,
-        id: data.id,
-        desc: data.desc,
-        image: data.image,
-        title: data.title,
-      })
+        // Add new Bookmark to UI
+        addBookmark({
+          url,
+          createdAt: data.createdAt,
+          id: data.id,
+          desc: data.desc,
+          image: data.image,
+          title: data.title,
+        })
 
-      // Empty fields and toggle closed
-      setUrl('')
-      setTitle('')
-      setCategory('')
-      setTags('')
-      setDescription('')
-      toggleOpen()
+        // Empty fields and toggle closed
+        setUrl('')
+        setTitle('')
+        setCategory('')
+        setTags('')
+        setDescription('')
+        open && toggleOpen()
+      }
     } catch (error) {
       console.error('[ERROR] Submitting URL', error)
     }

@@ -53,29 +53,23 @@ export default async function handler(req, res) {
     const upsertResult = await prisma.bookmark.upsert({
       create: {
         url,
-        title: title ?? metadata.title,
+        title: title.length ? title : metadata.title,
         image: metadata.image,
-        desc: desc ?? metadata.description,
+        desc: desc.length ? desc : metadata.description,
         userId,
       },
       update: {
         url,
-        title: title ?? metadata.title,
+        title: title.length ? title : metadata.title,
         image: metadata.image,
-        desc: desc ?? metadata.description,
+        desc: desc.length ? desc : metadata.description,
       },
       where: { url_userId: { url: url, userId: userId } },
     })
 
     res.setHeader('Access-Control-Allow-Origin', '*')
-    return res.status(200).json({ ...upsertResult })
+    return res.status(200).json(upsertResult)
   } catch (error) {
-    console.error('ERR', error)
-    console.error('ERR', error.syscall)
-    console.error('ERR', error.address)
-    console.error('ERR', error.stack)
-    console.error('ERR', error.info)
-    console.error('ERR', error.code)
     res.setHeader('Access-Control-Allow-Origin', '*')
     return res.status(500).json({ message: error })
   }

@@ -15,7 +15,7 @@ export default function BookmarkCard({ bookmark, categories }) {
   const [imageUrl, setImageUrl] = useState(
     image || 'https://source.unsplash.com/random/300x201'
   )
-  const toast = useToast(50000)
+  const toast = useToast(5000)
 
   async function handleDelete() {
     try {
@@ -27,10 +27,10 @@ export default function BookmarkCard({ bookmark, categories }) {
         }),
       })
       removeBookmark({ id })
-      toast(toastTypes.SUCCESS, 'Successfully deleted')
+      toast(toastTypes.SUCCESS, `Successfully deleted ${new URL(url).hostname}`)
     } catch (error) {
       console.error(error)
-      toast(toastTypes.ERROR, 'Error deleting', `${error.substring(0, 80)}...`)
+      toast(toastTypes.ERROR, 'Error deleting bookmark', error)
     }
   }
 
@@ -54,26 +54,16 @@ export default function BookmarkCard({ bookmark, categories }) {
       setImageUrl(uploadData.url)
     } catch (error) {
       console.error(error)
-      toast(
-        toastTypes.ERROR,
-        'Error fetching fallback image',
-        `${error.substring(0, 80)}...`
-      )
+      toast(toastTypes.ERROR, 'Error fetching fallback image', error)
       setImageUrl('https://source.unsplash.com/random/300x201')
     }
   }
-
-  const error =
-    'GET htatps://ik.imagekit.io/briefkasten/ndo.dev_MK4kA7NwN.png net::ERR_UNKNOWN_URL_SCHEME'
 
   return (
     <>
       <div className="group relative mb-12 flex cursor-pointer flex-col overflow-hidden">
         <button
-          // onClick={() => toggle()}
-          onClick={() =>
-            toast(toastTypes.WARNING, 'Error fetching fallback image', error)
-          }
+          onClick={() => toggle()}
           name="edit"
           className="absolute top-3 right-3 z-10 text-slate-500 opacity-0 outline-none transition hover:text-slate-800 hover:outline-none focus:text-slate-800 group-hover:opacity-100"
         >
