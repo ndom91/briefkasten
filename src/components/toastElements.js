@@ -5,7 +5,7 @@ export const toastSuccess = ({ title, body, dispatch, id }) => (
     role="alert"
   >
     <svg
-      className="h-10 w-10 text-emerald-500 dark:text-emerald-600"
+      className="h-8 w-8 text-emerald-500 dark:text-emerald-600"
       fill="none"
       ariaHidden="true"
       data-name="badge-check"
@@ -53,7 +53,7 @@ export const toastError = ({ title, body, dispatch, id }) => (
     role="alert"
   >
     <svg
-      className="h-6 w-6 text-red-600 dark:text-red-500"
+      className="h-8 w-8 text-red-600 dark:text-red-500"
       ariaHidden="true"
       data-name="exclamation-circle"
       fill="none"
@@ -101,7 +101,7 @@ export const toastWarning = ({ title, body, dispatch, id }) => (
     role="alert"
   >
     <svg
-      className="h-6 w-6 text-yellow-400 dark:text-yellow-700"
+      className="h-8 w-8 text-yellow-400 dark:text-yellow-700"
       fill="none"
       ariaHidden="true"
       data-name="exclamation-shield"

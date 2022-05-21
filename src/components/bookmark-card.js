@@ -15,7 +15,7 @@ export default function BookmarkCard({ bookmark, categories }) {
   const [imageUrl, setImageUrl] = useState(
     image || 'https://source.unsplash.com/random/300x201'
   )
-  const toast = useToast(100000)
+  const toast = useToast(5000)
 
   async function handleDelete() {
     try {
@@ -60,14 +60,7 @@ export default function BookmarkCard({ bookmark, categories }) {
     <>
       <div className="group relative mb-12 flex cursor-pointer flex-col overflow-hidden">
         <button
-          // onClick={() => toggle()}
-          onClick={() =>
-            toast(
-              toastTypes.SUCCESS,
-              'Successfully deleted',
-              `Bookmark ABC123 was deleted`
-            )
-          }
+          onClick={() => toggle()}
           name="edit"
           className="absolute top-3 right-3 z-10 text-slate-500 opacity-0 outline-none transition hover:text-slate-800 hover:outline-none focus:text-slate-800 group-hover:opacity-100"
         >
