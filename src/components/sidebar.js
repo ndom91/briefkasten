@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 export default function Sidebar({ categories, tags }) {
   return (
-    <aside className="space-y-4 px-4">
+    <aside className="mx-4 space-y-4 rounded-lg bg-slate-50 p-4">
       <p className="text-sm italic tracking-tight text-slate-300">
         Click to filter the view of saved bookmarks
       </p>
