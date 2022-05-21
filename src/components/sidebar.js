@@ -128,7 +128,7 @@ export default function Sidebar({ categories, tags }) {
                   key={tag.name}
                 >
                   <a className="text-slate-400">
-                    {tag.color}
+                    {tag.emoji}
                     <span className="ml-2">{tag.name}</span>
                   </a>
                 </Link>
