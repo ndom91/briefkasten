@@ -14,7 +14,7 @@ export default function Navigation() {
   }
 
   return (
-    <nav className="my-4 flex items-center">
+    <nav className="my-4 flex items-center px-4">
       <Link href="/" passHref>
         <div className="flex items-center hover:cursor-pointer ">
           <svg

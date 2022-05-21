@@ -16,7 +16,7 @@ export default function Home() {
   return (
     <Layout>
       <Sidebar categories={categories} tags={tags} />
-      <div className="flex flex-col space-y-2">
+      <div className="flex flex-col space-y-2 pr-4">
         <QuickAdd categories={categories} />
         <section className="grid grid-cols-1 justify-items-stretch gap-4 pt-4 sm:grid-cols-3 md:grid-cols-4">
           {bookmarks.map((bookmark) => (
