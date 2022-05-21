@@ -14,31 +14,38 @@ export default async function Imge(req, res) {
   })
 
   // Create a page with the recommended Open Graph image size
-  const page = await browser.newPage({
-    viewport: {
-      width: 1200,
-      height: 720,
-    },
-  })
+  // const page = await browser.newPage({
+  //   viewport: {
+  //     width: 1200,
+  //     height: 720,
+  //   },
+  // })
 
   // Extract the url from the query parameter `path`
-  const url = decodeURIComponent(req.query.url)
-
-  console.log('IMAGE URL', url)
-
-  await page.goto(url)
-
-  const buffer = await page.screenshot({
-    type: 'png',
-  })
-  console.log('IMAGE DATA', buffer.length)
-
-  await browser.close()
-  await page.close()
-
-  console.log('IMAGE FINISHED')
+  // const url = decodeURIComponent(req.query.url)
+  //
+  // console.log('IMAGE URL', url)
+  //
+  // await page.goto(url)
+  //
+  // const buffer = await page.screenshot({
+  //   type: 'png',
+  // })
+  // console.log('IMAGE DATA', buffer.length)
+  //
+  // await browser.close()
+  // await page.close()
+  //
+  // console.log('IMAGE FINISHED')
 
   // Set the `s-maxage` property to cache at the CDN layer
+
+  // const browser = await puppeteer.launch(options);
+  const page = await browser.newPage()
+  await page.setViewport({ width: 2000, height: 1000 })
+  await page.goto(req.query.url, { waitUntil: 'networkidle0' })
+
+  const buffer = await page.screenshot({ type: 'png' })
   res.setHeader('Cache-Control', 's-maxage=31536000, public')
   res.setHeader('Content-Type', 'image/png')
   return res.end(buffer)

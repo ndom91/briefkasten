@@ -1,4 +1,5 @@
 import prisma from '@/lib/prisma'
+import { asyncFileReader } from '@/lib/helpers'
 const metascraper = require('metascraper')([
   require('metascraper-description')(),
   require('metascraper-image')(),
@@ -6,7 +7,7 @@ const metascraper = require('metascraper')([
 ])
 
 export default async function handler(req, res) {
-  const { userId, title, url, desc, image } = req.body
+  const { userId, title, url, desc, category, tags } = req.body
   if (!url) {
     return res.status(400).json({ message: 'Missing required field: url' })
   }
@@ -23,30 +24,44 @@ export default async function handler(req, res) {
       description: '',
     }
 
-    if (!title || !desc || !image) {
-      const resp = await fetch(url)
-      metadata = await metascraper({ html: await resp.text(), url: url })
+    const resp = await fetch(url)
+    metadata = await metascraper({ html: await resp.text(), url: url })
 
-      if (!metadata.image) {
-        const imageData = await fetch(
-          `${baseUrl}/api/bookmarks/image?url=${encodeURIComponent(url)}`
-        )
-        metadata.image = await imageData.blob()
-      }
+    if (!metadata.image) {
+      // Generate image with puppeteer
+      const imageData = await fetch(
+        `${baseUrl}/api/bookmarks/image?url=${encodeURIComponent(url)}`
+      )
+      const imageBlob = await imageData.blob()
+      const dataUrl = await asyncFileReader(imageBlob)
+
+      // Upload Base64 image to ImageKit
+      const uploadRes = await fetch(
+        `${baseUrl}/api/bookmarks/uploadImage?fileName=${
+          new URL(url).hostname
+        }&id=${id}`,
+        {
+          method: 'PUT',
+          body: dataUrl,
+        }
+      )
+      const uploadData = await uploadRes.json()
+      // Set image url
+      metadata.image = uploadData.url
     }
 
     const upsertResult = await prisma.bookmark.upsert({
       create: {
         url,
         title: title ?? metadata.title,
-        image: image ?? metadata.image,
+        image: metadata.image,
         desc: desc ?? metadata.description,
         userId,
       },
       update: {
         url,
         title: title ?? metadata.title,
-        image: image ?? metadata.image,
+        image: metadata.image,
         desc: desc ?? metadata.description,
       },
       where: { url_userId: { url: url, userId: userId } },

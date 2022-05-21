@@ -6,20 +6,34 @@ import { useStore } from '@/lib/store'
 
 export default function QuickAdd({ categories }) {
   const [url, setUrl] = useState('')
+  const [title, setTitle] = useState('')
+  const [category, setCategory] = useState('')
+  const [tags, setTags] = useState('')
+  const [desc, setDescription] = useState('')
   const [open, toggleOpen] = useToggle(false)
   const { data: session } = useSession()
   const addBookmark = useStore((state) => state.addBookmark)
 
   async function submitUrl() {
     try {
+      // Add Bookmark to DB via API
       const res = await fetch('/api/bookmarks/new', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ url, userId: session?.user?.userId }),
+        body: JSON.stringify({
+          url,
+          userId: session?.user?.userId,
+          desc,
+          category,
+          tags: tags.split(' '),
+          title,
+        }),
       })
       const data = await res.json()
+
+      // Add new Bookmark to UI
       addBookmark({
         url,
         createdAt: data.createdAt,
@@ -28,6 +42,14 @@ export default function QuickAdd({ categories }) {
         image: data.image,
         title: data.title,
       })
+
+      // Empty fields and toggle closed
+      setUrl('')
+      setTitle('')
+      setCategory('')
+      setTags('')
+      setDescription('')
+      toggleOpen()
     } catch (error) {
       console.error('[ERROR] Submitting URL', error)
     }
@@ -103,11 +125,29 @@ export default function QuickAdd({ categories }) {
                 htmlFor="category"
                 className="text-xs font-medium uppercase tracking-tight text-gray-500"
               >
+                Title
+              </label>
+              <input
+                id="title"
+                name="title"
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                className="block w-full truncate rounded-md border-transparent pr-8 text-sm transition focus:border-slate-200 focus:ring-slate-200 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:opacity-75"
+              />
+            </div>
+            <div className="w-full space-y-0.5 px-2">
+              <label
+                htmlFor="category"
+                className="text-xs font-medium uppercase tracking-tight text-gray-500"
+              >
                 Category
               </label>
               <select
                 id="category"
                 name="category"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
                 className="block w-full truncate rounded-md border-transparent pr-8 text-sm transition focus:border-slate-200 focus:ring-slate-200 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:opacity-75"
               >
                 {categories.map((category, i) => {
@@ -130,6 +170,8 @@ export default function QuickAdd({ categories }) {
                 id="tags"
                 name="tags"
                 type="text"
+                value={tags}
+                onChange={(e) => setTags(e.target.value)}
                 className="block w-full truncate rounded-md border-transparent pr-8 text-sm transition focus:border-slate-200 focus:ring-slate-200 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:opacity-75"
               />
             </div>
@@ -144,96 +186,13 @@ export default function QuickAdd({ categories }) {
                 rows="3"
                 id="description"
                 placeholder=""
+                value={desc}
+                onChange={(e) => setDescription(e.target.value)}
                 className="block w-full rounded-md border-transparent bg-white text-sm transition focus:border-slate-200 focus:ring-slate-200 disabled:cursor-not-allowed disabled:bg-gray-900 disabled:opacity-75"
               ></textarea>
-              <div className="flex items-center justify-between pb-[0.2rem] pt-3">
-                <div className="flex space-x-2">
-                  <button
-                    type="button"
-                    className="inline-flex w-auto cursor-pointer select-none appearance-none items-center justify-center rounded bg-white px-2 py-2 text-xs font-medium text-gray-800 transition hover:bg-gray-100 focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-200"
-                  >
-                    <svg
-                      className="h-4 w-4 shrink-0 stroke-gray-500"
-                      viewBox="0 0 256 256"
-                    >
-                      <path
-                        d="M96,176l95.8-92.2a28,28,0,0,0-39.6-39.6L54.1,142.1a47.9,47.9,0,0,0,67.8,67.8L204,128"
-                        fill="none"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="24"
-                      ></path>
-                    </svg>
-                  </button>
-                  <button
-                    type="button"
-                    className="inline-flex w-auto cursor-pointer select-none appearance-none items-center justify-center rounded bg-white px-2 py-2 text-xs font-medium text-gray-800 transition hover:bg-gray-100 focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-200"
-                  >
-                    <svg
-                      className="h-4 w-4 shrink-0 stroke-gray-500"
-                      viewBox="0 0 256 256"
-                    >
-                      <rect
-                        x="88"
-                        y="24"
-                        width="80"
-                        height="136"
-                        rx="40"
-                        fill="none"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="24"
-                      ></rect>
-                      <path
-                        d="M208,120a80,80,0,0,1-160,0"
-                        fill="none"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="24"
-                      ></path>
-                      <line
-                        x1="128"
-                        y1="200"
-                        x2="128"
-                        y2="232"
-                        fill="none"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="24"
-                      ></line>
-                    </svg>
-                  </button>
-                  <button
-                    type="button"
-                    className="inline-flex w-auto cursor-pointer select-none appearance-none items-center justify-center rounded bg-white px-2 py-2 text-xs font-medium text-gray-800 transition hover:bg-gray-100 focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-200"
-                  >
-                    <svg
-                      className="h-4 w-4 shrink-0 fill-gray-500 stroke-gray-500"
-                      viewBox="0 0 256 256"
-                    >
-                      <circle
-                        cx="128"
-                        cy="128"
-                        r="96"
-                        fill="none"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="24"
-                      ></circle>
-                      <circle cx="92" cy="108" r="16"></circle>
-                      <circle cx="164" cy="108" r="16"></circle>
-                      <path
-                        d="M169.6,152a48.1,48.1,0,0,1-83.2,0"
-                        fill="none"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="24"
-                      ></path>
-                    </svg>
-                  </button>
-                </div>
+              <div className="flex items-center pb-[0.2rem] pt-3">
                 <span className="rounded-lg bg-gray-200 px-2 py-1 text-[0.6rem] uppercase text-gray-400">
-                  Leave blank to use the default page description
+                  Leave blank to use the default page title and description
                 </span>
               </div>
             </div>

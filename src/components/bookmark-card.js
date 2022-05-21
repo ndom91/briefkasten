@@ -3,7 +3,6 @@ import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { asyncFileReader } from '@/lib/helpers'
 import { useStore } from '@/lib/store'
-// import Image from 'next/image'
 
 export default function BookmarkCard({ bookmark, categories }) {
   const removeBookmark = useStore((state) => state.removeBookmark)
@@ -32,19 +31,22 @@ export default function BookmarkCard({ bookmark, categories }) {
   }
 
   async function fetchFallbackImage(url) {
+    console.log('FETCHING FALLBACK IMAGE')
     try {
       const res = await fetch(
         `/api/bookmarks/image?url=${encodeURIComponent(url)}`
       )
       const data = await res.blob()
       const dataUrl = await asyncFileReader(data)
-      setImageUrl(dataUrl)
-      await fetch(`/api/bookmarks/${id}`, {
-        method: 'PUT',
-        body: JSON.stringify({
-          image: dataUrl,
-        }),
-      })
+      const uploadRes = await fetch(
+        `/api/bookmarks/uploadImage?fileName=${new URL(url).hostname}&id=${id}`,
+        {
+          method: 'PUT',
+          body: dataUrl,
+        }
+      )
+      const uploadData = await uploadRes.json()
+      setImageUrl(uploadData.url)
     } catch (e) {
       console.error(e)
       setImageUrl('https://source.unsplash.com/random/300x201')

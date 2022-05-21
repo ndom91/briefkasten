@@ -11,16 +11,12 @@ export default async function handler(req, res) {
       body,
     } = req
 
-    const data = { ...JSON.parse(body) }
-
-    console.log('data', Object.keys(data))
-
     switch (method) {
       case 'PUT':
         try {
           await prisma.bookmark.update({
             where: { id },
-            data,
+            data: body,
           })
         } catch (error) {
           console.error('ERR', error)
@@ -32,7 +28,7 @@ export default async function handler(req, res) {
         res.status(405).end(`Method ${method} Not Allowed`)
     }
   } else {
-    console.error('ERR - Unauthorized attempt at /api/bookmarks/[id].js')
+    console.error('ERR - Unauthorized attempt at /api/bookmarks/[id]')
     return res.status(403).end('Unauthorized')
   }
 }
