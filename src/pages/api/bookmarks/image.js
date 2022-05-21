@@ -1,9 +1,7 @@
 import chromium from 'chrome-aws-lambda'
-// import playwright from 'playwright-core'
 import puppeteer from 'puppeteer-core'
 
 export default async function Imge(req, res) {
-  // Start Playwright with the dynamic chrome-aws-lambda args
   const browser = await puppeteer.launch({
     args: chromium.args,
     executablePath:
@@ -35,8 +33,17 @@ export default async function Imge(req, res) {
     regex.test(innerText, 'ig') && el.click()
   }
 
-  await page.waitForNetworkIdle()
+  // Wait for cookie banner to be gone
+  await page.waitForNetworkIdle({
+    timeout: 25000,
+  })
+
+  // Snap screenshot
   const buffer = await page.screenshot({ type: 'jpeg', quality: 50 })
+
+  await page.close()
+  await browser.close()
+
   // Set the `s-maxage` property to cache at the CDN layer
   res.setHeader('Cache-Control', 's-maxage=31536000, public')
   res.setHeader('Content-Type', 'image/jpeg')

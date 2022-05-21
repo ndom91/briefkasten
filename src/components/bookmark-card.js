@@ -4,13 +4,13 @@ import { useSession } from 'next-auth/react'
 import { asyncFileReader } from '@/lib/helpers'
 import { useStore } from '@/lib/store'
 import { useToast, toastTypes } from '@/lib/hooks'
+import Chip from '@/components/chip'
 
 export default function BookmarkCard({ bookmark, categories }) {
   const removeBookmark = useStore((state) => state.removeBookmark)
   const [on, toggle] = useToggle(false)
   const { data: session } = useSession()
-  const { id, title, url, description, category, tags, createdAt, image } =
-    bookmark
+  const { id, title, url, desc, category, tags, createdAt, image } = bookmark
 
   const [imageUrl, setImageUrl] = useState(
     image || 'https://source.unsplash.com/random/300x201'
@@ -59,7 +59,7 @@ export default function BookmarkCard({ bookmark, categories }) {
 
   return (
     <>
-      <div className="group relative mb-12 flex cursor-pointer flex-col overflow-hidden">
+      <div className="group relative flex flex-col overflow-hidden rounded-md border-2 border-slate-100 p-4 shadow-sm">
         <button
           onClick={() => toggle()}
           name="edit"
@@ -102,11 +102,11 @@ export default function BookmarkCard({ bookmark, categories }) {
             </svg>
           </button>
         )}
-        <div className="flex-shrink-0">
+        <div className="mb-2">
           <a href={url} target="_blank" rel="noopener noreferrer">
             {/* eslint-disable @next/next/no-img-element */}
             <img
-              className="aspect-6 h-48 rounded-lg object-contain "
+              className="aspect-2 min-h-[125px] rounded-md border-2 border-slate-50 object-cover object-left-top"
               src={imageUrl}
               onError={() => fetchFallbackImage(url)}
               alt={`${url} Image`}
@@ -114,39 +114,40 @@ export default function BookmarkCard({ bookmark, categories }) {
           </a>
         </div>
         <div className="flex flex-1 flex-col justify-between">
-          <a href={url}></a>
           <div className="flex-1">
-            <a href={url}>
-              <div className="flex space-x-1 pt-6 text-sm text-gray-500">
-                <time dateTime="2020-03-10">
-                  {new Date(createdAt).toLocaleDateString('de')}
-                </time>
-                <span aria-hidden="true"> · </span>
-                {category?.name && <span>{category?.name}</span>}
-              </div>
-            </a>
-            <a href={url} className="mt-2 block space-y-6">
-              <h3 className="text-2xl font-semibold leading-none tracking-tighter text-neutral-600 line-clamp-1">
-                {title}
-              </h3>
-              {description && (
-                <p className="text-lg font-normal text-gray-500 line-clamp-3">
-                  {description}
+            <div className="flex space-x-1 text-sm text-gray-500">
+              <time dateTime="2020-03-10">
+                {new Date(createdAt).toLocaleDateString('de')}
+              </time>
+              {category?.name && (
+                <>
+                  <span aria-hidden="true"> · </span>
+                  <span>{category?.name}</span>
+                </>
+              )}
+            </div>
+            <section className="block space-y-2">
+              <a href={url} className="mt-2 block space-y-2">
+                <h3 className="text-xl font-semibold leading-none tracking-tighter text-neutral-600 line-clamp-1">
+                  {title}
+                </h3>
+              </a>
+              <a href={url} className="text-xs text-slate-300 line-clamp-1">
+                {url}
+              </a>
+              {desc && (
+                <p className="text-sm font-normal text-gray-500 line-clamp-3">
+                  {desc}
                 </p>
               )}
               {tags?.length > 0 && (
-                <div className="px-6 pt-2 pb-2">
+                <div className="flex flex-wrap gap-2">
                   {tags.map((tag) => (
-                    <span
-                      key={tag.id}
-                      className="mb-2 mr-2 inline-block rounded-full bg-gray-200 px-3 py-1 text-sm font-semibold text-gray-700"
-                    >
-                      {tag.name}
-                    </span>
+                    <Chip key={tag.id} name={tag.name} />
                   ))}
                 </div>
               )}
-            </a>
+            </section>
           </div>
         </div>
       </div>
