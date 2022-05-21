@@ -1,22 +1,7 @@
 export default function Footer() {
   return (
-    <footer>
-      <div className="mx-auto flex w-full max-w-7xl flex-col items-center px-4 py-6 sm:items-start">
-        {/* <a href="#" className="flex items-center hover:cursor-pointer ">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            className="w-10 h-10 p-2 text-white rounded-full bg-slate-800"
-            viewBox="0 0 24 24"
-          >
-            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
-          </svg>
-          <span className="text-base">Briefkasten</span>
-        </a> */}
+    <footer className="px-4">
+      <div className="flex w-full max-w-7xl flex-col items-center py-6 sm:items-start">
         <nav className="mt-6 flex items-center space-x-3">
           <a
             href="https://twitter.com/ndom91"
@@ -81,10 +66,10 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              .domino 2022
+              .<span className="font-extrabold">domino</span>{' '}
+              <span className="">2022</span>
             </a>
           </p>
-          {/* © | All Rights Reserved.</p> */}
           <p>
             <a
               href="#"

@@ -1,4 +1,3 @@
-import { useToggle } from 'react-use'
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { asyncFileReader } from '@/lib/helpers'
@@ -8,7 +7,6 @@ import Chip from '@/components/chip'
 
 export default function BookmarkCard({ bookmark, categories }) {
   const removeBookmark = useStore((state) => state.removeBookmark)
-  const [on, toggle] = useToggle(false)
   const { data: session } = useSession()
   const { id, title, url, desc, category, tags, createdAt, image } = bookmark
 
@@ -59,7 +57,7 @@ export default function BookmarkCard({ bookmark, categories }) {
 
   return (
     <>
-      <div className="group relative flex flex-col overflow-hidden rounded-md border-2 border-slate-100 p-4 shadow-sm">
+      <div className="group relative flex flex-col overflow-hidden rounded-md border-2 border-slate-100 p-4 shadow-sm transition hover:shadow-lg">
         <div className="absolute top-3 right-3 z-10 flex flex-row-reverse gap-2 rounded-lg border-0 border-slate-400/50 bg-slate-600/90 px-3 py-2 opacity-0 shadow-md transition group-hover:opacity-100">
           <button
             name="edit"
@@ -121,7 +119,7 @@ export default function BookmarkCard({ bookmark, categories }) {
               {category?.name && (
                 <>
                   <span aria-hidden="true"> · </span>
-                  <span>{category?.name}</span>
+                  <span className="font-bold">{category?.name}</span>
                 </>
               )}
             </div>

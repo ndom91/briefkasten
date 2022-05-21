@@ -66,7 +66,7 @@ export default function QuickAdd({ categories }) {
         <div className="flex min-w-0 flex-1">
           <button
             onClick={toggleOpen}
-            className="flex w-10 items-center justify-center rounded-l-md border-transparent bg-gray-100 px-2 outline-none transition focus-within:z-10 focus-within:ring-2 focus-within:ring-slate-200 focus-within:ring-offset-2 focus-within:ring-offset-white focus:outline-none"
+            className="flex w-10 items-center justify-center rounded-l-md border-transparent bg-slate-100 px-2 outline-none transition focus-within:z-10 focus-within:ring-2 focus-within:ring-slate-200 focus-within:ring-offset-2 focus-within:ring-offset-white focus:outline-none"
           >
             <svg
               title="down-chevron"
@@ -105,7 +105,7 @@ export default function QuickAdd({ categories }) {
           </button>
           <input
             type="url"
-            className="block flex-1 transform rounded-r-md border border-transparent bg-gray-100 py-3 pl-2 pr-5 text-base text-neutral-600 placeholder-gray-300 transition duration-500 ease-in-out focus:z-10 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-white"
+            className="block flex-1 transform rounded-r-md border border-transparent bg-slate-100 py-3 pl-2 pr-5 text-base text-neutral-600 placeholder-gray-300 transition duration-500 ease-in-out focus:z-10 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-white"
             placeholder="https://"
             value={url}
             onChange={(event) => setUrl(event.target.value)}
@@ -123,12 +123,12 @@ export default function QuickAdd({ categories }) {
         </div>
       </div>
       {open && (
-        <section className="rounded-md bg-gray-100 p-3 transition duration-500 ease-in-out">
+        <section className="rounded-md bg-slate-100 p-3 transition duration-500 ease-in-out">
           <div className="flex flex-col space-y-1">
             <div className="w-full space-y-0.5 px-2">
               <label
                 htmlFor="category"
-                className="text-xs font-medium uppercase tracking-tight text-gray-500"
+                className="text-xs font-medium uppercase tracking-tight text-slate-500"
               >
                 Title
               </label>
@@ -138,13 +138,13 @@ export default function QuickAdd({ categories }) {
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="block w-full truncate rounded-md border-transparent pr-8 text-sm transition focus:border-slate-200 focus:ring-slate-200 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:opacity-75"
+                className="block w-full truncate rounded-md border-transparent pr-8 text-sm transition focus:border-slate-200 focus:ring-slate-200 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:opacity-75"
               />
             </div>
             <div className="w-full space-y-0.5 px-2">
               <label
                 htmlFor="category"
-                className="text-xs font-medium uppercase tracking-tight text-gray-500"
+                className="text-xs font-medium uppercase tracking-tight text-slate-500"
               >
                 Category
               </label>
@@ -153,7 +153,7 @@ export default function QuickAdd({ categories }) {
                 name="category"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="block w-full truncate rounded-md border-transparent pr-8 text-sm transition focus:border-slate-200 focus:ring-slate-200 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:opacity-75"
+                className="block w-full truncate rounded-md border-transparent pr-8 text-sm transition focus:border-slate-200 focus:ring-slate-200 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:opacity-75"
               >
                 {categories.map((category, i) => {
                   return (
@@ -167,7 +167,7 @@ export default function QuickAdd({ categories }) {
             <div className="w-full space-y-0.5 px-2">
               <label
                 htmlFor="tags"
-                className="text-xs font-medium uppercase tracking-tight text-gray-500"
+                className="text-xs font-medium uppercase tracking-tight text-slate-500"
               >
                 Tags
               </label>
@@ -177,13 +177,13 @@ export default function QuickAdd({ categories }) {
                 type="text"
                 value={tags}
                 onChange={(e) => setTags(e.target.value)}
-                className="block w-full truncate rounded-md border-transparent pr-8 text-sm transition focus:border-slate-200 focus:ring-slate-200 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:opacity-75"
+                className="block w-full truncate rounded-md border-transparent pr-8 text-sm transition focus:border-slate-200 focus:ring-slate-200 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:opacity-75"
               />
             </div>
             <div className="w-full overflow-hidden rounded-md px-2 transition focus-within:border-slate-200 focus-within:ring-0">
               <label
                 htmlFor="description"
-                className="text-xs font-medium uppercase tracking-tight text-gray-500"
+                className="text-xs font-medium uppercase tracking-tight text-slate-500"
               >
                 Description
               </label>
@@ -193,10 +193,10 @@ export default function QuickAdd({ categories }) {
                 placeholder=""
                 value={desc}
                 onChange={(e) => setDescription(e.target.value)}
-                className="block w-full rounded-md border-transparent bg-white text-sm transition focus:border-slate-200 focus:ring-slate-200 disabled:cursor-not-allowed disabled:bg-gray-900 disabled:opacity-75"
+                className="block w-full rounded-md border-transparent bg-white text-sm transition focus:border-slate-200 focus:ring-slate-200 disabled:cursor-not-allowed disabled:bg-slate-900 disabled:opacity-75"
               ></textarea>
               <div className="flex items-center pb-[0.2rem] pt-3">
-                <span className="rounded-lg bg-gray-200 px-2 py-1 text-[0.6rem] uppercase text-gray-400">
+                <span className="rounded-lg bg-slate-200 px-2 py-1 text-[0.6rem] uppercase text-slate-400">
                   Leave blank to use the default page title and description
                 </span>
               </div>
