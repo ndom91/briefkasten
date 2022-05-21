@@ -25,7 +25,7 @@ export default async function handler(req, res) {
         return res.status(200).json({ message: `Updated ${id}` })
       default:
         res.setHeader('Allow', ['PUT'])
-        res.status(405).end(`Method ${method} Not Allowed`)
+        return res.status(405).end(`Method ${method} Not Allowed`)
     }
   } else {
     console.error('ERR - Unauthorized attempt at /api/bookmarks/[id]')

@@ -41,7 +41,7 @@ model TagsOnBookmarks {
 model Tag {
   id          String       @id @default(cuid())
   name        String
-  color       String?
+  emoji       String?
   bookmarks   TagsOnBookmarks[]
   user        User?        @relation(fields: [userId], references: [id], onUpdate: NoAction)
   userId      String

@@ -19,7 +19,7 @@ export default function QuickAdd({ categories }) {
   async function submitUrl() {
     try {
       // Add Bookmark to DB via API
-      const res = await fetch('/api/bookmarks/new', {
+      const res = await fetch('/api/bookmarks', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -15,8 +15,8 @@ export default function Sidebar({ categories, tags }) {
     <aside className="mx-4 flex flex-col space-y-4 rounded-lg bg-slate-50 p-6">
       <div className="flex flex-1 flex-col space-y-6">
         <div>
-          <Link href="/" className="">
-            <div className="flex items-center justify-start space-x-2">
+          <Link href="/">
+            <div className="flex items-center justify-start space-x-2 hover:cursor-pointer">
               <svg
                 className="h-6 w-6 text-slate-300"
                 fill="none"
