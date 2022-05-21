@@ -60,31 +60,30 @@ export default function BookmarkCard({ bookmark, categories }) {
   return (
     <>
       <div className="group relative flex flex-col overflow-hidden rounded-md border-2 border-slate-100 p-4 shadow-sm">
-        <button
-          onClick={() => toggle()}
-          name="edit"
-          className="absolute top-3 right-3 z-10 text-slate-500 opacity-0 outline-none transition hover:text-slate-800 hover:outline-none focus:text-slate-800 group-hover:opacity-100"
-        >
-          <svg
-            className="h-5 w-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
+        <div className="absolute top-3 right-3 z-10 flex flex-row-reverse gap-2 rounded-lg border-0 border-slate-400/50 bg-slate-600/90 px-3 py-2 opacity-0 shadow-md transition group-hover:opacity-100">
+          <button
+            name="edit"
+            className="text-slate-300 outline-none transition hover:text-slate-400 hover:outline-none focus:text-slate-800"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-            />
-          </svg>
-        </button>
-        {on && (
+            <svg
+              className="h-5 w-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+              />
+            </svg>
+          </button>
           <button
             name="delete"
             onClick={handleDelete}
-            className="absolute top-10 right-3 z-10 text-rose-300 opacity-0 outline-none transition animate-in slide-in-from-top hover:text-rose-800 hover:outline-none group-hover:opacity-100"
+            className="text-rose-400 opacity-0 outline-none transition animate-in slide-in-from-top hover:text-rose-800 hover:outline-none group-hover:opacity-100"
           >
             <svg
               className="h-5 w-5"
@@ -101,7 +100,7 @@ export default function BookmarkCard({ bookmark, categories }) {
               />
             </svg>
           </button>
-        )}
+        </div>
         <div className="mb-2">
           <a href={url} target="_blank" rel="noopener noreferrer">
             {/* eslint-disable @next/next/no-img-element */}
