@@ -36,9 +36,17 @@ export default async function Imge(req, res) {
   }
 
   await page.waitForNetworkIdle()
-  const buffer = await page.screenshot({ type: 'png' })
+  const buffer = await page.screenshot({ type: 'jpeg', quality: 50 })
   // Set the `s-maxage` property to cache at the CDN layer
   res.setHeader('Cache-Control', 's-maxage=31536000, public')
-  res.setHeader('Content-Type', 'image/png')
+  res.setHeader('Content-Type', 'image/jpeg')
   return res.end(buffer)
+}
+
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '4mb',
+    },
+  },
 }

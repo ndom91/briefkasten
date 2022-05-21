@@ -8,19 +8,13 @@ import {
 
 export default function Toast({ type, title, body, id }) {
   const dispatch = useToastDispatchContext()
-  let toastElement
-  console.log('TOAST TYPE', type)
+
   switch (type) {
     case toastTypes.SUCCESS:
-      toastElement = toastSuccess({ title, body, dispatch, id })
-      break
+      return toastSuccess({ title, body, dispatch, id })
     case toastTypes.ERROR:
-      toastElement = toastError({ title, body, dispatch, id })
-      break
+      return toastError({ title, body, dispatch, id })
     case toastTypes.WARNING:
-      toastElement = toastWarning({ title, body, dispatch, id })
-      break
+      return toastWarning({ title, body, dispatch, id })
   }
-
-  return toastElement
 }

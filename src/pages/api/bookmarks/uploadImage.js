@@ -29,7 +29,7 @@ export default async function handler(req, res) {
           // Upload image body to ImageKit
           const imageRes = await imagekit.upload({
             file: body,
-            fileName: `${fileName}.png`,
+            fileName: `${fileName}.jpg`,
           })
 
           // Save CDN ImageKit URL to database
