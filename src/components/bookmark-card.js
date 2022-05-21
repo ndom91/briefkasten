@@ -3,28 +3,31 @@ import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { asyncFileReader } from '@/lib/helpers'
 import { useStore } from '@/lib/store'
+import { useToast, toastTypes } from '@/lib/hooks'
 
 export default function BookmarkCard({ bookmark, categories }) {
   const removeBookmark = useStore((state) => state.removeBookmark)
-  const { data: session } = useSession()
   const [on, toggle] = useToggle(false)
+  const { data: session } = useSession()
   const { id, title, url, description, category, tags, createdAt, image } =
     bookmark
+
   const [imageUrl, setImageUrl] = useState(
     image || 'https://source.unsplash.com/random/300x201'
   )
+  const toast = useToast(100000)
 
   async function handleDelete() {
     try {
-      if (!session?.user?.userId) {
-        console.error('No userId available')
-        return
-      }
       await fetch('/api/bookmarks', {
         method: 'DELETE',
-        body: JSON.stringify({ id }),
+        body: JSON.stringify({
+          id,
+          userId: session.user.userId,
+        }),
       })
       removeBookmark({ id })
+      toast(toastTypes.SUCCESS, 'Successfully deleted bookmark')
     } catch (error) {
       console.error(error)
     }
@@ -57,7 +60,14 @@ export default function BookmarkCard({ bookmark, categories }) {
     <>
       <div className="group relative mb-12 flex cursor-pointer flex-col overflow-hidden">
         <button
-          onClick={() => toggle()}
+          // onClick={() => toggle()}
+          onClick={() =>
+            toast(
+              toastTypes.SUCCESS,
+              'Successfully deleted',
+              `Bookmark ABC123 was deleted`
+            )
+          }
           name="edit"
           className="absolute top-3 right-3 z-10 text-slate-500 opacity-0 outline-none transition hover:text-slate-800 hover:outline-none focus:text-slate-800 group-hover:opacity-100"
         >
@@ -146,25 +156,6 @@ export default function BookmarkCard({ bookmark, categories }) {
           </div>
         </div>
       </div>
-      {/* <div */}
-      {/*   className="group relative h-fit max-w-[250px] overflow-hidden rounded shadow-lg" */}
-      {/*   key={id} */}
-      {/* > */}
-      {/*   <div className="space-y-2 p-6"> */}
-      {/*     <div className="text-xl font-bold line-clamp-2">{title}</div> */}
-      {/*     <div className="text-sm font-light line-clamp-1">{url}</div> */}
-      {/*     {description && ( */}
-      {/*       <p className="text-base text-gray-700 line-clamp-3"> */}
-      {/*         {description} */}
-      {/*       </p> */}
-      {/*     )} */}
-      {/*     {category?.name && ( */}
-      {/*       <p className="text-base text-gray-700 line-clamp-1"> */}
-      {/*         {category?.name} */}
-      {/*       </p> */}
-      {/*     )} */}
-      {/*   </div> */}
-      {/* </div> */}
     </>
   )
 }

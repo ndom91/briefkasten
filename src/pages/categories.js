@@ -1,16 +1,20 @@
 import { getServerSession } from 'next-auth/next'
+import { useStore, initializeStore } from '@/lib/store'
 import Head from 'next/head'
 import Layout from '@/components/layout'
+import Sidebar from '@/components/sidebar'
 import { authOptions } from './api/auth/[...nextauth]'
 import prisma from '@/lib/prisma'
 
-export default function Categories({ session, categories }) {
+export default function Categories() {
+  const categories = useStore((state) => state.categories)
+  const tags = useStore((state) => state.tags)
   return (
     <Layout>
       <Head>
         <title>Briefkasten | Categories</title>
       </Head>
-      <aside className="">Sidebar</aside>
+      <Sidebar categories={categories} tags={tags} />
       <section>
         <ul>
           {categories &&
@@ -25,9 +29,10 @@ export default function Categories({ session, categories }) {
 }
 
 export async function getServerSideProps(context) {
-  const session = await getServerSession(context, authOptions)
+  const nextauth = await getServerSession(context, authOptions)
+  const zustandStore = initializeStore()
 
-  if (!session) {
+  if (!nextauth) {
     return {
       redirect: {
         destination: '/auth/signin',
@@ -38,11 +43,22 @@ export async function getServerSideProps(context) {
 
   const categories = await prisma.category.findMany({
     where: {
-      userId: session.user.userId,
+      userId: nextauth.user.userId,
+    },
+  })
+  const tags = await prisma.tag.findMany({
+    where: {
+      userId: nextauth.user.userId,
     },
   })
 
+  zustandStore.getState().setCategories(categories)
+  zustandStore.getState().setTags(tags)
+
   return {
-    props: { session, categories },
+    props: {
+      nextauth,
+      initialZustandState: JSON.parse(JSON.stringify(zustandStore.getState())),
+    },
   }
 }

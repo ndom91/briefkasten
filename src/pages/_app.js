@@ -1,5 +1,7 @@
 import { SessionProvider } from 'next-auth/react'
-import { useCreateStore, Provider } from '@/lib/store'
+import { useCreateStore, ZustandProvider } from '@/lib/store'
+import ToastContainer from '@/components/toastContainer'
+import { ToastProvider } from '@/lib/toastContext'
 import '../styles/globals.css'
 
 export default function Briefkasten({
@@ -9,10 +11,13 @@ export default function Briefkasten({
   const createStore = useCreateStore(pageProps.initialZustandState)
 
   return (
-    <Provider createStore={createStore}>
+    <ZustandProvider createStore={createStore}>
       <SessionProvider session={session}>
-        <Component {...pageProps} />
+        <ToastProvider>
+          <Component {...pageProps} />
+          <ToastContainer />
+        </ToastProvider>
       </SessionProvider>
-    </Provider>
+    </ZustandProvider>
   )
 }

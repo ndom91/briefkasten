@@ -3,7 +3,6 @@ import { getSession } from 'next-auth/react'
 
 export default async function handler(req, res) {
   const session = await getSession({ req })
-
   const { method } = req
 
   if (session) {
@@ -11,9 +10,10 @@ export default async function handler(req, res) {
       case 'GET':
         return res.status(200).json({ results: ['Hello', 'World'] })
       case 'DELETE':
-        const { id } = JSON.parse(req.body)
-        if (!id) {
-          return res.status(400).json({ message: 'Missing required field: id' })
+        const { id, userId } = JSON.parse(req.body)
+
+        if (!id || !userId) {
+          return res.status(400).json({ message: 'Missing required field(s)' })
         }
         try {
           await prisma.bookmark.delete({
@@ -29,7 +29,7 @@ export default async function handler(req, res) {
         res.status(405).end(`Method ${method} Not Allowed`)
     }
   } else {
-    console.error('ERR - Unauthorized attempt at /api/bookmarks/[id].js')
+    console.error('ERR - Unauthorized attempt at /api/bookmarks')
     return res.status(403).end('Unauthorized')
   }
 }
