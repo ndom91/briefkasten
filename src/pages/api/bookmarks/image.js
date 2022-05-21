@@ -1,9 +1,10 @@
 import chromium from 'chrome-aws-lambda'
-import playwright from 'playwright-core'
+// import playwright from 'playwright-core'
+import puppeteer from 'puppeteer-core'
 
 export default async function Imge(req, res) {
   // Start Playwright with the dynamic chrome-aws-lambda args
-  const browser = await playwright.chromium.launch({
+  const browser = await puppeteer.launch({
     args: chromium.args,
     executablePath:
       process.env.NODE_ENV !== 'development'

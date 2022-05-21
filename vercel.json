@@ -39,5 +39,10 @@
   ],
   "github": {
     "autoJobCancelation": true
+  },
+  "functions": {
+    "src/pages/api/**": {
+      "memory": 1024
+    }
   }
 }
