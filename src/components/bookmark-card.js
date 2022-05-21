@@ -15,7 +15,7 @@ export default function BookmarkCard({ bookmark, categories }) {
   const [imageUrl, setImageUrl] = useState(
     image || 'https://source.unsplash.com/random/300x201'
   )
-  const toast = useToast(5000)
+  const toast = useToast(50000)
 
   async function handleDelete() {
     try {
@@ -27,14 +27,14 @@ export default function BookmarkCard({ bookmark, categories }) {
         }),
       })
       removeBookmark({ id })
-      toast(toastTypes.SUCCESS, 'Successfully deleted bookmark')
+      toast(toastTypes.SUCCESS, 'Successfully deleted')
     } catch (error) {
       console.error(error)
+      toast(toastTypes.ERROR, 'Error deleting', `${error.substring(0, 80)}...`)
     }
   }
 
   async function fetchFallbackImage(url) {
-    console.log('FETCHING FALLBACK IMAGE')
     try {
       const res = await fetch(
         `/api/bookmarks/image?url=${encodeURIComponent(url)}`
@@ -42,7 +42,9 @@ export default function BookmarkCard({ bookmark, categories }) {
       const data = await res.blob()
       const dataUrl = await asyncFileReader(data)
       const uploadRes = await fetch(
-        `/api/bookmarks/uploadImage?fileName=${new URL(url).hostname}&id=${id}`,
+        `/api/bookmarksd/uploadImage?fileName=${
+          new URL(url).hostname
+        }&id=${id}`,
         {
           method: 'PUT',
           body: dataUrl,
@@ -50,17 +52,28 @@ export default function BookmarkCard({ bookmark, categories }) {
       )
       const uploadData = await uploadRes.json()
       setImageUrl(uploadData.url)
-    } catch (e) {
-      console.error(e)
+    } catch (error) {
+      console.error(error)
+      toast(
+        toastTypes.ERROR,
+        'Error fetching fallback image',
+        `${error.substring(0, 80)}...`
+      )
       setImageUrl('https://source.unsplash.com/random/300x201')
     }
   }
+
+  const error =
+    'GET htatps://ik.imagekit.io/briefkasten/ndo.dev_MK4kA7NwN.png net::ERR_UNKNOWN_URL_SCHEME'
 
   return (
     <>
       <div className="group relative mb-12 flex cursor-pointer flex-col overflow-hidden">
         <button
-          onClick={() => toggle()}
+          // onClick={() => toggle()}
+          onClick={() =>
+            toast(toastTypes.WARNING, 'Error fetching fallback image', error)
+          }
           name="edit"
           className="absolute top-3 right-3 z-10 text-slate-500 opacity-0 outline-none transition hover:text-slate-800 hover:outline-none focus:text-slate-800 group-hover:opacity-100"
         >
