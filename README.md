@@ -4,11 +4,20 @@ Self-hosted bookmarking application. WIP 👷
 
 ![Screenshot](screenshot.png)
 
+## 🧺 Prerequisites
+
+To self-host this application, you'll need the following thins:
+
+1. Server / hosting platform for a Next.js application (i.e. Vercel / Netlify)
+2. For OAuth login, a developer account at any one of the [providers](https://next-auth.js.org/providers) supported by [NextAuth.js](https://github.com/nextauthjs/next-auth)
+3. Database that works with Prisma (i.e. MySQL, Postgres, SQLite)
+4. Image hosting space (i.e. ImageKit / Cloudinary)
+
+These are all relatively straight forward, other than the image hoster. This was chosen to avoid putting the images in the database. The example application at [briefkasten.vercel.app](https://briefkasten.vercel.app) is using [ImageKit](https://imagekit.io), but any other similar provider like Cloudinary would also do the job. I chose ImageKit, because they have an easy to use SDK and a generous free tier - 20GB of storage, a CDN, image transformations, and more. I wanted to avoid using AWS, but a simple S3 Bucket would also work here. If you want to change the image hosting mechanism, it only takes a few lines of code in the `/src/pages/api/bookmarks/uploadImage.js` file.
+
+After you've got an account setup at all of the above providers, or have your own infrastructure ready to go, you can continue on to the next steps below.
+
 ## 🚀 Getting Started
-
-You'll need any type of database supported by Prisma, i.e. Postgresql, Mysql, etc. I've chosen [Planetscale](https://planetscale.com) for my implementation.
-
-For OAuth support, you'll also need any one of the [providers](https://next-auth.js.org/providers) supported by [NextAuth.js](https://github.com/nextauthjs/next-auth).
 
 1. Clone the repository
 
@@ -29,17 +38,24 @@ $ cp .env.example .env
 $ vim .env
 ```
 
-> For image cloud storage, I've decided to use [ImageKit](https://imagekit.io). They offer 20GB of storage and transformations and more in their free plan.
+In this environment variables file, make sure to fill in any of the keys / secrets needed for the cloud providers you selected for the components above.
 
-4. Start the development server!
+4. Start the server!
 
 ```sh
+// dev
 $ npm run dev
+
+// prod
+$ npm run build
+$ npm start
 ```
 
-## ⚙ Browser Extension
+## 🌍 Browser Extension
 
 There is a companion browser extension in the works which you can use to add websites to your vault while browsing the web. It can be found at [ndom91/briefkasten-extension](https://github.com/ndom91/briefkasten-extension). It is currently not published on any of the Browser Extension Stores, but can be built locally and loaded as a development extension in any Chromium based browser. More details in that repository.
+
+![Screenshot Extension](screenshot_extension.png)
 
 ## 👷 Contributing
 
