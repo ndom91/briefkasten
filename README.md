@@ -1,6 +1,8 @@
 # 📮 Briefkasten
 
-WIP Bookmarking application
+Self-hosted bookmarking application. WIP 👷
+
+![Screenshot](screenshot1.png)
 
 ## 🚀 Getting Started
 
@@ -34,10 +36,6 @@ $ vim .env
 ```sh
 $ npm run dev
 ```
-
-## 🔗 Bookmarklet
-
-You can copy this <a href='javascript:{(function(){ window.fetch("http://localhost:3000/api/bookmarks/new",{method:"POST",body:JSON.stringify({url:document.location.href,userId:"cl2z766os0010tfbh1lh04u3s",title:document.title})})})();}'>link</a> to your bookmarks bar, to add URLs to your instance!
 
 ## ⚙ Browser Extension
 
