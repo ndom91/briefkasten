@@ -36,6 +36,8 @@ export async function getServerSideProps(context) {
   const nextauth = await getServerSession(context, authOptions)
   const zustandStore = initializeStore()
 
+  console.log('nextAuth', nextauth)
+
   if (!nextauth) {
     return {
       redirect: {
