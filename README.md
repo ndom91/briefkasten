@@ -27,6 +27,8 @@ $ cp .env.example .env
 $ vim .env
 ```
 
+> For image cloud storage, I've decided to use [ImageKit](https://imagekit.io). They offer 20GB of storage and transformations and more in their free plan.
+
 4. Start the development server!
 
 ```sh
@@ -36,6 +38,10 @@ $ npm run dev
 ## 🔗 Bookmarklet
 
 You can copy this <a href='javascript:{(function(){ window.fetch("http://localhost:3000/api/bookmarks/new",{method:"POST",body:JSON.stringify({url:document.location.href,userId:"cl2z766os0010tfbh1lh04u3s",title:document.title})})})();}'>link</a> to your bookmarks bar, to add URLs to your instance!
+
+## ⚙ Browser Extension
+
+There is a companion browser extension in the works which you can use to add websites to your vault while browsing the web. It can be found at [ndom91/briefkasten-extension](https://github.com/ndom91/briefkasten-extension). It is currently not published on any of the Browser Extension Stores, but can be built locally and loaded as a development extension in any Chromium based browser. More details in that repository.
 
 ## 👷 Contributing
 

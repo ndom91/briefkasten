@@ -1,7 +1,15 @@
 {
   "name": "briefkasten",
+  "description": "Self-hosted Bookmarks Management Application",
   "author": "ndom91 <yo@ndo.dev>",
-  "version": "0.1.0",
+  "version": "0.2.0",
+  "license": "MIT",
+  "keywords": [
+    "next.js",
+    "prisma",
+    "bookmarks",
+    "selfhost"
+  ],
   "scripts": {
     "dev": "next dev -p 3001",
     "dev:local": "vercel dev --listen 3001",
@@ -22,12 +30,10 @@
     "metascraper-title": "^5.29.3",
     "next": "12.1.6",
     "next-auth": "^4.3.4",
-    "playwright-core": "^1.22.1",
     "puppeteer-core": "^14.1.1",
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-use": "^17.3.2",
-    "swr": "^1.3.0",
     "zustand": "^4.0.0-rc.1"
   },
   "devDependencies": {

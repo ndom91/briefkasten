@@ -29,10 +29,6 @@
   ],
   "rewrites": [
     {
-      "source": "/a/b.js",
-      "destination": "https://stats.ndo.dev/js/plausible.outbound-links.js"
-    },
-    {
       "source": "/a/e",
       "destination": "https://stats.ndo.dev/api/event"
     }

@@ -5,9 +5,6 @@ module.exports = {
       'images.unsplash.com',
       'source.unsplash.com',
       'avatars.githubusercontent.com',
-      's.yimg.com',
-      'ndo.dev',
-      'www.facebook.com',
     ],
   },
 }
