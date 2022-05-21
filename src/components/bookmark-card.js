@@ -30,7 +30,7 @@ export default function BookmarkCard({ bookmark, categories }) {
       toast(toastTypes.SUCCESS, `Successfully deleted ${new URL(url).hostname}`)
     } catch (error) {
       console.error(error)
-      toast(toastTypes.ERROR, 'Error deleting bookmark', error)
+      toast(toastTypes.ERROR, 'Error deleting bookmark', error.message)
     }
   }
 
@@ -42,9 +42,7 @@ export default function BookmarkCard({ bookmark, categories }) {
       const data = await res.blob()
       const dataUrl = await asyncFileReader(data)
       const uploadRes = await fetch(
-        `/api/bookmarksd/uploadImage?fileName=${
-          new URL(url).hostname
-        }&id=${id}`,
+        `/api/bookmarks/uploadImage?fileName=${new URL(url).hostname}&id=${id}`,
         {
           method: 'PUT',
           body: dataUrl,
@@ -54,7 +52,7 @@ export default function BookmarkCard({ bookmark, categories }) {
       setImageUrl(uploadData.url)
     } catch (error) {
       console.error(error)
-      toast(toastTypes.ERROR, 'Error fetching fallback image', error)
+      toast(toastTypes.ERROR, 'Error fetching fallback image', error.message)
       setImageUrl('https://source.unsplash.com/random/300x201')
     }
   }

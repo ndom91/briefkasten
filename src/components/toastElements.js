@@ -8,7 +8,7 @@ export const toastSuccess = ({ title, body, dispatch, id }) => (
       <svg
         className="h-8 w-8 text-emerald-500 dark:text-emerald-600"
         fill="none"
-        ariaHidden="true"
+        aria-hidden="true"
         data-name="badge-check"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -61,7 +61,7 @@ export const toastError = ({ title, body, dispatch, id }) => (
     <div className="inline-flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-red-100 dark:bg-red-800">
       <svg
         className="h-8 w-8 text-red-600 dark:text-red-500"
-        ariaHidden="true"
+        aria-hidden="true"
         data-name="exclamation-circle"
         fill="none"
         stroke="currentColor"
@@ -116,7 +116,7 @@ export const toastWarning = ({ title, body, dispatch, id }) => (
       <svg
         className="h-8 w-8 text-yellow-400 dark:text-yellow-700"
         fill="none"
-        ariaHidden="true"
+        aria-hidden="true"
         data-name="exclamation-shield"
         stroke="currentColor"
         viewBox="0 0 24 24"

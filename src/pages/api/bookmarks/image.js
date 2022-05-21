@@ -13,39 +13,31 @@ export default async function Imge(req, res) {
     headless: true,
   })
 
-  // Create a page with the recommended Open Graph image size
-  // const page = await browser.newPage({
-  //   viewport: {
-  //     width: 1200,
-  //     height: 720,
-  //   },
-  // })
-
-  // Extract the url from the query parameter `path`
-  // const url = decodeURIComponent(req.query.url)
-  //
-  // console.log('IMAGE URL', url)
-  //
-  // await page.goto(url)
-  //
-  // const buffer = await page.screenshot({
-  //   type: 'png',
-  // })
-  // console.log('IMAGE DATA', buffer.length)
-  //
-  // await browser.close()
-  // await page.close()
-  //
-  // console.log('IMAGE FINISHED')
-
-  // Set the `s-maxage` property to cache at the CDN layer
-
-  // const browser = await puppeteer.launch(options);
   const page = await browser.newPage()
-  await page.setViewport({ width: 2000, height: 1000 })
+  await page.setViewport({ width: 1920, height: 1080 })
   await page.goto(req.query.url, { waitUntil: 'networkidle0' })
 
+  // Hack for accepting cookie banners
+  const selectors = [
+    '[id*=cookie] a',
+    '[class*=consent] button',
+    '[class*=cookie] a',
+    '[id*=cookie] button',
+    '[class*=cookie] button',
+  ]
+
+  const regex =
+    /(Accept all|I agree|Accept|Agree|Agree all|Ich stimme zu|Okay|OK)/
+
+  const elements = await page.$$(selectors)
+  for (const el of elements) {
+    const innerText = (await el.getProperty('innerText')).toString()
+    regex.test(innerText, 'ig') && el.click()
+  }
+
+  await page.waitForNetworkIdle()
   const buffer = await page.screenshot({ type: 'png' })
+  // Set the `s-maxage` property to cache at the CDN layer
   res.setHeader('Cache-Control', 's-maxage=31536000, public')
   res.setHeader('Content-Type', 'image/png')
   return res.end(buffer)
