@@ -13,6 +13,7 @@ export default function Home() {
   const categories = useStore((state) => state.categories)
   const categoryFilter = useStore((state) => state.categoryFilter)
   const tagFilter = useStore((state) => state.tagFilter)
+  const searchText = useStore((state) => state.searchText)
 
   return (
     <Layout>
@@ -23,10 +24,19 @@ export default function Home() {
           {bookmarks
             .reduce((bookmarks, thisBookmark) => {
               if (categoryFilter || tagFilter) {
+                // Filter shown bookmarks selected sidebar filters
                 if (thisBookmark.categoryId === categoryFilter) {
                   bookmarks.push(thisBookmark)
                 } else if (
                   thisBookmark.tags.some((tag) => tag.id === tagFilter)
+                ) {
+                  bookmarks.push(thisBookmark)
+                }
+              } else if (searchText) {
+                // Filter shown bookmarks on search
+                if (
+                  thisBookmark.url.includes(searchText) ||
+                  thisBookmark.title.includes(searchText)
                 ) {
                   bookmarks.push(thisBookmark)
                 }

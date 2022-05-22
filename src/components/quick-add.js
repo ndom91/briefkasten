@@ -17,7 +17,8 @@ export default function QuickAdd({ categories }) {
   const insertRef = useRef()
   const toast = useToast(5000)
 
-  useKey('/', () => insertRef?.current?.focus(), { event: 'keyup' })
+  useKey('alt+i', () => insertRef?.current?.focus(), { event: 'keyup' })
+  useKey('alt+s', () => submitUrl(), { event: 'keyup' })
 
   async function submitUrl() {
     try {
@@ -125,11 +126,9 @@ export default function QuickAdd({ categories }) {
           <div className="relative flex-1">
             <input
               type="url"
-              form="url"
-              accessKey="/"
               ref={insertRef}
               className="block w-full transform rounded-r-md border border-transparent bg-slate-100 py-3 pl-2 pr-5 text-base text-neutral-600 placeholder-gray-300 transition duration-500 ease-in-out focus:z-10 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-white"
-              placeholder="Hint: / to focus"
+              placeholder="Hint: 's' to focus"
               value={url}
               onChange={(event) => setUrl(event.target.value)}
             />
@@ -143,7 +142,6 @@ export default function QuickAdd({ categories }) {
         <div className="mt-4 sm:mt-0 sm:ml-3">
           <button
             type="submit"
-            accessKey="s"
             form="url"
             onClick={() => submitUrl()}
             name="addBookmark"

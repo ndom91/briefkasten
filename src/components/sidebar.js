@@ -1,6 +1,7 @@
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useSession } from 'next-auth/react'
+import { useKey } from 'react-use'
 import { useToast, toastTypes } from '@/lib/hooks'
 import { useStore } from '@/lib/store'
 
@@ -19,10 +20,15 @@ export default function Sidebar() {
   const tagFilter = useStore((state) => state.tagFilter)
   const addCategory = useStore((state) => state.addCategory)
   const addTag = useStore((state) => state.addTag)
+  const searchText = useStore((state) => state.searchText)
+  const setSearchText = useStore((state) => state.setSearchText)
   const [quickAdd, setQuickAdd] = useState('')
   const [quickAddCategory, setQuickAddCategory] = useState('')
   const [quickAddTag, setQuickAddTag] = useState('')
   const toast = useToast(5000)
+  const searchRef = useRef()
+
+  useKey('/', () => searchRef?.current?.focus(), { event: 'keyup' })
 
   const toggleQuickAdd = (type) => {
     if (type === types.CATEGORY) {
@@ -101,6 +107,47 @@ export default function Sidebar() {
   return (
     <aside className="mx-4 flex flex-col space-y-4 rounded-lg bg-slate-50 p-6">
       <div className="flex flex-1 flex-col space-y-6">
+        <div className="relative flex w-full items-center justify-start">
+          <svg
+            className="absolute left-1 top-1 h-6 w-6 text-slate-200"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M8 16l2.879-2.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242zM21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <input
+            ref={searchRef}
+            placeholder='"/" to focus'
+            type="text"
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            className="w-full rounded-md border-0 py-1 px-2 pl-8 pr-8 text-base text-slate-600 outline-none placeholder:text-slate-200 focus:ring-2 focus:ring-slate-200 focus:ring-offset-transparent"
+          />
+          {searchText.length ? (
+            <svg
+              className="absolute right-1 top-1 h-6 w-6 text-rose-400 hover:cursor-pointer"
+              onClick={() => setSearchText('')}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          ) : null}
+        </div>
         <div>
           <Link href="/">
             <div className="flex items-center justify-start space-x-2 hover:cursor-pointer">

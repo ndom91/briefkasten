@@ -10,6 +10,7 @@ const initialState = {
   tags: [],
   categoryFilter: '',
   tagFilter: '',
+  searchText: '',
 }
 
 const zustandContext = createContext()
@@ -22,6 +23,8 @@ export const initializeStore = (preloadedState = {}) => {
   return create((set, get) => ({
     ...initialState,
     ...preloadedState,
+    setSearchText: (input) => set(() => ({ searchText: input })),
+    clearSearchText: () => set(() => ({ searchText: initialState.searchText })),
     setCategoryFilter: (id) => set(() => ({ categoryFilter: id })),
     clearCategoryFilter: () =>
       set(() => ({ categoryFilter: initialState.categoryFilter })),
