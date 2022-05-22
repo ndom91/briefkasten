@@ -13,6 +13,7 @@
   "scripts": {
     "dev": "next dev -p 3001",
     "dev:local": "vercel dev --listen 3001",
+    "prebuild": "npx prisma generate",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
