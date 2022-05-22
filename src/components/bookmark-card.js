@@ -57,8 +57,8 @@ export default function BookmarkCard({ bookmark, categories }) {
 
   return (
     <>
-      <div className="group relative flex flex-col overflow-hidden rounded-md border-2 border-slate-100 p-4 shadow-sm transition hover:shadow-lg">
-        <div className="absolute top-3 right-3 z-10 flex flex-row-reverse gap-2 rounded-lg border-0 border-slate-400/50 bg-slate-600/90 px-3 py-2 opacity-0 shadow-md transition group-hover:opacity-100">
+      <div className="group relative flex flex-col overflow-hidden rounded-md border-2 border-slate-100 bg-white p-4 shadow-sm transition hover:shadow-lg">
+        <div className="absolute top-3 right-3 z-10 flex flex-row-reverse gap-2 rounded-lg border-0 border-slate-400/50  bg-slate-600/90 px-3 py-2 opacity-0 shadow-md transition group-hover:opacity-100">
           <button
             name="edit"
             className="text-slate-300 outline-none transition hover:text-slate-400 hover:outline-none focus:text-slate-800"

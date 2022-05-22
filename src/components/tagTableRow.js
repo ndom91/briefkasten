@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { useToggle } from 'react-use'
 
-export default function TableRow({ tag }) {
-  const { id, name, emoji } = tag
+export default function TagTableRow({ item }) {
+  const { id, name, emoji } = item
   const [editMode, toggleEditMode] = useToggle(false)
   const [tagName, setTagName] = useState(name)
   const [tagEmoji, setTagEmoji] = useState(emoji)
@@ -33,7 +33,7 @@ export default function TableRow({ tag }) {
             value={tagName}
             type="text"
             onChange={(e) => setTagName(e.target.value)}
-            className="block w-2/3 rounded-lg border-2 border-slate-200 bg-slate-50 p-2 py-1 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500  focus:ring-slate-500 "
+            className="block w-full rounded-lg border-2 border-slate-200 bg-slate-50 p-2 py-1 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500  focus:ring-slate-500 "
           />
         )}
       </td>
@@ -46,7 +46,7 @@ export default function TableRow({ tag }) {
             value={tagEmoji}
             type="text"
             onChange={(e) => setTagEmoji(e.target.value)}
-            className="block w-2/3 rounded-lg border-2 border-slate-200 bg-slate-50 py-1 px-2 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500 focus:ring-slate-500"
+            className="block w-full rounded-lg border-2 border-slate-200 bg-slate-50 py-1 px-2 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500 focus:ring-slate-500"
           />
         )}
       </td>

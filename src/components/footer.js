@@ -1,7 +1,7 @@
 export default function Footer() {
   return (
     <footer className="px-4">
-      <div className="flex w-full max-w-7xl flex-col items-center py-6 sm:items-start">
+      <div className="flex w-full max-w-8xl flex-col items-center py-6 sm:items-start">
         <nav className="mt-6 flex items-center space-x-3">
           <a
             href="https://twitter.com/ndom91"

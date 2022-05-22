@@ -8,15 +8,15 @@ export default async function handler(req, res) {
   if (session) {
     switch (method) {
       case 'POST': {
-        const { userId, name, emoji } = body
+        const { userId, name, desc } = body
         if (!name) {
           return res.status(400).json({ message: 'Missing required field(s)' })
         }
 
-        const createResult = await prisma.tag.create({
+        const createResult = await prisma.category.create({
           data: {
             name,
-            emoji,
+            description: desc,
             userId,
           },
         })
@@ -33,7 +33,7 @@ export default async function handler(req, res) {
           return res.status(400).json({ message: 'Missing required field(s)' })
         }
         try {
-          await prisma.tag.delete({
+          await prisma.category.delete({
             where: { id },
           })
         } catch (error) {
@@ -48,7 +48,7 @@ export default async function handler(req, res) {
       }
     }
   } else {
-    console.error('ERR - Unauthorized attempt at /api/tags')
+    console.error('ERR - Unauthorized attempt at /api/categories')
     return res.status(403).end('Unauthorized')
   }
 }

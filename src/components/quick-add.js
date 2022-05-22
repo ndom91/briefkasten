@@ -35,7 +35,7 @@ export default function QuickAdd({ categories }) {
       })
       if (res.status === 200) {
         toast(toastTypes.SUCCESS, `Successfully added ${new URL(url).hostname}`)
-        const data = await res.json()
+        const { data } = await res.json()
 
         // Add new Bookmark to UI
         addBookmark({

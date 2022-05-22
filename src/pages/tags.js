@@ -4,27 +4,43 @@ import { useStore, initializeStore } from '@/lib/store'
 import Head from 'next/head'
 import Layout from '@/components/layout'
 import Sidebar from '@/components/sidebar'
-import TableRow from '@/components/tableRow'
+import TagTableRow from '@/components/tagTableRow'
 import { authOptions } from './api/auth/[...nextauth]'
+import { useToast, toastTypes } from '@/lib/hooks'
 import prisma from '@/lib/prisma'
 
-export default function Tags() {
+export default function Tags({ nextauth }) {
   const categories = useStore((state) => state.categories)
   const tags = useStore((state) => state.tags)
+  const addTag = useStore((state) => state.addTag)
   const [tagName, setTagName] = useState('')
   const [tagEmoji, setTagEmoji] = useState('')
+  const toast = useToast(5000)
 
-  const saveNewTag = () => {
-    fetch('/api/tags', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name: tagName,
-        emoji: tagEmoji,
-      }),
-    })
+  const saveNewTag = async () => {
+    try {
+      const addRes = await fetch('/api/tags', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: tagName,
+          emoji: tagEmoji,
+          userId: nextauth.user?.userId,
+        }),
+      })
+      if (addRes.status === 200) {
+        const addData = await addRes.json()
+        addTag(addData.data)
+        setTagName('')
+        setTagEmoji('')
+        toast(toastTypes.SUCCESS, `Successfully saved "${tagName}"`)
+      }
+    } catch (error) {
+      console.error(error)
+      toast(toastTypes.ERROR, `Error saving ${tagName}`)
+    }
   }
 
   return (
@@ -92,7 +108,8 @@ export default function Tags() {
               </tr>
             </thead>
             <tbody>
-              {tags && tags.map((tag) => <TableRow tag={tag} key={tag.id} />)}
+              {tags &&
+                tags.map((tag) => <TagTableRow item={tag} key={tag.id} />)}
               <tr className="bg-white even:bg-gray-50 hover:bg-slate-100">
                 <td className="w-4 p-4" />
                 <th className={`px-6 py-2`}>
@@ -104,7 +121,7 @@ export default function Tags() {
                     value={tagName}
                     type="text"
                     onChange={(e) => setTagName(e.target.value)}
-                    className="block rounded-lg border-2 border-slate-200 bg-slate-50 p-2 py-1 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500  focus:ring-slate-500 "
+                    className="block w-full rounded-lg border-2 border-slate-200 bg-slate-50 p-2 py-1 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500  focus:ring-slate-500 "
                   />
                 </td>
                 <td className={`px-6 py-2`}>
@@ -113,7 +130,7 @@ export default function Tags() {
                     value={tagEmoji}
                     type="text"
                     onChange={(e) => setTagEmoji(e.target.value)}
-                    className="block rounded-lg border-2 border-slate-200 bg-slate-50 py-1 px-2 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500 focus:ring-slate-500"
+                    className="block w-full rounded-lg border-2 border-slate-200 bg-slate-50 py-1 px-2 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500 focus:ring-slate-500"
                   />
                 </td>
                 <td className="px-6 py-4 text-right">
