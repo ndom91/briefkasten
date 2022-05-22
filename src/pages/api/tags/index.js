@@ -36,6 +36,9 @@ export default async function handler(req, res) {
           await prisma.tag.delete({
             where: { id },
           })
+          await prisma.tagsOnBookmarks.deleteMany({
+            where: { tagId: id },
+          })
         } catch (error) {
           console.error('ERR', error)
           return res.status(500).json({ message: error })
