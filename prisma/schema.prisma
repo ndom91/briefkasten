@@ -46,6 +46,7 @@ model Tag {
   user        User?        @relation(fields: [userId], references: [id], onUpdate: NoAction)
   userId      String
 
+  @@unique([name, userId])
   @@index([userId])
 }
 
@@ -57,6 +58,7 @@ model Category {
   user        User?        @relation(fields: [userId], references: [id], onUpdate: NoAction)
   userId      String
 
+  @@unique([name, userId])
   @@index([userId])
 }
 

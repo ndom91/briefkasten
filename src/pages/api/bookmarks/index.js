@@ -20,7 +20,14 @@ export default async function handler(req, res) {
   if (session) {
     switch (method) {
       case 'POST': {
-        const { userId, title, url, desc } = body
+        const {
+          userId,
+          url,
+          title = '',
+          category = '',
+          desc = '',
+          tags = [],
+        } = body
         if (!url) {
           return res
             .status(400)
@@ -47,7 +54,7 @@ export default async function handler(req, res) {
           const uploadRes = await fetch(
             `${baseUrl}/api/bookmarks/uploadImage?fileName=${
               new URL(url).hostname
-            }&id=${id}`,
+            }`,
             {
               method: 'PUT',
               body: dataUrl,
@@ -58,41 +65,103 @@ export default async function handler(req, res) {
           metadata.image = uploadData.url
         }
 
-        const upsertResult = await prisma.bookmark.upsert({
+        let upsertTagRes
+        const upsertBookmarkRes = await prisma.bookmark.upsert({
+          include: {
+            category: true,
+          },
           create: {
             url,
             title: title.length ? title : metadata.title,
             image: metadata.image,
             desc: desc.length ? desc : metadata.description,
-            userId,
+            user: {
+              connect: {
+                id: userId,
+              },
+            },
+            category: {
+              connect: {
+                name_userId: {
+                  name: category,
+                  userId,
+                },
+              },
+            },
           },
           update: {
             url,
             title: title.length ? title : metadata.title,
             image: metadata.image,
             desc: desc.length ? desc : metadata.description,
+            category: {
+              connect: {
+                name_userId: {
+                  name: category,
+                  userId,
+                },
+              },
+            },
           },
           where: { url_userId: { url: url, userId: userId } },
         })
 
+        if (tags && tags.filter(Boolean).length > 0) {
+          upsertTagRes = await Promise.all(
+            tags.map(async (tag) => {
+              return await prisma.tag.upsert({
+                create: {
+                  name: tag,
+                  userId,
+                },
+                update: {
+                  name: tag,
+                },
+                where: {
+                  name_userId: {
+                    name: tag,
+                    userId,
+                  },
+                },
+              })
+            })
+          )
+
+          await prisma.tagsOnBookmarks.createMany({
+            data: upsertTagRes.map((tag) => ({
+              bookmarkId: upsertBookmarkRes.id,
+              tagId: tag.id,
+            })),
+          })
+        }
+
         res.setHeader('Access-Control-Allow-Origin', '*')
-        return res.status(200).json({ data: upsertResult })
+        return res
+          .status(200)
+          .json({ data: { ...upsertBookmarkRes, tags: upsertTagRes ?? [] } })
       }
       case 'GET': {
         return res.status(200).json({ results: ['Hello', 'World'] })
       }
       case 'DELETE': {
-        const { id, userId } = body
+        const { id, userId, tags = [] } = body
 
         if (!id || !userId) {
           return res.status(400).json({ message: 'Missing required field(s)' })
         }
         try {
+          if (tags.length > 0) {
+            await Promise.all(
+              tags.map(
+                async (tag) =>
+                  await prisma.tagsOnBookmarks.delete({
+                    where: { bookmarkId_tagId: { bookmarkId: id, tagId: tag } },
+                  })
+              )
+            )
+          }
           await prisma.bookmark.delete({
             where: { id },
-          })
-          await prisma.tagsOnBookmarks.delete({
-            where: { bookmarkId_tagId: { bookmarkId: id, tagId: '123' } },
           })
         } catch (error) {
           console.error('ERR', error)

@@ -17,7 +17,7 @@ export default function BookmarkCard({ bookmark, categories }) {
 
   async function handleDelete() {
     try {
-      await fetch('/api/bookmarks', {
+      const deleteRes = await fetch('/api/bookmarks', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -25,10 +25,16 @@ export default function BookmarkCard({ bookmark, categories }) {
         body: JSON.stringify({
           id,
           userId: session.user.userId,
+          tags: tags.map((tag) => tag.id),
         }),
       })
-      removeBookmark({ id })
-      toast(toastTypes.SUCCESS, `Successfully deleted ${new URL(url).hostname}`)
+      if (deleteRes.status === 200) {
+        removeBookmark({ id })
+        toast(
+          toastTypes.SUCCESS,
+          `Successfully deleted "${new URL(url).hostname}"`
+        )
+      }
     } catch (error) {
       console.error(error)
       toast(toastTypes.ERROR, 'Error deleting bookmark', error.message)

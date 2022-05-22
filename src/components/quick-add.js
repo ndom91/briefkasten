@@ -8,7 +8,7 @@ import { useToast, toastTypes } from '@/lib/hooks'
 export default function QuickAdd({ categories }) {
   const [url, setUrl] = useState('')
   const [title, setTitle] = useState('')
-  const [category, setCategory] = useState('')
+  const [category, setCategory] = useState(categories[0].name)
   const [tags, setTags] = useState('')
   const [desc, setDescription] = useState('')
   const [open, toggleOpen] = useToggle(false)
@@ -34,7 +34,10 @@ export default function QuickAdd({ categories }) {
         }),
       })
       if (res.status === 200) {
-        toast(toastTypes.SUCCESS, `Successfully added ${new URL(url).hostname}`)
+        toast(
+          toastTypes.SUCCESS,
+          `Successfully added "${new URL(url).hostname}"`
+        )
         const { data } = await res.json()
 
         // Add new Bookmark to UI
@@ -45,6 +48,8 @@ export default function QuickAdd({ categories }) {
           desc: data.desc,
           image: data.image,
           title: data.title,
+          tags: data.tags,
+          category: data.category,
         })
 
         // Empty fields and toggle closed
@@ -57,6 +62,7 @@ export default function QuickAdd({ categories }) {
       }
     } catch (error) {
       console.error('[ERROR] Submitting URL', error)
+      toast(toastTypes.ERROR, `Error adding "${new URL(url).hostname}"`)
     }
   }
 
@@ -158,7 +164,7 @@ export default function QuickAdd({ categories }) {
                 {categories.map((category, i) => {
                   return (
                     <option defaultValue={i === 0} key={i}>
-                      {category.name} - {category.description}
+                      {category.name}
                     </option>
                   )
                 })}
