@@ -47,7 +47,6 @@ export default function Home() {
             }, [])
             .map((bookmark) => (
               <BookmarkCard
-                suppressHydrationWarning={true}
                 bookmark={bookmark}
                 key={bookmark.id}
                 categories={categories}
