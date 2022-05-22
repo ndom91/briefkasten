@@ -7,17 +7,17 @@ import { authOptions } from './api/auth/[...nextauth]'
 import prisma from '@/lib/prisma'
 
 export default function Settings() {
-  const categories = useStore((state) => state.categories)
-  const tags = useStore((state) => state.tags)
   return (
     <Layout>
       <Head>
         <title>Briefkasten | Settings</title>
       </Head>
-      <Sidebar categories={categories} tags={tags} />
-      <div className="flex flex-col space-y-4">
-        <h2>Settings</h2>
-      </div>
+      <Sidebar />
+      <main className="flex flex-col space-y-4">
+        <section>
+          <h2>Import / Export</h2>
+        </section>
+      </main>
     </Layout>
   )
 }

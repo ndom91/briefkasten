@@ -5,6 +5,7 @@ module.exports = {
       'images.unsplash.com',
       'source.unsplash.com',
       'avatars.githubusercontent.com',
+      'source.boringavatars.com',
     ],
   },
 }

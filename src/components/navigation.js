@@ -55,7 +55,10 @@ export default function Navigation() {
           {session && (
             <Image
               alt="User Profile Pic"
-              src={session.user.image}
+              src={
+                session?.user?.image ??
+                'https://source.boringavatars.com/beam/4'
+              }
               width="32"
               height="32"
               className="h-6 w-6 rounded-full py-4"

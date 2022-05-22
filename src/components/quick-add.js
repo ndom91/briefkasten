@@ -8,7 +8,7 @@ export default function QuickAdd({ categories }) {
   const { data: session } = useSession()
   const [url, setUrl] = useState('')
   const [title, setTitle] = useState('')
-  const [category, setCategory] = useState(categories[0].name)
+  const [category, setCategory] = useState(categories[0]?.name ?? '')
   const [tags, setTags] = useState('')
   const [desc, setDescription] = useState('')
   const [loading, setLoading] = useState(false)
