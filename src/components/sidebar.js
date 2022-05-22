@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { useState, useRef } from 'react'
 import { useSession } from 'next-auth/react'
-import { useKey } from 'react-use'
+import { useKeyPress } from 'react-use'
 import { useToast, toastTypes } from '@/lib/hooks'
 import { useStore } from '@/lib/store'
 
@@ -22,13 +22,21 @@ export default function Sidebar() {
   const addTag = useStore((state) => state.addTag)
   const searchText = useStore((state) => state.searchText)
   const setSearchText = useStore((state) => state.setSearchText)
+  const [searchFocused, setSearchFocused] = useState(false)
   const [quickAdd, setQuickAdd] = useState('')
   const [quickAddCategory, setQuickAddCategory] = useState('')
   const [quickAddTag, setQuickAddTag] = useState('')
   const toast = useToast(5000)
   const searchRef = useRef()
 
-  useKey('/', () => searchRef?.current?.focus(), { event: 'keyup' })
+  useKeyPress((e) => {
+    if (e.type === 'keydown') {
+      if (e.ctrlKey && e.key === 'k') {
+        e.preventDefault()
+        searchRef?.current?.focus()
+      }
+    }
+  })
 
   const toggleQuickAdd = (type) => {
     if (type === types.CATEGORY) {
@@ -122,11 +130,22 @@ export default function Sidebar() {
               d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
             />
           </svg>
+          {!searchFocused && searchText.length === 0 ? (
+            <div className="absolute left-8 top-[0.65rem] z-10 text-xs text-slate-400 opacity-50">
+              <span className="rounded-md bg-slate-200 p-1 px-2 ">
+                <kbd className="">ctrl</kbd>
+                <span> + </span>
+                <kbd className="">k</kbd>
+              </span>
+              <span> to search</span>
+            </div>
+          ) : null}
           <input
             ref={searchRef}
-            placeholder='"/" to focus'
             type="text"
             value={searchText}
+            onFocus={() => setSearchFocused(true)}
+            onBlur={() => setSearchFocused(false)}
             onChange={(e) => setSearchText(e.target.value)}
             className="w-full rounded-md border-2 border-slate-200 py-1 px-2 pl-8 pr-8 text-base text-slate-600 outline-none placeholder:text-slate-200 focus:border-slate-200 focus:ring-2 focus:ring-slate-200 focus:ring-offset-transparent"
           />
