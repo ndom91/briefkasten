@@ -31,6 +31,15 @@ export const initializeStore = (preloadedState = {}) => {
 
     setTags: (tags) => set(() => ({ tags })),
     addTag: (tag) => set(() => ({ tags: [...get().tags, tag] })),
+    updateTag: (id, tag) => {
+      const { name, emoji } = tag
+      const newTag = get().tags.find((t) => t.id === id)
+      newTag.name = name
+      newTag.emoji = emoji
+      set(() => ({
+        tags: [...get().tags.filter((t) => t.id !== id), newTag],
+      }))
+    },
     removeTag: (tag) =>
       set(() => ({
         tags: [...get().tags.filter((t) => t.id !== tag.id)],
@@ -40,6 +49,15 @@ export const initializeStore = (preloadedState = {}) => {
     setCategories: (categories) => set(() => ({ categories })),
     addCategory: (category) =>
       set(() => ({ categories: [...get().categories, category] })),
+    updateCategory: (id, category) => {
+      const { name, description } = category
+      const cat = get().categories.find((cat) => cat.id === id)
+      cat.name = name
+      cat.description = description
+      set(() => ({
+        categories: [...get().categories.filter((cat) => cat.id !== id), cat],
+      }))
+    },
     removeCategory: (category) =>
       set(() => ({
         categories: [

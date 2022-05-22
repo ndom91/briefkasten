@@ -102,7 +102,7 @@ export default function Categories({ nextauth }) {
                     </label>
                   </div>
                 </th>
-                <th scope="col" className="px-6 py-3" width="20%">
+                <th scope="col" className="px-6 py-3" width="12%">
                   ID
                 </th>
                 <th scope="col" className="px-6 py-3" width="30%">
@@ -111,7 +111,7 @@ export default function Categories({ nextauth }) {
                 <th scope="col" className="px-6 py-3" width="40%">
                   Description
                 </th>
-                <th scope="col" className="px-6 py-3" width="10%">
+                <th scope="col" className="px-6 py-3" width="18%">
                   <span className="sr-only">Edit</span>
                 </th>
               </tr>

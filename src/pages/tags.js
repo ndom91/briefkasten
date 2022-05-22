@@ -103,7 +103,7 @@ export default function Tags({ nextauth }) {
                     </label>
                   </div>
                 </th>
-                <th scope="col" className="px-6 py-3" width="20%">
+                <th scope="col" className="px-6 py-3" width="15%">
                   ID
                 </th>
                 <th scope="col" className="px-6 py-3" width="40%">
@@ -112,7 +112,7 @@ export default function Tags({ nextauth }) {
                 <th scope="col" className="px-6 py-3" width="30%">
                   Emoji
                 </th>
-                <th scope="col" className="px-6 py-3" width="10%">
+                <th scope="col" className="px-6 py-3" width="15%">
                   <span className="sr-only">Edit</span>
                 </th>
               </tr>

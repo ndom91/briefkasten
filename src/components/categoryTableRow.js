@@ -11,6 +11,7 @@ export default function CategoryTableRow({ item }) {
   const [categoryName, setCategoryName] = useState(name)
   const [categoryDesc, setCategoryDesc] = useState(description)
   const removeCategory = useStore((state) => state.removeCategory)
+  const updateCategory = useStore((state) => state.updateCategory)
   const toast = useToast(5000)
 
   const deleteCategory = async () => {
@@ -32,6 +33,34 @@ export default function CategoryTableRow({ item }) {
     } catch (error) {
       console.error(error)
       toast(toastTypes.ERROR, `Error deleting "${name}"`)
+    }
+  }
+
+  const saveEdit = async () => {
+    try {
+      const editRes = await fetch('/api/categories', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id,
+          userId: session?.user?.userId,
+          name: categoryName,
+          description: categoryDesc,
+        }),
+      })
+      if (editRes.status === 200) {
+        updateCategory(id, {
+          name: categoryName,
+          description: categoryDesc,
+        })
+        toggleEditMode()
+        toast(toastTypes.SUCCESS, `Successfully edited "${name}"`)
+      }
+    } catch (error) {
+      console.error(error)
+      toast(toastTypes.ERROR, `Error editing "${name}"`)
     }
   }
 
@@ -79,28 +108,71 @@ export default function CategoryTableRow({ item }) {
         )}
       </td>
       <td className="flex items-center space-x-2 px-6 py-4 text-right">
-        <button
-          onClick={() => toggleEditMode()}
-          className="font-medium text-slate-400 outline-none hover:underline focus:underline focus:underline-offset-2"
-        >
-          <svg
-            className="h-6 w-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
+        {!editMode ? (
+          <button
+            onClick={() => toggleEditMode()}
+            className="font-medium text-slate-400 outline-none "
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-            />
-          </svg>
-        </button>
+            <svg
+              className="h-6 w-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+              />
+            </svg>
+          </button>
+        ) : (
+          <>
+            <button
+              onClick={() => toggleEditMode()}
+              className="font-medium text-rose-400 outline-none"
+            >
+              <svg
+                className="h-6 w-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+            <button
+              onClick={() => saveEdit()}
+              className="font-medium text-emerald-500 outline-none"
+            >
+              <svg
+                className="h-6 w-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"
+                />
+              </svg>
+            </button>
+          </>
+        )}
         <button
           onClick={() => deleteCategory()}
-          className="font-medium text-rose-400 outline-none hover:underline focus:underline focus:underline-offset-2"
+          className="font-medium text-rose-400 outline-none"
         >
           <svg
             className="h-6 w-6"

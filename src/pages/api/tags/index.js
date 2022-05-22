@@ -23,6 +23,24 @@ export default async function handler(req, res) {
 
         return res.status(200).json({ data: createResult })
       }
+      case 'PUT': {
+        const { id, userId, name, emoji } = body
+        if (!name || !id || !userId) {
+          return res.status(400).json({ message: 'Missing required field(s)' })
+        }
+
+        const updateResult = await prisma.tag.update({
+          where: {
+            id,
+          },
+          data: {
+            name,
+            emoji,
+          },
+        })
+
+        return res.status(200).json({ data: updateResult })
+      }
       case 'GET': {
         return res.status(200).json({ results: ['Hello', 'World'] })
       }
@@ -46,7 +64,7 @@ export default async function handler(req, res) {
         return res.status(200).json({ message: 'Deleted' })
       }
       default: {
-        res.setHeader('Allow', ['GET', 'DELETE', 'POST'])
+        res.setHeader('Allow', ['GET', 'DELETE', 'POST', 'PUT'])
         return res.status(405).end(`Method ${method} Not Allowed`)
       }
     }
