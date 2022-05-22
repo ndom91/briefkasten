@@ -6,6 +6,8 @@ export default function Sidebar() {
   const tags = useStore((state) => state.tags)
   const setCategoryFilter = useStore((state) => state.setCategoryFilter)
   const setTagFilter = useStore((state) => state.setTagFilter)
+  const categoryFilter = useStore((state) => state.categoryFilter)
+  const tagFilter = useStore((state) => state.tagFilter)
 
   const toggleModal = (type, action) => {
     console.log('TOGGLEMODAL', type, action)
@@ -16,6 +18,22 @@ export default function Sidebar() {
       if (action === 'add') {
       }
     }
+  }
+
+  const applyCategoryFilter = (id) => {
+    if (id === categoryFilter) {
+      setCategoryFilter('')
+      return
+    }
+    setCategoryFilter(id)
+  }
+
+  const applyTagFilter = (id) => {
+    if (id === tagFilter) {
+      setTagFilter('')
+      return
+    }
+    setTagFilter(id)
   }
 
   return (
@@ -80,9 +98,11 @@ export default function Sidebar() {
           <div className="ml-4 flex flex-col items-start space-y-2">
             {categories?.map((cat) => (
               <button
-                onClick={() => setCategoryFilter(cat.id)}
+                onClick={() => applyCategoryFilter(cat.id)}
                 key={cat.id}
-                className="inline-block text-left text-slate-400"
+                className={`inline-block text-left text-slate-400 ${
+                  categoryFilter === cat.id && 'font-extrabold'
+                }`}
               >
                 {cat.name}
               </button>
@@ -127,9 +147,11 @@ export default function Sidebar() {
           <div className="ml-4 flex flex-col space-y-2">
             {tags?.map((tag) => (
               <button
-                onClick={() => setTagFilter(tag.id)}
+                onClick={() => applyTagFilter(tag.id)}
                 key={tag.id}
-                className="inline-block text-left text-slate-400"
+                className={`inline-block text-left text-slate-400 ${
+                  tagFilter === tag.id && 'font-extrabold'
+                }`}
               >
                 {tag.emoji} {tag.name}
               </button>
