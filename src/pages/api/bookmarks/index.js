@@ -39,11 +39,12 @@ export default async function handler(req, res) {
           description: '',
         }
 
+        // First fetch any additional metadata about the URL
         const resp = await fetch(url)
         metadata = await metascraper({ html: await resp.text(), url: url })
 
         if (!metadata.image) {
-          // Generate image with puppeteer
+          // Generate image with puppeteer if we didnt get one from metadata
           const imageData = await fetch(
             `${baseUrl}/api/bookmarks/image?url=${encodeURIComponent(url)}`
           )
@@ -65,6 +66,8 @@ export default async function handler(req, res) {
           metadata.image = uploadData.url
         }
 
+        // Begin inserting into db
+        // First, bookmark since we need its ID for later inserts
         let upsertTagRes
         const upsertBookmarkRes = await prisma.bookmark.upsert({
           include: {
@@ -80,32 +83,37 @@ export default async function handler(req, res) {
                 id: userId,
               },
             },
-            category: {
-              connect: {
-                name_userId: {
-                  name: category,
-                  userId,
-                },
-              },
-            },
+            category: category
+              ? {
+                  connect: {
+                    name_userId: {
+                      name: category,
+                      userId,
+                    },
+                  },
+                }
+              : {},
           },
           update: {
             url,
             title: title.length ? title : metadata.title,
             image: metadata.image,
             desc: desc.length ? desc : metadata.description,
-            category: {
-              connect: {
-                name_userId: {
-                  name: category,
-                  userId,
-                },
-              },
-            },
+            category: category
+              ? {
+                  connect: {
+                    name_userId: {
+                      name: category,
+                      userId,
+                    },
+                  },
+                }
+              : {},
           },
           where: { url_userId: { url: url, userId: userId } },
         })
 
+        // Next, if there are tags, insert them sequentially
         if (tags && tags.filter(Boolean).length > 0) {
           upsertTagRes = await Promise.all(
             tags.map(async (tag) => {
@@ -127,6 +135,7 @@ export default async function handler(req, res) {
             })
           )
 
+          // Finally, link the tags to bookmark in intermediate join table
           await prisma.tagsOnBookmarks.createMany({
             data: upsertTagRes.map((tag) => ({
               bookmarkId: upsertBookmarkRes.id,
