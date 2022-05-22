@@ -2,7 +2,7 @@
 
 Self-hosted bookmarking application. WIP 👷
 
-![Screenshot](screenshot.png)
+![Screenshot](screenshot1.png)
 
 ## 🧺 Prerequisites
 
