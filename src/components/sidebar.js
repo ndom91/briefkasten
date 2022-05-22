@@ -109,7 +109,7 @@ export default function Sidebar() {
       <div className="flex flex-1 flex-col space-y-6">
         <div className="relative flex w-full items-center justify-start">
           <svg
-            className="absolute left-1 top-1 h-6 w-6 text-slate-200"
+            className="absolute left-2 top-2 h-5 w-5 text-slate-200"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -119,7 +119,7 @@ export default function Sidebar() {
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth={2}
-              d="M8 16l2.879-2.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242zM21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
             />
           </svg>
           <input
@@ -128,7 +128,7 @@ export default function Sidebar() {
             type="text"
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
-            className="w-full rounded-md border-0 py-1 px-2 pl-8 pr-8 text-base text-slate-600 outline-none placeholder:text-slate-200 focus:ring-2 focus:ring-slate-200 focus:ring-offset-transparent"
+            className="w-full rounded-md border-2 border-slate-200 py-1 px-2 pl-8 pr-8 text-base text-slate-600 outline-none placeholder:text-slate-200 focus:border-slate-200 focus:ring-2 focus:ring-slate-200 focus:ring-offset-transparent"
           />
           {searchText.length ? (
             <svg
@@ -187,21 +187,25 @@ export default function Sidebar() {
             </svg>
             <h2 className="text-lg text-slate-600">Categories</h2>
             <div className="flex flex-1 justify-end hover:cursor-pointer">
-              <svg
-                className="h-6 w-6 text-slate-300"
+              <button
+                className="rounded-md outline-none focus:ring-2 focus:ring-slate-200"
                 onClick={() => toggleQuickAdd('category')}
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                />
-              </svg>
+                <svg
+                  className="h-6 w-6 text-slate-300"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                  />
+                </svg>
+              </button>
             </div>
           </div>
           <div className="ml-4 flex flex-col items-start space-y-2">
@@ -209,7 +213,7 @@ export default function Sidebar() {
               <button
                 onClick={() => applyCategoryFilter(cat.id)}
                 key={cat.id}
-                className={`inline-block text-left text-slate-400 ${
+                className={`inline-block rounded-md px-1 text-left text-slate-400 outline-none focus:ring-2 focus:ring-slate-200 ${
                   categoryFilter === cat.id && 'font-extrabold'
                 }`}
               >
@@ -223,13 +227,13 @@ export default function Sidebar() {
                   value={quickAddCategory}
                   type="text"
                   onChange={(e) => setQuickAddCategory(e.target.value)}
-                  className="block w-full rounded-md border-2 border-slate-200 bg-slate-50 p-2 py-1 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500  focus:ring-slate-500 "
+                  className="block w-full rounded-md border-2 border-slate-200 bg-white p-2 py-1 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-300 focus:ring-slate-300"
                 />
                 <button
                   onClick={saveQuickCategory}
                   className="grid place-items-center rounded-md p-1 outline-none focus:ring-2 focus:ring-slate-200"
                 >
-                  <svg className="h-6 w-6 text-slate-600" viewBox="0 0 24 24">
+                  <svg className="h-6 w-6 text-slate-500" viewBox="0 0 24 24">
                     <path
                       fill="currentColor"
                       d="M17 3H5C3.89 3 3 3.9 3 5V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V7L17 3M19 19H5V5H16.17L19 7.83V19M12 12C10.34 12 9 13.34 9 15S10.34 18 12 18 15 16.66 15 15 13.66 12 12 12M6 6H15V10H6V6Z"
@@ -280,29 +284,33 @@ export default function Sidebar() {
             </svg>
             <h2 className="text-lg text-slate-600">Tags</h2>
             <div className="flex flex-1 justify-end hover:cursor-pointer">
-              <svg
-                className="h-6 w-6 text-slate-300"
+              <button
+                className="rounded-md outline-none focus:ring-2 focus:ring-slate-200"
                 onClick={() => toggleQuickAdd('tag')}
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                />
-              </svg>
+                <svg
+                  className="h-6 w-6 text-slate-300"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                  />
+                </svg>
+              </button>
             </div>
           </div>
-          <div className="ml-4 flex flex-col space-y-2">
+          <div className="ml-4 flex flex-col items-start space-y-2">
             {tags?.map((tag) => (
               <button
                 onClick={() => applyTagFilter(tag.id)}
                 key={tag.id}
-                className={`inline-block text-left text-slate-400 ${
+                className={`inline-block rounded-md px-1 text-left text-slate-400 outline-none focus:ring-2 focus:ring-slate-200 ${
                   tagFilter === tag.id && 'font-extrabold'
                 }`}
               >
@@ -316,7 +324,7 @@ export default function Sidebar() {
                   value={quickAddTag}
                   type="text"
                   onChange={(e) => setQuickAddTag(e.target.value)}
-                  className="block w-full rounded-md border-2 border-slate-200 bg-slate-50 p-2 py-1 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500  focus:ring-slate-500 "
+                  className="block w-full rounded-md border-2 border-slate-200 bg-white p-2 py-1 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-300 focus:ring-slate-300"
                 />
                 <button
                   onClick={saveQuickTag}
