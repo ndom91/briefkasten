@@ -1,10 +1,11 @@
 import { useRef, useState } from 'react'
 import { useSession } from 'next-auth/react'
-import { useKey, useToggle } from 'react-use'
+import { useKeyPress, useToggle } from 'react-use'
 import { useStore } from '@/lib/store'
 import { useToast, toastTypes } from '@/lib/hooks'
 
 export default function QuickAdd({ categories }) {
+  const { data: session } = useSession()
   const [url, setUrl] = useState('')
   const [title, setTitle] = useState('')
   const [category, setCategory] = useState(categories[0].name)
@@ -12,13 +13,21 @@ export default function QuickAdd({ categories }) {
   const [desc, setDescription] = useState('')
   const [loading, setLoading] = useState(false)
   const [open, toggleOpen] = useToggle(false)
-  const { data: session } = useSession()
+  const [searchFocused, setSearchFocused] = useState(false)
   const addBookmark = useStore((state) => state.addBookmark)
   const insertRef = useRef()
   const toast = useToast(5000)
 
-  useKey('alt+i', () => insertRef?.current?.focus(), { event: 'keyup' })
-  useKey('alt+s', () => submitUrl(), { event: 'keyup' })
+  useKeyPress((e) => {
+    if (e.type === 'keyup') {
+      if (e.altKey && e.key === 'a') {
+        insertRef?.current?.focus()
+      }
+      if (e.altKey && e.key === 's') {
+        submitUrl()
+      }
+    }
+  })
 
   async function submitUrl() {
     try {
@@ -124,12 +133,24 @@ export default function QuickAdd({ categories }) {
             </svg>
           </button>
           <div className="relative flex-1">
+            {!searchFocused && url.length === 0 ? (
+              <div className="absolute left-2 top-[1.1rem] z-10 text-xs text-slate-400 opacity-50">
+                <span className="rounded-md bg-slate-200 p-1 px-2 ">
+                  <kbd className="">alt</kbd>
+                  <span> + </span>
+                  <kbd className="">a</kbd>
+                </span>
+                <span> to focus</span>
+              </div>
+            ) : null}
             <input
               type="url"
               ref={insertRef}
               className="block w-full transform rounded-r-md border border-transparent bg-slate-100 py-3 pl-2 pr-5 text-base text-neutral-600 placeholder-gray-300 transition duration-500 ease-in-out focus:z-10 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-white"
-              placeholder="Hint: 's' to focus"
+              placeholder=""
               value={url}
+              onFocus={() => setSearchFocused(true)}
+              onBlur={() => setSearchFocused(false)}
               onChange={(event) => setUrl(event.target.value)}
             />
             <div className="absolute right-4 top-3 rounded-md bg-slate-200 p-1 px-2 text-xs text-slate-400">
