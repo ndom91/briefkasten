@@ -100,7 +100,7 @@ export default function QuickAdd({ categories }) {
             <svg
               title="down-chevron"
               className={`absolute h-6 w-6 transition ${
-                open ? 'opacity-100' : 'opacity-0'
+                open ? 'rotate-0' : '-rotate-90'
               }`}
               fill="none"
               stroke="currentColor"
@@ -112,23 +112,6 @@ export default function QuickAdd({ categories }) {
                 strokeLinejoin="round"
                 strokeWidth={2}
                 d="M19 9l-7 7-7-7"
-              />
-            </svg>
-            <svg
-              title="right-chevron"
-              className={`absolute h-6 w-6 transition ${
-                !open ? 'opacity-100' : 'opacity-0'
-              }`}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
               />
             </svg>
           </button>
