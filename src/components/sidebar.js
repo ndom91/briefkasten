@@ -1,22 +1,84 @@
 import Link from 'next/link'
+import { useState } from 'react'
+import { useSession } from 'next-auth/react'
+import { useToast, toastTypes } from '@/lib/hooks'
 import { useStore } from '@/lib/store'
 
+const types = {
+  CATEGORY: 'category',
+  TAG: 'tag',
+}
+
 export default function Sidebar() {
+  const { data: session } = useSession()
   const categories = useStore((state) => state.categories)
   const tags = useStore((state) => state.tags)
   const setCategoryFilter = useStore((state) => state.setCategoryFilter)
   const setTagFilter = useStore((state) => state.setTagFilter)
   const categoryFilter = useStore((state) => state.categoryFilter)
   const tagFilter = useStore((state) => state.tagFilter)
+  const addCategory = useStore((state) => state.addCategory)
+  const addTag = useStore((state) => state.addTag)
+  const [quickAdd, setQuickAdd] = useState('')
+  const [quickAddCategory, setQuickAddCategory] = useState('')
+  const [quickAddTag, setQuickAddTag] = useState('')
+  const toast = useToast(5000)
 
-  const toggleModal = (type, action) => {
-    console.log('TOGGLEMODAL', type, action)
-    if (type === 'category') {
-      if (action === 'add') {
+  const toggleQuickAdd = (type) => {
+    if (type === types.CATEGORY) {
+      setQuickAdd(types.CATEGORY)
+    } else if (type === types.TAG) {
+      setQuickAdd(types.TAG)
+    } else {
+      setQuickAdd('')
+    }
+  }
+
+  const saveQuickCategory = async () => {
+    try {
+      const saveRes = await fetch('/api/categories', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: session?.user?.userId,
+          name: quickAddCategory,
+        }),
+      })
+      if (saveRes.status === 200) {
+        const saveData = await saveRes.json()
+        addCategory({ id: saveData.data.id, name: quickAddCategory })
+        setQuickAddCategory('')
+        toggleQuickAdd('')
+        toast(toastTypes.SUCCESS, 'Successfully Saved Category')
       }
-    } else if (type === 'tag') {
-      if (action === 'add') {
+    } catch (error) {
+      toast(toastTypes.ERROR, 'Error Saving Category')
+    }
+  }
+
+  const saveQuickTag = async () => {
+    try {
+      const saveRes = await fetch('/api/tags', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: session?.user?.userId,
+          name: quickAddTag,
+        }),
+      })
+      if (saveRes.status === 200) {
+        const saveData = await saveRes.json()
+        addTag({ id: saveData.data.id, name: quickAddTag })
+        setQuickAddTag('')
+        toggleQuickAdd('')
+        toast(toastTypes.SUCCESS, 'Successfully Saved Tag')
       }
+    } catch (error) {
+      toast(toastTypes.ERROR, 'Error Saving Tag')
     }
   }
 
@@ -80,7 +142,7 @@ export default function Sidebar() {
             <div className="flex flex-1 justify-end hover:cursor-pointer">
               <svg
                 className="h-6 w-6 text-slate-300"
-                onClick={() => toggleModal('category', 'add')}
+                onClick={() => toggleQuickAdd('category')}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -107,6 +169,50 @@ export default function Sidebar() {
                 {cat.name}
               </button>
             ))}
+            {quickAdd === types.CATEGORY && (
+              <div className="flex items-center justify-start space-x-1">
+                <input
+                  name="addCategory"
+                  value={quickAddCategory}
+                  type="text"
+                  onChange={(e) => setQuickAddCategory(e.target.value)}
+                  className="block w-full rounded-md border-2 border-slate-200 bg-slate-50 p-2 py-1 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500  focus:ring-slate-500 "
+                />
+                <button
+                  onClick={saveQuickCategory}
+                  className="grid place-items-center rounded-md p-1 outline-none focus:ring-2 focus:ring-slate-200"
+                >
+                  <svg className="h-6 w-6 text-slate-600" viewBox="0 0 24 24">
+                    <path
+                      fill="currentColor"
+                      d="M17 3H5C3.89 3 3 3.9 3 5V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V7L17 3M19 19H5V5H16.17L19 7.83V19M12 12C10.34 12 9 13.34 9 15S10.34 18 12 18 15 16.66 15 15 13.66 12 12 12M6 6H15V10H6V6Z"
+                    />
+                  </svg>
+                </button>
+                <button
+                  onClick={() => {
+                    toggleQuickAdd('')
+                    setQuickAddCategory('')
+                  }}
+                  className="grid place-items-center rounded-md p-1 outline-none focus:ring-2 focus:ring-slate-200"
+                >
+                  <svg
+                    className="h-6 w-6 text-rose-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+            )}
           </div>
         </div>
         <div>
@@ -129,7 +235,7 @@ export default function Sidebar() {
             <div className="flex flex-1 justify-end hover:cursor-pointer">
               <svg
                 className="h-6 w-6 text-slate-300"
-                onClick={() => toggleModal('tag', 'add')}
+                onClick={() => toggleQuickAdd('tag')}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -156,6 +262,50 @@ export default function Sidebar() {
                 {tag.emoji} {tag.name}
               </button>
             ))}
+            {quickAdd === types.TAG && (
+              <div className="flex items-center justify-start space-x-1">
+                <input
+                  name="addCategory"
+                  value={quickAddTag}
+                  type="text"
+                  onChange={(e) => setQuickAddTag(e.target.value)}
+                  className="block w-full rounded-md border-2 border-slate-200 bg-slate-50 p-2 py-1 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500  focus:ring-slate-500 "
+                />
+                <button
+                  onClick={saveQuickTag}
+                  className="grid place-items-center rounded-md p-1 outline-none focus:ring-2 focus:ring-slate-200"
+                >
+                  <svg className="h-6 w-6 text-slate-600" viewBox="0 0 24 24">
+                    <path
+                      fill="currentColor"
+                      d="M17 3H5C3.89 3 3 3.9 3 5V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V7L17 3M19 19H5V5H16.17L19 7.83V19M12 12C10.34 12 9 13.34 9 15S10.34 18 12 18 15 16.66 15 15 13.66 12 12 12M6 6H15V10H6V6Z"
+                    />
+                  </svg>
+                </button>
+                <button
+                  onClick={() => {
+                    toggleQuickAdd('')
+                    setQuickAddTag('')
+                  }}
+                  className="grid place-items-center rounded-md p-1 outline-none focus:ring-2 focus:ring-slate-200"
+                >
+                  <svg
+                    className="h-6 w-6 text-rose-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
