@@ -9,14 +9,15 @@ export default function BookmarkCard({ bookmark, categories }) {
   const removeBookmark = useStore((state) => state.removeBookmark)
   const { data: session } = useSession()
   const { id, title, url, desc, category, tags, createdAt, image } = bookmark
-
   const [imageUrl, setImageUrl] = useState(
     image || 'https://source.unsplash.com/random/300x201'
   )
+  const [loading, setLoading] = useState(false)
   const toast = useToast(5000)
 
   async function handleDelete() {
     try {
+      setLoading(true)
       const deleteRes = await fetch('/api/bookmarks', {
         method: 'DELETE',
         headers: {
@@ -35,9 +36,11 @@ export default function BookmarkCard({ bookmark, categories }) {
           `Successfully deleted "${new URL(url).hostname}"`
         )
       }
+      setLoading(false)
     } catch (error) {
       console.error(error)
       toast(toastTypes.ERROR, 'Error deleting bookmark', error.message)
+      setLoading(false)
     }
   }
 
@@ -70,6 +73,7 @@ export default function BookmarkCard({ bookmark, categories }) {
         <div className="absolute top-3 right-3 z-10 flex flex-row-reverse gap-2 rounded-lg border-0 border-slate-400/50  bg-slate-600/90 px-3 py-2 opacity-0 shadow-md transition group-hover:opacity-100">
           <button
             name="edit"
+            tabIndex={-1}
             className="text-slate-300 outline-none transition hover:text-slate-400 hover:outline-none focus:text-slate-800"
           >
             <svg
@@ -87,32 +91,61 @@ export default function BookmarkCard({ bookmark, categories }) {
               />
             </svg>
           </button>
-          <button
-            name="delete"
-            onClick={handleDelete}
-            className="text-rose-400 opacity-0 outline-none transition animate-in slide-in-from-top hover:text-rose-800 hover:outline-none group-hover:opacity-100"
-          >
+          {loading ? (
             <svg
-              className="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+              className="-ml-1 h-5 w-5 animate-spin text-white"
               xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
             >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
               <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-              />
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
             </svg>
-          </button>
+          ) : (
+            <button
+              name="delete"
+              onClick={handleDelete}
+              tabIndex={-1}
+              className="text-rose-400 opacity-0 outline-none transition animate-in slide-in-from-top hover:text-rose-800 hover:outline-none group-hover:opacity-100"
+            >
+              <svg
+                className="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                />
+              </svg>
+            </button>
+          )}
         </div>
         <div className="mb-2">
-          <a href={url} target="_blank" rel="noopener noreferrer">
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group rounded-md outline-none"
+          >
             {/* eslint-disable @next/next/no-img-element */}
             <img
-              className="aspect-2 min-h-[125px] rounded-md border-2 border-slate-50 object-cover object-left-top"
+              className="aspect-2 min-h-[125px] rounded-md border-2 border-slate-50 object-cover object-left-top transition group-focus:ring-4 group-focus:ring-slate-200"
               src={imageUrl}
               onError={() => fetchFallbackImage(url)}
               alt={`${url} Image`}
@@ -121,8 +154,8 @@ export default function BookmarkCard({ bookmark, categories }) {
         </div>
         <div className="flex flex-1 flex-col justify-between">
           <div className="flex-1">
-            <div className="flex space-x-1 text-sm text-gray-500">
-              <time dateTime="2020-03-10">
+            <div className="flex space-x-1 text-sm text-slate-400">
+              <time dateTime="2020-03-10" className="">
                 {new Date(createdAt).toLocaleDateString('de')}
               </time>
               {category?.name && (
@@ -133,12 +166,18 @@ export default function BookmarkCard({ bookmark, categories }) {
               )}
             </div>
             <section className="block space-y-2">
-              <a href={url} className="mt-2 block space-y-2">
+              <a
+                href={url}
+                className="mt-2 block space-y-2 rounded-sm outline-none transition focus:ring-2 focus:ring-slate-200"
+              >
                 <h3 className="text-xl font-semibold leading-none tracking-tighter text-neutral-600 line-clamp-1">
                   {title}
                 </h3>
               </a>
-              <a href={url} className="text-xs text-slate-300 line-clamp-1">
+              <a
+                href={url}
+                className="rounded-sm text-xs text-slate-300 outline-none transition line-clamp-1 focus:ring-2 focus:ring-slate-200"
+              >
                 {url}
               </a>
               {desc && (

@@ -8,6 +8,8 @@ const initialState = {
   bookmarks: [],
   categories: [],
   tags: [],
+  categoryFilter: '',
+  tagFilter: '',
 }
 
 const zustandContext = createContext()
@@ -20,6 +22,11 @@ export const initializeStore = (preloadedState = {}) => {
   return create((set, get) => ({
     ...initialState,
     ...preloadedState,
+    setCategoryFilter: (id) => set(() => ({ categoryFilter: id })),
+    clearCategoryFilter: () =>
+      set(() => ({ categoryFilter: initialState.categoryFilter })),
+    setTagFilter: (id) => set(() => ({ tagFilter: id })),
+    clearTagFilter: () => set(() => ({ tagFilter: initialState.tagFilter })),
     setBookmarks: (bookmarks) => set(() => ({ bookmarks })),
     addBookmark: (bookmark) =>
       set(() => ({ bookmarks: [...get().bookmarks, bookmark] })),

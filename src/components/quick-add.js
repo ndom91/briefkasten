@@ -1,9 +1,8 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useSession } from 'next-auth/react'
-import { useToggle } from 'react-use'
+import { useKey, useToggle } from 'react-use'
 import { useStore } from '@/lib/store'
 import { useToast, toastTypes } from '@/lib/hooks'
-// import Chip from '@/components/chip'
 
 export default function QuickAdd({ categories }) {
   const [url, setUrl] = useState('')
@@ -11,13 +10,23 @@ export default function QuickAdd({ categories }) {
   const [category, setCategory] = useState(categories[0].name)
   const [tags, setTags] = useState('')
   const [desc, setDescription] = useState('')
+  const [loading, setLoading] = useState(false)
   const [open, toggleOpen] = useToggle(false)
   const { data: session } = useSession()
   const addBookmark = useStore((state) => state.addBookmark)
+  const insertRef = useRef()
   const toast = useToast(5000)
+
+  useKey('/', () => insertRef?.current?.focus(), { event: 'keyup' })
 
   async function submitUrl() {
     try {
+      setLoading(true)
+      if (!url) {
+        toast(toastTypes.ERROR, 'Missing required field(s)')
+        setLoading(false)
+        return
+      }
       // Add Bookmark to DB via API
       const res = await fetch('/api/bookmarks', {
         method: 'POST',
@@ -59,10 +68,14 @@ export default function QuickAdd({ categories }) {
         setTags('')
         setDescription('')
         open && toggleOpen()
+      } else {
+        toast(toastTypes.ERROR, 'Error Saving')
       }
+      setLoading(false)
     } catch (error) {
       console.error('[ERROR] Submitting URL', error)
       toast(toastTypes.ERROR, `Error adding "${new URL(url).hostname}"`)
+      setLoading(false)
     }
   }
 
@@ -109,22 +122,63 @@ export default function QuickAdd({ categories }) {
               />
             </svg>
           </button>
-          <input
-            type="url"
-            className="block flex-1 transform rounded-r-md border border-transparent bg-slate-100 py-3 pl-2 pr-5 text-base text-neutral-600 placeholder-gray-300 transition duration-500 ease-in-out focus:z-10 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-white"
-            placeholder="https://"
-            value={url}
-            onChange={(event) => setUrl(event.target.value)}
-          />
+          <div className="relative flex-1">
+            <input
+              type="url"
+              form="url"
+              accessKey="/"
+              ref={insertRef}
+              className="block w-full transform rounded-r-md border border-transparent bg-slate-100 py-3 pl-2 pr-5 text-base text-neutral-600 placeholder-gray-300 transition duration-500 ease-in-out focus:z-10 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-white"
+              placeholder="Hint: / to focus"
+              value={url}
+              onChange={(event) => setUrl(event.target.value)}
+            />
+            <div className="absolute right-4 top-3 rounded-md bg-slate-200 p-1 px-2 text-xs text-slate-400">
+              <kbd className="">alt</kbd>
+              <span> + </span>
+              <kbd className="">s</kbd>
+            </div>
+          </div>
         </div>
         <div className="mt-4 sm:mt-0 sm:ml-3">
           <button
             type="submit"
+            accessKey="s"
+            form="url"
             onClick={() => submitUrl()}
             name="addBookmark"
-            className="block w-full rounded-md border border-transparent bg-slate-800 p-3 text-base font-medium text-white shadow transition duration-500 ease-in-out hover:bg-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-white sm:px-8"
+            className="flex w-full items-center space-x-2 rounded-md border border-transparent bg-slate-800 p-3 text-base font-medium text-white shadow transition duration-500 ease-in-out hover:bg-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-300 focus:ring-offset-2 focus:ring-offset-white sm:px-4"
           >
-            Save
+            {loading ? (
+              <svg
+                className="mr-1 h-5 w-5 animate-spin text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+            ) : (
+              <svg className="mr-1 h-6 w-6 text-white" viewBox="0 0 24 24">
+                <path
+                  fill="currentColor"
+                  d="M17 3H5C3.89 3 3 3.9 3 5V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V7L17 3M19 19H5V5H16.17L19 7.83V19M12 12C10.34 12 9 13.34 9 15S10.34 18 12 18 15 16.66 15 15 13.66 12 12 12M6 6H15V10H6V6Z"
+                />
+              </svg>
+            )}
+            <span>Save</span>
           </button>
         </div>
       </div>

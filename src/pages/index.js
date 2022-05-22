@@ -11,6 +11,8 @@ import prisma from '@/lib/prisma'
 export default function Home() {
   const bookmarks = useStore((state) => state.bookmarks)
   const categories = useStore((state) => state.categories)
+  const categoryFilter = useStore((state) => state.categoryFilter)
+  const tagFilter = useStore((state) => state.tagFilter)
 
   return (
     <Layout>
@@ -18,13 +20,28 @@ export default function Home() {
       <div className="flex flex-col space-y-2 pr-4">
         <QuickAdd categories={categories} />
         <section className="grid grid-cols-1 justify-items-stretch gap-4 pt-4 sm:grid-cols-3 md:grid-cols-4">
-          {bookmarks.map((bookmark) => (
-            <BookmarkCard
-              bookmark={bookmark}
-              key={bookmark.url}
-              categories={categories}
-            />
-          ))}
+          {bookmarks
+            .reduce((bookmarks, thisBookmark) => {
+              if (categoryFilter || tagFilter) {
+                if (thisBookmark.categoryId === categoryFilter) {
+                  bookmarks.push(thisBookmark)
+                } else if (
+                  thisBookmark.tags.some((tag) => tag.id === tagFilter)
+                ) {
+                  bookmarks.push(thisBookmark)
+                }
+              } else {
+                bookmarks.push(thisBookmark)
+              }
+              return bookmarks
+            }, [])
+            .map((bookmark) => (
+              <BookmarkCard
+                bookmark={bookmark}
+                key={bookmark.url}
+                categories={categories}
+              />
+            ))}
         </section>
       </div>
     </Layout>

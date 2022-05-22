@@ -35,7 +35,7 @@ export const toastSuccess = ({ title, body, dispatch, id }) => (
       className="pointer-events-auto absolute top-2 right-2 hover:cursor-pointer"
     >
       <svg
-        className="h-6 w-6 text-slate-300"
+        className="h-6 w-6 text-slate-200"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -89,7 +89,7 @@ export const toastError = ({ title, body, dispatch, id }) => (
       className="pointer-events-auto absolute top-2 right-2 hover:cursor-pointer"
     >
       <svg
-        className="h-6 w-6 text-slate-300"
+        className="h-6 w-6 text-slate-200"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -143,7 +143,7 @@ export const toastWarning = ({ title, body, dispatch, id }) => (
       className="pointer-events-auto absolute top-2 right-2 hover:cursor-pointer"
     >
       <svg
-        className="h-6 w-6 text-slate-300"
+        className="h-6 w-6 text-slate-200"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"

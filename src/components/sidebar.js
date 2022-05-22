@@ -4,6 +4,8 @@ import { useStore } from '@/lib/store'
 export default function Sidebar() {
   const categories = useStore((state) => state.categories)
   const tags = useStore((state) => state.tags)
+  const setCategoryFilter = useStore((state) => state.setCategoryFilter)
+  const setTagFilter = useStore((state) => state.setTagFilter)
 
   const toggleModal = (type, action) => {
     console.log('TOGGLEMODAL', type, action)
@@ -75,15 +77,15 @@ export default function Sidebar() {
               </svg>
             </div>
           </div>
-          <div className="ml-4 flex flex-col space-y-2">
+          <div className="ml-4 flex flex-col items-start space-y-2">
             {categories?.map((cat) => (
-              <Link
-                href={`/categories/${cat.name.toLowerCase()}`}
-                key={cat.name}
-                passHref
+              <button
+                onClick={() => setCategoryFilter(cat.id)}
+                key={cat.id}
+                className="inline-block text-left text-slate-400"
               >
-                <a className="text-slate-400">{cat.name}</a>
-              </Link>
+                {cat.name}
+              </button>
             ))}
           </div>
         </div>
@@ -123,20 +125,15 @@ export default function Sidebar() {
             </div>
           </div>
           <div className="ml-4 flex flex-col space-y-2">
-            {tags?.map((tag) => {
-              return (
-                <Link
-                  href={`/tags/${tag.name.toLowerCase()}`}
-                  passHref
-                  key={tag.name}
-                >
-                  <a className="text-slate-400">
-                    {tag.emoji}
-                    <span className="ml-2">{tag.name}</span>
-                  </a>
-                </Link>
-              )
-            })}
+            {tags?.map((tag) => (
+              <button
+                onClick={() => setTagFilter(tag.id)}
+                key={tag.id}
+                className="inline-block text-left text-slate-400"
+              >
+                {tag.emoji} {tag.name}
+              </button>
+            ))}
           </div>
         </div>
       </div>
