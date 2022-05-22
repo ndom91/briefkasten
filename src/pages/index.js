@@ -48,7 +48,7 @@ export default function Home() {
             .map((bookmark) => (
               <BookmarkCard
                 bookmark={bookmark}
-                key={bookmark.url}
+                key={bookmark.id}
                 categories={categories}
               />
             ))}

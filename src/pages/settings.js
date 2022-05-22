@@ -1,12 +1,98 @@
 import { getServerSession } from 'next-auth/next'
 import { useStore, initializeStore } from '@/lib/store'
+import { useState } from 'react'
 import Head from 'next/head'
 import Layout from '@/components/layout'
 import Sidebar from '@/components/sidebar'
 import { authOptions } from './api/auth/[...nextauth]'
+import { useToast, toastTypes } from '@/lib/hooks'
 import prisma from '@/lib/prisma'
 
-export default function Settings() {
+export default function Settings({ nextauth }) {
+  const bookmarks = useStore((state) => state.bookmarks)
+  const [fileContents, setFileContents] = useState('')
+  const [fileName, setFileName] = useState('')
+  const toast = useToast(5000)
+
+  const enqueueImageFix = () => {
+    console.log('Enqeueing Image Fix')
+    console.log('fetch("workers.cloudflare.dev/fetchScreenshots...)')
+  }
+
+  const exportBookmarks = () => {
+    console.log(bookmarks)
+  }
+
+  const handleInputFile = (file) => {
+    setFileName(file.name)
+    const fileReader = new FileReader()
+    fileReader.onloadend = (e) => {
+      setFileContents(e.currentTarget.result)
+    }
+    fileReader.readAsText(file)
+  }
+
+  const importBookmarks = async () => {
+    const domParser = new DOMParser()
+    const doc = domParser.parseFromString(fileContents, 'text/html')
+    const dataElements = doc.querySelectorAll('dl dt')
+    const bookmarks = Array.from(dataElements).map((element) => {
+      let url = ''
+      let title = ''
+      let desc = ''
+      let tags = ''
+      let date = ''
+
+      if (element.tagName === 'DT') {
+        title = element.textContent
+          ?.replaceAll('\n', '')
+          .trim()
+          .substring(0, 190)
+        url = element.firstElementChild?.attributes?.href.value.trim()
+        date = element.firstElementChild?.attributes?.add_date.value.trim()
+        tags = element.firstElementChild?.attributes?.tags.value
+          .trim()
+          .split(',')
+        desc = element.nextSibling?.innerText?.replaceAll('\n', '').trim()
+
+        return {
+          title,
+          url,
+          createdAt: parseInt(date)
+            ? new Date(parseInt(date) * 1000).toISOString()
+            : 0,
+          // tags,
+          desc,
+          userId: nextauth?.user?.userId,
+        }
+      }
+    })
+
+    const bulkCreateRes = await fetch('/api/bookmarks/bulk', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(bookmarks),
+    })
+    const bulkCreateData = await bulkCreateRes.json()
+    if (bulkCreateData.data.count === bookmarks.length) {
+      toast(
+        toastTypes.SUCCESS,
+        `Successfully imported ${bookmarks.length} bookmarks`
+      )
+    } else if (bulkCreateData.data.count) {
+      console.warn(bulkCreateData)
+      toast(
+        toastTypes.WARNING,
+        `Successfully imported only ${bookmarks.length} bookmarks`
+      )
+    } else {
+      console.error(bulkCreateData)
+      toast(toastTypes.ERROR, `Error importing bookmarks`)
+    }
+  }
+
   return (
     <Layout>
       <Head>
@@ -14,9 +100,146 @@ export default function Settings() {
       </Head>
       <Sidebar />
       <main className="flex flex-col space-y-4">
-        <section>
-          <h2>Import / Export</h2>
-        </section>
+        <div className="space-y-4 p-4">
+          <h2 className="text-xl">Settings</h2>
+          <section className="flex flex-col items-start space-y-2 rounded-md bg-slate-50 p-4">
+            <h2 className="text-lg text-slate-700">Import</h2>
+            <label className="text-slate-500">
+              Upload a file exported from another tool, or your browser, below.
+            </label>
+            <label className="flex w-1/3 cursor-pointer appearance-none justify-center rounded-md border border-dashed border-gray-300 bg-white px-3 py-6 text-sm transition hover:border-gray-400 focus:border-solid focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:opacity-75">
+              <span
+                htmlFor="photo-dropbox"
+                className="flex items-center space-x-2"
+              >
+                <svg className="h-6 w-6 stroke-gray-400" viewBox="0 0 256 256">
+                  <path
+                    d="M96,208H72A56,56,0,0,1,72,96a57.5,57.5,0,0,1,13.9,1.7"
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="24"
+                  ></path>
+                  <path
+                    d="M80,128a80,80,0,1,1,144,48"
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="24"
+                  ></path>
+                  <polyline
+                    points="118.1 161.9 152 128 185.9 161.9"
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="24"
+                  ></polyline>
+                  <line
+                    x1="152"
+                    y1="208"
+                    x2="152"
+                    y2="128"
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="24"
+                  ></line>
+                </svg>
+                <span className="text-xs font-medium text-gray-600">
+                  {!fileName ? (
+                    <span>
+                      Drop files to Attach, or{' '}
+                      <span className="text-blue-600 underline">browse</span>
+                    </span>
+                  ) : (
+                    <span>{fileName}</span>
+                  )}
+                </span>
+              </span>
+              <input
+                id="photo-dropbox"
+                type="file"
+                className="sr-only"
+                onChange={(e) => handleInputFile(e.target.files[0])}
+              />
+            </label>
+            <button
+              onClick={importBookmarks}
+              className="inline-block rounded-md bg-slate-800 px-3 py-2 text-white "
+            >
+              Import
+            </button>
+          </section>
+          <section className="flex flex-col items-start justify-center space-y-2 rounded-md bg-slate-50 p-4">
+            <h2 className="text-lg text-slate-700">Manual Image Fetch</h2>
+            <label className="text-slate-500">
+              After importing a large amount of bookmarks, you can kick off a
+              manual image fetch, which will tell our systems to go fetch images
+              for all your new bookmarks. This is normally done on a regular
+              basis every 24hrs any way, but you can initiate it now by clicking
+              below.
+              <code>html</code> file.
+            </label>
+            <button
+              onClick={enqueueImageFix}
+              className="rounded-md bg-slate-800 px-3 py-2 text-white "
+            >
+              Enqueue Image Fix
+            </button>
+          </section>
+          <section className="flex flex-col items-start justify-center space-y-2 rounded-md bg-slate-50 p-4">
+            <h2 className="text-lg text-slate-700">Export</h2>
+            <label className="text-slate-500">
+              Export your saved bookmarks from Briefkasten to an{' '}
+              <code>html</code> file.
+            </label>
+            <button
+              onClick={exportBookmarks}
+              className="rounded-md bg-slate-800 px-3 py-2 text-white "
+            >
+              Export
+            </button>
+          </section>
+          <section className="flex flex-col items-start justify-center space-y-2 rounded-md bg-slate-50 p-4">
+            <h2 className="text-lg text-slate-700">About</h2>
+            <label className="text-slate-500">
+              This is an open-source project written mainly by{' '}
+              <a
+                href="https://ndo.dev?utm_source=briefkasten-about"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-slate-600 hover:underline"
+              >
+                ndom91
+              </a>
+              . More information can be found at the links below.
+            </label>
+            <ul className="list-inside list-disc text-slate-500">
+              <li>
+                Repository:{' '}
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://github.com/ndom91/briefkasten"
+                  className="font-semibold text-slate-600 hover:underline"
+                >
+                  <code>ndom91/briefkasten</code>
+                </a>
+              </li>
+              <li>
+                License:{' '}
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-semibold text-slate-600 hover:underline"
+                  href="https://github.com/ndom91/briefkasten/blob/main/LICENSE"
+                >
+                  <code>MIT</code>
+                </a>
+              </li>
+            </ul>
+          </section>
+        </div>
       </main>
     </Layout>
   )
@@ -35,6 +258,16 @@ export async function getServerSideProps(context) {
     }
   }
 
+  const bookmarkData = await prisma.bookmark.findMany({
+    where: {
+      userId: nextauth.user.userId,
+    },
+    include: {
+      category: true,
+      tags: { include: { tag: true } },
+    },
+  })
+
   const categories = await prisma.category.findMany({
     where: {
       userId: nextauth.user.userId,
@@ -48,6 +281,7 @@ export async function getServerSideProps(context) {
 
   zustandStore.getState().setCategories(categories)
   zustandStore.getState().setTags(tags)
+  zustandStore.getState().setBookmarks(bookmarkData)
 
   return {
     props: {
