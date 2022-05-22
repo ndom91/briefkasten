@@ -146,7 +146,7 @@ export default function Tags({ nextauth }) {
                 <td className="px-6 py-4 text-right">
                   <button
                     onClick={() => saveNewTag()}
-                    className="flex items-center justify-center space-x-1 rounded-md bg-slate-700 py-1 px-2 font-medium text-white outline-none"
+                    className="flex items-center justify-center space-x-1 rounded-md bg-slate-700 py-1 px-2 pr-3 font-medium text-white outline-none"
                   >
                     <svg
                       className="h-6 w-6"
