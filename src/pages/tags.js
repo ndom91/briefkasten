@@ -136,9 +136,23 @@ export default function Tags({ nextauth }) {
                 <td className="px-6 py-4 text-right">
                   <button
                     onClick={() => saveNewTag()}
-                    className="font-medium text-slate-600 outline-none hover:underline focus:underline focus:underline-offset-2"
+                    className="flex items-center justify-center space-x-1 rounded-md bg-slate-700 py-1 px-2 font-medium text-white outline-none"
                   >
-                    Save
+                    <svg
+                      className="h-6 w-6"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                      />
+                    </svg>
+                    <span>Save</span>
                   </button>
                 </td>
               </tr>

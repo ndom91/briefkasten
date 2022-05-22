@@ -19,6 +19,9 @@ export default function BookmarkCard({ bookmark, categories }) {
     try {
       await fetch('/api/bookmarks', {
         method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({
           id,
           userId: session.user.userId,

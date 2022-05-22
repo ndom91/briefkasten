@@ -11,6 +11,7 @@ export default function Sidebar({ categories, tags }) {
       }
     }
   }
+
   return (
     <aside className="mx-4 flex flex-col space-y-4 rounded-lg bg-slate-50 p-6">
       <div className="flex flex-1 flex-col space-y-6">
@@ -71,17 +72,15 @@ export default function Sidebar({ categories, tags }) {
             </div>
           </div>
           <div className="ml-4 flex flex-col space-y-2">
-            {categories?.map((cat) => {
-              return (
-                <Link
-                  href={`/categories/${cat.name.toLowerCase()}`}
-                  key={cat.name}
-                  passHref
-                >
-                  <a className="text-slate-400">{cat.name}</a>
-                </Link>
-              )
-            })}
+            {categories?.map((cat) => (
+              <Link
+                href={`/categories/${cat.name.toLowerCase()}`}
+                key={cat.name}
+                passHref
+              >
+                <a className="text-slate-400">{cat.name}</a>
+              </Link>
+            ))}
           </div>
         </div>
         <div>
