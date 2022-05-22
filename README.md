@@ -4,6 +4,15 @@ Self-hosted bookmarking application. WIP 👷
 
 ![Screenshot](screenshot1.png)
 
+## 🎩 Features
+
+- Save by Browser Extension
+- Keyboard Shortcuts
+- Filter by Categories + Tags
+- Search
+- API
+- OAuth Login
+
 ## 🧺 Prerequisites
 
 To self-host this application, you'll need the following thins:
