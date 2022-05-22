@@ -11,11 +11,10 @@ import prisma from '@/lib/prisma'
 export default function Home() {
   const bookmarks = useStore((state) => state.bookmarks)
   const categories = useStore((state) => state.categories)
-  const tags = useStore((state) => state.tags)
 
   return (
     <Layout>
-      <Sidebar categories={categories} tags={tags} />
+      <Sidebar />
       <div className="flex flex-col space-y-2 pr-4">
         <QuickAdd categories={categories} />
         <section className="grid grid-cols-1 justify-items-stretch gap-4 pt-4 sm:grid-cols-3 md:grid-cols-4">

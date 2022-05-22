@@ -10,12 +10,21 @@ import { useToast, toastTypes } from '@/lib/hooks'
 import prisma from '@/lib/prisma'
 
 export default function Tags({ nextauth }) {
-  const categories = useStore((state) => state.categories)
-  const tags = useStore((state) => state.tags)
   const addTag = useStore((state) => state.addTag)
   const [tagName, setTagName] = useState('')
   const [tagEmoji, setTagEmoji] = useState('')
   const toast = useToast(5000)
+
+  const [searchString, setSearchString] = useState('')
+  const tags = useStore((state) => {
+    if (!searchString) {
+      return state.tags
+    } else {
+      return state.tags.filter((tag) =>
+        tag.name.toLowerCase().includes(searchString.toLowerCase())
+      )
+    }
+  })
 
   const saveNewTag = async () => {
     try {
@@ -48,7 +57,7 @@ export default function Tags({ nextauth }) {
       <Head>
         <title>Briefkasten | Tags</title>
       </Head>
-      <Sidebar categories={categories} tags={tags} />
+      <Sidebar />
       <div className="flex flex-col space-y-4">
         <div className="relative overflow-x-auto sm:rounded-lg">
           <div className="ml-1 mb-4">
@@ -73,6 +82,7 @@ export default function Tags({ nextauth }) {
               <input
                 type="text"
                 id="table"
+                onChange={(e) => setSearchString(e.target.value)}
                 className="block w-80 rounded-lg border border-transparent bg-slate-50 p-2.5 pl-10 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500  focus:ring-slate-500 "
                 placeholder="Search for items"
               />

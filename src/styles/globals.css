@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+#__next {
+  /* background-image: radial-gradient(#444cf784 1px, #e5e5f700 1px); */
+  /* background-size: 22px 22px; */
+}

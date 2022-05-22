@@ -1,6 +1,10 @@
 import Link from 'next/link'
+import { useStore } from '@/lib/store'
 
-export default function Sidebar({ categories, tags }) {
+export default function Sidebar() {
+  const categories = useStore((state) => state.categories)
+  const tags = useStore((state) => state.tags)
+
   const toggleModal = (type, action) => {
     console.log('TOGGLEMODAL', type, action)
     if (type === 'category') {
