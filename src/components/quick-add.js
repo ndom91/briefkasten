@@ -117,7 +117,7 @@ export default function QuickAdd({ categories }) {
           </button>
           <div className="relative flex-1">
             {!searchFocused && url.length === 0 ? (
-              <div className="absolute left-2 top-[1.1rem] z-10 text-xs text-slate-400 opacity-50">
+              <div className="pointer-events-none absolute left-2 top-[1.1rem] z-10 text-xs text-slate-400 opacity-50">
                 <span className="rounded-md bg-slate-200 p-1 px-2 ">
                   <kbd className="">alt</kbd>
                   <span> + </span>
@@ -149,7 +149,7 @@ export default function QuickAdd({ categories }) {
             form="url"
             onClick={() => submitUrl()}
             name="addBookmark"
-            className="flex w-full items-center space-x-2 rounded-md border border-transparent bg-slate-800 p-3 text-base font-medium text-white shadow transition duration-500 ease-in-out hover:bg-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-300 focus:ring-offset-2 focus:ring-offset-white sm:px-4"
+            className="flex w-full items-center space-x-2 rounded-md border border-transparent bg-slate-700 p-3 text-base font-medium text-white shadow transition duration-500 ease-in-out hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-300 focus:ring-offset-2 focus:ring-offset-white sm:px-4"
           >
             {loading ? (
               <svg

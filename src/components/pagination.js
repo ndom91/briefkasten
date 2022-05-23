@@ -43,7 +43,7 @@ const Pagination = ({
         onClick={onPrevious}
       >
         <svg
-          className="h-6 w-6 text-slate-400"
+          className="h-6 w-6 text-slate-800"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -57,13 +57,13 @@ const Pagination = ({
           />
         </svg>
       </li>
-      {paginationRange.map((pageNumber) => {
+      {paginationRange.map((pageNumber, i) => {
         // If the pageItem is a DOT, render the DOTS unicode character
         if (pageNumber === DOTS) {
           return (
             <li
-              key={pageNumber}
-              className="my-1 flex h-8 items-center rounded-md py-4 text-center tracking-tight text-slate-400 hover:cursor-default"
+              key={`${pageNumber}-${i}`}
+              className="my-1 flex h-8 items-center rounded-md py-4 text-center tracking-tight text-slate-800 hover:cursor-default"
             >
               &#8230;
             </li>
@@ -72,9 +72,9 @@ const Pagination = ({
 
         return (
           <li
-            key={pageNumber}
+            key={`${pageNumber}-${i}`}
             className={`m-0.5 flex h-8 items-center rounded-md px-2 py-4 text-center tracking-tight text-slate-400 transition hover:cursor-pointer hover:bg-slate-100 ${
-              pageNumber === currentPage ? 'bg-slate-200' : ''
+              pageNumber === currentPage ? 'bg-slate-800 text-slate-50' : ''
             }`}
             onClick={() => onPageChange(pageNumber)}
           >
@@ -91,7 +91,7 @@ const Pagination = ({
         onClick={onNext}
       >
         <svg
-          className="h-6 w-6 text-slate-400"
+          className="h-6 w-6 text-slate-800"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
