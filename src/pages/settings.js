@@ -99,147 +99,154 @@ export default function Settings({ nextauth }) {
         <title>Briefkasten | Settings</title>
       </Head>
       <Sidebar />
-      <main className="flex flex-col space-y-4">
-        <div className="space-y-4 p-4">
-          <h2 className="text-xl">Settings</h2>
-          <section className="flex flex-col items-start space-y-2 rounded-md bg-slate-50 p-4">
-            <h2 className="text-lg text-slate-700">Import</h2>
-            <label className="text-slate-500">
-              Upload a file exported from another tool, or your browser, below.
-            </label>
-            <label className="flex w-1/3 cursor-pointer appearance-none justify-center rounded-md border border-dashed border-gray-300 bg-white px-3 py-6 text-sm transition hover:border-gray-400 focus:border-solid focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:opacity-75">
-              <span
-                htmlFor="photo-dropbox"
-                className="flex items-center space-x-2"
-              >
-                <svg className="h-6 w-6 stroke-gray-400" viewBox="0 0 256 256">
-                  <path
-                    d="M96,208H72A56,56,0,0,1,72,96a57.5,57.5,0,0,1,13.9,1.7"
-                    fill="none"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="24"
-                  ></path>
-                  <path
-                    d="M80,128a80,80,0,1,1,144,48"
-                    fill="none"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="24"
-                  ></path>
-                  <polyline
-                    points="118.1 161.9 152 128 185.9 161.9"
-                    fill="none"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="24"
-                  ></polyline>
-                  <line
-                    x1="152"
-                    y1="208"
-                    x2="152"
-                    y2="128"
-                    fill="none"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="24"
-                  ></line>
-                </svg>
-                <span className="text-xs font-medium text-gray-600">
-                  {!fileName ? (
-                    <span>
-                      Drop files to Attach, or{' '}
-                      <span className="text-blue-600 underline">browse</span>
-                    </span>
-                  ) : (
-                    <span>{fileName}</span>
-                  )}
-                </span>
+      <main className="flex flex-col space-y-4 px-4 pt-4">
+        <h2 className="text-xl">Settings</h2>
+        <section className="flex flex-col items-start space-y-4 rounded-md bg-slate-50 p-4">
+          <h2 className="text-lg text-slate-700">Import</h2>
+          <label className="text-slate-500">
+            Upload a file exported from another tool, or your browser. Click{' '}
+            <q>browse</q> or drop a{' '}
+            <code className="rounded-md bg-slate-200 py-1 px-2">*.html</code>{' '}
+            file of bookmarks onto the area below. After the file has been
+            uploaded and its name appears in the upload widget, you can press{' '}
+            <q>Import</q> to start the import process.
+          </label>
+          <label className="flex w-1/2 cursor-pointer appearance-none justify-center rounded-md border border-dashed border-gray-300 bg-white px-3 py-6 text-sm transition hover:border-gray-400 focus:border-solid focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:opacity-75">
+            <span
+              htmlFor="photo-dropbox"
+              className="flex items-center space-x-2"
+            >
+              <svg className="h-6 w-6 stroke-gray-400" viewBox="0 0 256 256">
+                <path
+                  d="M96,208H72A56,56,0,0,1,72,96a57.5,57.5,0,0,1,13.9,1.7"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="24"
+                ></path>
+                <path
+                  d="M80,128a80,80,0,1,1,144,48"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="24"
+                ></path>
+                <polyline
+                  points="118.1 161.9 152 128 185.9 161.9"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="24"
+                ></polyline>
+                <line
+                  x1="152"
+                  y1="208"
+                  x2="152"
+                  y2="128"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="24"
+                ></line>
+              </svg>
+              <span className="text-xs font-medium text-gray-600">
+                {!fileName ? (
+                  <span>
+                    Drop files to Attach, or{' '}
+                    <span className="text-blue-600 underline">browse</span>
+                  </span>
+                ) : (
+                  <span>{fileName}</span>
+                )}
               </span>
-              <input
-                id="photo-dropbox"
-                type="file"
-                className="sr-only"
-                onChange={(e) => handleInputFile(e.target.files[0])}
-              />
-            </label>
-            <button
-              onClick={importBookmarks}
-              className="inline-block rounded-md bg-slate-800 px-3 py-2 text-white "
-            >
-              Import
-            </button>
-          </section>
-          <section className="flex flex-col items-start justify-center space-y-2 rounded-md bg-slate-50 p-4">
+            </span>
+            <input
+              id="photo-dropbox"
+              type="file"
+              className="sr-only"
+              onChange={(e) => handleInputFile(e.target.files[0])}
+            />
+          </label>
+          <button
+            onClick={importBookmarks}
+            className="inline-block rounded-md bg-slate-800 px-3 py-2 text-white "
+          >
+            Import
+          </button>
+        </section>
+        <section className="flex flex-col items-start justify-center space-y-4 rounded-md bg-slate-50 p-4">
+          <h2 className="text-lg text-slate-700">Export</h2>
+          <label className="text-slate-500">
+            Export your saved bookmarks from Briefkasten to an{' '}
+            <code className="rounded-md bg-slate-200 py-1 px-2">html</code>{' '}
+            file. This is a standardized bookmarks format which should work with
+            any other bookmarks manager and most browsers.
+          </label>
+          <button
+            onClick={exportBookmarks}
+            className="rounded-md bg-slate-800 px-3 py-2 text-white "
+          >
+            Export
+          </button>
+        </section>
+        <section className="flex flex-col items-start justify-center space-y-4 rounded-md bg-slate-50 p-4">
+          <div className="flex items-center">
             <h2 className="text-lg text-slate-700">Manual Image Fetch</h2>
-            <label className="text-slate-500">
-              After importing a large amount of bookmarks, you can kick off a
-              manual image fetch, which will tell our systems to go fetch images
-              for all your new bookmarks. This is normally done on a regular
-              basis every 24hrs any way, but you can initiate it now by clicking
-              below.
-              <code>html</code> file.
-            </label>
-            <button
-              onClick={enqueueImageFix}
-              className="rounded-md bg-slate-800 px-3 py-2 text-white "
+            <span className="ml-4 text-slate-400">(Coming Soon)</span>
+          </div>
+          <label className="text-slate-500">
+            After importing a large amount of bookmarks, you can kick off a
+            manual image fetch, which will tell our systems to go fetch images
+            for all your new bookmarks. This is normally done on a regular basis
+            every 24hrs any way, but you can initiate it now by clicking below.
+          </label>
+          <button
+            onClick={enqueueImageFix}
+            className="rounded-md bg-slate-800 px-3 py-2 text-white "
+          >
+            Enqueue Image Fix
+          </button>
+        </section>
+        <section className="flex-1" />
+        <section className="flex flex-col items-start justify-center space-y-4 rounded-md bg-slate-50 p-4">
+          <h2 className="text-lg text-slate-700">About</h2>
+          <label className="text-slate-500">
+            This is an open-source project written mainly by{' '}
+            <a
+              href="https://ndo.dev?utm_source=briefkasten-about"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-slate-600 hover:underline"
             >
-              Enqueue Image Fix
-            </button>
-          </section>
-          <section className="flex flex-col items-start justify-center space-y-2 rounded-md bg-slate-50 p-4">
-            <h2 className="text-lg text-slate-700">Export</h2>
-            <label className="text-slate-500">
-              Export your saved bookmarks from Briefkasten to an{' '}
-              <code>html</code> file.
-            </label>
-            <button
-              onClick={exportBookmarks}
-              className="rounded-md bg-slate-800 px-3 py-2 text-white "
-            >
-              Export
-            </button>
-          </section>
-          <section className="flex flex-col items-start justify-center space-y-2 rounded-md bg-slate-50 p-4">
-            <h2 className="text-lg text-slate-700">About</h2>
-            <label className="text-slate-500">
-              This is an open-source project written mainly by{' '}
+              ndom91
+            </a>
+            . More information can be found at the links below.
+          </label>
+          <ul className="list-inside list-disc text-slate-500">
+            <li>
+              Repository:{' '}
               <a
-                href="https://ndo.dev?utm_source=briefkasten-about"
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://github.com/ndom91/briefkasten"
+                className="font-semibold text-slate-600 hover:underline"
+              >
+                <code>ndom91/briefkasten</code>
+              </a>
+            </li>
+            <li>
+              License:{' '}
+              <a
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-semibold text-slate-600 hover:underline"
+                href="https://github.com/ndom91/briefkasten/blob/main/LICENSE"
               >
-                ndom91
+                <code>MIT</code>
               </a>
-              . More information can be found at the links below.
-            </label>
-            <ul className="list-inside list-disc text-slate-500">
-              <li>
-                Repository:{' '}
-                <a
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href="https://github.com/ndom91/briefkasten"
-                  className="font-semibold text-slate-600 hover:underline"
-                >
-                  <code>ndom91/briefkasten</code>
-                </a>
-              </li>
-              <li>
-                License:{' '}
-                <a
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-semibold text-slate-600 hover:underline"
-                  href="https://github.com/ndom91/briefkasten/blob/main/LICENSE"
-                >
-                  <code>MIT</code>
-                </a>
-              </li>
-            </ul>
-          </section>
-        </div>
+            </li>
+          </ul>
+        </section>
       </main>
     </Layout>
   )
