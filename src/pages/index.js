@@ -10,7 +10,7 @@ import QuickAdd from '@/components/quick-add'
 import Sidebar from '@/components/sidebar'
 import prisma from '@/lib/prisma'
 
-const PAGE_SIZE = 15
+const PAGE_SIZE = 12
 
 export default function Home() {
   const bookmarks = useStore((state) => state.bookmarks)
@@ -18,13 +18,37 @@ export default function Home() {
   const categoryFilter = useStore((state) => state.categoryFilter)
   const tagFilter = useStore((state) => state.tagFilter)
   const searchText = useStore((state) => state.searchText)
+  const [filteredLength, setFilteredLength] = useState(bookmarks.length)
   const [currentPage, setCurrentPage] = useState(1)
 
   const currentTableData = useMemo(() => {
     const firstPageIndex = (currentPage - 1) * PAGE_SIZE
     const lastPageIndex = firstPageIndex + PAGE_SIZE
-    return bookmarks.slice(firstPageIndex, lastPageIndex)
-  }, [currentPage, bookmarks])
+    return bookmarks
+      .reduce((bookmarks, thisBookmark) => {
+        if (categoryFilter || tagFilter) {
+          // Filter shown bookmarks selected sidebar filters
+          if (thisBookmark.categoryId === categoryFilter) {
+            bookmarks.push(thisBookmark)
+          } else if (thisBookmark.tags.some((tag) => tag.id === tagFilter)) {
+            bookmarks.push(thisBookmark)
+          }
+        } else if (searchText) {
+          // Filter shown bookmarks on search
+          if (
+            thisBookmark.url.includes(searchText) ||
+            thisBookmark.title.includes(searchText)
+          ) {
+            bookmarks.push(thisBookmark)
+          }
+        } else {
+          bookmarks.push(thisBookmark)
+        }
+        setFilteredLength(bookmarks.length)
+        return bookmarks
+      }, [])
+      .slice(firstPageIndex, lastPageIndex)
+  }, [currentPage, categoryFilter, tagFilter, searchText, bookmarks])
 
   return (
     <Layout>
@@ -32,41 +56,21 @@ export default function Home() {
       <div className="flex flex-col space-y-2 pr-4">
         <QuickAdd categories={categories} />
         <section className="grid grid-cols-1 justify-items-stretch gap-4 pt-4 sm:grid-cols-3 md:grid-cols-4">
-          {currentTableData
-            .reduce((bookmarks, thisBookmark) => {
-              if (categoryFilter || tagFilter) {
-                // Filter shown bookmarks selected sidebar filters
-                if (thisBookmark.categoryId === categoryFilter) {
-                  bookmarks.push(thisBookmark)
-                } else if (
-                  thisBookmark.tags.some((tag) => tag.id === tagFilter)
-                ) {
-                  bookmarks.push(thisBookmark)
-                }
-              } else if (searchText) {
-                // Filter shown bookmarks on search
-                if (
-                  thisBookmark.url.includes(searchText) ||
-                  thisBookmark.title.includes(searchText)
-                ) {
-                  bookmarks.push(thisBookmark)
-                }
-              } else {
-                bookmarks.push(thisBookmark)
-              }
-              return bookmarks
-            }, [])
-            .map((bookmark) => (
-              <BookmarkCard
-                bookmark={bookmark}
-                key={bookmark.id}
-                categories={categories}
-              />
-            ))}
+          {currentTableData.map((bookmark) => (
+            <BookmarkCard
+              bookmark={bookmark}
+              key={bookmark.id}
+              categories={categories}
+            />
+          ))}
         </section>
         <Pagination
           currentPage={currentPage}
-          totalCount={bookmarks.length}
+          totalCount={
+            searchText || categoryFilter || tagFilter
+              ? filteredLength
+              : bookmarks.length
+          }
           pageSize={PAGE_SIZE}
           onPageChange={(page) => setCurrentPage(page)}
         />

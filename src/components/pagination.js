@@ -1,16 +1,14 @@
 import React from 'react'
 import { usePagination, DOTS } from '../lib/hooks'
 
-const Pagination = (props) => {
-  const {
-    onPageChange,
-    totalCount,
-    siblingCount = 1,
-    currentPage,
-    pageSize,
-    className,
-  } = props
-
+const Pagination = ({
+  onPageChange,
+  totalCount,
+  siblingCount = 1,
+  currentPage,
+  pageSize,
+  className,
+}) => {
   const paginationRange = usePagination({
     currentPage,
     totalCount,
@@ -38,7 +36,6 @@ const Pagination = (props) => {
         className ? className : ''
       }`}
     >
-      {/* Left navigation arrow */}
       <li
         className={`my-1 flex h-8 items-center rounded-md py-4 text-center tracking-tight text-slate-400 transition hover:cursor-pointer hover:bg-slate-100 ${
           currentPage === 1 ? 'pointer-events-none hover:cursor-default' : ''
@@ -73,7 +70,6 @@ const Pagination = (props) => {
           )
         }
 
-        // Render our Page Pills
         return (
           <li
             key={pageNumber}
@@ -86,7 +82,6 @@ const Pagination = (props) => {
           </li>
         )
       })}
-      {/*  Right Navigation arrow */}
       <li
         className={`my-1 flex h-8 items-center rounded-md py-4 text-center tracking-tight text-slate-400 transition hover:cursor-pointer hover:bg-slate-100 ${
           currentPage === lastPage

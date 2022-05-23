@@ -151,7 +151,7 @@ export default function Sidebar() {
           />
           {searchText.length ? (
             <svg
-              className="absolute right-1 top-1 h-6 w-6 text-rose-400 hover:cursor-pointer"
+              className="absolute right-1.5 top-1.5 h-6 w-6 text-rose-300 hover:cursor-pointer"
               onClick={() => setSearchText('')}
               fill="none"
               stroke="currentColor"
