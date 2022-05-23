@@ -1,3 +1,4 @@
+import ImageKit from 'imagekit'
 import prisma from '@/lib/prisma'
 import { getSession } from 'next-auth/react'
 import { asyncFileReader } from '@/lib/helpers'
@@ -51,19 +52,19 @@ export default async function handler(req, res) {
           const imageBlob = await imageData.blob()
           const dataUrl = await asyncFileReader(imageBlob)
 
-          // Upload Base64 image to ImageKit
-          const uploadRes = await fetch(
-            `${baseUrl}/api/bookmarks/uploadImage?fileName=${
-              new URL(url).hostname
-            }`,
-            {
-              method: 'PUT',
-              body: dataUrl,
-            }
-          )
-          const uploadData = await uploadRes.json()
-          // Set image url
-          metadata.image = uploadData.url
+          const imagekit = new ImageKit({
+            publicKey: process.env.IMAGEKIT_PUB_KEY,
+            privateKey: process.env.IMAGEKIT_PRIV_KEY,
+            urlEndpoint: process.env.IMAGEKIT_URL,
+          })
+
+          // Upload image body to ImageKit
+          const imageRes = await imagekit.upload({
+            file: dataUrl,
+            fileName: `${new URL(url).hostname}.jpg`,
+          })
+
+          metadata.image = imageRes.url
         }
 
         // Begin inserting into db

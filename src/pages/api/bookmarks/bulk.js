@@ -42,7 +42,6 @@ export default async function handler(req, res) {
           data: body,
         })
 
-        res.setHeader('Access-Control-Allow-Origin', '*')
         return res.status(200).json({ data: upsertBookmarkRes })
       }
       case 'GET': {
