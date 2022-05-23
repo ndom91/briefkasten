@@ -1,3 +1,5 @@
+const defaultTheme = require('tailwindcss/defaultTheme')
+
 module.exports = {
   darkMode: 'class',
   content: [
@@ -6,6 +8,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Hind Madurai', ...defaultTheme.fontFamily.sans],
+        serif: ['Titillium Web', ...defaultTheme.fontFamily.serif],
+      },
       maxWidth: {
         '8xl': '90rem',
       },

@@ -29,22 +29,24 @@ export default function Navigation() {
           >
             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
           </svg>
-          <span className="ml-3 text-xl">Briefkasten</span>
+          <span className="ml-3 font-serif text-xl font-semibold">
+            Briefkasten
+          </span>
         </div>
       </Link>
       <nav className="flex flex-wrap items-center justify-center space-x-8 text-base md:ml-auto">
         <Link href="/categories" passHref>
-          <a className="rounded p-2 outline-none transition duration-300 ease-in-out hover:outline-none hover:ring-2 hover:ring-slate-200 hover:ring-offset-transparent focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-transparent">
+          <a className="rounded p-2 font-serif outline-none transition duration-300 ease-in-out hover:outline-none hover:ring-2 hover:ring-slate-200 hover:ring-offset-transparent focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-transparent">
             Categories
           </a>
         </Link>
         <Link href="/tags" passHref>
-          <a className="rounded p-2 outline-none transition duration-300 ease-in-out hover:outline-none hover:ring-2 hover:ring-slate-200 hover:ring-offset-transparent focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-transparent">
+          <a className="rounded p-2 font-serif outline-none transition duration-300 ease-in-out hover:outline-none hover:ring-2 hover:ring-slate-200 hover:ring-offset-transparent focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-transparent">
             Tags
           </a>
         </Link>
         <Link href="/settings" passHref>
-          <a className="rounded p-2 outline-none transition duration-300 ease-in-out hover:outline-none hover:ring-2 hover:ring-slate-200 hover:ring-offset-transparent focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-transparent">
+          <a className="rounded p-2 font-serif outline-none transition duration-300 ease-in-out hover:outline-none hover:ring-2 hover:ring-slate-200 hover:ring-offset-transparent focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-transparent">
             Settings
           </a>
         </Link>
@@ -64,18 +66,9 @@ export default function Navigation() {
               className="h-6 w-6 rounded-full py-4"
             />
           )}
-          <span className="my-2 ml-4">{!session ? 'Login' : 'Logout'}</span>
-          <svg
-            fill="none"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            className="ml-1 h-4 w-4"
-            viewBox="0 0 24 24"
-          >
-            <path d="M5 12h14M12 5l7 7-7 7"></path>
-          </svg>
+          <span className="my-2 ml-4 font-serif">
+            {!session ? 'Login' : 'Logout'}
+          </span>
         </button>
       </nav>
     </nav>

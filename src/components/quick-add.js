@@ -180,7 +180,7 @@ export default function QuickAdd({ categories }) {
                 />
               </svg>
             )}
-            <span>Save</span>
+            <span className="font-serif">Save</span>
           </button>
         </div>
       </div>
@@ -190,7 +190,7 @@ export default function QuickAdd({ categories }) {
             <div className="w-full space-y-0.5 px-2">
               <label
                 htmlFor="category"
-                className="text-xs font-medium uppercase tracking-tight text-slate-500"
+                className="text-xs font-semibold uppercase  text-slate-500"
               >
                 Title
               </label>
@@ -206,7 +206,7 @@ export default function QuickAdd({ categories }) {
             <div className="w-full space-y-0.5 px-2">
               <label
                 htmlFor="category"
-                className="text-xs font-medium uppercase tracking-tight text-slate-500"
+                className="text-xs font-semibold uppercase  text-slate-500"
               >
                 Category
               </label>
@@ -229,7 +229,7 @@ export default function QuickAdd({ categories }) {
             <div className="w-full space-y-0.5 px-2">
               <label
                 htmlFor="tags"
-                className="text-xs font-medium uppercase tracking-tight text-slate-500"
+                className="text-xs font-semibold uppercase  text-slate-500"
               >
                 Tags
               </label>
@@ -245,7 +245,7 @@ export default function QuickAdd({ categories }) {
             <div className="w-full overflow-hidden rounded-md px-2 transition focus-within:border-slate-200 focus-within:ring-0">
               <label
                 htmlFor="description"
-                className="text-xs font-medium uppercase tracking-tight text-slate-500"
+                className="text-xs font-semibold uppercase  text-slate-500"
               >
                 Description
               </label>
@@ -258,7 +258,7 @@ export default function QuickAdd({ categories }) {
                 className="block w-full rounded-md border-transparent bg-white text-sm transition focus:border-slate-200 focus:ring-slate-200 disabled:cursor-not-allowed disabled:bg-slate-900 disabled:opacity-75"
               ></textarea>
               <div className="flex items-center pb-[0.2rem] pt-3">
-                <span className="rounded-lg bg-slate-200 px-2 py-1 text-[0.6rem] uppercase text-slate-400">
+                <span className="rounded-lg bg-slate-200 px-2 py-1 text-[0.6rem] font-semibold uppercase text-slate-400">
                   Leave blank to use the default page title and description
                 </span>
               </div>
