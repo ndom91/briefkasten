@@ -1,78 +1,117 @@
-import Link from 'next/link'
+import React from 'react'
+import { usePagination, DOTS } from '../lib/hooks'
 
-export default function Pagination() {
+const Pagination = (props) => {
+  const {
+    onPageChange,
+    totalCount,
+    siblingCount = 1,
+    currentPage,
+    pageSize,
+    className,
+  } = props
+
+  const paginationRange = usePagination({
+    currentPage,
+    totalCount,
+    siblingCount,
+    pageSize,
+  })
+
+  // If there are less than 2 times in pagination range we shall not render the component
+  if (currentPage === 0 || paginationRange.length < 2) {
+    return null
+  }
+
+  const onNext = () => {
+    onPageChange(currentPage + 1)
+  }
+
+  const onPrevious = () => {
+    onPageChange(currentPage - 1)
+  }
+
+  let lastPage = paginationRange[paginationRange.length - 1]
   return (
-    <ol className="flex justify-center space-x-1 text-xs font-medium">
-      <li>
-        <Link
-          href="/?page=1"
-          className="inline-flex h-8 w-8 items-center justify-center rounded border border-gray-100"
+    <ul
+      className={`mt-4 flex list-none items-center justify-center ${
+        className ? className : ''
+      }`}
+    >
+      {/* Left navigation arrow */}
+      <li
+        className={`my-1 flex h-8 items-center rounded-md py-4 text-center tracking-tight text-slate-400 transition hover:cursor-pointer hover:bg-slate-100 ${
+          currentPage === 1 ? 'pointer-events-none hover:cursor-default' : ''
+        }`}
+        onClick={onPrevious}
+      >
+        <svg
+          className="h-6 w-6 text-slate-400"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-3 w-3"
-            viewBox="0 0 20 20"
-            fill="currentColor"
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M15 19l-7-7 7-7"
+          />
+        </svg>
+      </li>
+      {paginationRange.map((pageNumber) => {
+        // If the pageItem is a DOT, render the DOTS unicode character
+        if (pageNumber === DOTS) {
+          return (
+            <li
+              key={pageNumber}
+              className="my-1 flex h-8 items-center rounded-md py-4 text-center tracking-tight text-slate-400 hover:cursor-default"
+            >
+              &#8230;
+            </li>
+          )
+        }
+
+        // Render our Page Pills
+        return (
+          <li
+            key={pageNumber}
+            className={`m-0.5 flex h-8 items-center rounded-md px-2 py-4 text-center tracking-tight text-slate-400 transition hover:cursor-pointer hover:bg-slate-100 ${
+              pageNumber === currentPage ? 'bg-slate-200' : ''
+            }`}
+            onClick={() => onPageChange(pageNumber)}
           >
-            <path
-              fillRule="evenodd"
-              d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </Link>
-      </li>
-
-      <li>
-        <Link
-          href="/?page=1"
-          className="block h-8 w-8 rounded border border-gray-100 text-center leading-8"
+            {pageNumber}
+          </li>
+        )
+      })}
+      {/*  Right Navigation arrow */}
+      <li
+        className={`my-1 flex h-8 items-center rounded-md py-4 text-center tracking-tight text-slate-400 transition hover:cursor-pointer hover:bg-slate-100 ${
+          currentPage === lastPage
+            ? 'pointer-events-none hover:cursor-default'
+            : ''
+        }`}
+        onClick={onNext}
+      >
+        <svg
+          className="h-6 w-6 text-slate-400"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
         >
-          1
-        </Link>
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M9 5l7 7-7 7"
+          />
+        </svg>
       </li>
-
-      <li className="block h-8 w-8 rounded border-blue-600 bg-blue-600 text-center leading-8 text-white">
-        2
-      </li>
-
-      <li>
-        <Link
-          href="/?page=3"
-          className="block h-8 w-8 rounded border border-gray-100 text-center leading-8"
-        >
-          3
-        </Link>
-      </li>
-
-      <li>
-        <Link
-          href="/?page=4"
-          className="block h-8 w-8 rounded border border-gray-100 text-center leading-8"
-        >
-          4
-        </Link>
-      </li>
-
-      <li>
-        <Link
-          href="/?page=3"
-          className="inline-flex h-8 w-8 items-center justify-center rounded border border-gray-100"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-3 w-3"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </Link>
-      </li>
-    </ol>
+    </ul>
   )
 }
+
+export default Pagination

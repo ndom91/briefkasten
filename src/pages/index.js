@@ -1,12 +1,16 @@
+import { useMemo, useState } from 'react'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/api/auth/[...nextauth]'
 import { useStore, initializeStore } from '@/lib/store'
 
+import Pagination from '@/components/pagination'
 import BookmarkCard from '@/components/bookmark-card'
 import Layout from '@/components/layout'
 import QuickAdd from '@/components/quick-add'
 import Sidebar from '@/components/sidebar'
 import prisma from '@/lib/prisma'
+
+const PAGE_SIZE = 15
 
 export default function Home() {
   const bookmarks = useStore((state) => state.bookmarks)
@@ -14,6 +18,13 @@ export default function Home() {
   const categoryFilter = useStore((state) => state.categoryFilter)
   const tagFilter = useStore((state) => state.tagFilter)
   const searchText = useStore((state) => state.searchText)
+  const [currentPage, setCurrentPage] = useState(1)
+
+  const currentTableData = useMemo(() => {
+    const firstPageIndex = (currentPage - 1) * PAGE_SIZE
+    const lastPageIndex = firstPageIndex + PAGE_SIZE
+    return bookmarks.slice(firstPageIndex, lastPageIndex)
+  }, [currentPage, bookmarks])
 
   return (
     <Layout>
@@ -21,7 +32,7 @@ export default function Home() {
       <div className="flex flex-col space-y-2 pr-4">
         <QuickAdd categories={categories} />
         <section className="grid grid-cols-1 justify-items-stretch gap-4 pt-4 sm:grid-cols-3 md:grid-cols-4">
-          {bookmarks
+          {currentTableData
             .reduce((bookmarks, thisBookmark) => {
               if (categoryFilter || tagFilter) {
                 // Filter shown bookmarks selected sidebar filters
@@ -53,6 +64,12 @@ export default function Home() {
               />
             ))}
         </section>
+        <Pagination
+          currentPage={currentPage}
+          totalCount={bookmarks.length}
+          pageSize={PAGE_SIZE}
+          onPageChange={(page) => setCurrentPage(page)}
+        />
       </div>
     </Layout>
   )
