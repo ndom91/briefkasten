@@ -95,7 +95,7 @@ export default function QuickAdd({ categories }) {
         <div className="flex min-w-0 flex-1">
           <button
             onClick={toggleOpen}
-            className="flex w-10 items-center justify-center rounded-l-md border-transparent bg-slate-100 px-2 outline-none transition focus-within:z-10 focus-within:ring-2 focus-within:ring-slate-200 focus-within:ring-offset-2 focus-within:ring-offset-white focus:outline-none"
+            className="hidden w-10 items-center justify-center rounded-l-md border-transparent bg-slate-100 px-2 outline-none transition focus-within:z-10 focus-within:ring-2 focus-within:ring-slate-200 focus-within:ring-offset-2 focus-within:ring-offset-white focus:outline-none md:flex"
           >
             <svg
               title="down-chevron"
@@ -117,7 +117,7 @@ export default function QuickAdd({ categories }) {
           </button>
           <div className="relative flex-1">
             {!searchFocused && url.length === 0 ? (
-              <div className="pointer-events-none absolute left-2 top-[1.1rem] z-10 text-xs text-slate-400 opacity-50">
+              <div className="pointer-events-none absolute left-2 top-[1.1rem] z-10 hidden text-xs text-slate-400 opacity-50 md:inline-block">
                 <span className="rounded-md bg-slate-200 p-1 px-2 ">
                   <kbd className="">alt</kbd>
                   <span> + </span>
@@ -129,31 +129,31 @@ export default function QuickAdd({ categories }) {
             <input
               type="url"
               ref={insertRef}
-              className="block w-full transform rounded-r-md border border-transparent bg-slate-100 py-3 pl-2 pr-5 text-base text-neutral-600 placeholder-gray-300 transition duration-500 ease-in-out focus:z-10 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-white"
-              placeholder=""
+              className="block w-full transform rounded-r-md rounded-l-md border border-transparent bg-slate-100 py-3 pl-2 pr-5 text-base text-neutral-600 placeholder-slate-300 transition duration-500 ease-in-out focus:z-10 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-white md:rounded-l-none md:placeholder:text-transparent"
+              placeholder="    Add.."
               value={url}
               onFocus={() => setSearchFocused(true)}
               onBlur={() => setSearchFocused(false)}
               onChange={(event) => setUrl(event.target.value)}
             />
-            <div className="absolute right-4 top-3 rounded-md bg-slate-200 p-1 px-2 text-xs text-slate-400">
+            <div className="absolute right-4 top-3 hidden rounded-md bg-slate-200 p-1 px-2 text-xs text-slate-400 md:inline-block">
               <kbd className="">alt</kbd>
               <span> + </span>
               <kbd className="">s</kbd>
             </div>
           </div>
         </div>
-        <div className="mt-4 sm:mt-0 sm:ml-3">
+        <div className="ml-2 sm:ml-3">
           <button
             type="submit"
             form="url"
             onClick={() => submitUrl()}
             name="addBookmark"
-            className="flex w-full items-center space-x-2 rounded-md border border-transparent bg-slate-700 p-3 text-base font-medium text-white shadow transition duration-500 ease-in-out hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-300 focus:ring-offset-2 focus:ring-offset-white sm:px-4"
+            className="flex w-full items-center space-x-2 rounded-md border border-transparent bg-slate-800 p-3 text-base font-medium text-white shadow transition duration-500 ease-in-out hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-300 focus:ring-offset-2 focus:ring-offset-white sm:px-4"
           >
             {loading ? (
               <svg
-                className="mr-1 h-5 w-5 animate-spin text-white"
+                className="h-5 w-5 animate-spin text-white sm:mr-1"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -173,14 +173,14 @@ export default function QuickAdd({ categories }) {
                 ></path>
               </svg>
             ) : (
-              <svg className="mr-1 h-6 w-6 text-white" viewBox="0 0 24 24">
+              <svg className="h-6 w-6 text-white sm:mr-1" viewBox="0 0 24 24">
                 <path
                   fill="currentColor"
                   d="M17 3H5C3.89 3 3 3.9 3 5V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V7L17 3M19 19H5V5H16.17L19 7.83V19M12 12C10.34 12 9 13.34 9 15S10.34 18 12 18 15 16.66 15 15 13.66 12 12 12M6 6H15V10H6V6Z"
                 />
               </svg>
             )}
-            <span className="font-serif">Save</span>
+            <span className="hidden font-serif sm:inline">Save</span>
           </button>
         </div>
       </div>

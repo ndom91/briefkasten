@@ -14,7 +14,7 @@ export default function Navigation() {
   }
 
   return (
-    <nav className="flex items-center bg-white py-4 px-4">
+    <nav className="mt-2 flex items-center justify-between bg-white py-4 px-4">
       <Link href="/" passHref>
         <div className="flex items-center hover:cursor-pointer ">
           <svg
@@ -34,25 +34,25 @@ export default function Navigation() {
           </span>
         </div>
       </Link>
-      <nav className="flex flex-wrap items-center justify-center space-x-8 text-base md:ml-auto">
+      <nav className="flex flex-wrap items-center justify-center space-x-2 text-base md:ml-auto md:space-x-8">
         <Link href="/categories" passHref>
-          <a className="rounded p-2 font-serif outline-none transition duration-300 ease-in-out hover:outline-none hover:ring-2 hover:ring-slate-200 hover:ring-offset-transparent focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-transparent">
+          <a className="rounded font-serif outline-none transition duration-300 ease-in-out hover:outline-none hover:ring-2 hover:ring-slate-200 hover:ring-offset-transparent focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-transparent sm:p-2">
             Categories
           </a>
         </Link>
         <Link href="/tags" passHref>
-          <a className="rounded p-2 font-serif outline-none transition duration-300 ease-in-out hover:outline-none hover:ring-2 hover:ring-slate-200 hover:ring-offset-transparent focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-transparent">
+          <a className="rounded font-serif outline-none transition duration-300 ease-in-out hover:outline-none hover:ring-2 hover:ring-slate-200 hover:ring-offset-transparent focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-transparent sm:p-2">
             Tags
           </a>
         </Link>
         <Link href="/settings" passHref>
-          <a className="rounded p-2 font-serif outline-none transition duration-300 ease-in-out hover:outline-none hover:ring-2 hover:ring-slate-200 hover:ring-offset-transparent focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-transparent">
+          <a className="rounded font-serif outline-none transition duration-300 ease-in-out hover:outline-none hover:ring-2 hover:ring-slate-200 hover:ring-offset-transparent focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-transparent sm:p-2">
             Settings
           </a>
         </Link>
         <button
           onClick={() => signinHandler()}
-          className="mt-4 inline-flex items-center rounded border-0 bg-gray-100 px-3 py-1 text-base transition duration-300 ease-in-out hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-white md:mt-0"
+          className="inline-flex items-center rounded border-0 bg-gray-100 px-3 py-1 text-base transition duration-300 ease-in-out hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-white md:mt-0"
         >
           {session && (
             <Image

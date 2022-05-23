@@ -113,7 +113,7 @@ export default function Sidebar() {
   }
 
   return (
-    <aside className="mx-4 flex flex-col space-y-4 rounded-lg bg-slate-50 p-6">
+    <aside className="mx-1 mr-4 flex flex-col space-y-4 rounded-lg bg-slate-50 p-4 sm:ml-2 md:mx-4 md:p-6">
       <div className="flex flex-1 flex-col space-y-6">
         <div className="relative flex w-full items-center justify-start">
           <svg
@@ -131,7 +131,7 @@ export default function Sidebar() {
             />
           </svg>
           {!searchFocused && searchText.length === 0 ? (
-            <div className="pointer-events-none absolute left-8 top-[0.65rem] z-10 text-xs text-slate-400 opacity-50">
+            <div className="pointer-events-none absolute left-8 top-[0.65rem] z-10 hidden text-xs text-slate-400 opacity-50 lg:inline-block">
               <span className="rounded-md bg-slate-200 p-1 px-2 ">
                 <kbd className="">ctrl</kbd>
                 <span> + </span>
@@ -171,7 +171,7 @@ export default function Sidebar() {
           <Link href="/">
             <div className="flex items-center justify-start space-x-2 hover:cursor-pointer">
               <svg
-                className="h-6 w-6 text-slate-300"
+                className="h-6 w-6 text-slate-800"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -191,7 +191,7 @@ export default function Sidebar() {
         <div>
           <div className="mb-2 flex items-center justify-start space-x-2">
             <svg
-              className="h-6 w-6 text-slate-300"
+              className="h-6 w-6 text-slate-800"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -204,8 +204,8 @@ export default function Sidebar() {
                 d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
               />
             </svg>
-            <h2 className="font-serif text-lg text-slate-600">Categories</h2>
-            <div className="flex flex-1 justify-end hover:cursor-pointer">
+            <h2 className="font-serif text-lg text-slate-600">Category</h2>
+            <div className="hidden flex-1 justify-end hover:cursor-pointer lg:flex">
               <button
                 className="rounded-md outline-none focus:ring-2 focus:ring-slate-200"
                 onClick={() => toggleQuickAdd('category')}
@@ -227,7 +227,7 @@ export default function Sidebar() {
               </button>
             </div>
           </div>
-          <div className="ml-4 flex flex-col items-start space-y-2">
+          <div className="ml-2 flex flex-col items-start space-y-2 md:ml-4">
             {categories?.map((cat) => (
               <button
                 onClick={() => applyCategoryFilter(cat.id)}
@@ -288,7 +288,7 @@ export default function Sidebar() {
         <div>
           <div className="mb-2 flex items-center justify-start space-x-2">
             <svg
-              className="h-6 w-6 text-slate-300"
+              className="h-6 w-6 text-slate-800"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -301,8 +301,8 @@ export default function Sidebar() {
                 d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
               />
             </svg>
-            <h2 className="font-serif text-lg text-slate-600">Tags</h2>
-            <div className="flex flex-1 justify-end hover:cursor-pointer">
+            <h2 className="font-serif text-lg text-slate-600">Tag</h2>
+            <div className="hidden flex-1 justify-end hover:cursor-pointer lg:flex">
               <button
                 className="rounded-md outline-none focus:ring-2 focus:ring-slate-200"
                 onClick={() => toggleQuickAdd('tag')}
@@ -324,7 +324,7 @@ export default function Sidebar() {
               </button>
             </div>
           </div>
-          <div className="ml-4 flex flex-col items-start space-y-2">
+          <div className="ml-2 flex flex-col items-start space-y-2 md:ml-4">
             {tags?.map((tag) => (
               <button
                 onClick={() => applyTagFilter(tag.id)}

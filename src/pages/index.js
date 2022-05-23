@@ -55,7 +55,7 @@ export default function Home() {
       <Sidebar />
       <div className="flex flex-col space-y-2 pr-4">
         <QuickAdd categories={categories} />
-        <section className="grid min-h-[1055px] grid-cols-1 grid-rows-3 justify-items-stretch gap-4 sm:grid-cols-3 md:grid-cols-4">
+        <section className="grid min-h-[1055px] grid-cols-1 grid-rows-3 justify-items-stretch gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {currentTableData.map((bookmark) => (
             <BookmarkCard
               bookmark={bookmark}
