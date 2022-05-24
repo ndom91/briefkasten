@@ -11,7 +11,7 @@ const metascraper = require('metascraper')([
 
 export default async function handler(req, res) {
   const session = await getSession({ req })
-  const { method, headers, body } = req
+  const { method, headers, query, body } = req
 
   const protocol = headers['x-forwarded-proto'] || 'http'
   const baseUrl = req
@@ -151,7 +151,48 @@ export default async function handler(req, res) {
           .json({ data: { ...upsertBookmarkRes, tags: upsertTagRes ?? [] } })
       }
       case 'GET': {
-        return res.status(200).json({ results: ['Hello', 'World'] })
+        let bookmarksResults
+        const { q, limit = 10 } = query
+        const { authorization: userId } = headers
+
+        if (!userId) {
+          return res.status(400).json({ message: 'Missing required field(s)' })
+        }
+
+        try {
+          bookmarksResults = await prisma.bookmark.findMany({
+            take: parseInt(limit),
+            distinct: ['url'],
+            where: {
+              AND: {
+                userId,
+              },
+              OR: [
+                {
+                  desc: {
+                    search: `*${q}*`,
+                  },
+                },
+                {
+                  url: {
+                    search: `*${q}*`,
+                  },
+                },
+                {
+                  title: {
+                    search: `*${q}*`,
+                  },
+                },
+              ],
+            },
+          })
+        } catch (error) {
+          console.error('ERR', error)
+          return res.status(500).json({ message: error })
+        }
+
+        res.setHeader('Access-Control-Allow-Origin', '*')
+        return res.status(200).json({ results: bookmarksResults })
       }
       case 'DELETE': {
         const { id, userId, tags = [] } = body

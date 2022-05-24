@@ -1,6 +1,6 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["referentialIntegrity"]
+  previewFeatures = ["referentialIntegrity", "fullTextIndex", "fullTextSearch"]
 }
 
 datasource db {
@@ -22,6 +22,8 @@ model Bookmark {
   userId      String
   createdAt   DateTime     @default(now())
 
+
+  @@fulltext([title, url, desc])
   @@unique([url, userId])
   @@index([categoryId])
   @@index([userId])

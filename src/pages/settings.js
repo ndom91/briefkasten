@@ -1,6 +1,7 @@
 import { getServerSession } from 'next-auth/next'
 import { useStore, initializeStore } from '@/lib/store'
 import { useState } from 'react'
+import { useCopyToClipboard } from 'react-use'
 import Head from 'next/head'
 import Layout from '@/components/layout'
 import Sidebar from '@/components/sidebar'
@@ -13,6 +14,7 @@ export default function Settings({ nextauth }) {
   const [fileContents, setFileContents] = useState('')
   const [fileName, setFileName] = useState('')
   const toast = useToast(5000)
+  const [_, copyToClipboard] = useCopyToClipboard()
 
   const enqueueImageFix = () => {
     console.log('Enqeueing Image Fix')
@@ -75,7 +77,9 @@ export default function Settings({ nextauth }) {
       },
       body: JSON.stringify(bookmarks),
     })
+
     const bulkCreateData = await bulkCreateRes.json()
+
     if (bulkCreateData.data.count === bookmarks.length) {
       toast(
         toastTypes.SUCCESS,
@@ -93,6 +97,11 @@ export default function Settings({ nextauth }) {
     }
   }
 
+  const copyUserId = () => {
+    copyToClipboard(nextauth?.user?.userId)
+    toast(toastTypes.SUCCESS, 'Copied Token')
+  }
+
   return (
     <Layout>
       <Head>
@@ -101,6 +110,47 @@ export default function Settings({ nextauth }) {
       <Sidebar />
       <main className="flex flex-col space-y-4 px-4 pt-4">
         <h2 className="text-xl">Settings</h2>
+        <section className="flex flex-col items-start justify-center space-y-4 rounded-md bg-slate-50 p-4">
+          <div className="flex items-center">
+            <h2 className="text-lg text-slate-700">API Token</h2>
+          </div>
+          <label className="text-slate-500">
+            For use in the{' '}
+            <a
+              href="https://github.com/ndom91/briefkasten-extension"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="outline-none focus:underline"
+            >
+              briefkasten extension
+            </a>
+            , you can use the following token.
+          </label>
+          <div className="relative flex">
+            <pre className="rounded-md bg-slate-200 p-2 pl-4 pr-10">
+              {nextauth?.user?.userId}
+            </pre>
+            <button
+              onClick={() => copyUserId()}
+              className="absolute right-2 top-1.5 rounded-md p-1 text-slate-500 outline-none hover:text-slate-700 focus:ring-2 focus:ring-slate-300"
+            >
+              <svg
+                className="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"
+                />
+              </svg>
+            </button>
+          </div>
+        </section>
         <section className="flex flex-col items-start space-y-4 rounded-md bg-slate-50 p-4">
           <h2 className="text-lg text-slate-700">Import</h2>
           <label className="text-slate-500">
@@ -175,10 +225,15 @@ export default function Settings({ nextauth }) {
           </button>
         </section>
         <section className="flex flex-col items-start justify-center space-y-4 rounded-md bg-slate-50 p-4">
-          <h2 className="text-lg text-slate-700">Export</h2>
+          <div className="flex items-center">
+            <h2 className="text-lg text-slate-700">Export</h2>
+            <span className="ml-4 text-slate-400">(Coming Soon)</span>
+          </div>
           <label className="text-slate-500">
-            Export your saved bookmarks from Briefkasten to an{' '}
-            <code className="rounded-md bg-slate-200 py-1 px-2">html</code>{' '}
+            Export your saved bookmarks from Briefkasten to a{' '}
+            <code className="rounded-md bg-slate-200 py-1 px-2">
+              bookmarks.html
+            </code>{' '}
             file. This is a standardized bookmarks format which should work with
             any other bookmarks manager and most browsers.
           </label>
