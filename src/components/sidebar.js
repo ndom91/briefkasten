@@ -28,6 +28,8 @@ export default function Sidebar() {
   const [quickAddTag, setQuickAddTag] = useState('')
   const toast = useToast(5000)
   const searchRef = useRef()
+  const quickAddTagRef = useRef()
+  const quickAddCategoryRef = useRef()
 
   useKeyPress((e) => {
     if (e.type === 'keydown') {
@@ -147,7 +149,8 @@ export default function Sidebar() {
             onFocus={() => setSearchFocused(true)}
             onBlur={() => setSearchFocused(false)}
             onChange={(e) => setSearchText(e.target.value)}
-            className="w-full rounded-md border-2 border-slate-200 py-1 px-2 pl-8 pr-8 text-base text-slate-600 outline-none placeholder:text-slate-200 focus:border-slate-200 focus:ring-2 focus:ring-slate-200 focus:ring-offset-transparent"
+            // className="w-full rounded-md border-2 border-slate-200 py-1 px-2 pl-8 pr-8 text-base text-slate-600 outline-none placeholder:text-slate-200 focus:border-slate-200 focus:ring-2 focus:ring-slate-200 focus:ring-offset-transparent"
+            className="focus:(border-slate-200,ring-2,ring-slate-200,ring-offset-transparent) w-full rounded-md border-2 border-slate-200 py-1 px-2 pl-8 pr-8 text-base text-slate-600 outline-none placeholder:text-slate-200"
           />
           {searchText.length ? (
             <svg
@@ -207,8 +210,13 @@ export default function Sidebar() {
             <h2 className="font-serif text-lg text-slate-600">Category</h2>
             <div className="hidden flex-1 justify-end hover:cursor-pointer lg:flex">
               <button
-                className="rounded-md outline-none focus:ring-2 focus:ring-slate-200"
-                onClick={() => toggleQuickAdd('category')}
+                className="focus:(ring-2,ring-slate-200) rounded-md outline-none"
+                onClick={() => {
+                  toggleQuickAdd('category')
+                  setTimeout(() => {
+                    quickAddCategoryRef.current.focus()
+                  }, 0)
+                }}
               >
                 <svg
                   className="h-6 w-6 text-slate-300"
@@ -232,7 +240,7 @@ export default function Sidebar() {
               <button
                 onClick={() => applyCategoryFilter(cat.id)}
                 key={cat.id}
-                className={`inline-block rounded-md px-1 text-left font-serif text-slate-400 outline-none focus:ring-2 focus:ring-slate-200 ${
+                className={`focus:(ring-2,ring-slate-200) inline-block rounded-md px-1 text-left font-serif text-slate-400 outline-none ${
                   categoryFilter === cat.id && 'font-extrabold'
                 }`}
               >
@@ -244,6 +252,7 @@ export default function Sidebar() {
                 <input
                   name="addCategory"
                   value={quickAddCategory}
+                  ref={quickAddCategoryRef}
                   type="text"
                   onChange={(e) => setQuickAddCategory(e.target.value)}
                   className="block w-full rounded-md border-2 border-slate-200 bg-white p-2 py-1 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-300 focus:ring-slate-300"
@@ -305,7 +314,12 @@ export default function Sidebar() {
             <div className="hidden flex-1 justify-end hover:cursor-pointer lg:flex">
               <button
                 className="rounded-md outline-none focus:ring-2 focus:ring-slate-200"
-                onClick={() => toggleQuickAdd('tag')}
+                onClick={() => {
+                  toggleQuickAdd('tag')
+                  setTimeout(() => {
+                    quickAddTagRef.current.focus()
+                  }, 0)
+                }}
               >
                 <svg
                   className="h-6 w-6 text-slate-300"
@@ -341,6 +355,7 @@ export default function Sidebar() {
                 <input
                   name="addCategory"
                   value={quickAddTag}
+                  ref={quickAddTagRef}
                   type="text"
                   onChange={(e) => setQuickAddTag(e.target.value)}
                   className="block w-full rounded-md border-2 border-slate-200 bg-white p-2 py-1 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-300 focus:ring-slate-300"

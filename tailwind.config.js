@@ -1,6 +1,9 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
 
 module.exports = {
+  experimental: {
+    variantGrouping: true,
+  },
   darkMode: 'class',
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx}',
