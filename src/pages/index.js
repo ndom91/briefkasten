@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/api/auth/[...nextauth]'
 import { useStore, initializeStore } from '@/lib/store'
@@ -18,6 +18,7 @@ export default function Home() {
   const categoryFilter = useStore((state) => state.categoryFilter)
   const tagFilter = useStore((state) => state.tagFilter)
   const searchText = useStore((state) => state.searchText)
+  const setUserSetting = useStore((state) => state.setUserSetting)
 
   const [filteredLength, setFilteredLength] = useState(bookmarks.length)
   const [currentPage, setCurrentPage] = useState(1)
@@ -53,6 +54,20 @@ export default function Home() {
       }, [])
       .slice(firstPageIndex, lastPageIndex)
   }, [currentPage, categoryFilter, tagFilter, searchText, bookmarks])
+
+  useEffect(() => {
+    const getLanguage = () =>
+      navigator.userLanguage ||
+      (navigator.languages &&
+        navigator.languages.length &&
+        navigator.languages[0]) ||
+      navigator.language ||
+      navigator.browserLanguage ||
+      navigator.systemLanguage ||
+      'en-US'
+
+    setUserSetting({ locale: getLanguage() })
+  }, [setUserSetting])
 
   return (
     <Layout>

@@ -6,12 +6,23 @@ import { useToast, toastTypes } from '@/lib/hooks'
 import Chip from '@/components/chip'
 
 export default function BookmarkCard({ bookmark, categories }) {
-  const removeBookmark = useStore((state) => state.removeBookmark)
+  const {
+    id,
+    title,
+    url,
+    desc,
+    category,
+    tags,
+    createdAt,
+    image = 'https://source.unsplash.com/random/300x201',
+  } = bookmark
+
   const { data: session } = useSession()
-  const { id, title, url, desc, category, tags, createdAt, image } = bookmark
-  const [imageUrl, setImageUrl] = useState(
-    image || 'https://source.unsplash.com/random/300x201'
-  )
+
+  const removeBookmark = useStore((state) => state.removeBookmark)
+  const settings = useStore((state) => state.settings)
+
+  const [imageUrl, setImageUrl] = useState(image)
   const [loading, setLoading] = useState(false)
   const toast = useToast(5000)
 
@@ -159,7 +170,9 @@ export default function BookmarkCard({ bookmark, categories }) {
           <div className="flex-1">
             <div className="flex space-x-1 text-sm text-slate-400">
               <time dateTime="2020-03-10" className="">
-                {new Date(createdAt).toLocaleDateString('de')}
+                {new Date(createdAt).toLocaleDateString(settings.locale, {
+                  dateStyle: 'short',
+                })}
               </time>
               {category?.name && (
                 <>
