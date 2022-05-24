@@ -18,6 +18,7 @@ export default function Home() {
   const categoryFilter = useStore((state) => state.categoryFilter)
   const tagFilter = useStore((state) => state.tagFilter)
   const searchText = useStore((state) => state.searchText)
+
   const [filteredLength, setFilteredLength] = useState(bookmarks.length)
   const [currentPage, setCurrentPage] = useState(1)
 

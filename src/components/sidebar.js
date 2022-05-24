@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { useState, useRef } from 'react'
 import { useSession } from 'next-auth/react'
 import { useKeyPress } from 'react-use'
@@ -12,6 +13,7 @@ const types = {
 
 export default function Sidebar() {
   const { data: session } = useSession()
+
   const categories = useStore((state) => state.categories)
   const tags = useStore((state) => state.tags)
   const setCategoryFilter = useStore((state) => state.setCategoryFilter)
@@ -22,14 +24,17 @@ export default function Sidebar() {
   const addTag = useStore((state) => state.addTag)
   const searchText = useStore((state) => state.searchText)
   const setSearchText = useStore((state) => state.setSearchText)
+
   const [searchFocused, setSearchFocused] = useState(false)
   const [quickAdd, setQuickAdd] = useState('')
   const [quickAddCategory, setQuickAddCategory] = useState('')
   const [quickAddTag, setQuickAddTag] = useState('')
+
   const toast = useToast(5000)
   const searchRef = useRef()
   const quickAddTagRef = useRef()
   const quickAddCategoryRef = useRef()
+  const router = useRouter()
 
   useKeyPress((e) => {
     if (e.type === 'keydown') {
@@ -99,6 +104,7 @@ export default function Sidebar() {
   }
 
   const applyCategoryFilter = (id) => {
+    if (router.pathname !== '/') return
     if (id === categoryFilter) {
       setCategoryFilter('')
       return
@@ -107,6 +113,7 @@ export default function Sidebar() {
   }
 
   const applyTagFilter = (id) => {
+    if (router.pathname !== '/') return
     if (id === tagFilter) {
       setTagFilter('')
       return
@@ -128,7 +135,7 @@ export default function Sidebar() {
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              strokeWidth={2}
+              strokeWidth={3}
               d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
             />
           </svg>
@@ -171,8 +178,8 @@ export default function Sidebar() {
           ) : null}
         </div>
         <div>
-          <Link href="/">
-            <div className="flex items-center justify-start space-x-2 hover:cursor-pointer">
+          <Link href="/" passHref>
+            <a className="focus:(ring-2,ring-slate-200) flex max-w-fit items-center justify-start space-x-2 rounded-md pr-1 outline-none">
               <svg
                 className="h-6 w-6 text-slate-800"
                 fill="none"
@@ -188,7 +195,7 @@ export default function Sidebar() {
                 />
               </svg>
               <span className="font-serif text-lg text-slate-600">Home</span>
-            </div>
+            </a>
           </Link>
         </div>
         <div>

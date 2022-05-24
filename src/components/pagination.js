@@ -32,7 +32,7 @@ const Pagination = ({
   let lastPage = paginationRange[paginationRange.length - 1]
   return (
     <ul
-      className={`mt-4 flex list-none items-center justify-center ${
+      className={`!my-8 flex list-none items-center justify-center ${
         className ? className : ''
       }`}
     >
@@ -73,7 +73,7 @@ const Pagination = ({
         return (
           <li
             key={`${pageNumber}-${i}`}
-            className={`m-0.5 flex h-8 items-center rounded-md px-2 py-4 text-center tracking-tight text-slate-400 transition hover:cursor-pointer hover:bg-slate-100 ${
+            className={`m-0.5 flex h-8 items-center rounded-md px-2 py-4 text-center tracking-tight text-slate-400 transition hover:cursor-pointer hover:bg-slate-100 hover:text-slate-800 ${
               pageNumber === currentPage ? 'bg-slate-800 text-slate-50' : ''
             }`}
             onClick={() => onPageChange(pageNumber)}
