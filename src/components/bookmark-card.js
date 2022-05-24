@@ -6,23 +6,16 @@ import { useToast, toastTypes } from '@/lib/hooks'
 import Chip from '@/components/chip'
 
 export default function BookmarkCard({ bookmark, categories }) {
-  const {
-    id,
-    title,
-    url,
-    desc,
-    category,
-    tags,
-    createdAt,
-    image = 'https://source.unsplash.com/random/300x201',
-  } = bookmark
+  const { id, title, url, desc, category, tags, createdAt, image } = bookmark
 
   const { data: session } = useSession()
 
   const removeBookmark = useStore((state) => state.removeBookmark)
   const settings = useStore((state) => state.settings)
 
-  const [imageUrl, setImageUrl] = useState(image)
+  const [imageUrl, setImageUrl] = useState(
+    image ?? 'https://source.unsplash.com/random/300x201'
+  )
   const [loading, setLoading] = useState(false)
   const toast = useToast(5000)
 

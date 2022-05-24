@@ -1,8 +1,8 @@
 export default function Footer() {
   return (
-    <footer className="px-4">
-      <div className="flex w-full max-w-8xl flex-col items-center py-6 sm:items-start">
-        <nav className="mt-6 flex items-center space-x-3">
+    <footer className="flex w-full max-w-8xl items-center justify-center space-x-4 px-4 pt-2 pb-6 sm:items-start">
+      <section className="flex w-full items-center items-center justify-between space-x-3 ">
+        <div className="flex space-x-2">
           <a
             href="https://twitter.com/ndom91"
             target="_blank"
@@ -57,36 +57,18 @@ export default function Footer() {
               />
             </svg>
           </a>
-        </nav>
-        <nav className="mt-6 flex w-full flex-col-reverse items-center justify-between space-y-4 space-y-reverse text-xs font-medium text-gray-500 sm:flex-row sm:space-y-0">
-          <p>
-            <a
-              href="https://github.com/ndom91"
-              alt="ndom91 Github Profile"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              .<span className="font-extrabold">domino</span>{' '}
-              <span className="">2022</span>
-            </a>
-          </p>
-          <p>
-            <a
-              href="#"
-              className="hover:underline focus:underline focus:outline-none"
-            >
-              Privacy
-            </a>{' '}
-            |{' '}
-            <a
-              href="#"
-              className="hover:underline focus:underline focus:outline-none"
-            >
-              Terms
-            </a>
-          </p>
-        </nav>
-      </div>
+        </div>
+        <a
+          href="https://github.com/ndom91"
+          alt="ndom91 Github Profile"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex space-x-2 text-xs text-slate-600"
+        >
+          .<span className="font-extrabold">domino</span>{' '}
+          <span className="">{new Date().getFullYear()}</span>
+        </a>
+      </section>
     </footer>
   )
 }
