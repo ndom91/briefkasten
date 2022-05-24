@@ -2,7 +2,7 @@
   "name": "briefkasten",
   "description": "Self-hosted Bookmarks Management Application",
   "author": "ndom91 <yo@ndo.dev>",
-  "version": "0.2.0",
+  "version": "0.5.0",
   "license": "MIT",
   "keywords": [
     "next.js",
@@ -12,7 +12,6 @@
   ],
   "scripts": {
     "dev": "next dev -p 3001",
-    "dev:local": "vercel dev --listen 3001",
     "prebuild": "npx prisma generate",
     "build": "next build",
     "start": "next start",
@@ -53,8 +52,7 @@
     "prisma": "^3.13.0",
     "simple-git-hooks": "^2.7.0",
     "tailwindcss": "^0.0.0-insiders.c3cf064",
-    "tailwindcss-animate": "^1.0.5",
-    "vercel": "^24.2.4"
+    "tailwindcss-animate": "^1.0.5"
   },
   "prettier": {
     "semi": false,
