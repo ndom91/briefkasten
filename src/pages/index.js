@@ -36,8 +36,11 @@ export default function Home() {
         } else if (searchText) {
           // Filter shown bookmarks on search
           if (
-            thisBookmark.url.includes(searchText) ||
-            thisBookmark.title.includes(searchText)
+            thisBookmark.url.toLowerCase().includes(searchText.toLowerCase()) ||
+            thisBookmark.title
+              ?.toLowerCase()
+              .includes(searchText.toLowerCase()) ||
+            thisBookmark.desc?.toLowerCase().includes(searchText.toLowerCase())
           ) {
             bookmarks.push(thisBookmark)
           }

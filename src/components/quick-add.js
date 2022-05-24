@@ -117,7 +117,7 @@ export default function QuickAdd({ categories }) {
           </button>
           <div className="relative flex-1">
             {!searchFocused && url.length === 0 ? (
-              <div className="pointer-events-none absolute left-2 top-[1.1rem] z-10 hidden text-xs text-slate-400 opacity-50 md:inline-block">
+              <div className="pointer-events-none absolute left-2 top-[0.9rem] z-10 hidden text-xs text-slate-400 opacity-50 md:inline-block">
                 <span className="rounded-md bg-slate-200 p-1 px-2 ">
                   <kbd className="">alt</kbd>
                   <span> + </span>
@@ -129,14 +129,14 @@ export default function QuickAdd({ categories }) {
             <input
               type="url"
               ref={insertRef}
-              className="block w-full transform rounded-r-md rounded-l-md border border-transparent bg-slate-100 py-3 pl-2 pr-5 text-base text-neutral-600 placeholder-slate-300 transition duration-500 ease-in-out focus:z-10 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-white md:rounded-l-none md:placeholder:text-transparent"
+              className="block w-full transform rounded-r-md rounded-l-md border border-transparent bg-slate-100 py-2.5 pl-2 pr-5 text-base text-neutral-600 placeholder-slate-300 transition duration-500 ease-in-out focus:z-10 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-white md:rounded-l-none md:placeholder:text-transparent"
               placeholder="    Add.."
               value={url}
               onFocus={() => setSearchFocused(true)}
               onBlur={() => setSearchFocused(false)}
               onChange={(event) => setUrl(event.target.value)}
             />
-            <div className="absolute right-4 top-3 hidden rounded-md bg-slate-200 p-1 px-2 text-xs text-slate-400 md:inline-block">
+            <div className="absolute right-4 top-2.5 hidden rounded-md bg-slate-200 p-1 px-2 text-xs text-slate-400 md:inline-block">
               <kbd className="">alt</kbd>
               <span> + </span>
               <kbd className="">s</kbd>
@@ -149,7 +149,7 @@ export default function QuickAdd({ categories }) {
             form="url"
             onClick={() => submitUrl()}
             name="addBookmark"
-            className="flex w-full items-center space-x-2 rounded-md border border-transparent bg-slate-800 p-3 text-base font-medium text-white shadow transition duration-500 ease-in-out hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-300 focus:ring-offset-2 focus:ring-offset-white sm:px-4"
+            className="flex w-full items-center space-x-2 rounded-md border border-transparent bg-slate-800 p-2.5 text-base font-medium text-white shadow transition duration-500 ease-in-out hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-300 focus:ring-offset-2 focus:ring-offset-white sm:px-4"
           >
             {loading ? (
               <svg
