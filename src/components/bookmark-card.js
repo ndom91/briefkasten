@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
+import { useToggle } from 'react-use'
 import { asyncFileReader } from '@/lib/helpers'
 import { useStore } from '@/lib/store'
 import { useToast, toastTypes } from '@/lib/hooks'
@@ -17,9 +18,19 @@ export default function BookmarkCard({ bookmark, categories }) {
     image ?? 'https://source.unsplash.com/random/300x201'
   )
   const [loading, setLoading] = useState(false)
+  const [editCategory, setEditCategory] = useState('')
+  const [editTitle, setEditTitle] = useState('')
+  const [editUrl, setEditUrl] = useState('')
+  const [editDesc, setEditDesc] = useState('')
+  const [editMode, toggleEditMode] = useToggle(false)
   const toast = useToast(5000)
 
-  async function handleDelete() {
+  const saveEdit = () => {
+    console.log('SAVE EDIT')
+    toggleEditMode()
+  }
+
+  const handleDelete = async () => {
     try {
       setLoading(true)
       const deleteRes = await fetch('/api/bookmarks', {
@@ -78,26 +89,49 @@ export default function BookmarkCard({ bookmark, categories }) {
         className="group relative flex h-full flex-col overflow-hidden rounded-md border-2 border-slate-100 bg-white p-4 shadow-sm transition hover:shadow-lg"
       >
         <div className="absolute top-3 right-3 z-10 flex flex-row-reverse gap-2 rounded-lg border-0 border-slate-400/50  bg-slate-600/90 px-3 py-2 opacity-0 shadow-md transition group-hover:opacity-100">
-          <button
-            name="edit"
-            tabIndex={-1}
-            className="text-slate-300 outline-none transition hover:text-slate-400 hover:outline-none focus:text-slate-800"
-          >
-            <svg
-              className="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
+          {editMode ? (
+            <button
+              onClick={() => saveEdit()}
+              className="font-medium text-emerald-400 outline-none transition hover:text-emerald-600"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-              />
-            </svg>
-          </button>
+              <svg
+                className="h-6 w-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"
+                />
+              </svg>
+            </button>
+          ) : (
+            <button
+              name="edit"
+              tabIndex={-1}
+              onClick={toggleEditMode}
+              className="text-slate-300 outline-none transition hover:text-slate-400 hover:outline-none focus:text-slate-400"
+            >
+              <svg
+                className="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                />
+              </svg>
+            </button>
+          )}
           {loading ? (
             <svg
               className="-ml-1 h-5 w-5 animate-spin text-white"
@@ -124,7 +158,7 @@ export default function BookmarkCard({ bookmark, categories }) {
               name="delete"
               onClick={handleDelete}
               tabIndex={-1}
-              className="text-rose-400 opacity-0 outline-none transition animate-in slide-in-from-top hover:text-rose-800 hover:outline-none group-hover:opacity-100"
+              className="text-rose-400 opacity-0 outline-none transition animate-in slide-in-from-top hover:text-rose-600 hover:outline-none group-hover:opacity-100"
             >
               <svg
                 className="h-5 w-5"
@@ -161,7 +195,7 @@ export default function BookmarkCard({ bookmark, categories }) {
         </div>
         <div className="flex flex-1 flex-col justify-between">
           <div className="flex-1">
-            <div className="flex space-x-1 text-sm text-slate-400">
+            <div className="flex items-center space-x-1 text-sm text-slate-400">
               <time dateTime="2020-03-10" className="">
                 {new Date(createdAt).toLocaleDateString(settings.locale, {
                   dateStyle: 'short',
@@ -170,9 +204,26 @@ export default function BookmarkCard({ bookmark, categories }) {
               {category?.name && (
                 <>
                   <span aria-hidden="true"> · </span>
-                  <span className="font-bold">{category?.name}</span>
+                  {!editMode && (
+                    <span className="font-bold">{category?.name}</span>
+                  )}
                 </>
               )}
+              {editMode ? (
+                <select
+                  name="category"
+                  value={editCategory || category?.name}
+                  onChange={(e) => setEditCategory(e.target.value)}
+                  className="w-full rounded-md border-2 border-slate-200 bg-white px-1 py-0 text-xs outline-none focus:border-slate-100 focus:ring-2 focus:ring-slate-300"
+                >
+                  <option value="" defaultChecked />
+                  {categories?.map((cat) => (
+                    <option value={cat.name} key={cat.id}>
+                      {cat.name}
+                    </option>
+                  ))}
+                </select>
+              ) : null}
             </div>
             <section className="block space-y-2">
               <a
