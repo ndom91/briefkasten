@@ -48,6 +48,20 @@ export const initializeStore = (preloadedState = {}) => {
       set(() => ({
         bookmarks: [...get().bookmarks.filter((bm) => bm.id !== bookmark.id)],
       })),
+    updateBookmark: (bookmark) =>
+      set(() => {
+        let intermediateBookmarks = get().bookmarks
+        let updateIndex = intermediateBookmarks.findIndex(
+          (bm) => bm.id === bookmark.id
+        )
+        intermediateBookmarks[updateIndex] = {
+          ...intermediateBookmarks[updateIndex],
+          ...bookmark,
+        }
+        return {
+          bookmarks: intermediateBookmarks,
+        }
+      }),
     resetBookmarks: () => set({ bookmarks: initialState.bookmarks }),
 
     // TAGS
