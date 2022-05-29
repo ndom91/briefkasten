@@ -12,6 +12,10 @@ const nextConfig = {
       'source.boringavatars.com',
     ],
   },
+  i18n: {
+    locales: ['en'],
+    defaultLocale: 'en',
+  },
 }
 
 export default nextConfig
