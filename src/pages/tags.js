@@ -110,16 +110,19 @@ export default function Tags({ nextauth }) {
                 <th scope="col" className="px-6 py-3" width="12%">
                   ID
                 </th>
-                <th scope="col" className="px-6 py-3" width="35%">
+                <th scope="col" className="px-6 py-3" width="5%">
+                  Count
+                </th>
+                <th scope="col" className="px-6 py-3" width="30%">
                   Name
                 </th>
-                <th scope="col" className="px-6 py-3" width="18%">
+                <th scope="col" className="px-6 py-3" width="12%">
                   Emoji
                 </th>
-                <th scope="col" className="px-6 py-3" width="20%">
+                <th scope="col" className="px-6 py-3" width="25%">
                   Date Added
                 </th>
-                <th scope="col" className="px-6 py-3" width="15%">
+                <th scope="col" className="px-6 py-3" width="23%">
                   <span className="sr-only">Edit</span>
                 </th>
               </tr>
@@ -202,6 +205,11 @@ export async function getServerSideProps(context) {
   const tags = await prisma.tag.findMany({
     where: {
       userId: nextauth.user.userId,
+    },
+    include: {
+      _count: {
+        select: { bookmarks: true },
+      },
     },
   })
 

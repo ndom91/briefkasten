@@ -252,6 +252,9 @@ export default function Sidebar() {
                 }`}
               >
                 {cat.name}
+                <span className="bg-slate-200 rounded-md px-1 text-center ml-2">
+                  {cat['_count']?.bookmarks ?? 0}
+                </span>
               </button>
             ))}
             {quickAdd === types.CATEGORY && (
@@ -354,7 +357,10 @@ export default function Sidebar() {
                   tagFilter === tag.id && 'font-extrabold'
                 }`}
               >
-                {tag.emoji} <span className="ml-1">{tag.name}</span>
+                {tag.emoji} <span className="ml-1">{tag.name}</span>{' '}
+                <span className="bg-slate-200 rounded-md px-1 text-center ml-1">
+                  {tag['_count']?.bookmarks ?? 0}
+                </span>
               </button>
             ))}
             {quickAdd === types.TAG && (

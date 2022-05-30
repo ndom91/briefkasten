@@ -6,11 +6,13 @@ import { useToggle } from 'react-use'
 
 export default function TagTableRow({ item }) {
   const { data: session } = useSession()
-  const { id, name, emoji, createdAt } = item
+  const { id, name, emoji, createdAt, _count } = item
+  const count = _count?.bookmarks ?? 0
   const [editMode, toggleEditMode] = useToggle(false)
   const [tagName, setTagName] = useState(name)
   const [tagEmoji, setTagEmoji] = useState(emoji ?? '')
   const [loading, setLoading] = useState(false)
+  const settings = useStore((state) => state.settings)
   const removeTag = useStore((state) => state.removeTag)
   const updateTag = useStore((state) => state.updateTag)
   const toast = useToast(5000)
@@ -86,8 +88,11 @@ export default function TagTableRow({ item }) {
           </label>
         </div>
       </td>
-      <th className={`px-6 ${editMode ? 'py-2' : 'py-4'}`}>
+      <th className={`px-6 ${editMode ? 'py-5' : 'py-4'}`}>
         <span className="font-normal">{id}</span>
+      </th>
+      <th className={`px-6 ${editMode ? 'py-2' : 'py-4'}`}>
+        <span className="font-normal">{count ?? 0}</span>
       </th>
       <td className={`px-6 ${editMode ? 'py-2' : 'py-4'}`}>
         {!editMode ? (
@@ -117,10 +122,14 @@ export default function TagTableRow({ item }) {
       </td>
       <th className={`px-6 ${editMode ? 'py-2' : 'py-4'}`}>
         <span className="font-normal">
-          {createdAt ? new Date(createdAt).toLocaleString() : ''}
+          {createdAt ? new Date(createdAt).toLocaleString(settings.locale) : ''}
         </span>
       </th>
-      <td className="flex justify-center items-center space-x-2 px-6 py-4 text-right">
+      <td
+        className={`flex justify-center items-center space-x-2 ${
+          editMode ? 'px-2' : 'px-6'
+        } py-4 text-right`}
+      >
         {!editMode ? (
           <button
             onClick={() => toggleEditMode()}

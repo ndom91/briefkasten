@@ -120,7 +120,11 @@ export default function CategoryTableRow({ item }) {
           {createdAt ? new Date(createdAt).toLocaleString() : ''}
         </span>
       </th>
-      <td className="flex justify-center items-center space-x-2 px-6 py-4 text-right">
+      <td
+        className={`flex justify-center items-center space-x-2 ${
+          editMode ? 'px-0' : 'px-6'
+        } py-4 text-right`}
+      >
         {!editMode ? (
           <button
             onClick={() => toggleEditMode()}

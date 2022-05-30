@@ -125,10 +125,20 @@ export async function getServerSideProps(context) {
     where: {
       userId: nextauth.user.userId,
     },
+    include: {
+      _count: {
+        select: { bookmarks: true },
+      },
+    },
   })
   const tags = await prisma.tag.findMany({
     where: {
       userId: nextauth.user.userId,
+    },
+    include: {
+      _count: {
+        select: { bookmarks: true },
+      },
     },
   })
 
