@@ -6,7 +6,7 @@ import { useStore } from '@/lib/store'
 
 export default function CategoryTableRow({ item }) {
   const { data: session } = useSession()
-  const { id, name, description } = item
+  const { id, name, description, createdAt } = item
   const [editMode, toggleEditMode] = useToggle(false)
   const [categoryName, setCategoryName] = useState(name)
   const [categoryDesc, setCategoryDesc] = useState(description)
@@ -42,6 +42,10 @@ export default function CategoryTableRow({ item }) {
 
   const saveEdit = async () => {
     try {
+      if (categoryName.length > 190 || categoryDesc.length > 190) {
+        toast(toastTypes.WARNING, 'Category or name too long')
+        return
+      }
       const editRes = await fetch('/api/categories', {
         method: 'PUT',
         headers: {
@@ -111,7 +115,12 @@ export default function CategoryTableRow({ item }) {
           />
         )}
       </td>
-      <td className="flex items-center space-x-2 px-6 py-4 text-right">
+      <th className={`px-6 ${editMode ? 'py-2' : 'py-4'}`}>
+        <span className="font-normal">
+          {createdAt ? new Date(createdAt).toLocaleString() : ''}
+        </span>
+      </th>
+      <td className="flex justify-center items-center space-x-2 px-6 py-4 text-right">
         {!editMode ? (
           <button
             onClick={() => toggleEditMode()}

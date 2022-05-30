@@ -6,7 +6,7 @@ import { useToggle } from 'react-use'
 
 export default function TagTableRow({ item }) {
   const { data: session } = useSession()
-  const { id, name, emoji } = item
+  const { id, name, emoji, createdAt } = item
   const [editMode, toggleEditMode] = useToggle(false)
   const [tagName, setTagName] = useState(name)
   const [tagEmoji, setTagEmoji] = useState(emoji ?? '')
@@ -42,6 +42,10 @@ export default function TagTableRow({ item }) {
 
   const saveEdit = async () => {
     try {
+      if (tagName.length > 190 || tagEmoji.length > 190) {
+        toast(toastTypes.WARNING, 'Name or emoji too long')
+        return
+      }
       const editRes = await fetch('/api/tags', {
         method: 'PUT',
         headers: {
@@ -94,24 +98,29 @@ export default function TagTableRow({ item }) {
             value={tagName}
             type="text"
             onChange={(e) => setTagName(e.target.value)}
-            className="block w-full rounded-lg border-2 border-slate-200 bg-slate-50 p-2 py-1 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500  focus:ring-slate-500 "
+            className="block w-full rounded-md border-2 border-slate-200 bg-slate-50 p-2 py-1 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500  focus:ring-slate-500 "
           />
         )}
       </td>
       <td className={`px-6 ${editMode ? 'py-2' : 'py-4'}`}>
         {!editMode ? (
-          <span>{tagEmoji}</span>
+          <span className="text-xl">{tagEmoji}</span>
         ) : (
           <input
             name="emoji"
             value={tagEmoji}
             type="text"
             onChange={(e) => setTagEmoji(e.target.value)}
-            className="block w-full rounded-lg border-2 border-slate-200 bg-slate-50 py-1 px-2 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500 focus:ring-slate-500"
+            className="block w-full rounded-md border-2 border-slate-200 bg-slate-50 py-1 px-2 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500 focus:ring-slate-500 text-xl"
           />
         )}
       </td>
-      <td className="flex items-center space-x-2 px-6 py-4 text-right">
+      <th className={`px-6 ${editMode ? 'py-2' : 'py-4'}`}>
+        <span className="font-normal">
+          {createdAt ? new Date(createdAt).toLocaleString() : ''}
+        </span>
+      </th>
+      <td className="flex justify-center items-center space-x-2 px-6 py-4 text-right">
         {!editMode ? (
           <button
             onClick={() => toggleEditMode()}

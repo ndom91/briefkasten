@@ -28,6 +28,10 @@ export default function Tags({ nextauth }) {
 
   const saveNewTag = async () => {
     try {
+      if (tagName.length > 190 || tagEmoji.length > 190) {
+        toast(toastTypes.WARNING, 'Name or emoji too long')
+        return
+      }
       const addRes = await fetch('/api/tags', {
         method: 'POST',
         headers: {
@@ -103,14 +107,17 @@ export default function Tags({ nextauth }) {
                     </label>
                   </div>
                 </th>
-                <th scope="col" className="px-6 py-3" width="15%">
+                <th scope="col" className="px-6 py-3" width="12%">
                   ID
                 </th>
-                <th scope="col" className="px-6 py-3" width="40%">
+                <th scope="col" className="px-6 py-3" width="35%">
                   Name
                 </th>
-                <th scope="col" className="px-6 py-3" width="30%">
+                <th scope="col" className="px-6 py-3" width="18%">
                   Emoji
+                </th>
+                <th scope="col" className="px-6 py-3" width="20%">
+                  Date Added
                 </th>
                 <th scope="col" className="px-6 py-3" width="15%">
                   <span className="sr-only">Edit</span>
@@ -131,7 +138,7 @@ export default function Tags({ nextauth }) {
                     value={tagName}
                     type="text"
                     onChange={(e) => setTagName(e.target.value)}
-                    className="block w-full rounded-lg border-2 border-slate-200 bg-slate-50 p-2 py-1 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500  focus:ring-slate-500 "
+                    className="block w-full rounded-md border-2 border-slate-200 bg-slate-50 p-2 py-1 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500  focus:ring-slate-500 "
                   />
                 </td>
                 <td className={`px-6 py-2`}>
@@ -140,7 +147,7 @@ export default function Tags({ nextauth }) {
                     value={tagEmoji}
                     type="text"
                     onChange={(e) => setTagEmoji(e.target.value)}
-                    className="block w-full rounded-lg border-2 border-slate-200 bg-slate-50 py-1 px-2 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500 focus:ring-slate-500"
+                    className="block w-full rounded-md border-2 border-slate-200 bg-slate-50 py-1 px-2 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500 focus:ring-slate-500"
                   />
                 </td>
                 <td className="px-6 py-4 text-right">

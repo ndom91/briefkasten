@@ -47,6 +47,7 @@ model Tag {
   bookmarks   TagsOnBookmarks[]
   user        User?        @relation(fields: [userId], references: [id], onUpdate: NoAction)
   userId      String
+  createdAt   DateTime     @default(now())
 
   @@unique([name, userId])
   @@index([userId])
@@ -59,6 +60,7 @@ model Category {
   bookmarks   Bookmark[]
   user        User?        @relation(fields: [userId], references: [id], onUpdate: NoAction)
   userId      String
+  createdAt   DateTime     @default(now())
 
   @@unique([name, userId])
   @@index([userId])

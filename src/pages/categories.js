@@ -27,6 +27,10 @@ export default function Categories({ nextauth }) {
 
   const saveNewCategory = async () => {
     try {
+      if (categoryName.length > 190 || categoryDesc.length > 190) {
+        toast(toastTypes.WARNING, 'Category or name too long')
+        return
+      }
       const addRes = await fetch('/api/categories', {
         method: 'POST',
         headers: {
@@ -105,11 +109,14 @@ export default function Categories({ nextauth }) {
                 <th scope="col" className="px-6 py-3" width="12%">
                   ID
                 </th>
-                <th scope="col" className="px-6 py-3" width="30%">
+                <th scope="col" className="px-6 py-3" width="20%">
                   Name
                 </th>
-                <th scope="col" className="px-6 py-3" width="40%">
+                <th scope="col" className="px-6 py-3" width="30%">
                   Description
+                </th>
+                <th scope="col" className="px-6 py-3" width="20%">
+                  Date Added
                 </th>
                 <th scope="col" className="px-6 py-3" width="18%">
                   <span className="sr-only">Edit</span>
@@ -132,7 +139,7 @@ export default function Categories({ nextauth }) {
                     value={categoryName}
                     type="text"
                     onChange={(e) => setCategoryName(e.target.value)}
-                    className="block w-full rounded-lg border-2 border-slate-200 bg-slate-50 p-2 py-1 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500  focus:ring-slate-500 "
+                    className="block w-full rounded-md border-2 border-slate-200 bg-slate-50 p-2 py-1 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500  focus:ring-slate-500 "
                   />
                 </td>
                 <td className={`px-6 py-2`}>
@@ -141,7 +148,7 @@ export default function Categories({ nextauth }) {
                     value={categoryDesc}
                     type="text"
                     onChange={(e) => setCategoryDesc(e.target.value)}
-                    className="block w-full rounded-lg border-2 border-slate-200 bg-slate-50 py-1 px-2 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500 focus:ring-slate-500"
+                    className="block w-full rounded-md border-2 border-slate-200 bg-slate-50 py-1 px-2 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500 focus:ring-slate-500"
                   />
                 </td>
                 <td className="px-6 py-4 text-right">
