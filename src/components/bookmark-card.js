@@ -70,6 +70,13 @@ export default function BookmarkCard({ bookmark, categories }) {
   const handleDelete = async () => {
     try {
       setLoadingDel(true)
+      let imageFileName = null
+      if (imageUrl.includes('ik.imagekit.io')) {
+        const imageUrlPathname = new URL(imageUrl).pathname
+        imageFileName = imageUrlPathname.substring(
+          imageUrlPathname.lastIndexOf('/') + 1
+        )
+      }
       const deleteRes = await fetch('/api/bookmarks', {
         method: 'DELETE',
         headers: {
@@ -79,6 +86,7 @@ export default function BookmarkCard({ bookmark, categories }) {
           id,
           userId: session.user.userId,
           tags: tags.map((tag) => tag.id),
+          imageFileName,
         }),
       })
       if (deleteRes.status === 200) {

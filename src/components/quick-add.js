@@ -40,6 +40,16 @@ export default function QuickAdd({ categories }) {
         setLoading(false)
         return
       }
+      if (
+        url?.length > 190 ||
+        category?.length > 190 ||
+        title?.length > 190 ||
+        desc?.length > 190
+      ) {
+        toast(toastTypes.WARNING, 'Field too long')
+        setLoading(false)
+        return
+      }
       // Add Bookmark to DB via API
       const res = await fetch('/api/bookmarks', {
         method: 'POST',

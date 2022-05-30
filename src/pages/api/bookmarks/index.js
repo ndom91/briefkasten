@@ -195,8 +195,13 @@ export default async function handler(req, res) {
         return res.status(200).json({ results: bookmarksResults })
       }
       case 'DELETE': {
-        const { id, userId, tags = [] } = body
-
+        const imagekit = new ImageKit({
+          publicKey: process.env.IMAGEKIT_PUB_KEY,
+          privateKey: process.env.IMAGEKIT_PRIV_KEY,
+          urlEndpoint: process.env.IMAGEKIT_URL,
+        })
+        // Delete image from ImageKit
+        const { id, userId, tags = [], imageFileName } = body
         if (!id || !userId) {
           return res.status(400).json({ message: 'Missing required field(s)' })
         }
@@ -214,6 +219,13 @@ export default async function handler(req, res) {
           await prisma.bookmark.delete({
             where: { id },
           })
+
+          const imageSearchRes = await imagekit.listFiles({
+            searchQuery: `name="${imageFileName}"`,
+          })
+          if (imageSearchRes[0].fileId) {
+            await imagekit.deleteFile(imageSearchRes[0].fileId)
+          }
         } catch (error) {
           console.error('ERR', error)
           return res.status(500).json({ message: error })
