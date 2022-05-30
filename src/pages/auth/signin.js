@@ -2,8 +2,8 @@ import { signIn, getProviders } from 'next-auth/react'
 
 const Signin = ({ providers }) => {
   return (
-    <div className="min-h-full overflow-hidden">
-      <div className="fixed top-0 left-0 z-10 flex h-[150%] w-[70%] translate-x-[-20%] translate-y-[-10%] rotate-[11deg] items-center bg-slate-900" />
+    <div className="min-h-full absolute overflow-hidden w-full h-full">
+      <div className="absolute top-0 left-0 z-10 flex h-[250%] w-[70%] translate-x-[-30%] translate-y-[-20%] rotate-[11deg] items-center bg-slate-900" />
       <div className="relative z-10 flex h-[calc(100vh_-_64px)] w-full items-center p-8 text-center font-bold">
         <div className="z-20 ml-[15%] flex w-96 flex-col items-center justify-center text-xl">
           <div className="w-100 m-8 rounded bg-white p-6">
@@ -55,8 +55,7 @@ const Signin = ({ providers }) => {
       <img
         src="/login_pattern.svg"
         alt="Pattern Background"
-        layout="fill"
-        className="fixed top-0 right-0 z-[5] min-h-full min-w-full"
+        className="fixed top-0 right-0 z-[5] min-h-full min-w-full object-cover"
       />
     </div>
   )
