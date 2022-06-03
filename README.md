@@ -1,5 +1,8 @@
 # 📮 Briefkasten
 
+![GitHub deployments](https://img.shields.io/github/deployments/ndom91/briefkasten/production?style=flat-square)
+![GitHub](https://img.shields.io/github/license/ndom91/briefkasten?style=flat-square)
+
 Self-hosted bookmarking application. WIP 👷
 
 ![Screenshot](screenshot.png)
@@ -12,6 +15,7 @@ Self-hosted bookmarking application. WIP 👷
 - Search
 - API
 - OAuth Login
+- Background Jobs
 
 ## 🧺 Prerequisites
 
@@ -60,11 +64,17 @@ $ npm run build
 $ npm start
 ```
 
-## 🌍 Browser Extension
+## 🕸 Related
 
-There is a companion browser extension in the works which you can use to add websites to your vault while browsing the web. It can be found at [ndom91/briefkasten-extension](https://github.com/ndom91/briefkasten-extension). It is currently not published on any of the Browser Extension Stores, but can be built locally and loaded as a development extension in any Chromium based browser. More details in that repository.
+### 🌍 Browser Extension
+
+There is a companion browser extension in the works which you can use to add websites to your vault while browsing the web. It can be found at [`ndom91/briefkasten-extension`](https://github.com/ndom91/briefkasten-extension). It is currently not published on any of the Browser Extension Stores, but can be built locally and loaded as a development extension in any Chromium based browser. More details in that repository.
 
 ![Screenshot Extension](screenshot_extension.png)
+
+### 🧑‍🏭 Screenshot Job
+
+There is also a background job to fill in bookmarks which do not have a valid image. It can be found in the [`ndom91/briefkasten-scrape`](https://github.com/ndom91/briefkasten-scrape) repository. This job runs every 3 hours in a Github Action and processes 5 bookmarks at a time.
 
 ## 👷 Contributing
 
