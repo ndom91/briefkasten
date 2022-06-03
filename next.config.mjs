@@ -4,6 +4,10 @@
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  experimental: {
+    legacyBrowsers: false,
+    browsersListForSwc: true,
+  },
   images: {
     domains: [
       'images.unsplash.com',

@@ -13,6 +13,7 @@ export default function CategoryTableRow({ item }) {
   const [loading, setLoading] = useState(false)
   const removeCategory = useStore((state) => state.removeCategory)
   const updateCategory = useStore((state) => state.updateCategory)
+  const settings = useStore((state) => state.settings)
   const toast = useToast(5000)
 
   const deleteCategory = async () => {
@@ -117,7 +118,7 @@ export default function CategoryTableRow({ item }) {
       </td>
       <th className={`px-6 ${editMode ? 'py-2' : 'py-4'}`}>
         <span className="font-normal">
-          {createdAt ? new Date(createdAt).toLocaleString() : ''}
+          {createdAt ? new Date(createdAt).toLocaleString(settings.locale) : ''}
         </span>
       </th>
       <td
