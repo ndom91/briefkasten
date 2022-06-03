@@ -2,6 +2,8 @@
 
 ![GitHub deployments](https://img.shields.io/github/deployments/ndom91/briefkasten/production?style=flat-square)
 ![GitHub](https://img.shields.io/github/license/ndom91/briefkasten?style=flat-square)
+![GitHub issues](https://img.shields.io/github/issues/ndom91/briefkasten?style=flat-square)
+[![Demo](https://img.shields.io/badge/demo-instance-green?style=flat-square)](https://briefkasten.vercel.app)
 
 Self-hosted bookmarking application. WIP 👷
 
