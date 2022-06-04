@@ -68,7 +68,7 @@ $ npm start
 
 ## 🕸 Related
 
-<img src="screenshot_extension.png" align="right" />
+<img src="screenshot_ext.png" align="right" />
 
 ### 🌍 Browser Extension
 
