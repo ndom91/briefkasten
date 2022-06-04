@@ -7,7 +7,7 @@
 
 Self-hosted bookmarking application. WIP 👷
 
-![Screenshot](screenshot.png)
+![Screenshot](screenshot_app.png)
 
 ## 🎩 Features
 
