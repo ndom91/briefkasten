@@ -6,7 +6,7 @@
 ![Checkly](https://api.checklyhq.com/v1/badges/checks/9c682653-d7de-4e32-8183-73d76631b0e2?style=flat-square&responseTime=true)
 [![Demo](https://img.shields.io/badge/demo-click%20here-brightgreen?style=flat-square)](https://briefkasten.vercel.app)
 
-Self-hosted bookmarking application. WIP 👷
+Self-hosted bookmarking application. Works with any Prisma compatible database (MySQL, Postgres, etc.)!
 
 ![Screenshot](screenshot_app.png)
 
