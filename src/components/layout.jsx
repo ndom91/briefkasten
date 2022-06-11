@@ -5,9 +5,9 @@ export default function Layout({ children }) {
   return (
     <>
       <Meta />
-      <section className="mx-auto grid h-full max-h-screen grid-cols-[minmax(6rem,16rem)_1fr] grid-rows-1 overflow-hidden">
+      <section className="mx-auto h-full flex overflow-hidden">
         <Sidebar />
-        <main className="max-h-screen overflow-y-scroll p-4">{children}</main>
+        <main className="p-4">{children}</main>
       </section>
     </>
   )

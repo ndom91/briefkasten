@@ -73,10 +73,10 @@ export default function Home() {
 
   return (
     <Layout>
-      <div className="flex flex-col space-y-2">
+      <div className="flex flex-col space-y-2 h-full">
         <DashboardHeader />
         {currentTableData.length === 0 && <EmptyDashboard />}
-        <section className="grid grid-cols-1 grid-rows-3 gap-4 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-5">
+        <section className="flex flex-wrap gap-4 justify-around items-stretch flex-grow">
           {currentTableData.map((bookmark) => (
             <BookmarkCard
               bookmark={bookmark}

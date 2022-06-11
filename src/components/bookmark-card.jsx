@@ -124,7 +124,7 @@ export default function BookmarkCard({ bookmark, categories }) {
     <>
       <div
         suppressHydrationWarning={true}
-        className="group relative flex h-full flex-col overflow-hidden rounded-md border-2 border-slate-100 bg-white p-4 shadow-sm transition hover:shadow-lg"
+        className="group relative flex flex-col w-72 overflow-hidden rounded-md border-2 border-slate-100 bg-white p-4 shadow-sm transition hover:shadow-lg"
       >
         <div className="absolute top-3 right-3 z-10 flex flex-row-reverse gap-2 rounded-lg border-0 border-slate-400/50  bg-slate-600/90 px-3 py-2 opacity-0 shadow-md transition group-hover:opacity-100">
           {editMode ? (
@@ -247,7 +247,7 @@ export default function BookmarkCard({ bookmark, categories }) {
           >
             {/* eslint-disable @next/next/no-img-element */}
             <img
-              className="aspect-2 min-h-[125px] rounded-md border-2 border-slate-50 object-cover object-left-top transition group-focus:ring-4 group-focus:ring-slate-200"
+              className="aspect-2 max-h-[125px] rounded-md border-2 border-slate-50 object-cover object-left-top transition group-focus:ring-4 group-focus:ring-slate-200"
               src={imageUrl}
               onError={() => fetchFallbackImage(url)}
               alt={`${editUrl} Image`}
