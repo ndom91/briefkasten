@@ -29,7 +29,9 @@ export default function Sidebar() {
   const [quickAdd, setQuickAdd] = useState('')
   const [quickAddCategory, setQuickAddCategory] = useState('')
   const [quickAddTag, setQuickAddTag] = useState('')
-  const [open, toggleOpen] = useToggle(false)
+  const [open, toggleOpen] = useToggle(true)
+  const [openCategory, toggleOpenCategory] = useToggle(false)
+  const [openTag, toggleOpenTag] = useToggle(false)
 
   const toast = useToast(5000)
   const searchRef = useRef()
@@ -312,11 +314,11 @@ export default function Sidebar() {
             </Link>
           </li>
         </ul>
-        <div className="px-4 pt-4 font-medium text-neutral-200 mb-2 flex items-center justify-start space-x-2">
-          <h2 className="font-serif text-lg text-slate-200">Category</h2>
-          <div className="hidden flex-1 justify-end hover:cursor-pointer lg:flex">
+        <div className="px-4 pt-4 font-medium text-neutral-200 mb-2 flex items-center justify-between space-x-2">
+          <div className="flex items-center justify-start">
+            <h2 className="font-serif text-lg text-slate-200">Categories</h2>
             <button
-              className="focus:(ring-2,ring-slate-200) rounded-md outline-none"
+              className="focus:ring-2 focus:ring-slate-200 ml-1 rounded-md outline-none hidden flex-1 justify-end hover:cursor-pointer lg:flex"
               onClick={() => {
                 toggleQuickAdd('category')
                 setTimeout(() => {
@@ -325,7 +327,7 @@ export default function Sidebar() {
               }}
             >
               <svg
-                className="h-6 w-6 text-slate-300"
+                className="h-5 w-5 text-slate-300"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -340,23 +342,59 @@ export default function Sidebar() {
               </svg>
             </button>
           </div>
+          <div className="flex items-center">
+            <button className="outline-none" onClick={toggleOpenCategory}>
+              {openCategory ? (
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              )}
+            </button>
+          </div>
         </div>
         <ul>
           <div className="ml-2 flex flex-col items-start space-y-2 md:ml-4">
-            {categories?.map((cat) => (
-              <button
-                onClick={() => applyCategoryFilter(cat.id)}
-                key={cat.id}
-                className={`focus:(ring-2,ring-slate-200) inline-block rounded-md px-1 text-left font-serif text-slate-400 outline-none ${
-                  categoryFilter === cat.id && 'font-extrabold'
-                }`}
-              >
-                {cat.name}
-                <span className="text-sm text-slate-200 bg-slate-700 rounded-md px-1 text-center ml-2">
-                  {cat['_count']?.bookmarks ?? 0}
-                </span>
-              </button>
-            ))}
+            {openCategory &&
+              categories?.map((cat) => (
+                <button
+                  onClick={() => applyCategoryFilter(cat.id)}
+                  key={cat.id}
+                  className={`focus:(ring-2,ring-slate-200) inline-block rounded-md px-1 text-left font-serif text-slate-400 outline-none ${
+                    categoryFilter === cat.id && 'font-extrabold'
+                  }`}
+                >
+                  {cat.name}
+                  <span className="text-sm text-slate-200 bg-slate-700 rounded-md px-1 text-center ml-2">
+                    {cat['_count']?.bookmarks ?? 0}
+                  </span>
+                </button>
+              ))}
             {quickAdd === types.CATEGORY && (
               <div className="flex items-center justify-start space-x-1">
                 <input
@@ -404,11 +442,11 @@ export default function Sidebar() {
             )}
           </div>
         </ul>
-        <div className="px-4 pt-4 font-medium text-neutral-200 mb-2 flex items-center justify-start space-x-2">
-          <h2 className="font-serif text-lg text-slate-200">Tag</h2>
-          <div className="hidden flex-1 justify-end hover:cursor-pointer lg:flex">
+        <div className="px-4 pt-4 font-medium text-neutral-200 mb-2 flex items-center justify-between space-x-2">
+          <div className="flex items-center justify-start">
+            <h2 className="font-serif text-lg text-slate-200">Tags</h2>
             <button
-              className="rounded-md outline-none focus:ring-2 focus:ring-slate-200"
+              className="focus:ring-2 focus:ring-slate-200 ml-1 rounded-md outline-none hidden flex-1 justify-end hover:cursor-pointer lg:flex"
               onClick={() => {
                 toggleQuickAdd('tag')
                 setTimeout(() => {
@@ -417,7 +455,7 @@ export default function Sidebar() {
               }}
             >
               <svg
-                className="h-6 w-6 text-slate-300"
+                className="h-5 w-5 text-slate-300"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -432,23 +470,59 @@ export default function Sidebar() {
               </svg>
             </button>
           </div>
+          <div className="flex items-center">
+            <button className="outline-none" onClick={toggleOpenTag}>
+              {openTag ? (
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              )}
+            </button>
+          </div>
         </div>
         <ul className="overflow-y-scroll">
           <div className="ml-2 flex flex-col items-start space-y-2 md:ml-4 mb-4">
-            {tags?.map((tag) => (
-              <button
-                onClick={() => applyTagFilter(tag.id)}
-                key={tag.id}
-                className={`inline-block rounded-md px-1 text-left font-serif text-slate-400 outline-none focus:ring-2 focus:ring-slate-200 ${
-                  tagFilter === tag.id && 'font-extrabold'
-                }`}
-              >
-                {tag.emoji} <span className="ml-1">{tag.name}</span>{' '}
-                <span className="text-slate-200 bg-slate-700 rounded-md px-1 text-sm text-center ml-1">
-                  {tag['_count']?.bookmarks ?? 0}
-                </span>
-              </button>
-            ))}
+            {openTag &&
+              tags?.map((tag) => (
+                <button
+                  onClick={() => applyTagFilter(tag.id)}
+                  key={tag.id}
+                  className={`inline-block rounded-md px-1 text-left font-serif text-slate-400 outline-none focus:ring-2 focus:ring-slate-200 ${
+                    tagFilter === tag.id && 'font-extrabold'
+                  }`}
+                >
+                  {tag.emoji} <span className="ml-1">{tag.name}</span>{' '}
+                  <span className="text-slate-200 bg-slate-700 rounded-md px-1 text-sm text-center ml-1">
+                    {tag['_count']?.bookmarks ?? 0}
+                  </span>
+                </button>
+              ))}
             {quickAdd === types.TAG && (
               <div className="flex items-center justify-start space-x-1">
                 <input
