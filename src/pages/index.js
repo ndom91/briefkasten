@@ -7,7 +7,6 @@ import Pagination from '@/components/pagination'
 import BookmarkCard from '@/components/bookmark-card'
 import Layout from '@/components/layout'
 import QuickAdd from '@/components/quick-add'
-// import Sidebar from '@/components/sidebar'
 import prisma from '@/lib/prisma'
 
 const PAGE_SIZE = 12
@@ -71,7 +70,6 @@ export default function Home() {
 
   return (
     <Layout>
-      {/* <Sidebar /> */}
       <div className="flex flex-col space-y-2 pr-4">
         <QuickAdd categories={categories} />
         <section className="grid min-h-[1055px] grid-cols-1 grid-rows-3 justify-items-stretch gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">

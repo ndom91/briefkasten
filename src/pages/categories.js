@@ -3,7 +3,6 @@ import { getServerSession } from 'next-auth/next'
 import { useStore, initializeStore } from '@/lib/store'
 import Head from 'next/head'
 import Layout from '@/components/layout'
-import Sidebar from '@/components/sidebar'
 import CategoryTableRow from '@/components/categoryTableRow'
 import { authOptions } from './api/auth/[...nextauth]'
 import { useToast, toastTypes } from '@/lib/hooks'
@@ -60,7 +59,6 @@ export default function Categories({ nextauth }) {
       <Head>
         <title>Briefkasten | Categories</title>
       </Head>
-      <Sidebar />
       <div className="flex flex-col space-y-4">
         <div className="relative overflow-x-auto sm:rounded-lg">
           <div className="ml-1 mb-4">

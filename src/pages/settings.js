@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { useCopyToClipboard } from 'react-use'
 import Head from 'next/head'
 import Layout from '@/components/layout'
-import Sidebar from '@/components/sidebar'
 import { authOptions } from './api/auth/[...nextauth]'
 import { useToast, toastTypes } from '@/lib/hooks'
 import prisma from '@/lib/prisma'
@@ -107,7 +106,6 @@ export default function Settings({ nextauth }) {
       <Head>
         <title>Briefkasten | Settings</title>
       </Head>
-      <Sidebar />
       <main className="flex flex-col space-y-4 px-4 pt-4">
         <h2 className="text-xl">Settings</h2>
         <section className="flex flex-col items-start justify-center space-y-4 rounded-md bg-slate-50 p-4">
