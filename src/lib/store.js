@@ -15,7 +15,7 @@ const initialState = {
   searchText: '',
   settings: {
     locale: 'en-US',
-    activeView: '',
+    activeView: viewTypes.CARD.name,
     defaultView: viewTypes.CARD.name,
   },
 }

@@ -7,7 +7,7 @@ export default function Layout({ children }) {
       <Meta />
       <section className="mx-auto h-full flex overflow-hidden">
         <Sidebar />
-        <main className="p-4">{children}</main>
+        <main className="w-full">{children}</main>
       </section>
     </>
   )

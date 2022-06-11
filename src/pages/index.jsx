@@ -9,6 +9,8 @@ import Layout from '@/components/layout'
 import EmptyDashboard from '@/components/empty-dashboard'
 import DashboardHeader from '@/components/dashboard-header'
 import QuickAdd from '@/components/quick-add'
+import DataTable from '@/components/table'
+import { viewTypes } from '@/lib/constants'
 import prisma from '@/lib/prisma'
 
 const PAGE_SIZE = 15
@@ -73,18 +75,29 @@ export default function Home() {
 
   return (
     <Layout>
-      <div className="flex flex-col space-y-2 h-full">
+      <div className="flex flex-col items-center space-y-2 h-full">
         <DashboardHeader />
-        {currentTableData.length === 0 && <EmptyDashboard />}
-        <section className="flex flex-wrap gap-4 justify-around items-stretch flex-grow">
-          {currentTableData.map((bookmark) => (
-            <BookmarkCard
-              bookmark={bookmark}
-              key={bookmark.id}
-              categories={categories}
-            />
-          ))}
-        </section>
+        {bookmarks.length === 0 && <EmptyDashboard />}
+        {bookmarks.length > 0 && currentTableData.length === 0 && (
+          <div className="flex justify-center text-slate-700 text-lg">
+            No results found, please try again!
+          </div>
+        )}
+        <div className="overflow-y-scroll overflow-x-hidden w-full">
+          <section className="w-full grid gap-4 grid-rows-[repeat(auto-fit,_minmax(300px,_1fr))] grid-cols-[repeat(auto-fit,_minmax(275px,_1fr))] justify-items-center items-center px-4">
+            {settings.activeView === viewTypes.CARD.name &&
+              currentTableData.map((bookmark) => (
+                <BookmarkCard
+                  bookmark={bookmark}
+                  key={bookmark.id}
+                  categories={categories}
+                />
+              ))}
+            {settings.activeView === viewTypes.LIST.name && (
+              <DataTable items={currentTableData} />
+            )}
+          </section>
+        </div>
         <Pagination
           currentPage={currentPage}
           totalCount={

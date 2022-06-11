@@ -24,7 +24,7 @@ export default function Breadcrumbs({ breadcrumbs }) {
   }, [breadcrumbs])
 
   return (
-    <nav aria-label="breadcrumb">
+    <nav aria-label="breadcrumb" className="hidden lg:block">
       <ul className="flex flex-wrap space-x-3 text-sm font-medium">
         {currentBreadcrumb?.map((breadcrumb, i) => (
           <li key={breadcrumb.name} className="flex items-center space-x-3">
