@@ -2,6 +2,7 @@ import { useLayoutEffect } from 'react'
 import create from 'zustand'
 import createContext from 'zustand/context'
 import { devtools } from 'zustand/middleware'
+import { viewTypes } from '@/lib/constants'
 
 let store
 
@@ -14,6 +15,7 @@ const initialState = {
   searchText: '',
   settings: {
     locale: 'en-US',
+    defaultView: viewTypes.CARD,
   },
 }
 
