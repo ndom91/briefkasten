@@ -1,17 +1,14 @@
 import Meta from '@/components/meta'
+import Sidebar from '@/components/sidebar'
 import Navigation from '@/components/navigation'
-import Footer from '@/components/footer'
 
 export default function Layout({ children }) {
   return (
     <>
       <Meta />
-      <section className="mx-auto grid min-h-screen max-w-8xl grid-rows-[auto_1fr_auto] gap-2 px-2 md:gap-4 md:px-4">
-        <Navigation />
-        <main className="grid grid-cols-[minmax(150px,_25%)_1fr]">
-          {children}
-        </main>
-        <Footer />
+      <section className="mx-auto grid max-h-screen grid-cols-[minmax(150px,_15%)_1fr] grid-rows-[auto] gap-2 md:gap-4">
+        <Sidebar />
+        <main className="max-h-screen overflow-y-scroll">{children}</main>
       </section>
     </>
   )

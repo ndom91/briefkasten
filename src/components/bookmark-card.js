@@ -54,10 +54,7 @@ export default function BookmarkCard({ bookmark, categories }) {
           category: editCategory,
           tags,
         })
-        toast(
-          toastTypes.SUCCESS,
-          `Successfully edited "${new URL(url).hostname}"`
-        )
+        toast(toastTypes.SUCCESS, `Successfully edited "${editTitle}"`)
       }
     } catch (error) {
       console.error(error)
@@ -91,10 +88,7 @@ export default function BookmarkCard({ bookmark, categories }) {
       })
       if (deleteRes.status === 200) {
         removeBookmark({ id })
-        toast(
-          toastTypes.SUCCESS,
-          `Successfully deleted "${new URL(url).hostname}"`
-        )
+        toast(toastTypes.SUCCESS, `Successfully deleted "${editTitle}"`)
       }
     } catch (error) {
       console.error(error)
