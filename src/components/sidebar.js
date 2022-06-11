@@ -122,7 +122,7 @@ export default function Sidebar() {
   }
 
   return (
-    <aside className="hidden md:flex md:flex-shrink-0">
+    <aside className="flex flex-shrink-0 shadow-r-lg">
       <div className="flex flex-col w-64">
         <div className="rounded-r-md flex flex-col flex-grow pt-5 overflow-y-auto border-r bg-slate-800">
           <div className="flex flex-col items-center flex-shrink-0 px-4">
@@ -269,39 +269,35 @@ export default function Sidebar() {
                   </Link>
                 </li>
               </ul>
-              <p className="px-4 pt-4 font-medium uppercase text-neutral-200">
-                <div className="mb-2 flex items-center justify-start space-x-2">
-                  <h2 className="font-serif text-lg text-slate-200">
-                    Category
-                  </h2>
-                  <div className="hidden flex-1 justify-end hover:cursor-pointer lg:flex">
-                    <button
-                      className="focus:(ring-2,ring-slate-200) rounded-md outline-none"
-                      onClick={() => {
-                        toggleQuickAdd('category')
-                        setTimeout(() => {
-                          quickAddCategoryRef.current.focus()
-                        }, 0)
-                      }}
+              <div className="px-4 pt-4 font-medium text-neutral-200 mb-2 flex items-center justify-start space-x-2">
+                <h2 className="font-serif text-lg text-slate-200">Category</h2>
+                <div className="hidden flex-1 justify-end hover:cursor-pointer lg:flex">
+                  <button
+                    className="focus:(ring-2,ring-slate-200) rounded-md outline-none"
+                    onClick={() => {
+                      toggleQuickAdd('category')
+                      setTimeout(() => {
+                        quickAddCategoryRef.current.focus()
+                      }, 0)
+                    }}
+                  >
+                    <svg
+                      className="h-6 w-6 text-slate-300"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
-                      <svg
-                        className="h-6 w-6 text-slate-300"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                        />
-                      </svg>
-                    </button>
-                  </div>
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                      />
+                    </svg>
+                  </button>
                 </div>
-              </p>
+              </div>
               <ul>
                 <div className="ml-2 flex flex-col items-start space-y-2 md:ml-4">
                   {categories?.map((cat) => (
@@ -368,37 +364,35 @@ export default function Sidebar() {
                   )}
                 </div>
               </ul>
-              <p className="px-4 pt-4 font-medium uppercase text-neutral-200">
-                <div className="mb-2 flex items-center uppercase justify-start space-x-2">
-                  <h2 className="font-serif text-lg text-slate-200">Tag</h2>
-                  <div className="hidden flex-1 justify-end hover:cursor-pointer lg:flex">
-                    <button
-                      className="rounded-md outline-none focus:ring-2 focus:ring-slate-200"
-                      onClick={() => {
-                        toggleQuickAdd('tag')
-                        setTimeout(() => {
-                          quickAddTagRef.current.focus()
-                        }, 0)
-                      }}
+              <div className="px-4 pt-4 font-medium text-neutral-200 mb-2 flex items-center uppercase justify-start space-x-2">
+                <h2 className="font-serif text-lg text-slate-200">Tag</h2>
+                <div className="hidden flex-1 justify-end hover:cursor-pointer lg:flex">
+                  <button
+                    className="rounded-md outline-none focus:ring-2 focus:ring-slate-200"
+                    onClick={() => {
+                      toggleQuickAdd('tag')
+                      setTimeout(() => {
+                        quickAddTagRef.current.focus()
+                      }, 0)
+                    }}
+                  >
+                    <svg
+                      className="h-6 w-6 text-slate-300"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
-                      <svg
-                        className="h-6 w-6 text-slate-300"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                        />
-                      </svg>
-                    </button>
-                  </div>
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                      />
+                    </svg>
+                  </button>
                 </div>
-              </p>
+              </div>
               <ul>
                 <div className="ml-2 flex flex-col items-start space-y-2 md:ml-4">
                   {tags?.map((tag) => (

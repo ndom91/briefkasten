@@ -1,6 +1,6 @@
 import Meta from '@/components/meta'
 import Sidebar from '@/components/sidebar'
-import Navigation from '@/components/navigation'
+// import Navigation from '@/components/navigation'
 
 export default function Layout({ children }) {
   return (
