@@ -97,6 +97,7 @@ const Signin = ({ providers }) => {
                     className="focus:ring-slate-500 focus:border-slate-500 flex-1 block w-full rounded-md sm:text-sm border-gray-300 placeholder:text-slate-400 placeholder:font-light font-normal transition"
                     type="email"
                     autoComplete="username"
+                    disabled={true}
                     placeholder="james@bond.com"
                     inputMode="email"
                     required
@@ -109,6 +110,7 @@ const Signin = ({ providers }) => {
                   <input
                     className="focus:ring-slate-500 focus:border-slate-500 flex-1 block w-full rounded-md sm:text-sm border-gray-300 placeholder:text-slate-400 placeholder:font-light font-normal transition"
                     type="password"
+                    disabled={true}
                     placeholder="••••••••"
                     autoComplete="current-password"
                     required
@@ -124,6 +126,7 @@ const Signin = ({ providers }) => {
               <div className="my-2 text-center">
                 <a
                   href="#"
+                  disabled={true}
                   className="text-sm text-slate-700 underline transition font-light hover:text-slate-700"
                 >
                   Forgot password

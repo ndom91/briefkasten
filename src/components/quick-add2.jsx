@@ -1,13 +1,16 @@
-import { useKeyPress, useToggle } from 'react-use'
 import { useState } from 'react'
-import { useToast, toastTypes } from '@/lib/hooks'
 import { useStore } from '@/lib/store'
+import { useSession } from 'next-auth/react'
+import { useToast, toastTypes } from '@/lib/hooks'
+import { useKeyPress, useToggle } from 'react-use'
 
 import { Fragment } from 'react'
 import { Combobox, Listbox, Popover, Transition } from '@headlessui/react'
 import Chip from '@/components/chip'
 
 export default function QuickAdd({ categories }) {
+  const { data: session } = useSession()
+
   const [open, toggleOpen] = useToggle(false)
   const [url, setUrl] = useState('')
   const [title, setTitle] = useState('')
@@ -46,15 +49,16 @@ export default function QuickAdd({ categories }) {
         return
       }
       if (
-        url?.length > 190 ||
+        url?.length > 182 ||
         category?.length > 190 ||
         title?.length > 190 ||
-        desc?.length > 190
+        description?.length > 190
       ) {
         toast(toastTypes.WARNING, 'Field too long')
         setLoading(false)
         return
       }
+
       // Add Bookmark to DB via API
       const res = await fetch('/api/bookmarks', {
         method: 'POST',
@@ -62,24 +66,21 @@ export default function QuickAdd({ categories }) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          url,
+          url: `https://${url}`,
           userId: session?.user?.userId,
-          desc,
+          description,
           category,
-          tags: tags.split(' '),
+          tags: selectedTags.map((tag) => tag.name),
           title,
         }),
       })
       if (res.status === 200) {
-        toast(
-          toastTypes.SUCCESS,
-          `Successfully added "${new URL(url).hostname}"`
-        )
+        toast(toastTypes.SUCCESS, `Successfully added "${title}"`)
         const { data } = await res.json()
 
         // Add new Bookmark to UI
         addBookmark({
-          url,
+          url: data.url,
           createdAt: data.createdAt,
           id: data.id,
           desc: data.desc,
@@ -93,7 +94,7 @@ export default function QuickAdd({ categories }) {
         setUrl('')
         setTitle('')
         setCategory('')
-        setTags('')
+        setSelectedTags([])
         setDescription('')
         open && toggleOpen()
       } else {
@@ -102,7 +103,7 @@ export default function QuickAdd({ categories }) {
       setLoading(false)
     } catch (error) {
       console.error('[ERROR] Submitting URL', error)
-      toast(toastTypes.ERROR, `Error adding "${new URL(url).hostname}"`)
+      toast(toastTypes.ERROR, `Error adding "${title}"`)
       setLoading(false)
     }
   }
@@ -120,7 +121,7 @@ export default function QuickAdd({ categories }) {
 
   return (
     <div>
-      <Popover className="">
+      <Popover open={open} className="">
         {({ open }) => (
           <>
             <Popover.Button
@@ -170,18 +171,36 @@ export default function QuickAdd({ categories }) {
                         htmlFor="url"
                         className="block text-sm font-medium text-slate-700"
                       >
+                        Title
+                      </label>
+                      <div className="mt-1 flex rounded-md shadow-sm">
+                        <input
+                          type="text"
+                          name="title"
+                          id="title"
+                          value={title}
+                          onChange={(e) => setTitle(e.target.value)}
+                          className="focus:ring-slate-500 focus:border-slate-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-slate-300 placeholder:text-slate-300"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex flex-col items-stretch justify-around">
+                      <label
+                        htmlFor="url"
+                        className="block text-sm font-medium text-slate-700"
+                      >
                         URL
                       </label>
                       <div className="mt-1 flex rounded-md shadow-sm">
                         <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-slate-300 bg-slate-50 text-slate-500 text-sm">
-                          http://
+                          https://
                         </span>
                         <input
                           type="text"
                           name="url"
                           id="url"
                           value={url}
-                          onChange={setUrl}
+                          onChange={(e) => setUrl(e.target.value)}
                           className="focus:ring-slate-500 focus:border-slate-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-slate-300 placeholder:text-slate-300"
                           placeholder="www.example.com"
                         />
@@ -424,7 +443,7 @@ export default function QuickAdd({ categories }) {
                           name="desc"
                           rows={3}
                           value={description}
-                          onChange={setDescription}
+                          onChange={(e) => setDescription(e.target.value)}
                           className="shadow-sm focus:ring-slate-500 focus:border-slate-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md placeholder:text-slate-300"
                           placeholder="Leave blank to use the default detected description from meta tags"
                         />
@@ -435,8 +454,40 @@ export default function QuickAdd({ categories }) {
                     <div className="flex space-x-2 text-right px-4">
                       <button
                         onClick={submitUrl}
-                        className="inline-flex transition justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-slate-600 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500"
+                        className="inline-flex transition justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-slate-600 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 items-center"
                       >
+                        {loading ? (
+                          <svg
+                            className="h-5 w-5 animate-spin text-white sm:mr-1"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            ></circle>
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                            ></path>
+                          </svg>
+                        ) : (
+                          <svg
+                            className="h-4 w-4 text-white sm:mr-1"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              fill="currentColor"
+                              d="M17 3H5C3.89 3 3 3.9 3 5V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V7L17 3M19 19H5V5H16.17L19 7.83V19M12 12C10.34 12 9 13.34 9 15S10.34 18 12 18 15 16.66 15 15 13.66 12 12 12M6 6H15V10H6V6Z"
+                            />
+                          </svg>
+                        )}
                         Save
                       </button>
                       <button
