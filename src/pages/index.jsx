@@ -6,6 +6,7 @@ import { useStore, initializeStore } from '@/lib/store'
 import Pagination from '@/components/pagination'
 import BookmarkCard from '@/components/bookmark-card'
 import Layout from '@/components/layout'
+import EmptyDashboard from '@/components/empty-dashboard'
 import QuickAdd from '@/components/quick-add2'
 import prisma from '@/lib/prisma'
 
@@ -71,6 +72,7 @@ export default function Home() {
   return (
     <Layout>
       <div className="flex flex-col space-y-2">
+        {currentTableData.length === 0 && <EmptyDashboard />}
         <section className="grid grid-cols-1 grid-rows-3 gap-4 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-5">
           {currentTableData.map((bookmark) => (
             <BookmarkCard
