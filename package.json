@@ -21,6 +21,7 @@
     "db:studio": "npx prisma studio"
   },
   "dependencies": {
+    "@headlessui/react": "^1.6.4",
     "@next-auth/prisma-adapter": "^1.0.3",
     "@prisma/client": "^3.15.1",
     "chrome-aws-lambda": "^9.1.0",

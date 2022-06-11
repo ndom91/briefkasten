@@ -1,9 +1,26 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { useStore } from '@/lib/store'
+import { useKeyPress } from 'react-use'
+import { useState, useRef } from 'react'
 import { signIn, signOut, useSession } from 'next-auth/react'
 
 export default function Navigation() {
   const { data: session } = useSession()
+
+  const searchText = useStore((state) => state.searchText)
+  const setSearchText = useStore((state) => state.setSearchText)
+  const [searchFocused, setSearchFocused] = useState(false)
+  const searchRef = useRef()
+
+  useKeyPress((e) => {
+    if (e.type === 'keydown') {
+      if (e.ctrlKey && e.key === 'k') {
+        e.preventDefault()
+        searchRef?.current?.focus()
+      }
+    }
+  })
 
   const signinHandler = () => {
     if (session?.user?.image) {
@@ -15,25 +32,60 @@ export default function Navigation() {
 
   return (
     <nav className="mt-2 flex items-center justify-between bg-white py-4 px-4">
-      <Link href="/" passHref>
-        <div className="flex items-center hover:cursor-pointer ">
+      <li>
+        <div className="relative flex w-full items-center justify-start">
           <svg
-            xmlns="http://www.w3.org/2000/svg"
+            className="pointer-events-none absolute left-2 top-2 h-5 w-5 text-slate-200"
             fill="none"
             stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            className="h-10 w-10 rounded-full bg-slate-800 p-2 text-white"
             viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
           >
-            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={3}
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
           </svg>
-          <span className="ml-3 font-serif text-xl font-semibold">
-            Briefkasten
-          </span>
+          {!searchFocused && searchText.length === 0 ? (
+            <div className="pointer-events-none absolute left-8 top-[0.65rem] z-10 hidden text-xs text-slate-400 opacity-50 lg:inline-block">
+              <span className="rounded-md bg-slate-200 p-1 px-2 ">
+                <kbd className="">ctrl</kbd>
+                <span> + </span>
+                <kbd className="">k</kbd>
+              </span>
+              <span> to search</span>
+            </div>
+          ) : null}
+          <input
+            ref={searchRef}
+            type="text"
+            value={searchText}
+            onFocus={() => setSearchFocused(true)}
+            onBlur={() => setSearchFocused(false)}
+            onChange={(e) => setSearchText(e.target.value)}
+            className="w-full rounded-md border-2 border-slate-200 py-1 px-2 pl-8 pr-8 text-base text-slate-600 outline-none placeholder:text-slate-200 focus:border-slate-200 focus:ring-2 focus:ring-slate-200 focus:ring-offset-transparent"
+          />
+          {searchText.length ? (
+            <svg
+              className="absolute right-1.5 top-1.5 h-6 w-6 text-rose-300 hover:cursor-pointer"
+              onClick={() => setSearchText('')}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          ) : null}
         </div>
-      </Link>
+      </li>
       <nav className="flex flex-wrap items-center justify-center space-x-2 text-base md:ml-auto md:space-x-8">
         <Link href="/categories" passHref>
           <a className="rounded font-serif outline-none transition duration-300 ease-in-out hover:outline-none hover:ring-2 hover:ring-slate-200 hover:ring-offset-transparent focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-transparent sm:p-2">
