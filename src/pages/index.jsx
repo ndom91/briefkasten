@@ -20,6 +20,7 @@ export default function Home() {
   const tagFilter = useStore((state) => state.tagFilter)
   const searchText = useStore((state) => state.searchText)
   const setUserSetting = useStore((state) => state.setUserSetting)
+  const settings = useStore((state) => state.settings)
 
   const [filteredLength, setFilteredLength] = useState(bookmarks.length)
   const [currentPage, setCurrentPage] = useState(1)
@@ -67,7 +68,7 @@ export default function Home() {
       navigator.systemLanguage ||
       'en-US'
 
-    setUserSetting({ locale: getLanguage() })
+    setUserSetting({ ...settings, locale: getLanguage() })
   }, [setUserSetting])
 
   return (
