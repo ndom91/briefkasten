@@ -7,7 +7,7 @@ import Pagination from '@/components/pagination'
 import BookmarkCard from '@/components/bookmark-card'
 import Layout from '@/components/layout'
 import EmptyDashboard from '@/components/empty-dashboard'
-import QuickAdd from '@/components/quick-add2'
+import QuickAdd from '@/components/quick-add'
 import prisma from '@/lib/prisma'
 
 const PAGE_SIZE = 15
