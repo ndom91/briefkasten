@@ -2,7 +2,7 @@ import BookmarkTableRow from '@/components/bookmarkTableRow'
 
 export default function DataTable({ items }) {
   return (
-    <table className="w-full text-left text-sm text-slate-500 ">
+    <table className="text-left text-sm text-slate-500 ">
       <thead className="bg-slate-50 text-xs uppercase text-slate-700 ">
         <tr>
           <th scope="col" className="p-4">
@@ -17,16 +17,13 @@ export default function DataTable({ items }) {
               </label>
             </div>
           </th>
-          <th scope="col" className="px-6 py-3" width="5">
-            ID
-          </th>
-          <th scope="col" className="px-6 py-3" width="10%">
+          <th scope="col" className="px-6 py-3" width="20%">
             Title
           </th>
-          <th scope="col" className="px-6 py-3" width="10%">
+          <th scope="col" className="px-6 py-3" width="20%">
             URL
           </th>
-          <th scope="col" className="px-6 py-3" width="15%">
+          <th scope="col" className="px-6 py-3" width="25%">
             Description
           </th>
           <th scope="col" className="px-6 py-3" width="10%">
@@ -35,7 +32,7 @@ export default function DataTable({ items }) {
           <th scope="col" className="px-6 py-3" width="10%">
             Tags
           </th>
-          <th scope="col" className="px-6 py-3" width="10%">
+          <th scope="col" className="px-6 py-3" width="15%">
             Date Added
           </th>
           <th scope="col" className="px-6 py-3" width="23%">

@@ -70,7 +70,7 @@ export default function Home() {
       navigator.systemLanguage ||
       'en-US'
 
-    setUserSetting({ ...settings, locale: getLanguage() })
+    setUserSetting({ locale: getLanguage() })
   }, [setUserSetting])
 
   return (
@@ -85,7 +85,8 @@ export default function Home() {
         )}
         <div className="overflow-y-scroll overflow-x-hidden w-full">
           <section className="w-full grid gap-4 grid-rows-[repeat(auto-fit,_minmax(300px,_1fr))] grid-cols-[repeat(auto-fit,_minmax(275px,_1fr))] justify-items-center items-center px-4">
-            {settings.activeView === viewTypes.CARD.name &&
+            {currentTableData.length !== 0 &&
+              settings.activeView === viewTypes.CARD.name &&
               currentTableData.map((bookmark) => (
                 <BookmarkCard
                   bookmark={bookmark}
@@ -93,9 +94,10 @@ export default function Home() {
                   categories={categories}
                 />
               ))}
-            {settings.activeView === viewTypes.LIST.name && (
-              <DataTable items={currentTableData} />
-            )}
+            {currentTableData.length !== 0 &&
+              settings.activeView === viewTypes.LIST.name && (
+                <DataTable items={currentTableData} />
+              )}
           </section>
         </div>
         <Pagination

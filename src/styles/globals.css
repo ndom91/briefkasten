@@ -201,6 +201,10 @@
   }
 }
 
+html {
+  overflow: hidden;
+}
+
 html,
 body,
 body > div:first-child,

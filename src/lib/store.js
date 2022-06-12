@@ -107,7 +107,11 @@ export const initializeStore = (preloadedState = {}) => {
     resetCategories: () => set({ categories: initialState.categories }),
 
     // USER SETTINGS
-    setUserSetting: (settings) => set(() => ({ settings })),
+    setUserSetting: (setting) => {
+      set(() => {
+        return { settings: { ...get().settings, ...setting } }
+      })
+    },
     addUserSetting: (setting) =>
       set(() => ({ settings: { ...get().settings, ...setting } })),
     resetUserSettings: () => set({ settings: initialState.settings }),

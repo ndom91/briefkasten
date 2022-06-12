@@ -5,10 +5,9 @@ import { useToast, toastTypes } from '@/lib/hooks'
 import { useToggle } from 'react-use'
 
 export default function BookmarkTableRow({ item }) {
-  console.log('bookmark row', item)
+  // console.log('bookmark row', item)
   const { data: session } = useSession()
   const { id, title, url, desc, category, tags, createdAt } = item
-  // const count = _count?.bookmarks ?? 0
   const [editMode, toggleEditMode] = useToggle(false)
   const [tagName, setTagName] = useState()
   const [tagEmoji, setTagEmoji] = useState()
@@ -33,12 +32,12 @@ export default function BookmarkTableRow({ item }) {
       })
       if (delRes.status === 200) {
         removeTag({ id })
-        toast(toastTypes.SUCCESS, `Successfully deleted "${name}"`)
+        toast(toastTypes.SUCCESS, `Successfully deleted "${title}"`)
       }
       setLoading(false)
     } catch (error) {
       console.error(error)
-      toast(toastTypes.ERROR, `Error deleting "${name}"`)
+      toast(toastTypes.ERROR, `Error deleting "${title}"`)
       setLoading(false)
     }
   }
@@ -67,11 +66,11 @@ export default function BookmarkTableRow({ item }) {
           emoji: tagEmoji,
         })
         toggleEditMode()
-        toast(toastTypes.SUCCESS, `Successfully edited "${name}"`)
+        toast(toastTypes.SUCCESS, `Successfully edited "${title}"`)
       }
     } catch (error) {
       console.error(error)
-      toast(toastTypes.ERROR, `Error editing "${name}"`)
+      toast(toastTypes.ERROR, `Error editing "${title}"`)
     }
   }
 
@@ -89,15 +88,21 @@ export default function BookmarkTableRow({ item }) {
           </label>
         </div>
       </td>
-      <td className={`w-24 px-6 ${editMode ? 'py-5' : 'py-4'}`}>
-        <span className="w-24 font-normal">{id}</span>
+      <td className={`px-6 ${editMode ? 'py-2' : 'py-4'}`}>
+        <span className="text-ellipsis break-all line-clamp-2">{title}</span>
       </td>
-      <td className={`w-24 px-6 ${editMode ? 'py-2' : 'py-4'}`}>
-        <span className="w-24 font-normal">{title}</span>
-      </td>
-      <td className={`w-24 px-6 ${editMode ? 'py-2' : 'py-4'}`}>
+      <td className={`max-w-[8rem] px-6 ${editMode ? 'py-2' : 'py-4'}`}>
         {!editMode ? (
-          <span className="max-w-[4rem] text-ellipsis truncate">{url}</span>
+          <span className="text-ellipsis break-all line-clamp-2">
+            <a
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline underline-offset-2 hover:text-black transition"
+            >
+              {url}
+            </a>
+          </span>
         ) : (
           <input
             name="title"
@@ -108,9 +113,9 @@ export default function BookmarkTableRow({ item }) {
           />
         )}
       </td>
-      <td className={`w-24 px-6 ${editMode ? 'py-2' : 'py-4'}`}>
+      <td className={`max-w-[8rem] px-6 ${editMode ? 'py-2' : 'py-4'}`}>
         {!editMode ? (
-          <span className="text-xs max-w-[4rem] truncate">{desc}</span>
+          <span className="text-ellipsis break-all line-clamp-3">{desc}</span>
         ) : (
           <input
             name="desc"
@@ -121,9 +126,19 @@ export default function BookmarkTableRow({ item }) {
           />
         )}
       </td>
-      <th className={`px-6 ${editMode ? 'py-2' : 'py-4'}`}>
-        <span className="font-normal">{category?.name ?? ''}</span>
-      </th>
+      <td className={`px-6 ${editMode ? 'py-2' : 'py-4'}`}>
+        <span className="text-ellipsis break-all">{category?.name ?? ''}</span>
+      </td>
+      <td className={`px-6 ${editMode ? 'py-2' : 'py-4'}`}>
+        <span className="text-ellipsis break-all">
+          {tags.map((tag) => tag.name).join(', ')}
+        </span>
+      </td>
+      <td className={`px-6 ${editMode ? 'py-2' : 'py-4'}`}>
+        <span className="text-ellipsis break-all">
+          {new Date(createdAt).toLocaleString(settings.locale)}
+        </span>
+      </td>
       <td
         className={`flex justify-center items-center space-x-2 ${
           editMode ? 'px-2' : 'px-6'

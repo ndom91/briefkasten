@@ -1,5 +1,5 @@
-import { useRef, useState } from 'react'
-import { useKeyPress } from 'react-use'
+import { useEffect, useRef, useState } from 'react'
+import { useKeyPress, useLocalStorage } from 'react-use'
 import { viewTypes } from '@/lib/constants'
 import { useStore } from '@/lib/store'
 import Breadcrumbs from '@/components/breadcrumbs'
@@ -12,6 +12,17 @@ export default function DashboardHeader() {
   const setSearchText = useStore((state) => state.setSearchText)
   const [searchFocused, setSearchFocused] = useState(false)
   const searchRef = useRef()
+  const [value, setValue, remove] = useLocalStorage(
+    'dashboard.activeView',
+    settings.currentView
+  )
+
+  useEffect(() => {
+    console.log('user setting', settings)
+    if (value) {
+      setUserSetting({ activeView: value })
+    }
+  }, [])
 
   useKeyPress((e) => {
     if (e.type === 'keydown') {
@@ -21,6 +32,11 @@ export default function DashboardHeader() {
       }
     }
   })
+
+  const updateActiveView = (newView) => {
+    setValue(newView)
+    setUserSetting({ activeView: newView })
+  }
 
   return (
     <div className="w-full p-6 flex justify-between items-center">
@@ -81,9 +97,7 @@ export default function DashboardHeader() {
         <button
           type="button"
           aria-label="Card View"
-          onClick={() =>
-            setUserSetting({ ...settings, activeView: viewTypes.CARD.name })
-          }
+          onClick={() => updateActiveView(viewTypes.CARD.name)}
           className={`inline-flex w-auto cursor-pointer select-none appearance-none items-center justify-center rounded-l-md border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition hover:border-gray-300 hover:bg-gray-100 focus:z-10 focus:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 ${
             settings.activeView === viewTypes.CARD.name &&
             '!bg-slate-800 !text-white hover:!bg-slate-900'
@@ -98,9 +112,7 @@ export default function DashboardHeader() {
         <button
           type="button"
           aria-label="List View"
-          onClick={() =>
-            setUserSetting({ ...settings, activeView: viewTypes.LIST.name })
-          }
+          onClick={() => updateActiveView(viewTypes.LIST.name)}
           className={`inline-flex w-auto cursor-pointer select-none appearance-none items-center justify-center border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition hover:border-gray-300 hover:bg-gray-100 focus:z-10 focus:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 ${
             settings.activeView === viewTypes.LIST.name &&
             '!bg-slate-800 !text-white hover:!bg-slate-900'
@@ -115,9 +127,7 @@ export default function DashboardHeader() {
         <button
           type="button"
           aria-label="Detail View"
-          onClick={() =>
-            setUserSetting({ ...settings, activeView: viewTypes.DETAIL.name })
-          }
+          onClick={() => updateActiveView(viewTypes.DETAIL.name)}
           className={`inline-flex w-auto cursor-pointer select-none appearance-none items-center justify-center rounded-r-md border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition hover:border-gray-300 hover:bg-gray-100 focus:z-10 focus:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 ${
             settings.activeView === viewTypes.DETAIL.name &&
             '!bg-slate-800 !text-white hover:!bg-slate-900'
