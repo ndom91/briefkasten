@@ -131,17 +131,13 @@ export default function Home() {
     }
   }
 
-  const state = useDrop({
-    // onFiles: (files) => console.log('files', files),
-    // onText: (text) => console.log('text', text),
+  // Catch dropped URL anywhere on page
+  useDrop({
     onUri: (uri) => {
-      console.log('uri', uri)
       setDroppedUrl(uri)
       toggleModal()
     },
   })
-
-  console.log(state)
 
   return (
     <Layout>

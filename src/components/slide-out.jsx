@@ -53,14 +53,6 @@ export default function SlideOut({ open, toggleOpen }) {
         }),
       })
       if (updateRes.status === 200) {
-        console.log('updatingBookmark', {
-          id: editBookmark.id,
-          title: editTitle,
-          url: `https://${editUrl}`,
-          desc: editDesc,
-          category: editCategory,
-          tags: selectedTags,
-        })
         updateBookmark({
           id: editBookmark.id,
           title: editTitle,

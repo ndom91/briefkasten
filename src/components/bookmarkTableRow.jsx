@@ -5,7 +5,6 @@ import { useToast, toastTypes } from '@/lib/hooks'
 import { useToggle } from 'react-use'
 
 export default function BookmarkTableRow({ item }) {
-  // console.log('bookmark row', item)
   const { data: session } = useSession()
   const { id, title, url, desc, category, tags, createdAt } = item
   const [editMode, toggleEditMode] = useToggle(false)

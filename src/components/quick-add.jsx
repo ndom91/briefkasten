@@ -37,7 +37,11 @@ export default function QuickAdd({ categories }) {
   })
 
   const clearInputs = () => {
-    console.log('clearing')
+    setUrl('')
+    setTitle('')
+    setCategory('')
+    setSelectedTags([])
+    setDescription('')
   }
 
   async function submitUrl() {
