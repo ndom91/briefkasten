@@ -117,29 +117,44 @@ export default async function handler(req, res) {
           tags.map(async (tag) => {
             return await prisma.tag.upsert({
               create: {
-                name: tag,
+                name: tag.name,
                 userId,
               },
               update: {
-                name: tag,
+                name: tag.name,
               },
               where: {
-                name_userId: {
-                  name: tag,
-                  userId,
-                },
+                id: tag.id,
+                // name_userId: {
+                //   name: tag,
+                //   userId,
+                // },
               },
             })
           })
         )
 
         // Finally, link the tags to bookmark in intermediate join table
-        await prisma.tagsOnBookmarks.createMany({
-          data: upsertTagRes.map((tag) => ({
-            bookmarkId: upsertBookmarkRes.id,
-            tagId: tag.id,
-          })),
-        })
+        await Promise.all(
+          upsertTagRes.map((tag) => {
+            return prisma.tagsOnBookmarks.upsert({
+              create: {
+                bookmarkId: upsertBookmarkRes.id,
+                tagId: tag.id,
+              },
+              update: {
+                bookmarkId: upsertBookmarkRes.id,
+                tagId: tag.id,
+              },
+              where: {
+                bookmarkId_tagId: {
+                  bookmarkId: upsertBookmarkRes.id,
+                  tagId: tag.id,
+                },
+              },
+            })
+          })
+        )
       }
 
       res.setHeader('Access-Control-Allow-Origin', '*')

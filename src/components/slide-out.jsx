@@ -49,17 +49,25 @@ export default function SlideOut({ open, toggleOpen }) {
           url: `https://${editUrl}`,
           desc: editDesc,
           category: editCategory,
-          tags: selectedTags.map((tag) => tag.id),
+          tags: selectedTags,
         }),
       })
       if (updateRes.status === 200) {
+        console.log('updatingBookmark', {
+          id: editBookmark.id,
+          title: editTitle,
+          url: `https://${editUrl}`,
+          desc: editDesc,
+          category: editCategory,
+          tags: selectedTags,
+        })
         updateBookmark({
           id: editBookmark.id,
           title: editTitle,
           url: `https://${editUrl}`,
           desc: editDesc,
           category: editCategory,
-          tags: selectedTags.map((tag) => tag.id),
+          tags: selectedTags,
         })
         toast(toastTypes.SUCCESS, `Successfully edited "${editTitle}"`)
       }
@@ -478,6 +486,12 @@ export default function SlideOut({ open, toggleOpen }) {
                     <div className="bg-slate-50 p-4">
                       <div className="flex justify-evenly space-x-2 px-4 text-right">
                         <button
+                          onClick={clearInputs}
+                          className="flex flex-1 justify-center rounded-md border border-transparent border-slate-600 py-2 px-4 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
+                        >
+                          Clear
+                        </button>
+                        <button
                           onClick={saveEdit}
                           className="inline-flex flex-1 items-center justify-center rounded-md border border-transparent bg-slate-800 py-2 px-4 text-sm font-medium text-white shadow-sm transition hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
                         >
@@ -514,12 +528,6 @@ export default function SlideOut({ open, toggleOpen }) {
                             </svg>
                           )}
                           Save
-                        </button>
-                        <button
-                          onClick={clearInputs}
-                          className="flex flex-1 justify-center rounded-md border border-transparent border-slate-600 py-2 px-4 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
-                        >
-                          Clear
                         </button>
                       </div>
                     </div>

@@ -167,7 +167,7 @@ export default function BookmarkCard({ bookmark, toggleSidebar }) {
         <div className="flex flex-1 flex-col justify-between">
           <div className="flex-1">
             <div className="flex items-center space-x-1 text-sm text-slate-400">
-              <time dateTime="2020-03-10" className="">
+              <time dateTime={createdAt} title={createdAt} className="">
                 {new Date(createdAt).toLocaleDateString(settings.locale, {
                   dateStyle: 'short',
                 })}
