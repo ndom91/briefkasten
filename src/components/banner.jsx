@@ -1,10 +1,10 @@
 export default function Banner({ title, subtitle, ctaButtonText, close }) {
   return (
-    <div className="bg-indigo-600">
-      <div className="max-w-7xl mx-auto py-3 px-3 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between flex-wrap">
-          <div className="w-0 flex-1 flex items-center">
-            <span className="flex p-2 rounded-lg bg-indigo-800">
+    <div className="bg-slate-600">
+      <div className="mx-auto max-w-7xl py-3 px-3 sm:px-6 lg:px-8">
+        <div className="flex flex-wrap items-center justify-between">
+          <div className="flex w-0 flex-1 items-center">
+            <span className="flex rounded-lg bg-slate-800 p-2">
               <svg
                 className="h-6 w-6 text-white"
                 xmlns="http://www.w3.org/2000/svg"
@@ -21,15 +21,15 @@ export default function Banner({ title, subtitle, ctaButtonText, close }) {
                 />
               </svg>
             </span>
-            <p className="ml-3 font-medium text-white truncate">
+            <p className="ml-3 truncate font-medium text-white">
               <span className="md:hidden">{title}</span>
               <span className="hidden md:inline">{subtitle}</span>
             </p>
           </div>
-          <div className="order-3 mt-2 flex-shrink-0 w-full sm:order-2 sm:mt-0 sm:w-auto">
+          <div className="order-3 mt-2 w-full flex-shrink-0 sm:order-2 sm:mt-0 sm:w-auto">
             <a
               href="#"
-              className="flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-indigo-600 bg-white hover:bg-indigo-50"
+              className="flex items-center justify-center rounded-md border border-transparent bg-white px-4 py-2 text-sm font-medium text-slate-600 shadow-sm hover:bg-slate-50"
             >
               {ctaButtonText}
             </a>
@@ -38,7 +38,7 @@ export default function Banner({ title, subtitle, ctaButtonText, close }) {
             <button
               type="button"
               onClick={close}
-              className="-mr-1 flex p-2 rounded-md hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-white sm:-mr-2"
+              className="-mr-1 flex rounded-md p-2 hover:bg-slate-500 focus:outline-none focus:ring-2 focus:ring-white sm:-mr-2"
             >
               <span className="sr-only">Dismiss</span>
               <svg

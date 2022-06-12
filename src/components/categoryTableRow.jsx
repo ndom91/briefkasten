@@ -122,7 +122,7 @@ export default function CategoryTableRow({ item }) {
         </span>
       </th>
       <td
-        className={`flex justify-center items-center space-x-2 ${
+        className={`flex items-center justify-center space-x-2 ${
           editMode ? 'px-0' : 'px-6'
         } py-4 text-right`}
       >

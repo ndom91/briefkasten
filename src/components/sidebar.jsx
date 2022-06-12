@@ -133,9 +133,9 @@ export default function Sidebar() {
   return (
     <aside
       suppressHydrationWarning={true}
-      className={`flex-shrink-0 drop-shadow-md max-h-screen w-full ${
+      className={`max-h-screen w-full flex-shrink-0 drop-shadow-md ${
         open ? 'max-w-[16rem]' : 'max-w-[6rem]'
-      } rounded-r-md flex flex-col flex-grow pt-5 border-r bg-slate-800 transition`}
+      } flex flex-grow flex-col rounded-r-md border-r bg-slate-800 pt-5 transition`}
     >
       <div className="flex items-center justify-center px-4">
         <Link href="/">
@@ -157,14 +157,14 @@ export default function Sidebar() {
               <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
             </svg>
             {open && (
-              <span className="text-slate-200 ml-3 font-serif text-xl font-semibold">
+              <span className="ml-3 font-serif text-xl font-semibold text-slate-200">
                 Briefkasten
               </span>
             )}
           </div>
         </Link>
-        <button className="hidden rounded-lg focus:outline-none focus:shadow-outline">
-          <svg fill="currentColor" viewBox="0 0 20 20" className="w-6 h-6">
+        <button className="focus:shadow-outline hidden rounded-lg focus:outline-none">
+          <svg fill="currentColor" viewBox="0 0 20 20" className="h-6 w-6">
             <path
               fillRule="evenodd"
               d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM9 15a1 1 0 011-1h6a1 1 0 110 2h-6a1 1 0 01-1-1z"
@@ -179,7 +179,7 @@ export default function Sidebar() {
         </button>
       </div>
       <div
-        className={`flex flex-col flex-grow px-4 mt-5 bg-slate-800 ${
+        className={`mt-5 flex flex-grow flex-col bg-slate-800 px-4 ${
           open && 'overflow-y-scroll'
         }`}
       >
@@ -187,11 +187,11 @@ export default function Sidebar() {
           <li>
             <NextLink
               href="/"
-              className="inline-flex items-center w-full px-4 py-2 mt-1 text-base transition duration-500 ease-in-out transform rounded-lg text-slate-200 hover:bg-slate-900 focus:shadow-outline hover:cursor-pointer focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-slate-900 outline-none focus:outline-none"
+              className="focus:shadow-outline mt-1 inline-flex w-full transform items-center rounded-lg px-4 py-2 text-base text-slate-200 outline-none transition duration-500 ease-in-out hover:cursor-pointer hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-slate-900"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className={`${open ? 'w-4 h-4' : 'w-7 h-7'}`}
+                className={`${open ? 'h-4 w-4' : 'h-7 w-7'}`}
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -204,7 +204,7 @@ export default function Sidebar() {
                 ></path>
               </svg>
               <span
-                className={`font-serif text-lg text-slate-200 ml-4 ${
+                className={`ml-4 font-serif text-lg text-slate-200 ${
                   !open && 'hidden'
                 }`}
               >
@@ -216,10 +216,10 @@ export default function Sidebar() {
           <li>
             <NextLink
               href="/categories"
-              className="inline-flex items-center w-full px-4 py-2 mt-1 text-base transition duration-500 ease-in-out transform rounded-lg text-slate-200 hover:bg-slate-900 focus:shadow-outline hover:cursor-pointer focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-slate-900 outline-none focus:outline-none"
+              className="focus:shadow-outline mt-1 inline-flex w-full transform items-center rounded-lg px-4 py-2 text-base text-slate-200 outline-none transition duration-500 ease-in-out hover:cursor-pointer hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-slate-900"
             >
               <svg
-                className={`${open ? 'w-4 h-4' : 'w-7 h-7'}`}
+                className={`${open ? 'h-4 w-4' : 'h-7 w-7'}`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -233,7 +233,7 @@ export default function Sidebar() {
                 />
               </svg>
               <span
-                className={`font-serif text-lg text-slate-200 ml-4 ${
+                className={`ml-4 font-serif text-lg text-slate-200 ${
                   !open && 'hidden'
                 }`}
               >
@@ -245,10 +245,10 @@ export default function Sidebar() {
           <li>
             <NextLink
               href="/tags"
-              className="inline-flex items-center w-full px-4 py-2 mt-1 text-base transition duration-500 ease-in-out transform rounded-lg text-slate-200 hover:bg-slate-900 focus:shadow-outline hover:cursor-pointer focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-slate-900 outline-none focus:outline-none"
+              className="focus:shadow-outline mt-1 inline-flex w-full transform items-center rounded-lg px-4 py-2 text-base text-slate-200 outline-none transition duration-500 ease-in-out hover:cursor-pointer hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-slate-900"
             >
               <svg
-                className={`${open ? 'w-4 h-4' : 'w-7 h-7'}`}
+                className={`${open ? 'h-4 w-4' : 'h-7 w-7'}`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -262,7 +262,7 @@ export default function Sidebar() {
                 />
               </svg>
               <span
-                className={`font-serif text-lg text-slate-200 ml-4 ${
+                className={`ml-4 font-serif text-lg text-slate-200 ${
                   !open && 'hidden'
                 }`}
               >
@@ -274,13 +274,13 @@ export default function Sidebar() {
         </ul>
         {open && (
           <>
-            <div className="px-4 pt-4 font-medium text-neutral-200 mb-2 flex items-center justify-between space-x-2">
+            <div className="mb-2 flex items-center justify-between space-x-2 px-4 pt-4 font-medium text-neutral-200">
               <div className="flex items-center justify-start">
                 <h2 className="font-serif text-lg text-slate-200">
                   Categories
                 </h2>
                 <button
-                  className="focus:ring-2 focus:ring-slate-200 ml-1 rounded-md outline-none hidden flex-1 justify-end hover:cursor-pointer lg:flex"
+                  className="ml-1 hidden flex-1 justify-end rounded-md outline-none hover:cursor-pointer focus:ring-2 focus:ring-slate-200 lg:flex"
                   onClick={() => {
                     toggleQuickAdd('category')
                     setTimeout(() => {
@@ -306,11 +306,11 @@ export default function Sidebar() {
               </div>
               <div className="flex items-center">
                 <button
-                  className="rounded-lg outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-offset-slate-900 focus-visible:ring-white "
+                  className="rounded-lg outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-4 focus-visible:ring-offset-slate-900 "
                   onClick={toggleOpenCategory}
                 >
                   <svg
-                    className={`w-5 h-5 transition duration-200 ease-in-out ${
+                    className={`h-5 w-5 transition duration-200 ease-in-out ${
                       openCategory ? 'rotate-90' : 'rotate-0'
                     }`}
                     fill="none"
@@ -340,7 +340,7 @@ export default function Sidebar() {
                       }`}
                     >
                       {cat.name}
-                      <span className="text-sm text-slate-200 bg-slate-700 rounded-md px-1 text-center ml-2">
+                      <span className="ml-2 rounded-md bg-slate-700 px-1 text-center text-sm text-slate-200">
                         {cat['_count']?.bookmarks ?? 0}
                       </span>
                     </button>
@@ -395,11 +395,11 @@ export default function Sidebar() {
                 )}
               </div>
             </ul>
-            <div className="px-4 pt-4 font-medium text-neutral-200 mb-2 flex items-center justify-between space-x-2">
+            <div className="mb-2 flex items-center justify-between space-x-2 px-4 pt-4 font-medium text-neutral-200">
               <div className="flex items-center justify-start">
                 <h2 className="font-serif text-lg text-slate-200">Tags</h2>
                 <button
-                  className="focus:ring-2 focus:ring-slate-200 ml-1 rounded-md outline-none hidden flex-1 justify-end hover:cursor-pointer lg:flex"
+                  className="ml-1 hidden flex-1 justify-end rounded-md outline-none hover:cursor-pointer focus:ring-2 focus:ring-slate-200 lg:flex"
                   onClick={() => {
                     toggleQuickAdd('tag')
                     setTimeout(() => {
@@ -425,11 +425,11 @@ export default function Sidebar() {
               </div>
               <div className="flex items-center">
                 <button
-                  className="rounded-lg outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-offset-slate-900 focus-visible:ring-white "
+                  className="rounded-lg outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-4 focus-visible:ring-offset-slate-900 "
                   onClick={toggleOpenTag}
                 >
                   <svg
-                    className={`w-5 h-5 transition duration-200 ease-in-out ${
+                    className={`h-5 w-5 transition duration-200 ease-in-out ${
                       openTag ? 'rotate-90' : 'rotate-0'
                     }`}
                     fill="none"
@@ -448,7 +448,7 @@ export default function Sidebar() {
               </div>
             </div>
             <ul className="overflow-y-scroll">
-              <div className="ml-2 flex flex-col items-start space-y-2 md:ml-4 mb-4">
+              <div className="ml-2 mb-4 flex flex-col items-start space-y-2 md:ml-4">
                 {openTag &&
                   tags?.map((tag) => (
                     <button
@@ -459,7 +459,7 @@ export default function Sidebar() {
                       }`}
                     >
                       {tag.emoji} <span className="ml-1">{tag.name}</span>{' '}
-                      <span className="text-slate-200 bg-slate-700 rounded-md px-1 text-sm text-center ml-1">
+                      <span className="ml-1 rounded-md bg-slate-700 px-1 text-center text-sm text-slate-200">
                         {tag['_count']?.bookmarks ?? 0}
                       </span>
                     </button>
@@ -517,10 +517,11 @@ export default function Sidebar() {
           </>
         )}
       </div>
-      <div className="w-full group flex p-4 px-4 bg-slate-900 items-center justify-between rounded-br-md">
-        <div className="flex justify-start items-center">
-          <Menu as="div" className="relative inline-block text-left z-50">
-            <Menu.Button className="flex justify-center items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-offset-slate-900 focus-visible:ring-white focus-visible:ring-opacity-75 rounded-full">
+      <div className="group flex w-full items-center justify-between rounded-br-md bg-slate-900 p-4 px-4">
+        <div className="flex items-center justify-start">
+          <Menu as="div" className="relative z-50 inline-block text-left">
+            <Menu.Button className="flex items-center justify-center rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-4 focus-visible:ring-offset-slate-900">
+              {/* eslint-disable @next/next/no-img-element */}
               <img
                 className={`inline-block rounded-full ${
                   open ? 'h-9 w-9' : 'h-9 w-9'
@@ -543,7 +544,7 @@ export default function Sidebar() {
               leaveFrom="transform opacity-100 scale-100"
               leaveTo="transform opacity-0 scale-95"
             >
-              <Menu.Items className="absolute left-0 bottom-16 mt-2 w-56 origin-bottom-left divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
+              <Menu.Items className="absolute left-0 bottom-16 z-50 mt-2 w-56 origin-bottom-left divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                 <div className="px-1 py-1">
                   <Menu.Item>
                     {({ active }) => (
@@ -551,10 +552,10 @@ export default function Sidebar() {
                         href="/profile"
                         className={`${
                           active ? 'bg-slate-500 text-white' : 'text-gray-900'
-                        } group flex w-full justify-start space-x-2 items-center rounded-md px-2 py-2 text-sm`}
+                        } group flex w-full items-center justify-start space-x-2 rounded-md px-2 py-2 text-sm`}
                       >
                         <svg
-                          className={`w-5 h-5 ${
+                          className={`h-5 w-5 ${
                             active ? 'text-slate-200' : 'text-slate-600'
                           }`}
                           aria-hidden="true"
@@ -580,10 +581,10 @@ export default function Sidebar() {
                         href="/settings"
                         className={`${
                           active ? 'bg-slate-500 text-white' : 'text-gray-900'
-                        } group flex w-full justify-start space-x-2 items-center rounded-md px-2 py-2 text-sm`}
+                        } group flex w-full items-center justify-start space-x-2 rounded-md px-2 py-2 text-sm`}
                       >
                         <svg
-                          className={`w-5 h-5 ${
+                          className={`h-5 w-5 ${
                             active ? 'text-slate-200' : 'text-slate-600'
                           }`}
                           aria-hidden="true"
@@ -611,10 +612,10 @@ export default function Sidebar() {
                         onClick={signOut}
                         className={`${
                           active ? 'bg-slate-500 text-white' : 'text-gray-900'
-                        } group flex w-full justify-start space-x-2 items-center rounded-md px-2 py-2 text-sm`}
+                        } group flex w-full items-center justify-start space-x-2 rounded-md px-2 py-2 text-sm`}
                       >
                         <svg
-                          className={`w-5 h-5 ${
+                          className={`h-5 w-5 ${
                             active ? 'text-slate-200' : 'text-slate-600'
                           }`}
                           aria-hidden="true"
@@ -651,10 +652,10 @@ export default function Sidebar() {
             toggleOpen()
             setValue(!open)
           }}
-          className="text-slate-200 rounded-lg outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-offset-slate-900 focus-visible:ring-white"
+          className="rounded-lg text-slate-200 outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-4 focus-visible:ring-offset-slate-900"
         >
           <svg
-            className={` transition duration-300 ease-in-out w-6 h-6 ${
+            className={` h-6 w-6 transition duration-300 ease-in-out ${
               open ? 'rotate-270' : 'rotate-180'
             }`}
             fill="none"

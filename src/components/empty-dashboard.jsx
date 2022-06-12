@@ -2,7 +2,7 @@ import Image from 'next/image'
 
 export default function EmptyDashboard() {
   return (
-    <section className="max-w-xl px-4 py-12 mx-auto flex flex-col items-center">
+    <section className="mx-auto flex max-w-xl flex-col items-center px-4 py-12">
       <Image
         className="mx-auto object-cover"
         src="/images/empty-state.png"
@@ -11,7 +11,7 @@ export default function EmptyDashboard() {
         width="500"
         alt="empty image"
       />
-      <h2 className="mt-2 text-xl font-medium text-center text-gray-800">
+      <h2 className="mt-2 text-center text-xl font-medium text-gray-800">
         It looks like you don&apos;t have any bookmarks yet!
       </h2>
       <p className="mt-1 text-center text-gray-600">
@@ -26,10 +26,10 @@ export default function EmptyDashboard() {
         and adding bookmarks that way, or you can quick-add a bookmark by using
         the &quot;+&quot; button in the bottom right!
       </p>
-      <div className="flex flex-col items-center justify-center mt-4 space-y-1 md:flex-row md:space-y-0 md:space-x-1">
+      <div className="mt-4 flex flex-col items-center justify-center space-y-1 md:flex-row md:space-y-0 md:space-x-1">
         <a
           href="https://chrome.google.com/webstore/detail/briefkasten-bookmarks/aighkhofochfjejmhjfkgjfpkpgmjlnd"
-          className="inline-flex transition justify-center py-2 px-6 shadow-sm font-medium rounded-md text-white bg-slate-800 hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 text-md"
+          className="text-md inline-flex justify-center rounded-md bg-slate-800 py-2 px-6 font-medium text-white shadow-sm transition hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
         >
           Install Extension
         </a>

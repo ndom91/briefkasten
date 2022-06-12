@@ -116,7 +116,7 @@ export default function TagTableRow({ item }) {
             value={tagEmoji}
             type="text"
             onChange={(e) => setTagEmoji(e.target.value)}
-            className="block w-full rounded-md border-2 border-slate-200 bg-slate-50 py-1 px-2 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500 focus:ring-slate-500 text-xl"
+            className="block w-full rounded-md border-2 border-slate-200 bg-slate-50 py-1 px-2 text-sm text-xl text-slate-900 placeholder-slate-300 focus:border-slate-500 focus:ring-slate-500"
           />
         )}
       </td>
@@ -126,7 +126,7 @@ export default function TagTableRow({ item }) {
         </span>
       </th>
       <td
-        className={`flex justify-center items-center space-x-2 ${
+        className={`flex items-center justify-center space-x-2 ${
           editMode ? 'px-2' : 'px-6'
         } py-4 text-right`}
       >

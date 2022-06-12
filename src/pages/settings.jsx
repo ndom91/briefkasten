@@ -119,11 +119,11 @@ export default function Settings({ nextauth }) {
       <Head>
         <title>Briefkasten | Settings</title>
       </Head>
-      <main className="flex flex-col items-start space-y-2 h-full">
-        <div className="w-full p-6 flex space-x-4 justify-start items-center">
+      <main className="flex h-full flex-col items-start space-y-2">
+        <div className="flex w-full items-center justify-start space-x-4 p-6">
           <Breadcrumbs breadcrumbs={breadcrumbs} />
         </div>
-        <div className="p-4 flex flex-col items-stretch space-y-4">
+        <div className="flex flex-col items-stretch space-y-4 p-4">
           <section className="flex flex-col items-start justify-center space-y-4 rounded-md bg-slate-50 p-4">
             <div className="flex items-center">
               <h2 className="text-lg text-slate-700">API Token</h2>
@@ -134,7 +134,7 @@ export default function Settings({ nextauth }) {
                 href="https://github.com/ndom91/briefkasten-extension"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="outline-none hover:underline focus:underline font-semibold transition"
+                className="font-semibold outline-none transition hover:underline focus:underline"
               >
                 briefkasten extension
               </a>
@@ -285,7 +285,7 @@ export default function Settings({ nextauth }) {
                 href="https://ndo.dev?utm_source=briefkasten-about"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-semibold text-slate-600 hover:underline transition"
+                className="font-semibold text-slate-600 transition hover:underline"
               >
                 ndom91
               </a>
@@ -298,7 +298,7 @@ export default function Settings({ nextauth }) {
                   target="_blank"
                   rel="noopener noreferrer"
                   href="https://github.com/ndom91/briefkasten"
-                  className="font-semibold text-slate-600 hover:underline transition"
+                  className="font-semibold text-slate-600 transition hover:underline"
                 >
                   <code>ndom91/briefkasten</code>
                 </a>
@@ -309,7 +309,7 @@ export default function Settings({ nextauth }) {
                   target="_blank"
                   rel="noopener noreferrer"
                   href="https://github.com/ndom91/briefkasten-extension"
-                  className="font-semibold text-slate-600 hover:underline transition"
+                  className="font-semibold text-slate-600 transition hover:underline"
                 >
                   <code>ndom91/briefkasten-extension</code>
                 </a>
@@ -320,7 +320,7 @@ export default function Settings({ nextauth }) {
                   target="_blank"
                   rel="noopener noreferrer"
                   href="https://github.com/ndom91/briefkasten-scrape"
-                  className="font-semibold text-slate-600 hover:underline transition"
+                  className="font-semibold text-slate-600 transition hover:underline"
                 >
                   <code>ndom91/briefkasten-scrape</code>
                 </a>
@@ -330,7 +330,7 @@ export default function Settings({ nextauth }) {
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-semibold text-slate-600 hover:underline transition"
+                  className="font-semibold text-slate-600 transition hover:underline"
                   href="https://github.com/ndom91/briefkasten/blob/main/LICENSE"
                 >
                   <code>MIT</code>

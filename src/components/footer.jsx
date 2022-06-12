@@ -1,7 +1,7 @@
 export default function Footer() {
   return (
     <footer className="flex w-full max-w-8xl items-center justify-center space-x-4 px-4 pt-2 pb-6 sm:items-start">
-      <section className="flex w-full items-center items-center justify-between space-x-3 ">
+      <section className="flex w-full items-center justify-between space-x-3 ">
         <div className="flex space-x-2">
           <a
             href="https://twitter.com/ndom91"

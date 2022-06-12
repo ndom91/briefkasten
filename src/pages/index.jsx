@@ -75,16 +75,16 @@ export default function Home() {
 
   return (
     <Layout>
-      <div className="flex flex-col items-center space-y-2 h-full">
+      <div className="flex h-full flex-col items-center space-y-2">
         <DashboardHeader />
         {bookmarks.length === 0 && <EmptyDashboard />}
         {bookmarks.length > 0 && currentTableData.length === 0 && (
-          <div className="flex justify-center text-slate-700 text-lg">
+          <div className="flex justify-center text-lg text-slate-700">
             No results found, please try again!
           </div>
         )}
-        <div className="overflow-y-scroll overflow-x-hidden w-full">
-          <section className="w-full grid gap-4 grid-rows-[repeat(auto-fit,_minmax(300px,_1fr))] grid-cols-[repeat(auto-fit,_minmax(275px,_1fr))] justify-items-center items-center px-4">
+        <div className="w-full overflow-x-hidden overflow-y-scroll">
+          <section className="grid w-full grid-cols-[repeat(auto-fit,_minmax(275px,_1fr))] grid-rows-[repeat(auto-fit,_minmax(300px,_1fr))] items-center justify-items-center gap-4 px-4">
             {currentTableData.length !== 0 &&
               settings.activeView === viewTypes.CARD.name &&
               currentTableData.map((bookmark) => (
@@ -100,7 +100,7 @@ export default function Home() {
               )}
             {currentTableData.length !== 0 &&
               settings.activeView === viewTypes.DETAIL.name && (
-                <div className="flex justify-center text-slate-700 text-lg">
+                <div className="flex justify-center text-lg text-slate-700">
                   This view has not been implemented yet, please try Card or
                   List view
                 </div>

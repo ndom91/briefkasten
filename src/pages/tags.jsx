@@ -74,15 +74,15 @@ export default function Tags({ nextauth }) {
       <Head>
         <title>Briefkasten | Tags</title>
       </Head>
-      <div className="flex flex-col items-center space-y-2 h-full">
-        <div className="w-full p-6 flex space-x-4 justify-start items-center">
+      <div className="flex h-full flex-col items-center space-y-2">
+        <div className="flex w-full items-center justify-start space-x-4 p-6">
           <Breadcrumbs breadcrumbs={breadcrumbs} />
-          <div className="w-full flex justify-center">
+          <div className="flex w-full justify-center">
             <label htmlFor="table" className="sr-only">
               Search
             </label>
-            <div className="relative mt-1 w-full flex justify-center">
-              <div className="relative pointer-events-none inset-y-0 left-0 flex items-center pl-3">
+            <div className="relative mt-1 flex w-full justify-center">
+              <div className="pointer-events-none relative inset-y-0 left-0 flex items-center pl-3">
                 <svg
                   className="pointer-events-none absolute left-5 top-2 h-5 w-5 text-slate-200"
                   fill="none"
@@ -102,13 +102,13 @@ export default function Tags({ nextauth }) {
                 type="text"
                 id="table"
                 onChange={(e) => setSearchString(e.target.value)}
-                className="rounded-md border-2 border-slate-200 py-1 px-2 pl-8 pr-8 text-base text-slate-600 outline-none placeholder:text-slate-200 focus:border-slate-200 focus:ring-2 focus:ring-slate-200 focus:ring-offset-transparent w-2/3"
+                className="w-2/3 rounded-md border-2 border-slate-200 py-1 px-2 pl-8 pr-8 text-base text-slate-600 outline-none placeholder:text-slate-200 focus:border-slate-200 focus:ring-2 focus:ring-slate-200 focus:ring-offset-transparent"
                 placeholder="Search for items"
               />
             </div>
           </div>
         </div>
-        <div className="relative w-full px-4 overflow-y-scroll">
+        <div className="relative w-full overflow-y-scroll px-4">
           <table className="w-full text-left text-sm text-slate-500 ">
             <thead className="bg-slate-50 text-xs uppercase text-slate-700 ">
               <tr>

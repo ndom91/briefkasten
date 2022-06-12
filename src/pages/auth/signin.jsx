@@ -44,7 +44,7 @@ const Signin = ({ providers, csrfToken }) => {
   return (
     <>
       <Meta />
-      <div className="min-h-full absolute overflow-hidden w-full h-full">
+      <div className="absolute h-full min-h-full w-full overflow-hidden">
         <div className="absolute top-0 left-0 z-10 flex h-[250%] w-[70%] translate-x-[-30%] translate-y-[-20%] rotate-[11deg] items-center bg-slate-900" />
         <div className="relative z-10 flex h-[calc(100vh_-_64px)] w-full items-center p-8 text-center font-bold">
           <div className="z-20 ml-[15%] flex w-[22rem] flex-col items-center justify-center text-xl">
@@ -56,21 +56,21 @@ const Signin = ({ providers, csrfToken }) => {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth="2"
-                className="h-10 w-10 lg:h-12 lg:w-12 rounded-full bg-slate-800 p-2 text-white"
+                className="h-10 w-10 rounded-full bg-slate-800 p-2 text-white lg:h-12 lg:w-12"
                 viewBox="0 0 24 24"
               >
                 <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
               </svg>
-              <span className="text-white font-medium text-2xl lg:text-4xl">
+              <span className="text-2xl font-medium text-white lg:text-4xl">
                 Briefkasten
               </span>
             </h2>
-            <div className="w-full m-8 rounded bg-white p-6">
-              <h1 className="text-4xl font-light text-center text-gray-900 mb-6">
+            <div className="m-8 w-full rounded bg-white p-6">
+              <h1 className="mb-6 text-center text-4xl font-light text-gray-900">
                 Login
               </h1>
 
-              <div className="pb-6 space-y-2 border-b border-gray-200">
+              <div className="space-y-2 border-b border-gray-200 pb-6">
                 {providers &&
                   Object.values(providers).map((p) =>
                     p.type === 'oauth' ? (
@@ -83,7 +83,7 @@ const Signin = ({ providers, csrfToken }) => {
                           } ${
                             p.id === 'github' &&
                             'bg-gray-600 hover:bg-gray-800 '
-                          } px-4 text-base font-light text-white transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-800 justify-center`}
+                          } justify-center px-4 text-base font-light text-white transition focus:outline-none focus:ring-2 focus:ring-slate-800 focus:ring-offset-2`}
                         >
                           <ProviderIcons provider={p.id} />
                           <span>Continue with {p.name}</span>
@@ -104,11 +104,11 @@ const Signin = ({ providers, csrfToken }) => {
                 />
 
                 <label className="block">
-                  <span className="block mb-1 text-xs font-medium text-gray-700 text-left">
+                  <span className="mb-1 block text-left text-xs font-medium text-gray-700">
                     Your Email
                   </span>
                   <input
-                    className="focus:ring-slate-500 focus:border-slate-500 flex-1 block w-full rounded-md sm:text-sm border-gray-300 placeholder:text-slate-400 placeholder:font-light font-normal transition"
+                    className="block w-full flex-1 rounded-md border-gray-300 font-normal transition placeholder:font-light placeholder:text-slate-400 focus:border-slate-500 focus:ring-slate-500 sm:text-sm"
                     type="email"
                     autoComplete="username"
                     disabled={false}
@@ -123,7 +123,7 @@ const Signin = ({ providers, csrfToken }) => {
                   type="submit"
                   disabled={false}
                   onClick={() => signIn('email', { callbackUrl: '/', email })}
-                  className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-slate-800 hover:cursor-pointer transition hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 w-full disabled:hover:cursor-not-allowed"
+                  className="inline-flex w-full justify-center rounded-md border border-transparent bg-slate-800 py-2 px-4 text-sm font-medium text-white shadow-sm transition hover:cursor-pointer hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 disabled:hover:cursor-not-allowed"
                   place="Continue with Magic Link Email"
                 />
               </form>

@@ -25,6 +25,7 @@
     "@next-auth/prisma-adapter": "^1.0.3",
     "@prisma/client": "^3.15.1",
     "chrome-aws-lambda": "^9.1.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "framer-motion": "^6.3.11",
     "imagekit": "^3.2.5",
     "metascraper": "^5.29.8",
@@ -62,10 +63,15 @@
   },
   "eslintConfig": {
     "extends": [
+      "eslint:recommended",
       "next",
       "prettier"
     ],
+    "plugins": [
+      "prettier"
+    ],
     "rules": {
+      "prettier/prettier": "error",
       "@next/next/no-img-element": "off"
     }
   },
@@ -73,7 +79,10 @@
     "semi": false,
     "singleQuote": true,
     "bracketSpacing": true,
-    "arrowSpacing": true
+    "arrowSpacing": true,
+    "plugins": [
+      "prettier-plugin-tailwindcss"
+    ]
   },
   "commitlint": {
     "extends": [

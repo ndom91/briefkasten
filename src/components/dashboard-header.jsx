@@ -38,7 +38,7 @@ export default function DashboardHeader() {
   }
 
   return (
-    <div className="w-full p-6 flex justify-between items-center">
+    <div className="flex w-full items-center justify-between p-6">
       <Breadcrumbs />
       <div className="relative flex w-2/3 items-center justify-start">
         <svg

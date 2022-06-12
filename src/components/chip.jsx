@@ -1,7 +1,7 @@
 export default function Chip({ name, color, remove, id }) {
   return (
     <div
-      className={`flex space-x-1 justify-center items-center rounded-full py-1 px-3 ${
+      className={`flex items-center justify-center space-x-1 rounded-full py-1 px-3 ${
         color ? `bg-[${color}]` : 'bg-slate-200'
       }`}
     >
@@ -9,10 +9,10 @@ export default function Chip({ name, color, remove, id }) {
       {remove && (
         <button
           onClick={() => remove(id)}
-          className="focus:outline-none focus:ring-2 focus:ring-slate-800/20 rounded-full"
+          className="rounded-full focus:outline-none focus:ring-2 focus:ring-slate-800/20"
         >
           <svg
-            className="w-3 h-3 text-slate-500 mb-0.5"
+            className="mb-0.5 h-3 w-3 text-slate-500"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
