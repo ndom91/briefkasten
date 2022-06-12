@@ -93,7 +93,7 @@ export default function DashboardHeader() {
           </svg>
         ) : null}
       </div>
-      <div className="flex ">
+      <div className="flex">
         <button
           type="button"
           aria-label="Card View"
