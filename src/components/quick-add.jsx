@@ -180,7 +180,7 @@ export default function QuickAdd({ categories }) {
                           id="title"
                           value={title}
                           onChange={(e) => setTitle(e.target.value)}
-                          className="focus:ring-slate-500 focus:border-slate-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-slate-300 placeholder:text-slate-300"
+                          className="focus:ring-slate-500 focus:border-slate-500 flex-1 block w-full rounded-md sm:text-sm border-slate-300 placeholder:text-slate-300"
                         />
                       </div>
                     </div>
