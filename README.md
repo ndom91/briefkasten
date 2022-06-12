@@ -8,8 +8,10 @@
 
 Self-hosted bookmarking application. Works with any Prisma compatible database (MySQL, Postgres, SQLite, etc.)!
 
-![Screenshot](screenshot_app1.png)
-![Screenshot](screenshot_app2.png)
+<p>
+  <img width="49%" src="screenshot_app1.png">
+  <img width="49%" src="screenshot_app2.png">
+</p>
 
 ## 🎩 Features
 
