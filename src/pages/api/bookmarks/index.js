@@ -125,10 +125,6 @@ export default async function handler(req, res) {
               },
               where: {
                 id: tag.id,
-                // name_userId: {
-                //   name: tag,
-                //   userId,
-                // },
               },
             })
           })
@@ -236,7 +232,7 @@ export default async function handler(req, res) {
           const imageSearchRes = await imagekit.listFiles({
             searchQuery: `name="${imageFileName}"`,
           })
-          if (imageSearchRes[0].fileId) {
+          if (imageSearchRes[0]?.fileId) {
             await imagekit.deleteFile(imageSearchRes[0].fileId)
           }
         } catch (error) {

@@ -1,6 +1,6 @@
-import { useMemo, useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { getServerSession } from 'next-auth/next'
-import { useToggle } from 'react-use'
+import { useDeepCompareEffect, useToggle } from 'react-use'
 import { authOptions } from '@/api/auth/[...nextauth]'
 import { useStore, initializeStore } from '@/lib/store'
 
@@ -27,6 +27,7 @@ export default function Home() {
   const settings = useStore((state) => state.settings)
   const setEditBookmark = useStore((state) => state.setEditBookmark)
 
+  const [currentTableData, setCurrentTableData] = useState([])
   const [openEditSidebar, toggleEditSidebar] = useToggle(false)
   const [filteredLength, setFilteredLength] = useState(bookmarks.length)
   const [currentPage, setCurrentPage] = useState(1)
@@ -36,10 +37,10 @@ export default function Home() {
     toggleEditSidebar()
   }
 
-  const currentTableData = useMemo(() => {
+  useDeepCompareEffect(() => {
     const firstPageIndex = (currentPage - 1) * PAGE_SIZE
     const lastPageIndex = firstPageIndex + PAGE_SIZE
-    return bookmarks
+    const currentBookmarks = bookmarks
       .reduce((bookmarks, thisBookmark) => {
         if (categoryFilter || tagFilter) {
           // Filter shown bookmarks selected sidebar filters
@@ -66,6 +67,7 @@ export default function Home() {
         return bookmarks
       }, [])
       .slice(firstPageIndex, lastPageIndex)
+    setCurrentTableData(currentBookmarks)
   }, [currentPage, categoryFilter, tagFilter, searchText, bookmarks])
 
   useEffect(() => {
