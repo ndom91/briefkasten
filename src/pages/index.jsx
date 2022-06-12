@@ -84,7 +84,7 @@ export default function Home() {
           </div>
         )}
         <div className="w-full overflow-x-hidden overflow-y-scroll">
-          <section className="grid w-full grid-cols-[repeat(auto-fit,_minmax(275px,_1fr))] grid-rows-[repeat(auto-fit,_minmax(300px,_1fr))] items-center justify-items-center gap-4 px-4">
+          <section className="grid w-full grid-cols-[repeat(auto-fit,_285px)] grid-rows-[repeat(auto-fit,_minmax(300px,_1fr))] items-center justify-items-start gap-4 px-4">
             {currentTableData.length !== 0 &&
               settings.activeView === viewTypes.CARD.name &&
               currentTableData.map((bookmark) => (

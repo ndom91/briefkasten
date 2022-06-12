@@ -163,20 +163,6 @@ export default function Sidebar() {
             )}
           </div>
         </Link>
-        <button className="focus:shadow-outline hidden rounded-lg focus:outline-none">
-          <svg fill="currentColor" viewBox="0 0 20 20" className="h-6 w-6">
-            <path
-              fillRule="evenodd"
-              d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM9 15a1 1 0 011-1h6a1 1 0 110 2h-6a1 1 0 01-1-1z"
-              clipRule="evenodd"
-            ></path>
-            <path
-              fillRule="evenodd"
-              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-              clipRule="evenodd"
-            ></path>
-          </svg>
-        </button>
       </div>
       <div
         className={`mt-5 flex flex-grow flex-col bg-slate-800 px-4 ${
@@ -191,7 +177,7 @@ export default function Sidebar() {
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className={`${open ? 'h-4 w-4' : 'h-7 w-7'}`}
+                className={`${open ? 'h-5 w-5' : 'h-7 w-7'}`}
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -219,7 +205,7 @@ export default function Sidebar() {
               className="focus:shadow-outline mt-1 inline-flex w-full transform items-center rounded-lg px-4 py-2 text-base text-slate-200 outline-none transition duration-500 ease-in-out hover:cursor-pointer hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-slate-900"
             >
               <svg
-                className={`${open ? 'h-4 w-4' : 'h-7 w-7'}`}
+                className={`${open ? 'h-5 w-5' : 'h-7 w-7'}`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -248,7 +234,7 @@ export default function Sidebar() {
               className="focus:shadow-outline mt-1 inline-flex w-full transform items-center rounded-lg px-4 py-2 text-base text-slate-200 outline-none transition duration-500 ease-in-out hover:cursor-pointer hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-slate-900"
             >
               <svg
-                className={`${open ? 'h-4 w-4' : 'h-7 w-7'}`}
+                className={`${open ? 'h-5 w-5' : 'h-7 w-7'}`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
