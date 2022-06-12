@@ -12,6 +12,10 @@ Self-hosted bookmarking application. Works with any Prisma compatible database (
   <img width="49%" src="screenshot_app1.png">
   <img width="49%" src="screenshot_app2.png">
 </p>
+<p>
+  <img width="49%" src="screenshot_app3.png">
+  <img width="49%" src="screenshot_app4.png">
+</p>
 
 ## 🎩 Features
 
