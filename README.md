@@ -81,7 +81,7 @@ There is a companion browser extension in the works which you can use to add web
 
 ### 🧑‍🏭 Screenshot Job
 
-There is also a background job to fill in bookmarks which do not have a valid image. It can be found in the [`ndom91/briefkasten-scrape`](https://github.com/ndom91/briefkasten-scrape) repository. This job runs every 3 hours in a Github Action and processes 5 bookmarks at a time.
+There is also a background job to fill in bookmarks which do not have a valid image. It can be found in the [`ndom91/briefkasten-scrape`](https://github.com/ndom91/briefkasten-scrape) repository. This job runs every 2 hours in a Github Action and processes 10 bookmarks at a time.
 
 ## 👷 Contributing
 
