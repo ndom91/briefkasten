@@ -1,9 +1,7 @@
-import { Fragment, useRef, useState } from 'react'
+import { Fragment, useRef } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 
-export default function Modal() {
-  const [open, setOpen] = useState(true)
-
+export default function Modal({ open, toggleModal, saveBookmark, url }) {
   const cancelButtonRef = useRef(null)
 
   return (
@@ -12,7 +10,7 @@ export default function Modal() {
         as="div"
         className="relative z-10"
         initialFocus={cancelButtonRef}
-        onClose={setOpen}
+        onClose={toggleModal}
       >
         <Transition.Child
           as={Fragment}
@@ -40,10 +38,9 @@ export default function Modal() {
               <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                 <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                   <div className="sm:flex sm:items-start">
-                    <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                    <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-emerald-100 sm:mx-0 sm:h-10 sm:w-10">
                       <svg
-                        className="h-6 w-6 text-red-600"
-                        aria-hidden="true"
+                        className="h-6 w-6 text-emerald-500"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -53,7 +50,7 @@ export default function Modal() {
                           strokeLinecap="round"
                           strokeLinejoin="round"
                           strokeWidth={2}
-                          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                          d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                         />
                       </svg>
                     </div>
@@ -62,30 +59,44 @@ export default function Modal() {
                         as="h3"
                         className="text-lg font-medium leading-6 text-gray-900"
                       >
-                        Deactivate account
+                        Dropped URL
                       </Dialog.Title>
-                      <div className="mt-2">
+                      <div className="mt-2 flex flex-col space-y-2">
                         <p className="text-sm text-gray-500">
-                          Are you sure you want to deactivate your account? All
-                          of your data will be permanently removed. This action
-                          cannot be undone.
+                          You have dropped the URL:
+                        </p>
+                        <div className="text-semibold text-sm">
+                          <a
+                            href={url}
+                            alt="New Url"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="transition hover:underline"
+                          >
+                            {url}
+                          </a>
+                        </div>
+                        <p className="text-sm text-gray-500">
+                          Are you sure you want to add it? We will look up some
+                          default information about the page which you can edit
+                          later.
                         </p>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                <div className="justify-end bg-gray-50 px-4 py-3 sm:flex sm:flex-row sm:px-6">
                   <button
                     type="button"
-                    className="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
-                    onClick={() => setOpen(false)}
+                    className="inline-flex w-full justify-center rounded-md border border-transparent bg-slate-800 px-4 py-2 text-base font-medium text-white shadow-sm transition hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-800 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
+                    onClick={() => saveBookmark(url)}
                   >
-                    Deactivate
+                    Add
                   </button>
                   <button
                     type="button"
-                    className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                    onClick={() => setOpen(false)}
+                    className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm transition hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                    onClick={() => toggleModal()}
                     ref={cancelButtonRef}
                   >
                     Cancel

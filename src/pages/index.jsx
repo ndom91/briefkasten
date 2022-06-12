@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
 import { getServerSession } from 'next-auth/next'
-import { useDeepCompareEffect, useToggle } from 'react-use'
+import { useSession } from 'next-auth/react'
+import { useDrop, useDeepCompareEffect, useToggle } from 'react-use'
 import { authOptions } from '@/api/auth/[...nextauth]'
 import { useStore, initializeStore } from '@/lib/store'
+import { useToast, toastTypes } from '@/lib/hooks'
 
 import SlideOut from '@/components/slide-out'
 import Pagination from '@/components/pagination'
@@ -12,12 +14,14 @@ import EmptyDashboard from '@/components/empty-dashboard'
 import DashboardHeader from '@/components/dashboard-header'
 import QuickAdd from '@/components/quick-add'
 import DataTable from '@/components/table'
+import Modal from '@/components/modal'
 import { viewTypes } from '@/lib/constants'
 import prisma from '@/lib/prisma'
 
 const PAGE_SIZE = 15
 
 export default function Home() {
+  const { data: session } = useSession()
   const bookmarks = useStore((state) => state.bookmarks)
   const categories = useStore((state) => state.categories)
   const categoryFilter = useStore((state) => state.categoryFilter)
@@ -26,11 +30,15 @@ export default function Home() {
   const setUserSetting = useStore((state) => state.setUserSetting)
   const settings = useStore((state) => state.settings)
   const setEditBookmark = useStore((state) => state.setEditBookmark)
+  const addBookmark = useStore((state) => state.addBookmark)
 
+  const [droppedUrl, setDroppedUrl] = useState('')
   const [currentTableData, setCurrentTableData] = useState([])
+  const [openModal, toggleModal] = useToggle(false)
   const [openEditSidebar, toggleEditSidebar] = useToggle(false)
   const [filteredLength, setFilteredLength] = useState(bookmarks.length)
   const [currentPage, setCurrentPage] = useState(1)
+  const toast = useToast(5000)
 
   const initEdit = (bookmark) => {
     setEditBookmark(bookmark)
@@ -84,6 +92,57 @@ export default function Home() {
     setUserSetting({ locale: getLanguage() })
   }, [setUserSetting])
 
+  const saveBookmark = async (url) => {
+    try {
+      // Add Bookmark to DB via API
+      const res = await fetch('/api/bookmarks', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          url,
+          userId: session?.user?.userId,
+        }),
+      })
+      if (res.status === 200) {
+        toast(toastTypes.SUCCESS, 'Successfully added', url)
+        const { data } = await res.json()
+
+        // Add new Bookmark to UI
+        addBookmark({
+          url: data.url,
+          createdAt: data.createdAt,
+          id: data.id,
+          desc: data.desc,
+          image: data.image,
+          title: data.title,
+          tags: data.tags,
+          category: data.category,
+        })
+
+        open && toggleModal()
+      } else {
+        toast(toastTypes.ERROR, 'Error Saving')
+      }
+    } catch (error) {
+      console.error(`[ERROR] Saving Dropped URL ${url}:`, error)
+      toast(toastTypes.ERROR, 'Error adding', url)
+    }
+  }
+
+  const state = useDrop({
+    // onFiles: (files) => console.log('files', files),
+    // onText: (text) => console.log('text', text),
+    onUri: (uri) => {
+      console.log('uri', uri)
+      setDroppedUrl(uri)
+      toggleModal()
+    },
+  })
+
+  console.log(state)
+
   return (
     <Layout>
       <div className="flex h-full flex-col items-center space-y-2">
@@ -133,6 +192,14 @@ export default function Home() {
         />
         <QuickAdd categories={categories} />
         <SlideOut open={openEditSidebar} toggleOpen={toggleEditSidebar} />
+        {openModal && (
+          <Modal
+            saveBookmark={saveBookmark}
+            open={openModal}
+            toggleModal={toggleModal}
+            url={droppedUrl}
+          />
+        )}
       </div>
     </Layout>
   )

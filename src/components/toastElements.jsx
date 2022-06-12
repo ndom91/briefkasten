@@ -23,7 +23,9 @@ export const toastSuccess = ({ title, body, dispatch, id }) => (
       </svg>
     </div>
     <div className="flex flex-col items-start justify-start">
-      <div className="pl-4 text-base font-normal">{title}</div>
+      <div className="truncate text-ellipsis break-all pl-4 text-base font-normal">
+        {title}
+      </div>
       {body && (
         <div className="block max-w-[240px] truncate pl-4 text-xs font-normal">
           {body}

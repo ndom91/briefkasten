@@ -15,16 +15,18 @@ export default function EmptyDashboard() {
         It looks like you don&apos;t have any bookmarks yet!
       </h2>
       <p className="mt-1 text-center text-gray-600">
-        This is where you’ll manage your bookmarks. Get started by installing
-        the{' '}
+        This is where you’ll manage your items. Get started by installing the{' '}
         <a
           href="https://chrome.google.com/webstore/detail/briefkasten-bookmarks/aighkhofochfjejmhjfkgjfpkpgmjlnd"
           className="underline"
         >
           extension
-        </a>{' '}
-        and adding bookmarks that way, or you can quick-add a bookmark by using
-        the &quot;+&quot; button in the bottom right!
+        </a>
+        .
+      </p>
+      <p className="mt-1 text-center text-gray-600">
+        Alternatively, you can drag-and-drop URLs anywhere onto the page or use
+        the quick-add button in the bottom right!
       </p>
       <div className="mt-4 flex flex-col items-center justify-center space-y-1 md:flex-row md:space-y-0 md:space-x-1">
         <a

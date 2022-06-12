@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
-import { useToggle } from 'react-use'
 import { asyncFileReader } from '@/lib/helpers'
 import { useStore } from '@/lib/store'
 import { useToast, toastTypes } from '@/lib/hooks'
@@ -43,7 +42,7 @@ export default function BookmarkCard({ bookmark, toggleSidebar }) {
       })
       if (deleteRes.status === 200) {
         removeBookmark({ id })
-        toast(toastTypes.SUCCESS, `Successfully deleted "${editTitle}"`)
+        toast(toastTypes.SUCCESS, `Successfully deleted "${title}"`)
       }
     } catch (error) {
       console.error(error)
