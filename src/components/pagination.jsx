@@ -7,7 +7,6 @@ const Pagination = ({
   siblingCount = 1,
   currentPage,
   pageSize,
-  className,
 }) => {
   const paginationRange = usePagination({
     currentPage,
@@ -31,11 +30,7 @@ const Pagination = ({
 
   let lastPage = paginationRange[paginationRange.length - 1]
   return (
-    <ul
-      className={`!my-8 flex list-none items-center justify-center ${
-        className ? className : ''
-      }`}
-    >
+    <ul className="!mt-4 flex list-none items-center justify-center">
       <li
         className={`my-1 flex h-8 items-center rounded-md py-4 text-center tracking-tight text-slate-400 transition hover:cursor-pointer hover:bg-slate-100 ${
           currentPage === 1 ? 'pointer-events-none hover:cursor-default' : ''

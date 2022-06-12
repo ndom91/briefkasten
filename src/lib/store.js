@@ -2,6 +2,7 @@ import { useLayoutEffect } from 'react'
 import create from 'zustand'
 import createContext from 'zustand/context'
 import { devtools } from 'zustand/middleware'
+import { viewTypes } from '@/lib/constants'
 
 let store
 
@@ -14,6 +15,8 @@ const initialState = {
   searchText: '',
   settings: {
     locale: 'en-US',
+    activeView: viewTypes.CARD.name,
+    defaultView: viewTypes.CARD.name,
   },
 }
 
@@ -104,7 +107,11 @@ export const initializeStore = (preloadedState = {}) => {
     resetCategories: () => set({ categories: initialState.categories }),
 
     // USER SETTINGS
-    setUserSetting: (settings) => set(() => ({ settings })),
+    setUserSetting: (setting) => {
+      set(() => {
+        return { settings: { ...get().settings, ...setting } }
+      })
+    },
     addUserSetting: (setting) =>
       set(() => ({ settings: { ...get().settings, ...setting } })),
     resetUserSettings: () => set({ settings: initialState.settings }),

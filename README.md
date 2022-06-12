@@ -6,19 +6,23 @@
 ![Checkly](https://api.checklyhq.com/v1/badges/checks/9c682653-d7de-4e32-8183-73d76631b0e2?style=flat-square&responseTime=true)
 [![Demo](https://img.shields.io/badge/demo-click%20here-brightgreen?style=flat-square)](https://briefkasten.vercel.app)
 
-Self-hosted bookmarking application. Works with any Prisma compatible database (MySQL, Postgres, etc.)!
+Self-hosted bookmarking application. Works with any Prisma compatible database (MySQL, Postgres, SQLite, etc.)!
 
-![Screenshot](screenshot_app.png)
+<p>
+  <img width="49%" src="screenshot_app1.png">
+  <img width="49%" src="screenshot_app2.png">
+</p>
 
 ## 🎩 Features
 
-- Save by Browser Extension
+- Save by [Browser Extension](https://github.com/ndom91/briefkasten-extension)
 - Keyboard Shortcuts
-- Filter by Categories + Tags
-- Search
+- Filtering Dashboard
+- Multiple Views
+- Fulltext Search
 - API
 - OAuth Login
-- Background Jobs
+- Bookmark Image Background Job
 
 ## 🧺 Prerequisites
 
@@ -26,8 +30,8 @@ To self-host this application, you'll need the following thins:
 
 1. Server / hosting platform for a Next.js application (i.e. Vercel / Netlify)
 2. For OAuth login, a developer account at any one of the [providers](https://next-auth.js.org/providers) supported by [NextAuth.js](https://github.com/nextauthjs/next-auth)
-3. Database that works with Prisma (i.e. MySQL, Postgres, SQLite)
-4. Image hosting space (i.e. ImageKit / Cloudinary)
+3. Database that works with Prisma (i.e. MySQL, Postgres, SQLite, etc.)
+4. Image hosting space (i.e. ImageKit / Cloudinary) (optional)
 
 These are all relatively straight forward, other than the image hoster. This was chosen to avoid putting the images in the database. The example application at [briefkasten.vercel.app](https://briefkasten.vercel.app) is using [ImageKit](https://imagekit.io), but any other similar provider like Cloudinary would also do the job. I chose ImageKit, because they have an easy to use SDK and a generous free tier - 20GB of storage, a CDN, image transformations, and more. I wanted to avoid using AWS, but a simple S3 Bucket would also work here. If you want to change the image hosting mechanism, it only takes a few lines of code in the `/src/pages/api/bookmarks/uploadImage.js` file.
 

@@ -1,13 +1,26 @@
+import Head from 'next/head'
 import { useState } from 'react'
 import { getServerSession } from 'next-auth/next'
-import { useStore, initializeStore } from '@/lib/store'
-import Head from 'next/head'
+
 import Layout from '@/components/layout'
-import Sidebar from '@/components/sidebar'
 import CategoryTableRow from '@/components/categoryTableRow'
-import { authOptions } from './api/auth/[...nextauth]'
-import { useToast, toastTypes } from '@/lib/hooks'
+import Breadcrumbs from '@/components/breadcrumbs'
+
 import prisma from '@/lib/prisma'
+import { useStore, initializeStore } from '@/lib/store'
+import { useToast, toastTypes } from '@/lib/hooks'
+import { authOptions } from './api/auth/[...nextauth]'
+
+const breadcrumbs = [
+  {
+    name: 'Dashboard',
+    icon: `<svg className="h-4 w-4 shrink-0 fill-gray-500" aria-hidden="true" viewBox="0 0 256 256" > <path d="M184,32H72A16,16,0,0,0,56,48V224a8.1,8.1,0,0,0,4.1,7,7.6,7.6,0,0,0,3.9,1,7.9,7.9,0,0,0,4.2-1.2L128,193.4l59.7,37.4a8.3,8.3,0,0,0,8.2.2,8.1,8.1,0,0,0,4.1-7V48A16,16,0,0,0,184,32Z"></path> </svg>`,
+  },
+  {
+    name: 'Categories',
+    icon: `<svg className="h-4 w-4 shrink-0 fill-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>`,
+  },
+]
 
 export default function Categories({ nextauth }) {
   const [searchString, setSearchString] = useState('')
@@ -60,39 +73,43 @@ export default function Categories({ nextauth }) {
       <Head>
         <title>Briefkasten | Categories</title>
       </Head>
-      <Sidebar />
-      <div className="flex flex-col space-y-4">
-        <div className="relative overflow-x-auto sm:rounded-lg">
-          <div className="ml-1 mb-4">
+      <div className="flex flex-col items-center space-y-2 h-full">
+        <div className="w-full p-6 flex space-x-4 justify-start items-center">
+          <Breadcrumbs breadcrumbs={breadcrumbs} />
+          <div className="w-full flex justify-center">
             <label htmlFor="table" className="sr-only">
               Search
             </label>
-            <div className="relative mt-1">
-              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+            <div className="relative mt-1 w-full flex justify-center">
+              <div className="relative pointer-events-none inset-y-0 left-0 flex items-center pl-3">
                 <svg
-                  className="h-5 w-5 text-slate-500"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
+                  className="pointer-events-none absolute left-5 top-2 h-5 w-5 text-slate-200"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    fillRule="evenodd"
-                    d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                    clipRule="evenodd"
-                  ></path>
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={3}
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
                 </svg>
               </div>
               <input
                 type="text"
                 id="table"
                 onChange={(e) => setSearchString(e.target.value)}
-                className="block w-80 rounded-lg border border-transparent bg-slate-50 p-2.5 pl-10 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500  focus:ring-slate-500 "
+                className="rounded-md border-2 border-slate-200 py-1 px-2 pl-8 pr-8 text-base text-slate-600 outline-none placeholder:text-slate-200 focus:border-slate-200 focus:ring-2 focus:ring-slate-200 focus:ring-offset-transparent w-2/3"
                 placeholder="Search for items"
               />
             </div>
           </div>
-          <table className="w-full text-left text-sm text-slate-500 ">
-            <thead className="bg-slate-50 text-xs uppercase text-slate-700 ">
+        </div>
+        <div className="relative w-full px-4 overflow-y-scroll">
+          <table className="w-full text-left text-sm text-slate-500">
+            <thead className="bg-slate-50 text-xs uppercase text-slate-700">
               <tr>
                 <th scope="col" className="p-4">
                   <div className="flex items-center">

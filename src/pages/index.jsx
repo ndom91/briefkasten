@@ -6,11 +6,14 @@ import { useStore, initializeStore } from '@/lib/store'
 import Pagination from '@/components/pagination'
 import BookmarkCard from '@/components/bookmark-card'
 import Layout from '@/components/layout'
+import EmptyDashboard from '@/components/empty-dashboard'
+import DashboardHeader from '@/components/dashboard-header'
 import QuickAdd from '@/components/quick-add'
-import Sidebar from '@/components/sidebar'
+import DataTable from '@/components/table'
+import { viewTypes } from '@/lib/constants'
 import prisma from '@/lib/prisma'
 
-const PAGE_SIZE = 12
+const PAGE_SIZE = 15
 
 export default function Home() {
   const bookmarks = useStore((state) => state.bookmarks)
@@ -19,6 +22,7 @@ export default function Home() {
   const tagFilter = useStore((state) => state.tagFilter)
   const searchText = useStore((state) => state.searchText)
   const setUserSetting = useStore((state) => state.setUserSetting)
+  const settings = useStore((state) => state.settings)
 
   const [filteredLength, setFilteredLength] = useState(bookmarks.length)
   const [currentPage, setCurrentPage] = useState(1)
@@ -71,18 +75,31 @@ export default function Home() {
 
   return (
     <Layout>
-      <Sidebar />
-      <div className="flex flex-col space-y-2 pr-4">
-        <QuickAdd categories={categories} />
-        <section className="grid min-h-[1055px] grid-cols-1 grid-rows-3 justify-items-stretch gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {currentTableData.map((bookmark) => (
-            <BookmarkCard
-              bookmark={bookmark}
-              key={bookmark.id}
-              categories={categories}
-            />
-          ))}
-        </section>
+      <div className="flex flex-col items-center space-y-2 h-full">
+        <DashboardHeader />
+        {bookmarks.length === 0 && <EmptyDashboard />}
+        {bookmarks.length > 0 && currentTableData.length === 0 && (
+          <div className="flex justify-center text-slate-700 text-lg">
+            No results found, please try again!
+          </div>
+        )}
+        <div className="overflow-y-scroll overflow-x-hidden w-full">
+          <section className="w-full grid gap-4 grid-rows-[repeat(auto-fit,_minmax(300px,_1fr))] grid-cols-[repeat(auto-fit,_minmax(275px,_1fr))] justify-items-center items-center px-4">
+            {currentTableData.length !== 0 &&
+              settings.activeView === viewTypes.CARD.name &&
+              currentTableData.map((bookmark) => (
+                <BookmarkCard
+                  bookmark={bookmark}
+                  key={bookmark.id}
+                  categories={categories}
+                />
+              ))}
+            {currentTableData.length !== 0 &&
+              settings.activeView === viewTypes.LIST.name && (
+                <DataTable items={currentTableData} />
+              )}
+          </section>
+        </div>
         <Pagination
           currentPage={currentPage}
           totalCount={
@@ -93,6 +110,7 @@ export default function Home() {
           pageSize={PAGE_SIZE}
           onPageChange={(page) => setCurrentPage(page)}
         />
+        <QuickAdd categories={categories} />
       </div>
     </Layout>
   )
