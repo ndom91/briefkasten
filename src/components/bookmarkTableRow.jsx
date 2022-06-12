@@ -32,12 +32,12 @@ export default function BookmarkTableRow({ item }) {
       })
       if (delRes.status === 200) {
         removeTag({ id })
-        toast(toastTypes.SUCCESS, `Successfully deleted "${title}"`)
+        toast(toastTypes.SUCCESS, 'Successfully deleted', title)
       }
       setLoading(false)
     } catch (error) {
       console.error(error)
-      toast(toastTypes.ERROR, `Error deleting "${title}"`)
+      toast(toastTypes.ERROR, 'Error deleting', title)
       setLoading(false)
     }
   }
@@ -66,11 +66,11 @@ export default function BookmarkTableRow({ item }) {
           emoji: tagEmoji,
         })
         toggleEditMode()
-        toast(toastTypes.SUCCESS, `Successfully edited "${title}"`)
+        toast(toastTypes.SUCCESS, 'Successfully edited', title)
       }
     } catch (error) {
       console.error(error)
-      toast(toastTypes.ERROR, `Error editing "${title}"`)
+      toast(toastTypes.ERROR, 'Error editing', title)
     }
   }
 

@@ -69,7 +69,7 @@ export default function SlideOut({ open, toggleOpen }) {
           category: editCategory,
           tags: selectedTags,
         })
-        toast(toastTypes.SUCCESS, `Successfully edited "${editTitle}"`)
+        toast(toastTypes.SUCCESS, 'Successfully edited', editTitle)
       }
     } catch (error) {
       console.error(error)

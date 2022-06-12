@@ -75,7 +75,7 @@ export default function QuickAdd({ categories }) {
         }),
       })
       if (res.status === 200) {
-        toast(toastTypes.SUCCESS, `Successfully added "${title}"`)
+        toast(toastTypes.SUCCESS, 'Successfully added', title)
         const { data } = await res.json()
 
         // Add new Bookmark to UI
@@ -103,7 +103,7 @@ export default function QuickAdd({ categories }) {
       setLoading(false)
     } catch (error) {
       console.error('[ERROR] Submitting URL', error)
-      toast(toastTypes.ERROR, `Error adding "${title}"`)
+      toast(toastTypes.ERROR, 'Error adding', title)
       setLoading(false)
     }
   }

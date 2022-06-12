@@ -42,7 +42,7 @@ export default function BookmarkCard({ bookmark, toggleSidebar }) {
       })
       if (deleteRes.status === 200) {
         removeBookmark({ id })
-        toast(toastTypes.SUCCESS, `Successfully deleted "${title}"`)
+        toast(toastTypes.SUCCESS, 'Successfully deleted', title)
       }
     } catch (error) {
       console.error(error)
