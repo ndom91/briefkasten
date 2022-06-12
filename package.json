@@ -33,6 +33,7 @@
     "metascraper-title": "^5.29.7",
     "next": "12.1.6",
     "next-auth": "^4.4.0",
+    "nodemailer": "^6.7.5",
     "puppeteer-core": "^14.3.0",
     "react": "18.1.0",
     "react-dom": "18.1.0",
@@ -48,6 +49,7 @@
     "autoprefixer": "^10.4.7",
     "eslint": "8.17.0",
     "eslint-config-next": "12.1.6",
+    "eslint-config-prettier": "^8.5.0",
     "lint-staged": "^13.0.1",
     "postcss": "^8.4.14",
     "prettier": "^2.6.2",
@@ -57,6 +59,15 @@
     "tailwindcss": "^3.1.2",
     "tailwindcss-animate": "^1.0.5",
     "vercel": "^25.1.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "next",
+      "prettier"
+    ],
+    "rules": {
+      "@next/next/no-img-element": "off"
+    }
   },
   "prettier": {
     "semi": false,

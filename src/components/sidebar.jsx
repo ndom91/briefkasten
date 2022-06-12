@@ -525,8 +525,13 @@ export default function Sidebar() {
                 className={`inline-block rounded-full ${
                   open ? 'h-9 w-9' : 'h-9 w-9'
                 }`}
-                src={session?.user?.image}
-                alt=""
+                src={
+                  session?.user?.image ??
+                  ` https://unavatar.io/${
+                    session?.user?.email ?? new Date().getTime()
+                  }`
+                }
+                alt="User Avatar"
               />
             </Menu.Button>
             <Transition

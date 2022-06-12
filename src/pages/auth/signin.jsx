@@ -1,5 +1,7 @@
+import { useState } from 'react'
+import { signIn, getProviders, getCsrfToken } from 'next-auth/react'
+
 import Meta from '@/components/meta'
-import { signIn, getProviders } from 'next-auth/react'
 
 const ProviderIcons = ({ provider }) => {
   if (provider === 'github') {
@@ -36,7 +38,9 @@ const ProviderIcons = ({ provider }) => {
   }
 }
 
-const Signin = ({ providers }) => {
+const Signin = ({ providers, csrfToken }) => {
+  const [email, setEmail] = useState('')
+
   return (
     <>
       <Meta />
@@ -68,27 +72,37 @@ const Signin = ({ providers }) => {
 
               <div className="pb-6 space-y-2 border-b border-gray-200">
                 {providers &&
-                  Object.values(providers).map((provider) => (
-                    <div key={provider.name} style={{ marginBottom: 0 }}>
-                      <button
-                        onClick={() =>
-                          signIn(provider.id, { callbackUrl: '/' })
-                        }
-                        className={`flex h-10 w-full items-center space-x-2 rounded ${
-                          provider.id === 'google' &&
-                          'bg-blue-700 hover:bg-blue-800 '
-                        } ${
-                          provider.id === 'github' &&
-                          'bg-gray-600 hover:bg-gray-800 '
-                        } px-4 text-base font-light text-white transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-800 justify-center`}
-                      >
-                        <ProviderIcons provider={provider.id} />
-                        <span>Continue with {provider.name}</span>
-                      </button>
-                    </div>
-                  ))}
+                  Object.values(providers).map((p) =>
+                    p.type === 'oauth' ? (
+                      <div key={p.name} style={{ marginBottom: 0 }}>
+                        <button
+                          onClick={() => signIn(p.id, { callbackUrl: '/' })}
+                          className={`flex h-10 w-full items-center space-x-2 rounded ${
+                            p.id === 'google' &&
+                            'bg-blue-700 hover:bg-blue-800 '
+                          } ${
+                            p.id === 'github' &&
+                            'bg-gray-600 hover:bg-gray-800 '
+                          } px-4 text-base font-light text-white transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-800 justify-center`}
+                        >
+                          <ProviderIcons provider={p.id} />
+                          <span>Continue with {p.name}</span>
+                        </button>
+                      </div>
+                    ) : null
+                  )}
               </div>
-              <form className="space-y-4 pt-4">
+              <form
+                className="space-y-4 pt-4"
+                method="post"
+                action="/api/auth/signin/email"
+              >
+                <input
+                  name="csrfToken"
+                  type="hidden"
+                  defaultValue={csrfToken}
+                />
+
                 <label className="block">
                   <span className="block mb-1 text-xs font-medium text-gray-700 text-left">
                     Your Email
@@ -97,41 +111,22 @@ const Signin = ({ providers }) => {
                     className="focus:ring-slate-500 focus:border-slate-500 flex-1 block w-full rounded-md sm:text-sm border-gray-300 placeholder:text-slate-400 placeholder:font-light font-normal transition"
                     type="email"
                     autoComplete="username"
-                    disabled={true}
+                    disabled={false}
                     placeholder="james@bond.com"
                     inputMode="email"
                     required
-                  />
-                </label>
-                <label className="block">
-                  <span className="text-left block mb-1 text-xs font-medium text-gray-700">
-                    Your Password
-                  </span>
-                  <input
-                    className="focus:ring-slate-500 focus:border-slate-500 flex-1 block w-full rounded-md sm:text-sm border-gray-300 placeholder:text-slate-400 placeholder:font-light font-normal transition"
-                    type="password"
-                    disabled={true}
-                    placeholder="••••••••"
-                    autoComplete="current-password"
-                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </label>
                 <input
                   type="submit"
-                  disabled={true}
+                  disabled={false}
+                  onClick={() => signIn('email', { callbackUrl: '/', email })}
                   className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-slate-800 hover:cursor-pointer transition hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 w-full disabled:hover:cursor-not-allowed"
-                  value="Continue with email"
+                  place="Continue with Magic Link Email"
                 />
               </form>
-              <div className="my-2 text-center">
-                <a
-                  href="#"
-                  disabled={true}
-                  className="text-sm text-slate-700 underline transition font-light hover:text-slate-700"
-                >
-                  Forgot password
-                </a>
-              </div>
             </div>
           </div>
         </div>
@@ -150,9 +145,12 @@ export default Signin
 
 export async function getServerSideProps(context) {
   const providers = await getProviders()
+  const csrfToken = await getCsrfToken(context)
+
   return {
     props: {
       providers,
+      csrfToken,
     },
   }
 }

@@ -13,6 +13,7 @@ specifiers:
   chrome-aws-lambda: ^9.1.0
   eslint: 8.17.0
   eslint-config-next: 12.1.6
+  eslint-config-prettier: ^8.5.0
   framer-motion: ^6.3.11
   imagekit: ^3.2.5
   lint-staged: ^13.0.1
@@ -22,6 +23,7 @@ specifiers:
   metascraper-title: ^5.29.7
   next: 12.1.6
   next-auth: ^4.4.0
+  nodemailer: ^6.7.5
   postcss: ^8.4.14
   prettier: ^2.6.2
   prettier-plugin-tailwindcss: ^0.1.11
@@ -48,7 +50,8 @@ dependencies:
   metascraper-image: registry.npmjs.org/metascraper-image/5.29.7
   metascraper-title: registry.npmjs.org/metascraper-title/5.29.7
   next: registry.npmjs.org/next/12.1.6_ef5jwxihqo6n7gxfmzogljlgcm
-  next-auth: registry.npmjs.org/next-auth/4.4.0_ef5jwxihqo6n7gxfmzogljlgcm
+  next-auth: registry.npmjs.org/next-auth/4.4.0_5ygs74o5bgk2vdqrahrydzhqe4
+  nodemailer: registry.npmjs.org/nodemailer/6.7.5
   puppeteer-core: registry.npmjs.org/puppeteer-core/14.3.0
   react: registry.npmjs.org/react/18.1.0
   react-dom: registry.npmjs.org/react-dom/18.1.0_react@18.1.0
@@ -64,6 +67,7 @@ devDependencies:
   autoprefixer: registry.npmjs.org/autoprefixer/10.4.7_postcss@8.4.14
   eslint: registry.npmjs.org/eslint/8.17.0
   eslint-config-next: registry.npmjs.org/eslint-config-next/12.1.6_eslint@8.17.0+next@12.1.6
+  eslint-config-prettier: registry.npmjs.org/eslint-config-prettier/8.5.0_eslint@8.17.0
   lint-staged: registry.npmjs.org/lint-staged/13.0.1
   postcss: registry.npmjs.org/postcss/8.4.14
   prettier: registry.npmjs.org/prettier/2.6.2
@@ -486,7 +490,7 @@ packages:
       next-auth: ^4.0.1
     dependencies:
       '@prisma/client': registry.npmjs.org/@prisma/client/3.15.1_prisma@3.15.1
-      next-auth: registry.npmjs.org/next-auth/4.4.0_ef5jwxihqo6n7gxfmzogljlgcm
+      next-auth: registry.npmjs.org/next-auth/4.4.0_5ygs74o5bgk2vdqrahrydzhqe4
     dev: false
 
   registry.npmjs.org/@next/env/12.1.6:
@@ -2841,6 +2845,18 @@ packages:
     transitivePeerDependencies:
       - eslint-import-resolver-webpack
       - supports-color
+    dev: true
+
+  registry.npmjs.org/eslint-config-prettier/8.5.0_eslint@8.17.0:
+    resolution: {integrity: sha512-obmWKLUNCnhtQRKc+tmnYuQl0pFU1ibYJQ5BGhTVB08bHe9wC8qUeG7c08dj9XX+AuPj1YSGSQIHl1pnDHZR0Q==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/eslint-config-prettier/-/eslint-config-prettier-8.5.0.tgz}
+    id: registry.npmjs.org/eslint-config-prettier/8.5.0
+    name: eslint-config-prettier
+    version: 8.5.0
+    hasBin: true
+    peerDependencies:
+      eslint: '>=7.0.0'
+    dependencies:
+      eslint: registry.npmjs.org/eslint/8.17.0
     dev: true
 
   registry.npmjs.org/eslint-import-resolver-node/0.3.6:
@@ -5292,7 +5308,7 @@ packages:
     engines: {node: '>= 0.6'}
     dev: false
 
-  registry.npmjs.org/next-auth/4.4.0_ef5jwxihqo6n7gxfmzogljlgcm:
+  registry.npmjs.org/next-auth/4.4.0_5ygs74o5bgk2vdqrahrydzhqe4:
     resolution: {integrity: sha512-Lz5ytnkP4OfTUsknhpZVH9eTLaLOZX/UEe6OQESMaZSTBr9cVc99G4kEPG83KrwKMe7VVb5DfDWH0rlod7wMzA==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/next-auth/-/next-auth-4.4.0.tgz}
     id: registry.npmjs.org/next-auth/4.4.0
     name: next-auth
@@ -5310,6 +5326,7 @@ packages:
       '@panva/hkdf': registry.npmjs.org/@panva/hkdf/1.0.2
       cookie: registry.npmjs.org/cookie/0.4.2
       jose: registry.npmjs.org/jose/4.8.1
+      nodemailer: registry.npmjs.org/nodemailer/6.7.5
       oauth: registry.npmjs.org/oauth/0.9.15
       openid-client: registry.npmjs.org/openid-client/5.1.6
       preact: registry.npmjs.org/preact/10.7.2
@@ -5432,6 +5449,13 @@ packages:
     name: node-releases
     version: 2.0.5
     dev: true
+
+  registry.npmjs.org/nodemailer/6.7.5:
+    resolution: {integrity: sha512-6VtMpwhsrixq1HDYSBBHvW0GwiWawE75dS3oal48VqRhUvKJNnKnJo2RI/bCVQubj1vgrgscMNW4DHaD6xtMCg==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/nodemailer/-/nodemailer-6.7.5.tgz}
+    name: nodemailer
+    version: 6.7.5
+    engines: {node: '>=6.0.0'}
+    dev: false
 
   registry.npmjs.org/nopt/4.0.3:
     resolution: {integrity: sha512-CvaGwVMztSMJLOeXPrez7fyfObdZqNUK1cPAEzLHrTybIua9pMdmmPR5YwtfNftIOMv3DPUhFaxsZMNTQO20Kg==, registry: https://registry.npmjs.com/, tarball: https://registry.npmjs.org/nopt/-/nopt-4.0.3.tgz}
