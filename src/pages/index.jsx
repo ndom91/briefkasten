@@ -83,17 +83,20 @@ export default function Home() {
             No results found, please try again!
           </div>
         )}
-        <div className="w-full overflow-x-hidden overflow-y-scroll">
-          <section className="grid w-full grid-cols-[repeat(auto-fit,_285px)] grid-rows-[repeat(auto-fit,_minmax(300px,_1fr))] items-center justify-items-start gap-4 px-4">
+        <div className="w-full grow overflow-x-hidden overflow-y-scroll">
+          <section className="flex h-full flex-col items-center justify-start px-4">
             {currentTableData.length !== 0 &&
-              settings.activeView === viewTypes.CARD.name &&
-              currentTableData.map((bookmark) => (
-                <BookmarkCard
-                  bookmark={bookmark}
-                  key={bookmark.id}
-                  categories={categories}
-                />
-              ))}
+              settings.activeView === viewTypes.CARD.name && (
+                <section className="grid w-full grid-cols-[repeat(auto-fit,_285px)] grid-rows-[repeat(auto-fit,_minmax(300px,_1fr))] items-center justify-items-start gap-4 px-4">
+                  {currentTableData.map((bookmark) => (
+                    <BookmarkCard
+                      bookmark={bookmark}
+                      key={bookmark.id}
+                      categories={categories}
+                    />
+                  ))}
+                </section>
+              )}
             {currentTableData.length !== 0 &&
               settings.activeView === viewTypes.LIST.name && (
                 <DataTable items={currentTableData} />
