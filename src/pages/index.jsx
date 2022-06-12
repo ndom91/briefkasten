@@ -1,8 +1,10 @@
 import { useMemo, useState, useEffect } from 'react'
 import { getServerSession } from 'next-auth/next'
+import { useToggle } from 'react-use'
 import { authOptions } from '@/api/auth/[...nextauth]'
 import { useStore, initializeStore } from '@/lib/store'
 
+import SlideOut from '@/components/slide-out'
 import Pagination from '@/components/pagination'
 import BookmarkCard from '@/components/bookmark-card'
 import Layout from '@/components/layout'
@@ -23,9 +25,16 @@ export default function Home() {
   const searchText = useStore((state) => state.searchText)
   const setUserSetting = useStore((state) => state.setUserSetting)
   const settings = useStore((state) => state.settings)
+  const setEditBookmark = useStore((state) => state.setEditBookmark)
 
+  const [openEditSidebar, toggleEditSidebar] = useToggle(false)
   const [filteredLength, setFilteredLength] = useState(bookmarks.length)
   const [currentPage, setCurrentPage] = useState(1)
+
+  const initEdit = (bookmark) => {
+    setEditBookmark(bookmark)
+    toggleEditSidebar()
+  }
 
   const currentTableData = useMemo(() => {
     const firstPageIndex = (currentPage - 1) * PAGE_SIZE
@@ -92,7 +101,7 @@ export default function Home() {
                     <BookmarkCard
                       bookmark={bookmark}
                       key={bookmark.id}
-                      categories={categories}
+                      toggleSidebar={() => initEdit(bookmark)}
                     />
                   ))}
                 </section>
@@ -121,6 +130,7 @@ export default function Home() {
           onPageChange={(page) => setCurrentPage(page)}
         />
         <QuickAdd categories={categories} />
+        <SlideOut open={openEditSidebar} toggleOpen={toggleEditSidebar} />
       </div>
     </Layout>
   )

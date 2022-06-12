@@ -13,6 +13,7 @@ const initialState = {
   categoryFilter: '',
   tagFilter: '',
   searchText: '',
+  editBookmark: {},
   settings: {
     locale: 'en-US',
     activeView: viewTypes.CARD.name,
@@ -115,6 +116,16 @@ export const initializeStore = (preloadedState = {}) => {
     addUserSetting: (setting) =>
       set(() => ({ settings: { ...get().settings, ...setting } })),
     resetUserSettings: () => set({ settings: initialState.settings }),
+
+    // CURRENTLY EDIT BOOKMARK
+    setEditBookmark: (bookmark) => {
+      set(() => {
+        return { editBookmark: { ...get().editBookmark, ...bookmark } }
+      })
+    },
+    addEditBookmark: (bookmark) =>
+      set(() => ({ editBookmark: { ...get().editBookmark, ...bookmark } })),
+    resetEditBookmark: () => set({ editBookmark: initialState.editBookmark }),
   })
 
   if (process.env.NODE_ENV === 'development') {

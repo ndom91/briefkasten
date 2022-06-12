@@ -512,6 +512,7 @@ export default function Sidebar() {
                 className={`inline-block rounded-full ${
                   open ? 'h-9 w-9' : 'h-9 w-9'
                 }`}
+                suppressHydrationWarning={true}
                 src={
                   session?.user?.image ??
                   ` https://unavatar.io/${
