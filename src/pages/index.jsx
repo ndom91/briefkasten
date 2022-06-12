@@ -98,6 +98,13 @@ export default function Home() {
               settings.activeView === viewTypes.LIST.name && (
                 <DataTable items={currentTableData} />
               )}
+            {currentTableData.length !== 0 &&
+              settings.activeView === viewTypes.DETAIL.name && (
+                <div className="flex justify-center text-slate-700 text-lg">
+                  This view has not been implemented yet, please try Card or
+                  List view
+                </div>
+              )}
           </section>
         </div>
         <Pagination
