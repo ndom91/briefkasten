@@ -41,7 +41,7 @@ export default async function handler(req, res) {
       const resp = await fetch(url)
       metadata = await metascraper({ html: await resp.text(), url: url })
 
-      if (!metadata.image) {
+      if (!metadata.image && process.env.IMAGEKIT_PRIV_KEY) {
         // Generate image with puppeteer if we didnt get one from metadata
         const imageData = await fetch(
           `${baseUrl}/api/bookmarks/image?url=${encodeURIComponent(url)}`
