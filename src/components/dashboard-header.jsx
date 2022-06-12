@@ -56,8 +56,8 @@ export default function DashboardHeader() {
           />
         </svg>
         {!searchFocused && searchText.length === 0 ? (
-          <div className="pointer-events-none absolute left-8 top-[0.65rem] z-10 hidden text-xs text-slate-400 opacity-50 lg:inline-block">
-            <span className="rounded-md bg-slate-200 p-1 px-2 ">
+          <div className="pointer-events-none absolute left-8 top-[0.48rem] z-10 hidden text-sm text-slate-400 opacity-50 lg:inline-block">
+            <span className="rounded-md bg-slate-200 p-1 px-2 text-xs">
               <kbd className="">ctrl</kbd>
               <span> + </span>
               <kbd className="">k</kbd>
@@ -72,7 +72,7 @@ export default function DashboardHeader() {
           onFocus={() => setSearchFocused(true)}
           onBlur={() => setSearchFocused(false)}
           onChange={(e) => setSearchText(e.target.value)}
-          className="w-full rounded-md border-2 border-slate-200 py-1 px-2 pl-8 pr-8 text-base text-slate-600 outline-none placeholder:text-slate-200 focus:border-slate-200 focus:ring-2 focus:ring-slate-200 focus:ring-offset-transparent"
+          className="w-full rounded-md border-2 border-slate-200 py-1 px-2 pl-8 pr-8 text-base text-slate-600 outline-none placeholder:text-slate-200 focus:border-slate-500 focus:ring-2 focus:ring-white"
         />
         {searchText.length ? (
           <svg
