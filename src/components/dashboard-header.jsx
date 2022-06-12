@@ -18,7 +18,6 @@ export default function DashboardHeader() {
   )
 
   useEffect(() => {
-    console.log('user setting', settings)
     if (value) {
       setUserSetting({ activeView: value })
     }

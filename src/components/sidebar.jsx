@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Menu, Transition } from '@headlessui/react'
-import { useToggle } from 'react-use'
+import { useToggle, useLocalStorage } from 'react-use'
 import { useRouter } from 'next/router'
 import { signOut, useSession } from 'next-auth/react'
 import { useState, useRef, forwardRef, Fragment } from 'react'
@@ -37,10 +37,15 @@ export default function Sidebar() {
   const addCategory = useStore((state) => state.addCategory)
   const addTag = useStore((state) => state.addTag)
 
+  const [value, setValue, remove] = useLocalStorage(
+    'dashboard.sidebarOpen',
+    true
+  )
+
   const [quickAdd, setQuickAdd] = useState('')
   const [quickAddCategory, setQuickAddCategory] = useState('')
   const [quickAddTag, setQuickAddTag] = useState('')
-  const [open, toggleOpen] = useToggle(true)
+  const [open, toggleOpen] = useToggle(value)
   const [openCategory, toggleOpenCategory] = useToggle(false)
   const [openTag, toggleOpenTag] = useToggle(false)
 
@@ -127,13 +132,17 @@ export default function Sidebar() {
 
   return (
     <aside
+      suppressHydrationWarning={true}
       className={`flex-shrink-0 drop-shadow-md max-h-screen w-full ${
         open ? 'max-w-[16rem]' : 'max-w-[6rem]'
       } rounded-r-md flex flex-col flex-grow pt-5 border-r bg-slate-800 transition`}
     >
       <div className="flex items-center justify-center px-4">
         <Link href="/">
-          <div className="flex items-center hover:cursor-pointer ">
+          <div
+            className="flex items-center hover:cursor-pointer"
+            suppressHydrationWarning={true}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -510,7 +519,7 @@ export default function Sidebar() {
       </div>
       <div className="w-full group flex p-4 px-4 bg-slate-900 items-center justify-between rounded-br-md">
         <div className="flex justify-start items-center">
-          <Menu as="div" className="relative inline-block text-left">
+          <Menu as="div" className="relative inline-block text-left z-50">
             <Menu.Button className="flex justify-center items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-offset-slate-900 focus-visible:ring-white focus-visible:ring-opacity-75 rounded-full">
               <img
                 className={`inline-block rounded-full ${
@@ -524,12 +533,12 @@ export default function Sidebar() {
               as={Fragment}
               enter="transition ease-out duration-100"
               enterFrom="transform opacity-0 scale-95"
-              enterTo="transform opacity-100 scale-100"
+              enterTo="transform opacity-100 scale-100 z-50"
               leave="transition ease-in duration-75"
               leaveFrom="transform opacity-100 scale-100"
               leaveTo="transform opacity-0 scale-95"
             >
-              <Menu.Items className="absolute left-0 bottom-16 mt-2 w-56 origin-bottom-left divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+              <Menu.Items className="absolute left-0 bottom-16 mt-2 w-56 origin-bottom-left divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
                 <div className="px-1 py-1">
                   <Menu.Item>
                     {({ active }) => (
@@ -633,7 +642,10 @@ export default function Sidebar() {
           )}
         </div>
         <button
-          onClick={toggleOpen}
+          onClick={() => {
+            toggleOpen()
+            setValue(!open)
+          }}
           className="text-slate-200 rounded-lg outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:ring-offset-slate-900 focus-visible:ring-white"
         >
           <svg
