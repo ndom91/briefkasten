@@ -165,7 +165,7 @@ export default function Home() {
               )}
             {currentTableData.length !== 0 &&
               settings.activeView === viewTypes.LIST.name && (
-                <DataTable items={currentTableData} />
+                <DataTable items={currentTableData} initEdit={initEdit} />
               )}
             {currentTableData.length !== 0 &&
               settings.activeView === viewTypes.DETAIL.name && (

@@ -512,11 +512,10 @@ export default function Sidebar() {
                 className={`inline-block rounded-full ${
                   open ? 'h-9 w-9' : 'h-9 w-9'
                 }`}
-                suppressHydrationWarning={true}
                 src={
                   session?.user?.image ??
                   ` https://unavatar.io/${
-                    session?.user?.email ?? new Date().getTime()
+                    session?.user?.email ?? session.user?.id
                   }`
                 }
                 alt="User Avatar"

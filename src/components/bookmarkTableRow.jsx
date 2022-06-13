@@ -2,18 +2,20 @@ import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { useStore } from '@/lib/store'
 import { useToast, toastTypes } from '@/lib/hooks'
-import { useToggle } from 'react-use'
 
-export default function BookmarkTableRow({ item }) {
+// Favicon API's
+// https://icon.horse/usage
+// https://icons.duckduckgo.com/ip3/dev.to.ico
+// https://www.google.com/s2/favicons?domain=${domain}&sz=${size}
+// https://favicongrabber.com/
+// https://faviconkit.com
+
+export default function BookmarkTableRow({ item, toggleSidebar }) {
   const { data: session } = useSession()
   const { id, title, url, desc, category, tags, createdAt } = item
-  const [editMode, toggleEditMode] = useToggle(false)
-  const [tagName, setTagName] = useState()
-  const [tagEmoji, setTagEmoji] = useState()
   const [loading, setLoading] = useState(false)
   const settings = useStore((state) => state.settings)
   const removeTag = useStore((state) => state.removeTag)
-  const updateTag = useStore((state) => state.updateTag)
   const toast = useToast(5000)
 
   const deleteTag = async () => {
@@ -41,170 +43,69 @@ export default function BookmarkTableRow({ item }) {
     }
   }
 
-  const saveEdit = async () => {
-    try {
-      if (tagName.length > 190 || tagEmoji.length > 190) {
-        toast(toastTypes.WARNING, 'Name or emoji too long')
-        return
-      }
-      const editRes = await fetch('/api/tags', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          id,
-          userId: session?.user?.userId,
-          name: tagName,
-          emoji: tagEmoji,
-        }),
-      })
-      if (editRes.status === 200) {
-        updateTag(id, {
-          name: tagName,
-          emoji: tagEmoji,
-        })
-        toggleEditMode()
-        toast(toastTypes.SUCCESS, 'Successfully edited', title)
-      }
-    } catch (error) {
-      console.error(error)
-      toast(toastTypes.ERROR, 'Error editing', title)
-    }
-  }
-
   return (
     <tr className="bg-white even:bg-gray-50 hover:bg-slate-100">
-      <td className="w-4 p-4">
-        <div className="flex items-center">
-          <input
-            id="checkbox-table-1"
-            type="checkbox"
-            className={`h-4 w-4 rounded border-slate-300 bg-slate-100 text-slate-600 focus:ring-2 focus:ring-slate-500 `}
+      <td className="pl-4">
+        <div className="flex items-center justify-center">
+          {/* eslint-disable @next/next/no-img-element */}
+          <img
+            src={`https://icon.horse/icon/${new URL(url).hostname}`}
+            alt={title}
+            className="h-8 w-8 rounded-full"
           />
-          <label htmlFor="checkbox-table-1" className="sr-only">
-            checkbox
-          </label>
         </div>
       </td>
-      <td className={`px-6 ${editMode ? 'py-2' : 'py-4'}`}>
+      <td className="px-6 py-4">
         <span className="text-ellipsis break-all line-clamp-2">{title}</span>
       </td>
-      <td className={`max-w-[8rem] px-6 ${editMode ? 'py-2' : 'py-4'}`}>
-        {!editMode ? (
-          <span className="text-ellipsis break-all line-clamp-2">
-            <a
-              href={url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline underline-offset-2 transition hover:text-black"
-            >
-              {url}
-            </a>
-          </span>
-        ) : (
-          <input
-            name="title"
-            value={url}
-            type="text"
-            onChange={(e) => setTagName(e.target.value)}
-            className="block w-full rounded-md border-2 border-slate-200 bg-slate-50 p-2 py-1 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500  focus:ring-slate-500 "
-          />
-        )}
+      <td className="max-w-[8rem] px-6 py-4">
+        <span className="text-ellipsis break-all line-clamp-2">
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-2 transition hover:text-black"
+          >
+            {url}
+          </a>
+        </span>
       </td>
-      <td className={`max-w-[8rem] px-6 ${editMode ? 'py-2' : 'py-4'}`}>
-        {!editMode ? (
-          <span className="text-ellipsis break-all line-clamp-3">{desc}</span>
-        ) : (
-          <input
-            name="desc"
-            value={desc}
-            type="text"
-            onChange={(e) => setTagEmoji(e.target.value)}
-            className="block w-full rounded-md border-2 border-slate-200 bg-slate-50 py-1 px-2 text-sm text-xl text-slate-900 placeholder-slate-300 focus:border-slate-500 focus:ring-slate-500"
-          />
-        )}
+      <td className="max-w-[8rem] px-6 py-4">
+        <span className="text-ellipsis break-all line-clamp-3">{desc}</span>
       </td>
-      <td className={`px-6 ${editMode ? 'py-2' : 'py-4'}`}>
+      <td className="px-6 py-4">
         <span className="text-ellipsis break-all">{category?.name ?? ''}</span>
       </td>
-      <td className={`px-6 ${editMode ? 'py-2' : 'py-4'}`}>
+      <td className="px-6 py-4">
         <span className="text-ellipsis break-all">
           {tags.map((tag) => tag.name).join(', ')}
         </span>
       </td>
-      <td className={`px-6 ${editMode ? 'py-2' : 'py-4'}`}>
+      <td className="px-6 py-4">
         <span className="text-ellipsis break-all">
           {new Date(createdAt).toLocaleString(settings.locale)}
         </span>
       </td>
-      <td
-        className={`flex items-center justify-center space-x-2 ${
-          editMode ? 'px-2' : 'px-6'
-        } py-4 text-right`}
-      >
-        {!editMode ? (
-          <button
-            onClick={() => toggleEditMode()}
-            className="font-medium text-slate-400 outline-none "
+      <td className="flex items-center justify-center space-x-2 px-6 py-4 text-right">
+        <button
+          onClick={() => toggleSidebar()}
+          className="font-medium text-slate-400 outline-none "
+        >
+          <svg
+            className="h-6 w-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
           >
-            <svg
-              className="h-6 w-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-              />
-            </svg>
-          </button>
-        ) : (
-          <>
-            <button
-              onClick={() => toggleEditMode()}
-              className="font-medium text-rose-400 outline-none"
-            >
-              <svg
-                className="h-6 w-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-            <button
-              onClick={() => saveEdit()}
-              className="font-medium text-emerald-500 outline-none"
-            >
-              <svg
-                className="h-6 w-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"
-                />
-              </svg>
-            </button>
-          </>
-        )}
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+            />
+          </svg>
+        </button>
         {loading ? (
           <svg
             className="-ml-1 h-5 w-5 animate-spin text-slate-500"

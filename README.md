@@ -12,7 +12,6 @@ Works with any Prisma compatible database (MySQL, Postgres, SQLite, etc.)
 
 Give it a try at [briefkasten.vercel.app](https://briefkasten.vercel.app) 🎉
 
-
 ## 📸 Screenshots
 
 <table>
@@ -34,12 +33,13 @@ Give it a try at [briefkasten.vercel.app](https://briefkasten.vercel.app) 🎉
 </tr>
 </table>
 
-
 ## 🎩 Features
 
 - Save by [Browser Extension](https://github.com/ndom91/briefkasten-extension)
+- Save links with automatic title and description generation
 - Keyboard Shortcuts
-- Filtering Dashboard
+- Organise by categories and tags
+- Import and Export Bookmarks from standard HTML format
 - Multiple Views
 - Fulltext Search
 - API

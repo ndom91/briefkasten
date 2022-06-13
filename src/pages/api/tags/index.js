@@ -9,29 +9,33 @@ export default async function handler(req, res) {
     switch (method) {
       case 'POST': {
         const { userId, name, emoji } = body
-        if (!name) {
-          return res.status(400).json({ message: 'Missing required field(s)' })
-        }
-
-        const createResult = await prisma.tag.create({
-          data: {
-            name,
-            emoji,
-            userId,
-          },
-        })
-
-        return res.status(200).json({ data: createResult })
-      }
-      case 'PUT': {
-        let updateResult
-        const { id, userId, name, emoji } = body
-        if (!name || !id || !userId) {
+        if (!name || !userId) {
           return res.status(400).json({ message: 'Missing required field(s)' })
         }
 
         try {
-          updateResult = await prisma.tag.update({
+          const createResult = await prisma.tag.create({
+            data: {
+              name,
+              emoji,
+              userId,
+            },
+          })
+
+          return res.status(200).json({ data: createResult })
+        } catch (e) {
+          console.error('ERR', error)
+          return res.status(500).json({ message: error })
+        }
+      }
+      case 'PUT': {
+        const { id, userId, name, emoji } = body
+        if (!id || !userId) {
+          return res.status(400).json({ message: 'Missing required field(s)' })
+        }
+
+        try {
+          const updateResult = await prisma.tag.update({
             where: {
               id,
             },
@@ -40,15 +44,13 @@ export default async function handler(req, res) {
               emoji,
             },
           })
+          return res.status(200).json({ data: updateResult })
         } catch (error) {
           console.error('ERR', error)
           return res.status(500).json({ message: error })
         }
-
-        return res.status(200).json({ data: updateResult })
       }
       case 'GET': {
-        let tags
         const { authorization: userId } = headers
 
         if (!userId) {
@@ -56,18 +58,18 @@ export default async function handler(req, res) {
         }
 
         try {
-          tags = await prisma.tag.findMany({
+          const tags = await prisma.tag.findMany({
             where: {
               userId,
             },
           })
+
+          res.setHeader('Access-Control-Allow-Origin', '*')
+          return res.status(200).json({ tags })
         } catch (error) {
           console.error('ERR', error)
           return res.status(500).json({ message: error })
         }
-
-        res.setHeader('Access-Control-Allow-Origin', '*')
-        return res.status(200).json({ tags })
       }
       case 'DELETE': {
         const { id, userId } = body
