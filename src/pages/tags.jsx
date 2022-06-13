@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import { useState } from 'react'
+import { useSession } from 'next-auth/react'
 import { getServerSession } from 'next-auth/next'
 
 import Layout from '@/components/layout'
@@ -22,7 +23,8 @@ const breadcrumbs = [
   },
 ]
 
-export default function Tags({ nextauth }) {
+export default function Tags() {
+  const { data: session } = useSession()
   const addTag = useStore((state) => state.addTag)
   const [tagName, setTagName] = useState('')
   const [tagEmoji, setTagEmoji] = useState('')
@@ -53,7 +55,7 @@ export default function Tags({ nextauth }) {
         body: JSON.stringify({
           name: tagName,
           emoji: tagEmoji,
-          userId: nextauth.user?.userId,
+          userId: session.user?.userId,
         }),
       })
       if (addRes.status === 200) {
@@ -202,10 +204,10 @@ export default function Tags({ nextauth }) {
 }
 
 export async function getServerSideProps(context) {
-  const nextauth = await getServerSession(context, authOptions)
+  const session = await getServerSession(context, authOptions)
   const zustandStore = initializeStore()
 
-  if (!nextauth) {
+  if (!session) {
     return {
       redirect: {
         destination: '/auth/signin',
@@ -216,12 +218,12 @@ export async function getServerSideProps(context) {
 
   const categories = await prisma.category.findMany({
     where: {
-      userId: nextauth.user.userId,
+      userId: session.user.userId,
     },
   })
   const tags = await prisma.tag.findMany({
     where: {
-      userId: nextauth.user.userId,
+      userId: session.user.userId,
     },
     include: {
       _count: {
@@ -235,7 +237,7 @@ export async function getServerSideProps(context) {
 
   return {
     props: {
-      nextauth,
+      session,
       initialZustandState: JSON.parse(JSON.stringify(zustandStore.getState())),
     },
   }

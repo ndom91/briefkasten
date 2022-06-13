@@ -200,10 +200,10 @@ export default function Categories({ nextauth }) {
 }
 
 export async function getServerSideProps(context) {
-  const nextauth = await getServerSession(context, authOptions)
+  const session = await getServerSession(context, authOptions)
   const zustandStore = initializeStore()
 
-  if (!nextauth) {
+  if (!session) {
     return {
       redirect: {
         destination: '/auth/signin',
@@ -214,12 +214,12 @@ export async function getServerSideProps(context) {
 
   const categories = await prisma.category.findMany({
     where: {
-      userId: nextauth.user.userId,
+      userId: session.user.userId,
     },
   })
   const tags = await prisma.tag.findMany({
     where: {
-      userId: nextauth.user.userId,
+      userId: session.user.userId,
     },
   })
 
@@ -228,7 +228,7 @@ export async function getServerSideProps(context) {
 
   return {
     props: {
-      nextauth,
+      session,
       initialZustandState: JSON.parse(JSON.stringify(zustandStore.getState())),
     },
   }

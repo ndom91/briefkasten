@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import { useState } from 'react'
+import { useSession } from 'next-auth/react'
 import { getServerSession } from 'next-auth/next'
 import { useCopyToClipboard } from 'react-use'
 
@@ -21,7 +22,8 @@ const breadcrumbs = [
   },
 ]
 
-export default function Settings({ nextauth }) {
+export default function Settings() {
+  const { data: session } = useSession()
   const bookmarks = useStore((state) => state.bookmarks)
   const [fileContents, setFileContents] = useState('')
   const [fileName, setFileName] = useState('')
@@ -77,7 +79,7 @@ export default function Settings({ nextauth }) {
             : 0,
           // tags,
           desc,
-          userId: nextauth?.user?.userId,
+          userId: session?.user?.userId,
         }
       }
     })
@@ -110,7 +112,7 @@ export default function Settings({ nextauth }) {
   }
 
   const copyUserId = () => {
-    copyToClipboard(nextauth?.user?.userId)
+    copyToClipboard(session?.user?.userId)
     toast(toastTypes.SUCCESS, 'Copied Token')
   }
 
@@ -142,7 +144,7 @@ export default function Settings({ nextauth }) {
             </label>
             <div className="relative flex">
               <pre className="rounded-md bg-slate-200 p-2 pl-4 pr-10">
-                {nextauth?.user?.userId}
+                {session?.user?.userId}
               </pre>
               <button
                 onClick={() => copyUserId()}
@@ -345,10 +347,10 @@ export default function Settings({ nextauth }) {
 }
 
 export async function getServerSideProps(context) {
-  const nextauth = await getServerSession(context, authOptions)
+  const session = await getServerSession(context, authOptions)
   const zustandStore = initializeStore()
 
-  if (!nextauth) {
+  if (!session) {
     return {
       redirect: {
         destination: '/auth/signin',
@@ -359,7 +361,7 @@ export async function getServerSideProps(context) {
 
   const bookmarkData = await prisma.bookmark.findMany({
     where: {
-      userId: nextauth.user.userId,
+      userId: session.user.userId,
     },
     include: {
       category: true,
@@ -369,12 +371,12 @@ export async function getServerSideProps(context) {
 
   const categories = await prisma.category.findMany({
     where: {
-      userId: nextauth.user.userId,
+      userId: session.user.userId,
     },
   })
   const tags = await prisma.tag.findMany({
     where: {
-      userId: nextauth.user.userId,
+      userId: session.user.userId,
     },
   })
 
@@ -384,7 +386,7 @@ export async function getServerSideProps(context) {
 
   return {
     props: {
-      nextauth,
+      session,
       initialZustandState: JSON.parse(JSON.stringify(zustandStore.getState())),
     },
   }
