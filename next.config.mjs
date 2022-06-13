@@ -1,4 +1,4 @@
-import { withSentryConfig } from '@sentry/nextjs'
+// import { withSentryConfig } from '@sentry/nextjs'
 
 /**
  * @type {import('next').NextConfig}
@@ -36,4 +36,5 @@ const sentryWebpackPluginOptions = {
   // https://github.com/getsentry/sentry-webpack-plugin#options.
 }
 
-export default withSentryConfig(nextConfig, sentryWebpackPluginOptions)
+// export default withBundleAnalyzer(withSentryConfig(nextConfig, sentryWebpackPluginOptions))
+export default nextConfig
