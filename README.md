@@ -20,7 +20,7 @@ Give it a try at [briefkasten.vercel.app](https://briefkasten.vercel.app) 🎉
     <a href="https://raw.githubusercontent.com/ndom91/briefkasten/main/screenshot_app1.png" target="_blank"><img src="screenshot_app1.png"></a>
   </td>
   <td>
-    <a href="https://raw.githubusercontent.com/ndom91/briefkasten/main/screenshot_app2.png" target="_blank"><img src="screenshot_app2.png"></a>
+    <a href="https://raw.githubusercontent.com/ndom91/briefkasten/main/screenshot_app5.png" target="_blank"><img src="screenshot_app5.png"></a>
   </td>
 </tr>
 <tr>
