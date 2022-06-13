@@ -1,6 +1,6 @@
 import ImageKit from 'imagekit'
 import prisma from '@/lib/prisma'
-import { withSentry } from '@sentry/nextjs'
+// import { withSentry } from '@sentry/nextjs'
 import { getSession } from 'next-auth/react'
 import { asyncFileReader } from '@/lib/helpers'
 
@@ -254,4 +254,5 @@ const handler = async (req, res) => {
   }
 }
 
-export default withSentry(handler)
+// export default withSentry(handler)
+export default handler
