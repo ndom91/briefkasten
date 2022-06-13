@@ -1,4 +1,5 @@
 import ImageKit from 'imagekit'
+import { withSentry } from '@sentry/nextjs'
 import prisma from '@/lib/prisma'
 import { getSession } from 'next-auth/react'
 import { asyncFileReader } from '@/lib/helpers'
@@ -9,7 +10,7 @@ const metascraper = require('metascraper')([
   require('metascraper-title')(),
 ])
 
-export default async function handler(req, res) {
+const handler = async (req, res) => {
   const session = await getSession({ req })
   const { method, headers, query, body } = req
 
@@ -252,3 +253,5 @@ export default async function handler(req, res) {
     }
   }
 }
+
+export default withSentry(handler)
