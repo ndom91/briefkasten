@@ -15,13 +15,13 @@ export default function BookmarkTableRow({ item, toggleSidebar }) {
   const { id, title, url, desc, category, tags, createdAt } = item
   const [loading, setLoading] = useState(false)
   const settings = useStore((state) => state.settings)
-  const removeTag = useStore((state) => state.removeTag)
+  const removeBookmark = useStore((state) => state.removeTag)
   const toast = useToast(5000)
 
-  const deleteTag = async () => {
+  const deleteBookmark = async () => {
     setLoading(true)
     try {
-      const delRes = await fetch('/api/tags', {
+      const delRes = await fetch('/api/bookmarks', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -32,7 +32,7 @@ export default function BookmarkTableRow({ item, toggleSidebar }) {
         }),
       })
       if (delRes.status === 200) {
-        removeTag({ id })
+        removeBookmark({ id })
         toast(toastTypes.SUCCESS, 'Successfully deleted', title)
       }
       setLoading(false)
@@ -129,7 +129,7 @@ export default function BookmarkTableRow({ item, toggleSidebar }) {
           </svg>
         ) : (
           <button
-            onClick={() => deleteTag()}
+            onClick={() => deleteBookmark()}
             className="font-medium text-rose-400 outline-none "
           >
             <svg

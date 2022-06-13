@@ -515,7 +515,7 @@ export default function Sidebar() {
                 src={
                   session?.user?.image ??
                   ` https://unavatar.io/${
-                    session?.user?.email ?? session.user?.id
+                    session?.user?.email ?? session?.user?.id
                   }`
                 }
                 alt="User Avatar"

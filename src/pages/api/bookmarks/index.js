@@ -117,14 +117,17 @@ export default async function handler(req, res) {
           tags.map(async (tag) => {
             return await prisma.tag.upsert({
               create: {
-                name: tag.name,
+                name: tag,
                 userId,
               },
               update: {
-                name: tag.name,
+                name: tag,
               },
               where: {
-                id: tag.id,
+                name_userId: {
+                  name: tag,
+                  userId,
+                },
               },
             })
           })
