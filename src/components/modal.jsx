@@ -57,11 +57,11 @@ export default function Modal({ open, toggleModal, saveBookmark, url }) {
                     <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                       <Dialog.Title
                         as="h3"
-                        className="text-lg font-medium leading-6 text-gray-900"
+                        className="pt-2 text-lg font-medium leading-6 text-gray-900"
                       >
-                        Dropped URL
+                        New Bookmark
                       </Dialog.Title>
-                      <div className="mt-2 flex flex-col space-y-2">
+                      <div className="mt-4 flex flex-col space-y-2">
                         <p className="text-sm text-gray-500">
                           You have dropped the URL:
                         </p>
@@ -71,15 +71,15 @@ export default function Modal({ open, toggleModal, saveBookmark, url }) {
                             alt="New Url"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="transition hover:underline"
+                            className="text-ellipsis break-all font-semibold text-slate-900 transition line-clamp-3 hover:underline"
                           >
                             {url}
                           </a>
                         </div>
                         <p className="text-sm text-gray-500">
-                          Are you sure you want to add it? We will look up some
-                          default information about the page which you can edit
-                          later.
+                          If you proceed to add this URL, we will look up a
+                          default title and description for the page which you
+                          can of course edit later.
                         </p>
                       </div>
                     </div>

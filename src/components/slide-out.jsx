@@ -49,17 +49,19 @@ export default function SlideOut({ open, toggleOpen }) {
           url: `https://${editUrl}`,
           desc: editDesc,
           category: editCategory,
-          tags: selectedTags,
+          tags: selectedTags.map((tag) => tag.name),
         }),
       })
       if (updateRes.status === 200) {
+        const { data } = await res.json()
         updateBookmark({
-          id: editBookmark.id,
-          title: editTitle,
-          url: `https://${editUrl}`,
-          desc: editDesc,
-          category: editCategory,
-          tags: selectedTags,
+          id: data.id,
+          title: data.title,
+          url: data.url,
+          desc: data.desc,
+          image: data.image,
+          category: data.category,
+          tags: data.tags,
         })
         toast(toastTypes.SUCCESS, 'Successfully edited', editTitle)
       }
@@ -341,7 +343,7 @@ export default function SlideOut({ open, toggleOpen }) {
                                 leaveTo="opacity-0"
                               >
                                 <Chip
-                                  name={`${tag.emoji} ${tag.name}`}
+                                  name={`${tag.emoji ?? ''} ${tag.name}`}
                                   id={tag.id}
                                   remove={removeSelectedTag}
                                 />
