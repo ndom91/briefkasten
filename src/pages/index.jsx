@@ -149,7 +149,7 @@ export default function Home() {
             No results found, please try again!
           </div>
         )}
-        <div className="w-full grow overflow-x-hidden overflow-y-scroll">
+        <div className="z-20 w-full grow overflow-x-hidden overflow-y-visible">
           <section className="flex h-full flex-col items-center justify-start px-2 md:px-4">
             {currentTableData.length !== 0 &&
               settings.activeView === viewTypes.CARD.name && (

@@ -2,8 +2,8 @@ import BookmarkTableRow from '@/components/bookmarkTableRow'
 
 export default function DataTable({ items, initEdit }) {
   return (
-    <table className="text-left text-sm text-slate-500 ">
-      <thead className="bg-slate-50 text-xs uppercase text-slate-700 ">
+    <table className="rounded-t-lg text-left text-sm text-slate-500">
+      <thead className="rounded-t-lg bg-slate-50 text-xs uppercase text-slate-700 ">
         <tr>
           <th scope="col" className="w-8" width="20px">
             <div className="w-12" />

@@ -17,18 +17,18 @@ Give it a try at [briefkasten.vercel.app](https://briefkasten.vercel.app) 🎉
 <table>
 <tr>
   <td>
-    <a href="https://raw.githubusercontent.com/ndom91/briefkasten/main/public/screenshot_app1.png" target="_blank"><img src="public/screenshot_app1.png"></a>
+    <a href="https://raw.githubusercontent.com/ndom91/briefkasten/main/public/screenshot_app01.png" target="_blank"><img src="public/screenshot_app01.png"></a>
   </td>
   <td>
-    <a href="https://raw.githubusercontent.com/ndom91/briefkasten/main/public/screenshot_app5.png" target="_blank"><img src="public/screenshot_app5.png"></a>
+    <a href="https://raw.githubusercontent.com/ndom91/briefkasten/main/public/screenshot_app05.png" target="_blank"><img src="public/screenshot_app05.png"></a>
   </td>
 </tr>
 <tr>
   <td>
-    <a href="https://raw.githubusercontent.com/ndom91/briefkasten/main/public/screenshot_app6.png" target="_blank"><img src="public/screenshot_app6.png"></a>
+    <a href="https://raw.githubusercontent.com/ndom91/briefkasten/main/public/screenshot_app06.png" target="_blank"><img src="public/screenshot_app06.png"></a>
   </td>
   <td>
-    <a href="https://raw.githubusercontent.com/ndom91/briefkasten/main/public/screenshot_app4.png" target="_blank"><img src="public/screenshot_app4.png"></a>
+    <a href="https://raw.githubusercontent.com/ndom91/briefkasten/main/public/screenshot_app04.png" target="_blank"><img src="public/screenshot_app04.png"></a>
   </td>
 </tr>
 </table>
