@@ -6,7 +6,8 @@ import { useStore } from '@/lib/store'
 
 export default function CategoryTableRow({ item }) {
   const { data: session } = useSession()
-  const { id, name, description, createdAt } = item
+  const { id, name, description, createdAt, _count } = item
+  const count = _count?.bookmarks ?? 0
   const [editMode, toggleEditMode] = useToggle(false)
   const [categoryName, setCategoryName] = useState(name)
   const [categoryDesc, setCategoryDesc] = useState(description)
@@ -75,20 +76,11 @@ export default function CategoryTableRow({ item }) {
 
   return (
     <tr className="bg-white even:bg-gray-50 hover:bg-slate-100">
-      <td className="w-4 p-4">
-        <div className="flex items-center">
-          <input
-            id="checkbox-table-1"
-            type="checkbox"
-            className={`h-4 w-4 rounded border-slate-300 bg-slate-100 text-slate-600 focus:ring-2 focus:ring-slate-500 `}
-          />
-          <label htmlFor="checkbox-table-1" className="sr-only">
-            checkbox
-          </label>
-        </div>
-      </td>
       <th className={`px-6 ${editMode ? 'py-2' : 'py-4'}`}>
         <span className="font-normal">{id}</span>
+      </th>
+      <th className="px-6 py-4">
+        <span className="font-normal">{count ?? 0}</span>
       </th>
       <td className={`px-6 ${editMode ? 'py-2' : 'py-4'}`}>
         {!editMode ? (

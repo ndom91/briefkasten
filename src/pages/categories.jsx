@@ -111,20 +111,11 @@ export default function Categories({ nextauth }) {
           <table className="w-full text-left text-sm text-slate-500">
             <thead className="bg-slate-50 text-xs uppercase text-slate-700">
               <tr>
-                <th scope="col" className="p-4">
-                  <div className="flex items-center">
-                    <input
-                      id="checkbox-all"
-                      type="checkbox"
-                      className="h-4 w-4 rounded border-slate-300 bg-slate-100 text-slate-600 focus:ring-2 focus:ring-slate-500"
-                    />
-                    <label htmlFor="checkbox-all" className="sr-only">
-                      checkbox
-                    </label>
-                  </div>
-                </th>
                 <th scope="col" className="px-6 py-3" width="12%">
                   ID
+                </th>
+                <th scope="col" className="px-6 py-3" width="5%">
+                  Count
                 </th>
                 <th scope="col" className="px-6 py-3" width="20%">
                   Name
@@ -146,16 +137,17 @@ export default function Categories({ nextauth }) {
                   <CategoryTableRow item={category} key={category.id} />
                 ))}
               <tr className="bg-white even:bg-gray-50 hover:bg-slate-100">
-                <td className="w-4 p-4" />
                 <th className={`px-6 py-2`}>
-                  <span className="font-normal">Add new Category</span>
+                  <span className="font-semibold">Add new Category</span>
                 </th>
+                <th className={`px-6 py-2`} />
                 <td className={`px-6 py-2`}>
                   <input
                     name="name"
                     value={categoryName}
                     type="text"
                     onChange={(e) => setCategoryName(e.target.value)}
+                    placeholder="Required"
                     className="block w-full rounded-md border-2 border-slate-200 bg-slate-50 p-2 py-1 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500  focus:ring-slate-500 "
                   />
                 </td>
@@ -164,6 +156,7 @@ export default function Categories({ nextauth }) {
                     name="emoji"
                     value={categoryDesc}
                     type="text"
+                    placeholder="Optional"
                     onChange={(e) => setCategoryDesc(e.target.value)}
                     className="block w-full rounded-md border-2 border-slate-200 bg-slate-50 py-1 px-2 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500 focus:ring-slate-500"
                   />
@@ -215,6 +208,11 @@ export async function getServerSideProps(context) {
   const categories = await prisma.category.findMany({
     where: {
       userId: session.user.userId,
+    },
+    include: {
+      _count: {
+        select: { bookmarks: true },
+      },
     },
   })
   const tags = await prisma.tag.findMany({

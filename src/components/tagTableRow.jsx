@@ -76,22 +76,10 @@ export default function TagTableRow({ item }) {
 
   return (
     <tr className="bg-white even:bg-gray-50 hover:bg-slate-100">
-      <td className="w-4 p-4">
-        <div className="flex items-center">
-          <input
-            id="checkbox-table-1"
-            type="checkbox"
-            className={`h-4 w-4 rounded border-slate-300 bg-slate-100 text-slate-600 focus:ring-2 focus:ring-slate-500 `}
-          />
-          <label htmlFor="checkbox-table-1" className="sr-only">
-            checkbox
-          </label>
-        </div>
-      </td>
-      <th className={`px-6 ${editMode ? 'py-5' : 'py-4'}`}>
+      <th className="px-6 py-4">
         <span className="font-normal">{id}</span>
       </th>
-      <th className={`px-6 ${editMode ? 'py-2' : 'py-4'}`}>
+      <th className="px-6 py-4">
         <span className="font-normal">{count ?? 0}</span>
       </th>
       <td className={`px-6 ${editMode ? 'py-2' : 'py-4'}`}>
@@ -120,7 +108,7 @@ export default function TagTableRow({ item }) {
           />
         )}
       </td>
-      <th className={`px-6 ${editMode ? 'py-2' : 'py-4'}`}>
+      <th className="px-6 py-4">
         <span className="font-normal">
           {createdAt ? new Date(createdAt).toLocaleString(settings.locale) : ''}
         </span>

@@ -114,18 +114,6 @@ export default function Tags() {
           <table className="w-full text-left text-sm text-slate-500 ">
             <thead className="bg-slate-50 text-xs uppercase text-slate-700 ">
               <tr>
-                <th scope="col" className="p-4">
-                  <div className="flex items-center">
-                    <input
-                      id="checkbox-all"
-                      type="checkbox"
-                      className="h-4 w-4 rounded border-slate-300 bg-slate-100 text-slate-600 focus:ring-2 focus:ring-slate-500"
-                    />
-                    <label htmlFor="checkbox-all" className="sr-only">
-                      checkbox
-                    </label>
-                  </div>
-                </th>
                 <th scope="col" className="px-6 py-3" width="12%">
                   ID
                 </th>
@@ -150,15 +138,16 @@ export default function Tags() {
               {tags &&
                 tags.map((tag) => <TagTableRow item={tag} key={tag.id} />)}
               <tr className="bg-white even:bg-gray-50 hover:bg-slate-100">
-                <td className="w-4 p-4" />
                 <th className={`px-6 py-2`}>
-                  <span className="font-normal">Add new Tag</span>
+                  <span className="font-semibold">Add new Tag</span>
                 </th>
+                <th className={`px-6 py-2`} />
                 <td className={`px-6 py-2`}>
                   <input
                     name="name"
                     value={tagName}
                     type="text"
+                    placeholder="Required"
                     onChange={(e) => setTagName(e.target.value)}
                     className="block w-full rounded-md border-2 border-slate-200 bg-slate-50 p-2 py-1 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500  focus:ring-slate-500 "
                   />
@@ -168,6 +157,7 @@ export default function Tags() {
                     name="emoji"
                     value={tagEmoji}
                     type="text"
+                    placeholder="Optional"
                     onChange={(e) => setTagEmoji(e.target.value)}
                     className="block w-full rounded-md border-2 border-slate-200 bg-slate-50 py-1 px-2 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500 focus:ring-slate-500"
                   />
