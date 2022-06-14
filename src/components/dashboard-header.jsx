@@ -38,11 +38,11 @@ export default function DashboardHeader() {
   }
 
   return (
-    <div className="flex w-full items-center justify-between p-6">
+    <div className="flex w-full items-center justify-between p-4 md:p-6">
       <Breadcrumbs />
-      <div className="relative flex w-2/3 items-center justify-start px-4">
+      <div className="relative flex w-2/3 items-center justify-start pl-0 pr-2 md:px-4">
         <svg
-          className="pointer-events-none absolute left-6 top-2 h-5 w-5 text-slate-200"
+          className="pointer-events-none absolute left-2 top-2 h-5 w-5 text-slate-200 md:left-6"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -112,7 +112,7 @@ export default function DashboardHeader() {
           type="button"
           aria-label="List View"
           onClick={() => updateActiveView(viewTypes.LIST.name)}
-          className={`inline-flex w-auto cursor-pointer select-none appearance-none items-center justify-center border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition hover:border-gray-300 hover:bg-gray-100 focus:z-10 focus:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 ${
+          className={`inline-flex w-auto cursor-pointer select-none appearance-none items-center justify-center rounded-r-md border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition hover:border-gray-300 hover:bg-gray-100 focus:z-10 focus:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 md:rounded-none ${
             settings.activeView === viewTypes.LIST.name &&
             '!bg-slate-800 !text-white hover:!bg-slate-900'
           } `}
@@ -128,7 +128,7 @@ export default function DashboardHeader() {
           aria-label="Detail View"
           disabled={true}
           onClick={() => updateActiveView(viewTypes.DETAIL.name)}
-          className={`inline-flex w-auto cursor-pointer select-none appearance-none items-center justify-center rounded-r-md border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition hover:cursor-not-allowed hover:border-gray-300 hover:bg-gray-100 focus:z-10 focus:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 ${
+          className={`hidden w-auto cursor-pointer select-none appearance-none items-center justify-center rounded-r-md border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition hover:cursor-not-allowed hover:border-gray-300 hover:bg-gray-100 focus:z-10 focus:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 md:inline-flex ${
             settings.activeView === viewTypes.DETAIL.name &&
             '!bg-slate-800 !text-white hover:!bg-slate-900'
           } `}

@@ -134,7 +134,7 @@ export default function Sidebar() {
     <aside
       suppressHydrationWarning={true}
       className={`max-h-screen w-full flex-shrink-0 drop-shadow-md ${
-        open ? 'max-w-[16rem]' : 'max-w-[6rem]'
+        open ? 'max-w-[16rem]' : 'max-w-[5rem] sm:max-w-[6rem]'
       } flex flex-grow flex-col rounded-r-md border-r bg-slate-800 pt-5 transition`}
     >
       <div className="flex items-center justify-center px-4">
@@ -173,7 +173,7 @@ export default function Sidebar() {
           <li>
             <NextLink
               href="/"
-              className="focus:shadow-outline mt-1 inline-flex w-full transform items-center rounded-lg px-4 py-2 text-base text-slate-200 outline-none transition duration-500 ease-in-out hover:cursor-pointer hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-slate-900"
+              className="focus:shadow-outline mt-1 inline-flex w-full transform items-center rounded-lg px-2 py-2 text-base text-slate-200 outline-none transition duration-500 ease-in-out hover:cursor-pointer hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-slate-900 md:px-4"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -202,7 +202,7 @@ export default function Sidebar() {
           <li>
             <NextLink
               href="/categories"
-              className="focus:shadow-outline mt-1 inline-flex w-full transform items-center rounded-lg px-4 py-2 text-base text-slate-200 outline-none transition duration-500 ease-in-out hover:cursor-pointer hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-slate-900"
+              className="focus:shadow-outline mt-1 inline-flex w-full transform items-center rounded-lg px-2 py-2 text-base text-slate-200 outline-none transition duration-500 ease-in-out hover:cursor-pointer hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-slate-900 md:px-4"
             >
               <svg
                 className={`${open ? 'h-5 w-5' : 'h-7 w-7'}`}
@@ -231,7 +231,7 @@ export default function Sidebar() {
           <li>
             <NextLink
               href="/tags"
-              className="focus:shadow-outline mt-1 inline-flex w-full transform items-center rounded-lg px-4 py-2 text-base text-slate-200 outline-none transition duration-500 ease-in-out hover:cursor-pointer hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-slate-900"
+              className="focus:shadow-outline mt-1 inline-flex w-full transform items-center rounded-lg px-2 py-2 text-base text-slate-200 outline-none transition duration-500 ease-in-out hover:cursor-pointer hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-slate-900 md:px-4"
             >
               <svg
                 className={`${open ? 'h-5 w-5' : 'h-7 w-7'}`}
@@ -503,14 +503,14 @@ export default function Sidebar() {
           </>
         )}
       </div>
-      <div className="group flex w-full items-center justify-between rounded-br-md bg-slate-900 p-4 px-4">
+      <div className="group flex w-full items-center justify-between rounded-br-md bg-slate-900 p-2 py-4 md:p-4">
         <div className="flex items-center justify-start">
           <Menu as="div" className="relative z-50 inline-block text-left">
             <Menu.Button className="flex items-center justify-center rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-4 focus-visible:ring-offset-slate-900">
               {/* eslint-disable @next/next/no-img-element */}
               <img
                 className={`inline-block rounded-full ${
-                  open ? 'h-9 w-9' : 'h-9 w-9'
+                  open ? 'h-9 w-9' : 'h-8 w-8 md:h-9 md:w-9'
                 }`}
                 src={
                   session?.user?.image ??
