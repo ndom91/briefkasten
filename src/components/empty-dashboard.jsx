@@ -1,20 +1,16 @@
-import Image from 'next/image'
-
 export default function EmptyDashboard() {
   return (
-    <section className="mx-auto flex max-w-xl flex-col items-center px-4 py-12">
-      <Image
-        className="mx-auto object-cover"
+    <section className="mx-auto flex w-2/3 max-w-xl flex-col items-center px-4 lg:py-12">
+      {/* eslint-disable @next/next/no-img-element */}
+      <img
+        className="bject-cover mx-auto h-3/4 w-full lg:p-8 2xl:h-full"
         src="/images/empty-state.png"
-        layout="fixed"
-        height="500"
-        width="500"
         alt="empty image"
       />
       <h2 className="mt-2 text-center text-xl font-medium text-gray-800">
         It looks like you don&apos;t have any bookmarks yet!
       </h2>
-      <p className="mt-1 text-center text-gray-600">
+      <p className="mt-4 text-center text-gray-600">
         This is where you’ll manage your items. Get started by installing the{' '}
         <a
           href="https://chrome.google.com/webstore/detail/briefkasten-bookmarks/aighkhofochfjejmhjfkgjfpkpgmjlnd"
@@ -25,9 +21,16 @@ export default function EmptyDashboard() {
         .
       </p>
       <p className="mt-1 text-center text-gray-600">
-        Alternatively, you can drag-and-drop URLs anywhere onto the page or use
-        the quick-add button in the bottom right!
+        Alternatively, you can also add bookmarks in the following ways:
       </p>
+      <ul className="mt-2 list-inside list-disc text-gray-600">
+        <li>
+          <strong>Drag-and-drop</strong> URLs anywhere onto the page
+        </li>
+        <li className="invisible md:visible">
+          Use the <strong>quick-add button</strong> in the bottom right corner
+        </li>
+      </ul>
       <div className="mt-4 flex flex-col items-center justify-center space-y-1 md:flex-row md:space-y-0 md:space-x-1">
         <a
           href="https://chrome.google.com/webstore/detail/briefkasten-bookmarks/aighkhofochfjejmhjfkgjfpkpgmjlnd"
@@ -36,6 +39,13 @@ export default function EmptyDashboard() {
           Install Extension
         </a>
       </div>
+      {/* eslint-disable @next/next/no-img-element */}
+      <img
+        src="/images/arrow.svg"
+        alt="arrow blob"
+        aria-hidden="true"
+        className="absolute bottom-24 right-72 hidden rotate-[55deg] 2xl:block"
+      />
     </section>
   )
 }

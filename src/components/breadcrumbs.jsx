@@ -34,7 +34,7 @@ export default function Breadcrumbs({ breadcrumbs }) {
                 className="h-4 w-px rotate-12 rounded-full bg-gray-300"
               />
             )}
-            <a href="#" className="flex items-center space-x-1 text-gray-800">
+            <div className="flex items-center space-x-1 text-gray-800">
               {breadcrumb.icon ? (
                 <svg
                   className="h-4 w-4 shrink-0 fill-gray-500"
@@ -42,7 +42,7 @@ export default function Breadcrumbs({ breadcrumbs }) {
                 />
               ) : null}
               <span>{breadcrumb.name}</span>
-            </a>
+            </div>
           </li>
         ))}
       </ul>

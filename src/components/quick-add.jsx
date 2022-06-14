@@ -131,7 +131,7 @@ export default function QuickAdd({ categories }) {
             <Popover.Button
               className={`${
                 open ? '' : 'text-opacity-90'
-              } absolute bottom-8 right-8 z-20 hidden rounded-full bg-slate-800 p-2 outline-none drop-shadow-md transition hover:-translate-y-1 hover:drop-shadow-lg focus:outline-none focus:ring-2 focus:ring-slate-800 focus:ring-offset-2 focus:ring-offset-white lg:block`}
+              } absolute bottom-8 right-8 z-20 hidden rounded-full bg-slate-800 p-2 outline-none drop-shadow-md transition hover:-translate-y-1 hover:drop-shadow-lg focus:outline-none focus:ring-2 focus:ring-slate-800 focus:ring-offset-2 focus:ring-offset-white md:block`}
             >
               <svg
                 className={`h-8 w-8 text-slate-200 transition duration-300 ${
@@ -159,7 +159,7 @@ export default function QuickAdd({ categories }) {
               leaveFrom="opacity-100 translate-y-0"
               leaveTo="opacity-0 translate-y-1"
             >
-              <Popover.Panel className="absolute right-8 bottom-24 z-20 mt-3 hidden w-full max-w-sm origin-bottom-right px-4 sm:px-0 lg:block lg:max-w-xl">
+              <Popover.Panel className="absolute right-8 bottom-24 z-20 mt-3 hidden w-full max-w-sm origin-bottom-right px-4 sm:px-0 md:block md:max-w-xl">
                 <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
                   <div className="relative flex flex-col space-y-4 bg-white p-7">
                     <div className="px-4 sm:px-0">
