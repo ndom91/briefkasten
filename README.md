@@ -6,11 +6,9 @@
 ![GitHub](https://img.shields.io/github/license/ndom91/briefkasten?style=flat-square)
 [![Demo](https://img.shields.io/badge/demo-click%20here-brightgreen?style=flat-square)](https://briefkasten.vercel.app)
 
-Self-hosted bookmarking application!
+Self-hosted bookmarking application. Works with any Prisma compatible database (MySQL, Postgres, SQLite, etc.)
 
-Works with any Prisma compatible database (MySQL, Postgres, SQLite, etc.)
-
-Give it a try at [briefkasten.vercel.app](https://briefkasten.vercel.app) 🎉
+> Demo instance at [briefkasten.vercel.app](https://briefkasten.vercel.app) 👀
 
 ## 📸 Screenshots
 
@@ -36,15 +34,16 @@ Give it a try at [briefkasten.vercel.app](https://briefkasten.vercel.app) 🎉
 ## 🎩 Features
 
 - Save by [Browser Extension](https://github.com/ndom91/briefkasten-extension)
-- Save links with automatic title and description generation
-- Keyboard Shortcuts
+- Automatic title and description extraction
+- Drag-and-drop URLs on page to save
+- Keyboard shortcuts
 - Organise by categories and tags
-- Import and Export Bookmarks from standard HTML format
-- Multiple Views
-- Fulltext Search
-- API
-- OAuth Login
-- Bookmark Image Background Job
+- Import and export bookmarks from standard HTML format
+- Bookmark image fetching [background job](https://github.com/ndom91/briefkasten-scrape)
+- Multiple views
+- Fulltext search
+- REST API
+- OAuth + Email magic link login
 
 ## 🧺 Prerequisites
 
