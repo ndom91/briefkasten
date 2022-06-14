@@ -1,13 +1,12 @@
-import React from 'react'
 import { usePagination, DOTS } from '../lib/hooks'
 
-const Pagination = ({
+export default function Pagination({
   onPageChange,
   totalCount,
   siblingCount = 1,
   currentPage,
   pageSize,
-}) => {
+}) {
   const paginationRange = usePagination({
     currentPage,
     totalCount,
@@ -29,79 +28,129 @@ const Pagination = ({
   }
 
   let lastPage = paginationRange[paginationRange.length - 1]
-  return (
-    <ul className="!mt-4 flex list-none items-center justify-center">
-      <li
-        className={`my-1 flex h-8 items-center rounded-md py-4 text-center tracking-tight text-slate-400 transition hover:cursor-pointer hover:bg-slate-100 ${
-          currentPage === 1 ? 'pointer-events-none hover:cursor-default' : ''
-        }`}
-        onClick={onPrevious}
-      >
-        <svg
-          className="h-6 w-6 text-slate-800"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M15 19l-7-7 7-7"
-          />
-        </svg>
-      </li>
-      {paginationRange.map((pageNumber, i) => {
-        // If the pageItem is a DOT, render the DOTS unicode character
-        if (pageNumber === DOTS) {
-          return (
-            <li
-              key={`${pageNumber}-${i}`}
-              className="my-1 flex h-8 items-center rounded-md py-4 text-center tracking-tight text-slate-800 hover:cursor-default"
-            >
-              &#8230;
-            </li>
-          )
-        }
 
-        return (
-          <li
-            key={`${pageNumber}-${i}`}
-            className={`m-0.5 flex h-8 items-center rounded-md px-2 py-4 text-center tracking-tight text-slate-400 transition hover:cursor-pointer hover:bg-slate-100 hover:text-slate-800 ${
-              pageNumber === currentPage ? 'bg-slate-800 text-slate-50' : ''
-            }`}
-            onClick={() => onPageChange(pageNumber)}
-          >
-            {pageNumber}
-          </li>
-        )
-      })}
-      <li
-        className={`my-1 flex h-8 items-center rounded-md py-4 text-center tracking-tight text-slate-400 transition hover:cursor-pointer hover:bg-slate-100 ${
-          currentPage === lastPage
-            ? 'pointer-events-none hover:cursor-default'
-            : ''
-        }`}
-        onClick={onNext}
-      >
-        <svg
-          className="h-6 w-6 text-slate-800"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
+  return (
+    <div className="flex w-full items-center justify-between bg-white px-4 py-3 sm:w-fit sm:px-6">
+      <div className="flex flex-1 justify-around sm:hidden">
+        <a
+          href="#"
+          onClick={onPrevious}
+          className={`relative inline-flex w-1/3 items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 ${
+            currentPage === 1 ? 'pointer-events-none hover:cursor-default' : ''
+          } `}
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M9 5l7 7-7 7"
-          />
-        </svg>
-      </li>
-    </ul>
+          Previous
+        </a>
+        <a
+          href="#"
+          onClick={onNext}
+          className={`relative ml-3 inline-flex w-1/3 items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 ${
+            currentPage === lastPage
+              ? 'pointer-events-none hover:cursor-default'
+              : ''
+          } `}
+        >
+          Next
+        </a>
+      </div>
+      <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+        {/* <div> */}
+        {/*   <p className="text-sm text-gray-700"> */}
+        {/*     Showing <span className="font-medium">1</span> to{' '} */}
+        {/*     <span className="font-medium">10</span> of{' '} */}
+        {/*     <span className="font-medium">97</span> results */}
+        {/*   </p> */}
+        {/* </div> */}
+        <div>
+          <nav
+            className="relative z-0 inline-flex -space-x-px rounded-md shadow-sm"
+            aria-label="Pagination"
+          >
+            <a
+              href="#"
+              onClick={onPrevious}
+              className={`relative inline-flex items-center rounded-l-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 ${
+                currentPage === 1
+                  ? 'pointer-events-none hover:cursor-default'
+                  : ''
+              } `}
+            >
+              <span className="sr-only">Previous</span>
+              <svg
+                className="h-5 w-5"
+                aria-hidden="true"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </a>
+
+            {paginationRange.map((pageNumber, i) => {
+              // If the pageItem is a DOT, render the DOTS unicode character
+              if (pageNumber === DOTS) {
+                return (
+                  <span
+                    key={`${pageNumber}-${i}`}
+                    className="relative inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700"
+                  >
+                    &#8230;
+                  </span>
+                )
+              }
+
+              return (
+                <a
+                  href="#"
+                  key={`${pageNumber}-${i}`}
+                  aria-current="page"
+                  onClick={() => onPageChange(pageNumber)}
+                  className={`relative z-10 inline-flex items-center border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-600 ${
+                    pageNumber === currentPage
+                      ? '!bg-slate-800 text-slate-50'
+                      : ''
+                  } `}
+                >
+                  {pageNumber}
+                </a>
+              )
+            })}
+            <a
+              href="#"
+              onClick={onNext}
+              className={`relative inline-flex items-center rounded-r-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 ${
+                currentPage === lastPage
+                  ? 'pointer-events-none hover:cursor-default'
+                  : ''
+              } `}
+            >
+              <span className="sr-only">Next</span>
+              <svg
+                className="h-5 w-5"
+                aria-hidden="true"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </a>
+          </nav>
+        </div>
+      </div>
+    </div>
   )
 }
-
-export default Pagination
