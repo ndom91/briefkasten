@@ -76,7 +76,7 @@ export default function DashboardHeader() {
         />
         {searchText.length ? (
           <svg
-            className="absolute right-1.5 top-1.5 h-6 w-6 text-rose-300 hover:cursor-pointer"
+            className="absolute right-4 top-1.5 h-6 w-6 text-rose-300 hover:cursor-pointer md:right-6"
             onClick={() => setSearchText('')}
             fill="none"
             stroke="currentColor"
