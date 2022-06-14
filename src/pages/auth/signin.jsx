@@ -45,9 +45,9 @@ const Signin = ({ providers, csrfToken }) => {
     <>
       <Meta />
       <div className="absolute h-full min-h-full w-full overflow-hidden">
-        <div className="absolute top-0 left-0 z-10 flex h-[250%] w-[70%] translate-x-[-30%] translate-y-[-20%] rotate-[11deg] items-center bg-slate-900" />
-        <div className="relative z-10 flex h-[calc(100vh_-_64px)] w-full items-center p-8 text-center font-bold">
-          <div className="z-20 ml-[15%] flex w-[22rem] flex-col items-center justify-center text-xl">
+        <div className="absolute top-0 left-0 z-10 flex h-[250%] w-[110%] translate-x-[-55%] translate-y-[-28%] rotate-[20deg] items-center bg-slate-900 md:w-[70%] md:translate-y-[-20%] md:translate-x-[-30%] md:rotate-[11deg]" />
+        <div className="relative z-10 flex h-[calc(100vh_-_64px)] w-full items-center justify-center p-8 text-center font-bold md:justify-start">
+          <div className="z-20 flex w-[22rem] flex-col items-center justify-center text-xl md:ml-[15%]">
             <h2 className="mb-4 flex items-center space-x-2 text-3xl font-light text-slate-600">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -61,7 +61,7 @@ const Signin = ({ providers, csrfToken }) => {
               >
                 <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
               </svg>
-              <span className="text-2xl font-medium text-white lg:text-4xl">
+              <span className="text-4xl font-medium text-white">
                 Briefkasten
               </span>
             </h2>
