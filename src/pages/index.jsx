@@ -1,7 +1,12 @@
 import { useState, useEffect } from 'react'
 import { getServerSession } from 'next-auth/next'
 import { useSession } from 'next-auth/react'
-import { useDrop, useDeepCompareEffect, useToggle } from 'react-use'
+import {
+  useDrop,
+  usePrevious,
+  useDeepCompareEffect,
+  useToggle,
+} from 'react-use'
 import { authOptions } from '@/api/auth/[...nextauth]'
 import { useStore, initializeStore } from '@/lib/store'
 import { useToast, toastTypes } from '@/lib/hooks'
@@ -31,6 +36,7 @@ export default function Home() {
   const settings = useStore((state) => state.settings)
   const setEditBookmark = useStore((state) => state.setEditBookmark)
   const addBookmark = useStore((state) => state.addBookmark)
+  const previousSearchText = usePrevious(searchText)
 
   const [droppedUrl, setDroppedUrl] = useState('')
   const [currentTableData, setCurrentTableData] = useState([])
@@ -66,6 +72,7 @@ export default function Home() {
               .includes(searchText.toLowerCase()) ||
             thisBookmark.desc?.toLowerCase().includes(searchText.toLowerCase())
           ) {
+            previousSearchText !== searchText && setCurrentPage(1)
             bookmarks.push(thisBookmark)
           }
         } else {

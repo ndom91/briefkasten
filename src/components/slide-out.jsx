@@ -53,7 +53,7 @@ export default function SlideOut({ open, toggleOpen }) {
         }),
       })
       if (updateRes.status === 200) {
-        const { data } = await res.json()
+        const { data } = await updateRes.json()
         updateBookmark({
           id: data.id,
           title: data.title,

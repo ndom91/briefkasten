@@ -21,22 +21,30 @@ export default function Pagination({
 
   const onNext = () => {
     onPageChange(currentPage + 1)
+    document
+      .querySelectorAll('.bookmark-card')[0]
+      .scrollIntoView(true, { behavior: 'smooth' })
   }
 
   const onPrevious = () => {
     onPageChange(currentPage - 1)
+    document
+      .querySelectorAll('.bookmark-card')[0]
+      .scrollIntoView(true, { behavior: 'smooth' })
   }
 
   let lastPage = paginationRange[paginationRange.length - 1]
 
   return (
     <div className="flex w-full items-center justify-between bg-white px-4 py-3 sm:w-fit sm:px-6">
-      <div className="flex flex-1 justify-around sm:hidden">
+      <div className="flex flex-1 justify-between px-4 sm:hidden">
         <a
           href="#"
           onClick={onPrevious}
-          className={`relative inline-flex w-1/3 items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 ${
-            currentPage === 1 ? 'pointer-events-none hover:cursor-default' : ''
+          className={`relative inline-flex w-1/2 items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 ${
+            currentPage === 1
+              ? 'pointer-events-none !bg-slate-50 !text-slate-400 hover:cursor-default'
+              : ''
           } `}
         >
           Previous
@@ -44,9 +52,9 @@ export default function Pagination({
         <a
           href="#"
           onClick={onNext}
-          className={`relative ml-3 inline-flex w-1/3 items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 ${
+          className={`relative ml-3 inline-flex w-1/2 items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 ${
             currentPage === lastPage
-              ? 'pointer-events-none hover:cursor-default'
+              ? 'pointer-events-none !bg-slate-50 !text-slate-400 hover:cursor-default'
               : ''
           } `}
         >
@@ -71,7 +79,7 @@ export default function Pagination({
               onClick={onPrevious}
               className={`relative inline-flex items-center rounded-l-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 ${
                 currentPage === 1
-                  ? 'pointer-events-none hover:cursor-default'
+                  ? 'pointer-events-none !bg-slate-50 !text-slate-400 hover:cursor-default'
                   : ''
               } `}
             >
@@ -94,7 +102,6 @@ export default function Pagination({
             </a>
 
             {paginationRange.map((pageNumber, i) => {
-              // If the pageItem is a DOT, render the DOTS unicode character
               if (pageNumber === DOTS) {
                 return (
                   <span
@@ -127,7 +134,7 @@ export default function Pagination({
               onClick={onNext}
               className={`relative inline-flex items-center rounded-r-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 ${
                 currentPage === lastPage
-                  ? 'pointer-events-none hover:cursor-default'
+                  ? 'pointer-events-none !bg-slate-50 !text-slate-400 hover:cursor-default'
                   : ''
               } `}
             >

@@ -78,7 +78,7 @@ export default function BookmarkCard({ bookmark, toggleSidebar }) {
     <>
       <div
         suppressHydrationWarning={true}
-        className="group relative flex w-72 flex-col overflow-hidden rounded-md border-2 border-slate-100 bg-white p-4 shadow-sm transition hover:shadow-lg"
+        className="bookmark-card group relative flex w-72 flex-col overflow-hidden rounded-md border-2 border-slate-100 bg-white p-4 shadow-sm transition hover:shadow-lg"
       >
         <div className="absolute top-3 right-3 z-10 flex flex-row-reverse gap-2 rounded-lg border-0 border-slate-400/50  bg-slate-600/90 px-3 py-2 opacity-0 shadow-md transition group-hover:opacity-100">
           <button
