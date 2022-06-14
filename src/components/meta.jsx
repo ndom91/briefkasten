@@ -45,28 +45,6 @@ const Meta = () => {
         <meta property="og:image" content={''} />
         <meta name="twitter:image" content={''} />
         <title>Briefkasten</title>
-        {/* <script */}
-        {/*   type="application/ld+json" */}
-        {/*   dangerouslySetInnerHTML={{ */}
-        {/*     __html: JSON.stringify({ */}
-        {/*       '@context': 'http://schema.org/', */}
-        {/*       '@type': 'Person', */}
-        {/*       name: 'Nico Domino', */}
-        {/*       image: 'https://ndo.dev/assets/img/avatar.png', */}
-        {/*       url: 'https://ndo.dev', */}
-        {/*       jobTitle: 'Fullstack Web Developer', */}
-        {/*       worksFor: { */}
-        {/*         '@type': 'Organization', */}
-        {/*         name: 'Checkly', */}
-        {/*       }, */}
-        {/*       sameAs: [ */}
-        {/*         'https://www.linkedin.com/in/ndom91/', */}
-        {/*         'https://twitter.com/ndom91', */}
-        {/*         'https://github.com/ndom91', */}
-        {/*       ], */}
-        {/*     }), */}
-        {/*   }} */}
-        {/* /> */}
       </Head>
       {process.env.NODE_ENV === 'production' && (
         <Script
