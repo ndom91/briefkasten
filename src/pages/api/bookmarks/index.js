@@ -255,7 +255,7 @@ const handler = async (req, res) => {
 }
 
 export const config = {
-  runtime: 'edge',
+  runtime: 'experimental-edge',
 }
 
 // export default withSentry(handler)
