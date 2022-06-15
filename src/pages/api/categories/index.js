@@ -70,7 +70,3 @@ export default async function handler(req, res) {
     return res.status(403).end('Unauthorized')
   }
 }
-
-export const config = {
-  runtime: 'experimental-edge',
-}
