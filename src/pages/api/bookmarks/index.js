@@ -254,5 +254,9 @@ const handler = async (req, res) => {
   }
 }
 
+export const config = {
+  runtime: 'edge',
+}
+
 // export default withSentry(handler)
 export default handler
