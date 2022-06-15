@@ -125,7 +125,7 @@ export default function Settings() {
         <div className="flex w-full items-center justify-start space-x-4 p-6">
           <Breadcrumbs breadcrumbs={breadcrumbs} />
         </div>
-        <div className="flex flex-col items-stretch space-y-4 p-4">
+        <div className="flex flex-col items-stretch space-y-4 overflow-y-scroll p-4">
           <section className="flex flex-col items-start justify-center space-y-4 rounded-md bg-slate-50 p-4">
             <div className="flex items-center">
               <h2 className="text-lg text-slate-700">API Token</h2>
