@@ -3,7 +3,7 @@ export default function EmptyDashboard() {
     <section className="mx-auto flex w-2/3 max-w-xl flex-col items-center px-4 lg:py-12">
       {/* eslint-disable @next/next/no-img-element */}
       <img
-        className="bject-cover mx-auto h-3/4 w-full lg:p-8 2xl:h-full"
+        className="mx-auto w-1/2 object-cover lg:w-4/5 lg:p-8 2xl:h-full"
         src="/images/empty-state.png"
         alt="empty image"
       />

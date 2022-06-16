@@ -4,7 +4,7 @@ generator client {
 }
 
 datasource db {
-  provider             = "mysql"
+  provider             = "postgres"
   url                  = env("DATABASE_URL")
   referentialIntegrity = "prisma"
 }
@@ -15,15 +15,14 @@ model Bookmark {
   url         String
   image       String?      @db.Text
   desc        String?      @db.Text
-  category    Category?    @relation(fields: [categoryId], references: [id], onUpdate: NoAction)
+  category    Category?    @relation(fields: [categoryId], references: [id], onDelete: SetNull, onUpdate: Cascade)
   categoryId  String?
   tags        TagsOnBookmarks[]
-  user        User?        @relation(fields: [userId], references: [id], onUpdate: NoAction)
+  user        User?        @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId      String
   createdAt   DateTime     @default(now())
 
 
-  @@fulltext([title, url, desc])
   @@unique([url, userId])
   @@index([categoryId])
   @@index([userId])
@@ -31,9 +30,9 @@ model Bookmark {
 
 model TagsOnBookmarks {
   bookmarkId   String
-  bookmark     Bookmark      @relation(fields: [bookmarkId], references: [id], onUpdate: NoAction)
+  bookmark     Bookmark      @relation(fields: [bookmarkId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   tagId        String
-  tag          Tag           @relation(fields: [tagId], references: [id], onUpdate: NoAction)
+  tag          Tag           @relation(fields: [tagId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@id([bookmarkId, tagId])
   @@index([bookmarkId])
@@ -45,7 +44,7 @@ model Tag {
   name        String
   emoji       String?
   bookmarks   TagsOnBookmarks[]
-  user        User?        @relation(fields: [userId], references: [id], onUpdate: NoAction)
+  user        User?        @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId      String
   createdAt   DateTime     @default(now())
 
@@ -58,7 +57,7 @@ model Category {
   name        String
   description String?
   bookmarks   Bookmark[]
-  user        User?        @relation(fields: [userId], references: [id], onUpdate: NoAction)
+  user        User?        @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId      String
   createdAt   DateTime     @default(now())
 
@@ -68,19 +67,20 @@ model Category {
 
 // NextAuth
 model Account {
-  id                 String  @id @default(cuid())
+  id                 String   @id @default(cuid())
   userId             String
   type               String
   provider           String
   providerAccountId  String
-  refresh_token      String? @db.Text
-  access_token       String? @db.Text
+  refresh_token      String?  @db.Text
+  access_token       String?  @db.Text
   expires_at         Int?
   token_type         String?
   scope              String?
-  id_token           String? @db.Text
+  id_token           String?  @db.Text
   session_state      String?
-  user               User    @relation(fields: [userId], references: [id], onUpdate: NoAction)
+  user               User     @relation(fields: [userId], references: [id], onUpdate: Cascade)
+  createdAt          DateTime @default(now())
 
   @@unique([provider, providerAccountId])
   @@index([userId])
@@ -91,7 +91,7 @@ model Session {
   sessionToken String        @unique
   userId       String
   expires      DateTime
-  user         User          @relation(fields: [userId], references: [id], onUpdate: NoAction)
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@index([userId])
 }
@@ -102,6 +102,7 @@ model User {
   email         String?      @unique
   emailVerified DateTime?
   image         String?
+  createdAt     DateTime     @default(now())
   accounts      Account[]
   sessions      Session[]
   bookmarks     Bookmark[]
