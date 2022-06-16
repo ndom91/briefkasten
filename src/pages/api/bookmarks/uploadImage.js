@@ -32,25 +32,23 @@ export default async function handler(req, res) {
           //   fileName: `${fileName}.jpg`,
           // })
 
-          let { error: uploadError } = await supabase.storage
+          let { data, error } = await supabase.storage
             .from('bookmark-imgs')
             .upload(`${session.user?.userId}/${fileName}.jpg`, body)
-
-          console.error('supabase.uplaodError', uploadError)
 
           // Save CDN ImageKit URL to database
           await prisma.bookmark.update({
             where: { id },
             data: {
-              image: imageRes.url,
+              image: `https://exjtybpqdtxkznbmllfi.supabase.co/${data.Key}`,
             },
           })
 
           // Return image details to frontend
           return res.status(200).json({
             message: `Uploaded ${imageRes.filePath}`,
-            url: imageRes.url,
-            filePath: imageRes.filePath,
+            url: `https://exjtybpqdtxkznbmllfi.supabase.co/${data.Key}`,
+            filePath: `${session.user?.userId}/${fileName}.jpg`,
           })
         } catch (error) {
           console.error('ERR', error)

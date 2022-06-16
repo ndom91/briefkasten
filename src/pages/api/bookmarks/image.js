@@ -7,7 +7,7 @@ export default async function Imge(req, res) {
     executablePath:
       process.env.NODE_ENV !== 'development'
         ? await chromium.executablePath
-        : '/bin/chromium',
+        : '/opt/homebrew/bin/chromium',
     headless: true,
   })
 
