@@ -1,5 +1,6 @@
 import prisma from '@/lib/prisma'
-import ImageKit from 'imagekit'
+// import ImageKit from 'imagekit'
+import { supabase } from '@/lib/supabaseClient'
 import { getSession } from 'next-auth/react'
 
 export default async function handler(req, res) {
@@ -16,21 +17,26 @@ export default async function handler(req, res) {
       console.error('ERR - Missing Image Body')
       return res.status(403).end('Missing Body')
     }
-
-    const imagekit = new ImageKit({
-      publicKey: process.env.IMAGEKIT_PUB_KEY,
-      privateKey: process.env.IMAGEKIT_PRIV_KEY,
-      urlEndpoint: process.env.IMAGEKIT_URL,
-    })
+    // const imagekit = new ImageKit({
+    //   publicKey: process.env.IMAGEKIT_PUB_KEY,
+    //   privateKey: process.env.IMAGEKIT_PRIV_KEY,
+    //   urlEndpoint: process.env.IMAGEKIT_URL,
+    // })
 
     switch (method) {
       case 'PUT':
         try {
           // Upload image body to ImageKit
-          const imageRes = await imagekit.upload({
-            file: body,
-            fileName: `${fileName}.jpg`,
-          })
+          // const imageRes = await imagekit.upload({
+          //   file: body,
+          //   fileName: `${fileName}.jpg`,
+          // })
+
+          let { error: uploadError } = await supabase.storage
+            .from('bookmark-imgs')
+            .upload(`${session.user?.userId}/${fileName}.jpg`, body)
+
+          console.error('supabase.uplaodError', uploadError)
 
           // Save CDN ImageKit URL to database
           await prisma.bookmark.update({

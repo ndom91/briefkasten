@@ -37,3 +37,6 @@ log.txt
 
 # Sentry
 .sentryclirc
+
+# Supabase
+.supabase
