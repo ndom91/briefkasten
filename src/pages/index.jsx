@@ -41,6 +41,7 @@ export default function Home() {
   const [droppedUrl, setDroppedUrl] = useState('')
   const [currentTableData, setCurrentTableData] = useState([])
   const [openModal, toggleModal] = useToggle(false)
+  const [loading, toggleLoading] = useToggle(false)
   const [openEditSidebar, toggleEditSidebar] = useToggle(false)
   const [filteredLength, setFilteredLength] = useState(bookmarks.length)
   const [currentPage, setCurrentPage] = useState(1)
@@ -101,6 +102,7 @@ export default function Home() {
 
   const saveBookmark = async (url) => {
     try {
+      toggleLoading(true)
       // Add Bookmark to DB via API
       const res = await fetch('/api/bookmarks', {
         method: 'POST',
@@ -136,6 +138,7 @@ export default function Home() {
       console.error(`[ERROR] Saving Dropped URL ${url}:`, error)
       toast(toastTypes.ERROR, 'Error adding', url)
     }
+    toggleLoading(false)
   }
 
   // Catch dropped URL anywhere on page
@@ -199,6 +202,7 @@ export default function Home() {
           <Modal
             saveBookmark={saveBookmark}
             open={openModal}
+            loading={loading}
             toggleModal={toggleModal}
             url={droppedUrl}
           />

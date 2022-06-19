@@ -1,6 +1,5 @@
-import ImageKit from 'imagekit'
 import prisma from '@/lib/prisma'
-// import { withSentry } from '@sentry/nextjs'
+import { supabase } from '@/lib/supabaseClient'
 import { getSession } from 'next-auth/react'
 import { asyncFileReader } from '@/lib/helpers'
 
@@ -50,19 +49,29 @@ const handler = async (req, res) => {
         const imageBlob = await imageData.blob()
         const dataUrl = await asyncFileReader(imageBlob)
 
-        const imagekit = new ImageKit({
-          publicKey: process.env.IMAGEKIT_PUB_KEY,
-          privateKey: process.env.IMAGEKIT_PRIV_KEY,
-          urlEndpoint: process.env.IMAGEKIT_URL,
-        })
+        let { data, error } = await supabase.storage
+          .from('bookmark-imgs')
+          .upload(
+            `${session.user?.userId}/${new URL(url).hostname}.jpg`,
+            // base64ToArrayBuffer(body),
+            imageBlob,
+            {
+              contentType: 'image/jpeg',
+            }
+          )
 
-        // Upload image body to ImageKit
-        const imageRes = await imagekit.upload({
-          file: dataUrl,
-          fileName: `${new URL(url).hostname}.jpg`,
-        })
+        // Error = already exists
+        if (error?.statusCode === '23505') {
+          data = {
+            Key: `bookmark-imgs/${session.user?.userId}/${
+              new URL(url).hostname
+            }.jpg`,
+          }
+        } else if (error) {
+          throw error
+        }
 
-        metadata.image = imageRes.url
+        metadata.image = `https://exjtybpqdtxkznbmllfi.supabase.co/storage/v1/object/public/${data.Key}`
       }
 
       // Begin inserting into db
@@ -206,12 +215,6 @@ const handler = async (req, res) => {
     }
     case 'DELETE': {
       if (session) {
-        const imagekit = new ImageKit({
-          publicKey: process.env.IMAGEKIT_PUB_KEY,
-          privateKey: process.env.IMAGEKIT_PRIV_KEY,
-          urlEndpoint: process.env.IMAGEKIT_URL,
-        })
-        // Delete image from ImageKit
         const { id, userId, tags = [], imageFileName } = body
         if (!id || !userId) {
           return res.status(400).json({ message: 'Missing required field(s)' })
@@ -231,11 +234,12 @@ const handler = async (req, res) => {
             where: { id },
           })
 
-          const imageSearchRes = await imagekit.listFiles({
-            searchQuery: `name="${imageFileName}"`,
-          })
-          if (imageSearchRes[0]?.fileId) {
-            await imagekit.deleteFile(imageSearchRes[0].fileId)
+          const { error } = await supabase.storage
+            .from('bookmark-imgs')
+            .remove([imageFileName])
+
+          if (error) {
+            throw error
           }
         } catch (error) {
           console.error('ERR', error)

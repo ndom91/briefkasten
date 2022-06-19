@@ -56,17 +56,18 @@ export default function BookmarkCard({ bookmark, toggleSidebar }) {
       const res = await fetch(
         `/api/bookmarks/image?url=${encodeURIComponent(url)}`
       )
-      const data = await res.blob()
-      const dataUrl = await asyncFileReader(data)
-      const uploadRes = await fetch(
-        `/api/bookmarks/uploadImage?fileName=${new URL(url).hostname}&id=${id}`,
-        {
-          method: 'PUT',
-          body: dataUrl,
-        }
-      )
-      const uploadData = await uploadRes.json()
-      setImageUrl(uploadData.url)
+      // const data = await res.blob()
+      // const dataUrl = await asyncFileReader(data)
+      // const uploadRes = await fetch(
+      //   `/api/bookmarks/uploadImage?fileName=${new URL(url).hostname}&id=${id}`,
+      //   {
+      //     method: 'PUT',
+      //     body: dataUrl,
+      //   }
+      // )
+      // const uploadData = await uploadRes.json()
+      // setImageUrl(uploadData.url)
+      setImageUrl(res?.image?.url)
     } catch (error) {
       console.error(error)
       toast(toastTypes.ERROR, 'Error fetching fallback image', error.message)
