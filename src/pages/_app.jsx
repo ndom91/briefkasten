@@ -13,7 +13,7 @@ export default function Briefkasten({
 }) {
   const createStore = useCreateStore(pageProps.initialZustandState)
 
-  if (typeof window !== 'undefined') {
+  if (typeof window !== 'undefined' && process.env.NODE_ENV !== 'development') {
     LogRocket.init('4ayekz/briefkasten')
     setupLogRocketReact(LogRocket)
     if (session?.user) {

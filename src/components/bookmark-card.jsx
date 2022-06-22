@@ -15,8 +15,15 @@ export default function BookmarkCard({ bookmark, toggleSidebar }) {
   const toast = useToast(5000)
   const [loadingDel, setLoadingDel] = useState(false)
   const [imageUrl, setImageUrl] = useState(
-    image ?? 'https://source.unsplash.com/random/300x201'
+    image ??
+      `https://source.unsplash.com/random/300x201?sig=${Math.floor(
+        Math.random() * 100
+      )}`
   )
+
+  const imageUrlInstance = new URL(imageUrl)
+  const imageDomain = imageUrlInstance.hostname
+  const imagePath = imageUrlInstance.pathname
 
   const handleDelete = async () => {
     try {
@@ -54,20 +61,34 @@ export default function BookmarkCard({ bookmark, toggleSidebar }) {
         `/api/bookmarks/image?url=${encodeURIComponent(url)}`
       )
       const data = await res.blob()
-      const dataUrl = await asyncFileReader(data)
-      const uploadRes = await fetch(
-        `/api/bookmarks/uploadImage?fileName=${new URL(url).hostname}&id=${id}`,
-        {
-          method: 'PUT',
-          body: dataUrl,
-        }
-      )
-      const uploadData = await uploadRes.json()
-      setImageUrl(uploadData.image.url)
+      if (data.type === 'image/jpeg') {
+        const dataUrl = await asyncFileReader(data)
+        const uploadRes = await fetch(
+          `/api/bookmarks/uploadImage?fileName=${
+            new URL(url).hostname
+          }&id=${id}`,
+          {
+            method: 'PUT',
+            body: dataUrl,
+          }
+        )
+        const uploadData = await uploadRes.json()
+        setImageUrl(uploadData.image.url)
+      } else {
+        setImageUrl(
+          `https://source.unsplash.com/random/300x201?sig=${Math.floor(
+            Math.random() * 100
+          )}`
+        )
+      }
     } catch (error) {
       console.error(error)
       toast(toastTypes.ERROR, 'Error fetching fallback image', error.message)
-      setImageUrl('https://source.unsplash.com/random/300x201')
+      setImageUrl(
+        `https://source.unsplash.com/random/300x201?sig=${Math.floor(
+          Math.random() * 100
+        )}`
+      )
     }
   }
 
@@ -151,10 +172,8 @@ export default function BookmarkCard({ bookmark, toggleSidebar }) {
             {/* eslint-disable @next/next/no-img-element */}
             <img
               className="aspect-2 max-h-[125px] rounded-md border-2 border-slate-50 object-cover object-left-top transition group-focus:ring-4 group-focus:ring-slate-200"
-              src={`https://cdn.statically.io/img/${imageUrl.replace(
-                'https://',
-                ''
-              )}`}
+              // src={`https://cdn.statically.io/img/${imageDomain}${imagePath}`}
+              src={imageUrl}
               onError={() => fetchFallbackImage(url)}
               alt={`${title} Image`}
             />
