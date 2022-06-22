@@ -21,13 +21,10 @@ export default function BookmarkCard({ bookmark, toggleSidebar }) {
   const handleDelete = async () => {
     try {
       setLoadingDel(true)
-      let imageFileName = null
-      if (imageUrl.includes('ik.imagekit.io')) {
-        const imageUrlPathname = new URL(imageUrl).pathname
-        imageFileName = imageUrlPathname.substring(
-          imageUrlPathname.lastIndexOf('/') + 1
-        )
-      }
+      const imageUrlPathname = new URL(imageUrl).pathname
+      const imageFileName = imageUrlPathname.substring(
+        imageUrlPathname.lastIndexOf('/') + 1
+      )
       const deleteRes = await fetch('/api/bookmarks', {
         method: 'DELETE',
         headers: {
@@ -56,18 +53,17 @@ export default function BookmarkCard({ bookmark, toggleSidebar }) {
       const res = await fetch(
         `/api/bookmarks/image?url=${encodeURIComponent(url)}`
       )
-      // const data = await res.blob()
-      // const dataUrl = await asyncFileReader(data)
-      // const uploadRes = await fetch(
-      //   `/api/bookmarks/uploadImage?fileName=${new URL(url).hostname}&id=${id}`,
-      //   {
-      //     method: 'PUT',
-      //     body: dataUrl,
-      //   }
-      // )
-      // const uploadData = await uploadRes.json()
-      // setImageUrl(uploadData.url)
-      setImageUrl(res?.image?.url)
+      const data = await res.blob()
+      const dataUrl = await asyncFileReader(data)
+      const uploadRes = await fetch(
+        `/api/bookmarks/uploadImage?fileName=${new URL(url).hostname}&id=${id}`,
+        {
+          method: 'PUT',
+          body: dataUrl,
+        }
+      )
+      const uploadData = await uploadRes.json()
+      setImageUrl(uploadData.image.url)
     } catch (error) {
       console.error(error)
       toast(toastTypes.ERROR, 'Error fetching fallback image', error.message)
@@ -158,7 +154,10 @@ export default function BookmarkCard({ bookmark, toggleSidebar }) {
             {/* eslint-disable @next/next/no-img-element */}
             <img
               className="aspect-2 max-h-[125px] rounded-md border-2 border-slate-50 object-cover object-left-top transition group-focus:ring-4 group-focus:ring-slate-200"
-              src={imageUrl}
+              src={`https://cdn.statically.io/img/${imageUrl.replace(
+                'https://',
+                ''
+              )}`}
               onError={() => fetchFallbackImage(url)}
               alt={`${title} Image`}
             />

@@ -34,7 +34,7 @@ export default async function handler(req, res) {
         // )
         // const uploadData = await uploadRes.json()
         // // Set image url
-        // metadata.image = uploadData.url
+        // metadata.image = uploadData.image.url
 
         // Begin inserting into db
         // First, bookmark since we need its ID for later inserts

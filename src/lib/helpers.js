@@ -1,7 +1,9 @@
 import { Blob } from 'buffer'
 
-const getBase64StringFromDataURL = (dataURL) =>
-  dataURL.replace('data:', '').replace(/^.+,/, '')
+const prepareBase64DataUrl = (base64) =>
+  base64
+    .replace('data:image/jpeg;', 'data:image/jpeg;charset=utf-8;')
+    .replace(/^.+,/, '')
 
 const asyncFileReader = async (blob) => {
   if (typeof window !== 'undefined') {
@@ -41,7 +43,8 @@ const base64ToArrayBuffer = (base64) => {
 
 const base64ToBlob = (b64Data, contentType = '', sliceSize = 512) => {
   console.log('b64toBlob', b64Data.substring(0, 30))
-  const byteCharacters = atob(b64Data)
+  const byteCharacters = Buffer.from(b64Data, 'base64').toString()
+  // const byteCharacters = atob(b64Data)
   const byteArrays = []
 
   for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
@@ -61,7 +64,7 @@ const base64ToBlob = (b64Data, contentType = '', sliceSize = 512) => {
 }
 
 export {
-  getBase64StringFromDataURL,
+  prepareBase64DataUrl,
   base64ToArrayBuffer,
   base64ToBlob,
   asyncFileReader,

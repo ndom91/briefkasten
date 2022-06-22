@@ -1,12 +1,8 @@
 import chromium from 'chrome-aws-lambda'
 import puppeteer from 'puppeteer-core'
-import { getSession } from 'next-auth/react'
-import { supabase } from '@/lib/supabaseClient'
 
-export default async function Image(req, res) {
+export default async function Imge(req, res) {
   try {
-    const { url } = req.query
-    const session = await getSession({ req })
     const browser = await puppeteer.launch({
       args: chromium.args,
       executablePath:
@@ -18,7 +14,7 @@ export default async function Image(req, res) {
 
     const page = await browser.newPage()
     await page.setViewport({ width: 1920, height: 1080 })
-    await page.goto(url, { waitUntil: 'networkidle0' })
+    await page.goto(req.query.url, { waitUntil: 'networkidle0' })
 
     // Hack for accepting cookie banners
     const selectors = [
@@ -46,39 +42,16 @@ export default async function Image(req, res) {
     // Snap screenshot
     const buffer = await page.screenshot({ type: 'jpeg', quality: 50 })
 
-    console.log('buffer', typeof buffer)
-    let { data, error } = await supabase.storage.from('bookmark-imgs').upload(
-      `${session.user?.userId}/${new URL(url).hostname}.jpg`,
-      new Buffer.from(buffer, 'base64'),
-      // buffer,
-      {
-        upsert: true,
-        contentType: 'image/jpeg',
-      }
-    )
-    console.log('supabase.data', data)
-    console.log('supabase.error', error)
-
-    if (error) {
-      throw error
-    }
-
     await page.close()
     await browser.close()
 
     // Set the `s-maxage` property to cache at the CDN layer
-    // res.setHeader('Cache-Control', 's-maxage=31536000, public')
-    // res.setHeader('Content-Type', 'image/jpeg')
-    return res.json({
-      message: `Uploaded Image for ${url}`,
-      image: {
-        url: `https://exjtybpqdtxkznbmllfi.supabase.co/storage/v1/object/public/${data?.Key}`,
-      },
-    })
+    res.setHeader('Cache-Control', 's-maxage=31536000, public')
+    res.setHeader('Content-Type', 'image/jpeg')
+    return res.end(buffer)
   } catch (e) {
-    console.error('[ERRRR]', e)
     return res.json({
-      message: 'Upload Failed',
+      message: 'Image Capture Failed',
       image: { error: e },
     })
   }

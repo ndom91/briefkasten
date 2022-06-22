@@ -26,7 +26,6 @@
     "@prisma/client": "^3.15.1",
     "@sentry/nextjs": "^7.1.1",
     "@supabase/supabase-js": "^1.35.3",
-    "base64-arraybuffer": "^1.0.2",
     "chrome-aws-lambda": "^9.1.0",
     "eslint-plugin-prettier": "^4.0.0",
     "framer-motion": "^6.3.11",

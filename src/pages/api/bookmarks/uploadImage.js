@@ -1,8 +1,7 @@
 import prisma from '@/lib/prisma'
 import { supabase } from '@/lib/supabaseClient'
 import { getSession } from 'next-auth/react'
-import { decode } from 'base64-arraybuffer'
-import { base64ToBlob, base64ToArrayBuffer } from '@/lib/helpers'
+import { prepareBase64DataUrl } from '@/lib/helpers'
 
 export default async function handler(req, res) {
   const session = await getSession({ req })
@@ -22,67 +21,22 @@ export default async function handler(req, res) {
     switch (method) {
       case 'PUT':
         try {
-          console.log('uploadImage.putBody', body.substring(0, 30))
-
-          // console.log(
-          //   'blob Output',
-          //   base64ToBlob(body.split(',')[1], 'image/jpeg')
-          // )
-          // function unicodeBase64Decode(text) {
-          //   text = text
-          //     .replace(/\s+/g, '')
-          //     .replace(/\-/g, '+')
-          //     .replace(/\_/g, '/')
-          //
-          //   console.log(text.substring(0, 30))
-          //   return decodeURIComponent(
-          //     Array.prototype.map
-          //       .call(atob(text), function (c) {
-          //         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
-          //       })
-          //       .join('')
-          //   )
-          // }
-          //
-          // const byteCharacters = atob(unicodeBase64Decode(body.split(',')[1]))
-          //
-          // const byteNumbers = new Array(byteCharacters.length)
-          // for (let i = 0; i < byteCharacters.length; i++) {
-          //   byteNumbers[i] = byteCharacters.charCodeAt(i)
-          // }
-          //
-          // const byteArray = new Uint8Array(byteNumbers)
-          //
-          // const blob = new Blob([byteArray], { type: contentType })
-
           let { data, error } = await supabase.storage
             .from('bookmark-imgs')
             .upload(
-              // base64ToBlob(body.split(',')[1], 'image/jpeg'),
               `${session.user?.userId}/${fileName}.jpg`,
-              // Buffer.from(body, 'base64'),
-              // base64ToArrayBuffer(body),
-
-              decode(body),
+              Buffer.from(prepareBase64DataUrl(body), 'base64'),
               {
-                upsert: true,
                 contentType: 'image/jpeg',
+                upsert: true,
               }
             )
 
-          console.log('supabase.data', data)
-          console.log('supabase.error', error)
-
-          // Error = already exists
-          if (error?.statusCode === '23505') {
-            data = {
-              Key: `bookmark-imgs/${session.user?.userId}/${fileName}.jpg`,
-            }
-          } else if (error) {
+          if (error) {
             throw error
           }
 
-          // Save absoluteu image URL to database
+          // Save absolute image URL to database
           await prisma.bookmark.update({
             where: { id },
             data: {
@@ -93,8 +47,10 @@ export default async function handler(req, res) {
           // Return image details to frontend
           return res.status(200).json({
             message: `Uploaded ${session.user?.userId}/${fileName}.jpg`,
-            url: `https://exjtybpqdtxkznbmllfi.supabase.co/storage/v1/object/public/${data.Key}`,
-            filePath: `${session.user?.userId}/${fileName}.jpg`,
+            image: {
+              url: `https://exjtybpqdtxkznbmllfi.supabase.co/storage/v1/object/public/${data.Key}`,
+              filePath: `${session.user?.userId}/${fileName}.jpg`,
+            },
           })
         } catch (error) {
           console.error('ERR', error)
