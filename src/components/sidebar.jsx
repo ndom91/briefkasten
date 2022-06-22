@@ -3,7 +3,7 @@ import { Menu, Transition } from '@headlessui/react'
 import { useToggle, useLocalStorage } from 'react-use'
 import { useRouter } from 'next/router'
 import { signOut, useSession } from 'next-auth/react'
-import { useState, useRef, forwardRef, Fragment } from 'react'
+import { useEffect, useState, useRef, forwardRef, Fragment } from 'react'
 import { useToast, toastTypes } from '@/lib/hooks'
 import { useStore } from '@/lib/store'
 
@@ -28,6 +28,7 @@ NextLink.displayName = 'NextLink'
 export default function Sidebar() {
   const { data: session } = useSession()
 
+  const [hasMounted, setHasMounted] = useState(false)
   const categories = useStore((state) => state.categories)
   const tags = useStore((state) => state.tags)
   const setCategoryFilter = useStore((state) => state.setCategoryFilter)
@@ -37,15 +38,11 @@ export default function Sidebar() {
   const addCategory = useStore((state) => state.addCategory)
   const addTag = useStore((state) => state.addTag)
 
-  const [value, setValue, remove] = useLocalStorage(
-    'dashboard.sidebarOpen',
-    true
-  )
+  const [open, setOpen] = useLocalStorage('dashboard.sidebarOpen', true)
 
   const [quickAdd, setQuickAdd] = useState('')
   const [quickAddCategory, setQuickAddCategory] = useState('')
   const [quickAddTag, setQuickAddTag] = useState('')
-  const [open, toggleOpen] = useToggle(value)
   const [openCategory, toggleOpenCategory] = useToggle(false)
   const [openTag, toggleOpenTag] = useToggle(false)
 
@@ -53,6 +50,14 @@ export default function Sidebar() {
   const quickAddTagRef = useRef()
   const quickAddCategoryRef = useRef()
   const router = useRouter()
+
+  useEffect(() => {
+    setHasMounted(true)
+  }, [])
+
+  if (!hasMounted) {
+    return null
+  }
 
   const toggleQuickAdd = (type) => {
     if (type === types.CATEGORY) {
@@ -132,17 +137,13 @@ export default function Sidebar() {
 
   return (
     <aside
-      suppressHydrationWarning={true}
       className={`max-h-screen w-full flex-shrink-0 drop-shadow-md ${
         open ? 'max-w-[16rem]' : 'max-w-[5rem] sm:max-w-[6rem]'
       } flex flex-grow flex-col rounded-r-md border-r bg-slate-800 pt-5 transition`}
     >
       <div className="flex items-center justify-center px-4">
         <Link href="/">
-          <div
-            className="flex items-center hover:cursor-pointer"
-            suppressHydrationWarning={true}
-          >
+          <div className="flex items-center hover:cursor-pointer">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -634,10 +635,7 @@ export default function Sidebar() {
           )}
         </div>
         <button
-          onClick={() => {
-            toggleOpen()
-            setValue(!open)
-          }}
+          onClick={() => setOpen(!open)}
           className="rounded-lg text-slate-200 outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-4 focus-visible:ring-offset-slate-900"
         >
           <svg
