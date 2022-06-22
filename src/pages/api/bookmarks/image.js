@@ -8,7 +8,7 @@ export default async function Imge(req, res) {
       executablePath:
         process.env.NODE_ENV !== 'development'
           ? await chromium.executablePath
-          : '/Applications/Thorium.app/Contents/MacOS/Thorium',
+          : '/bin/chromium',
       headless: true,
     })
 
