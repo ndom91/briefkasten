@@ -16,6 +16,9 @@ const nextConfig = {
       'source.unsplash.com',
       'avatars.githubusercontent.com',
       'source.boringavatars.com',
+      'exjtybpqdtxkznbmllfi.supabase.co',
+      'cdn.statically.io',
+      'ik.imagekit.io',
     ],
   },
   i18n: {
