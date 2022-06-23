@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Menu, Transition } from '@headlessui/react'
-import { useToggle, useLocalStorage } from 'react-use'
+import { useLocalStorage } from 'react-use'
 import { useRouter } from 'next/router'
 import { signOut, useSession } from 'next-auth/react'
 import { useEffect, useState, useRef, forwardRef, Fragment } from 'react'
@@ -38,13 +38,19 @@ export default function Sidebar() {
   const addCategory = useStore((state) => state.addCategory)
   const addTag = useStore((state) => state.addTag)
 
-  const [open, setOpen] = useLocalStorage('dashboard.sidebarOpen', true)
+  const [open, setOpen] = useLocalStorage('dashboard.sidebar.open', true)
+  const [openCategories, setOpenCategories] = useLocalStorage(
+    'dashboard.sidebar.categories',
+    true
+  )
+  const [openTags, setOpenTags] = useLocalStorage(
+    'dashboard.sidebar.tags',
+    true
+  )
 
   const [quickAdd, setQuickAdd] = useState('')
   const [quickAddCategory, setQuickAddCategory] = useState('')
   const [quickAddTag, setQuickAddTag] = useState('')
-  const [openCategory, toggleOpenCategory] = useToggle(false)
-  const [openTag, toggleOpenTag] = useToggle(false)
 
   const toast = useToast(5000)
   const quickAddTagRef = useRef()
@@ -294,11 +300,11 @@ export default function Sidebar() {
               <div className="flex items-center">
                 <button
                   className="rounded-lg outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-4 focus-visible:ring-offset-slate-900 "
-                  onClick={toggleOpenCategory}
+                  onClick={() => setOpenCategories(!openCategories)}
                 >
                   <svg
                     className={`h-5 w-5 transition duration-200 ease-in-out ${
-                      openCategory ? 'rotate-90' : 'rotate-0'
+                      openCategories ? 'rotate-90' : 'rotate-0'
                     }`}
                     fill="none"
                     stroke="currentColor"
@@ -317,12 +323,12 @@ export default function Sidebar() {
             </div>
             <ul>
               <div className="ml-2 flex flex-col items-start space-y-2 md:ml-4">
-                {openCategory &&
+                {openCategories &&
                   categories?.map((cat) => (
                     <button
                       onClick={() => applyCategoryFilter(cat.id)}
                       key={cat.id}
-                      className={`focus:(ring-2,ring-slate-200) inline-block rounded-md px-1 text-left font-serif text-slate-400 outline-none ${
+                      className={`inline-block rounded-md px-2 text-left font-serif text-slate-400 outline-none focus:ring-2 focus:ring-slate-200 ${
                         categoryFilter === cat.id && 'font-extrabold'
                       }`}
                     >
@@ -413,11 +419,11 @@ export default function Sidebar() {
               <div className="flex items-center">
                 <button
                   className="rounded-lg outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-4 focus-visible:ring-offset-slate-900 "
-                  onClick={toggleOpenTag}
+                  onClick={() => setOpenTags(!openTags)}
                 >
                   <svg
                     className={`h-5 w-5 transition duration-200 ease-in-out ${
-                      openTag ? 'rotate-90' : 'rotate-0'
+                      openTags ? 'rotate-90' : 'rotate-0'
                     }`}
                     fill="none"
                     stroke="currentColor"
@@ -436,12 +442,12 @@ export default function Sidebar() {
             </div>
             <ul className="overflow-y-scroll">
               <div className="ml-2 mb-4 flex flex-col items-start space-y-2 md:ml-4">
-                {openTag &&
+                {openTags &&
                   tags?.map((tag) => (
                     <button
                       onClick={() => applyTagFilter(tag.id)}
                       key={tag.id}
-                      className={`inline-block rounded-md px-1 text-left font-serif text-slate-400 outline-none focus:ring-2 focus:ring-slate-200 ${
+                      className={`inline-block rounded-md px-2 text-left font-serif text-slate-400 outline-none focus:ring-2 focus:ring-slate-200 ${
                         tagFilter === tag.id && 'font-extrabold'
                       }`}
                     >

@@ -155,8 +155,16 @@ export default function Home() {
         <DashboardHeader />
         {bookmarks.length === 0 && <EmptyDashboard />}
         {bookmarks.length > 0 && currentTableData.length === 0 && (
-          <div className="flex justify-center text-lg text-slate-700">
-            No results found, please try again!
+          <div className="flex flex-col items-center justify-center text-lg text-slate-700">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/not-found.png"
+              className="h-auto w-5/6 lg:w-[32rem]"
+              alt="No Results, Please Try Again"
+            />
+            <span className="text-2xl font-thin">
+              No results found, please try again!
+            </span>
           </div>
         )}
         <div className="z-20 w-full grow overflow-x-hidden overflow-y-visible">

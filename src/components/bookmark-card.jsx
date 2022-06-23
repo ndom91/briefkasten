@@ -21,9 +21,9 @@ export default function BookmarkCard({ bookmark, toggleSidebar }) {
       )}`
   )
 
-  const imageUrlInstance = new URL(imageUrl)
-  const imageDomain = imageUrlInstance.hostname
-  const imagePath = imageUrlInstance.pathname
+  // const imageUrlInstance = new URL(imageUrl)
+  // const imageDomain = imageUrlInstance.hostname
+  // const imagePath = imageUrlInstance.pathname
 
   const handleDelete = async () => {
     try {
