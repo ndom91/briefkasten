@@ -143,7 +143,7 @@ export default function Sidebar() {
 
   return (
     <aside
-      className={`max-h-screen w-full flex-shrink-0 drop-shadow-md ${
+      className={`z-20 max-h-screen w-full flex-shrink-0 drop-shadow-md ${
         open ? 'max-w-[16rem]' : 'max-w-[5rem] sm:max-w-[6rem]'
       } flex flex-grow flex-col rounded-r-md border-r bg-slate-800 pt-5 transition`}
     >
@@ -532,12 +532,12 @@ export default function Sidebar() {
               as={Fragment}
               enter="transition ease-out duration-100"
               enterFrom="transform opacity-0 scale-95"
-              enterTo="transform opacity-100 scale-100 z-50"
+              enterTo="transform opacity-100 scale-100"
               leave="transition ease-in duration-75"
               leaveFrom="transform opacity-100 scale-100"
               leaveTo="transform opacity-0 scale-95"
             >
-              <Menu.Items className="absolute left-0 bottom-16 z-50 mt-2 w-56 origin-bottom-left divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+              <Menu.Items className="absolute left-0 bottom-16 mt-2 w-56 origin-bottom-left divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                 <div className="px-1 py-1">
                   <Menu.Item>
                     {({ active }) => (
