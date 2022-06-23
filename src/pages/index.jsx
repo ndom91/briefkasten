@@ -228,7 +228,7 @@ export default function Home() {
               ? filteredLength
               : bookmarks.length
           }
-          pageSize={PAGE_SIZE}
+          pageSize={pageSize}
           onPageChange={(page) => setCurrentPage(page)}
         />
         <QuickAdd categories={categories} />
