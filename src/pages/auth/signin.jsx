@@ -45,7 +45,7 @@ const Signin = ({ providers, csrfToken }) => {
     <>
       <Meta />
       <div className="absolute h-full min-h-full w-full overflow-hidden">
-        <div className="absolute top-0 left-0 z-10 flex h-[250%] w-[110%] translate-x-[-55%] translate-y-[-28%] rotate-[20deg] items-center bg-slate-900 md:w-[70%] md:translate-y-[-20%] md:translate-x-[-30%] md:rotate-[11deg]" />
+        <div className="absolute top-0 left-0 z-10 flex h-[250%] w-[110%] translate-x-[-55%] translate-y-[-28%] rotate-[22deg] items-center bg-slate-900 md:w-[70%] md:translate-y-[-20%] md:translate-x-[-30%] md:rotate-[11deg]" />
         <div className="relative z-10 flex h-[calc(100vh_-_64px)] w-full items-center justify-center p-8 text-center font-bold md:justify-start">
           <div className="z-20 flex w-[22rem] flex-col items-center justify-center text-xl md:ml-[15%]">
             <h2 className="mb-4 flex items-center space-x-2 text-3xl font-light text-slate-600">
@@ -65,11 +65,7 @@ const Signin = ({ providers, csrfToken }) => {
                 Briefkasten
               </span>
             </h2>
-            <div className="m-8 w-full rounded bg-white p-6">
-              <h1 className="mb-6 text-center text-4xl font-light text-gray-900">
-                Login
-              </h1>
-
+            <div className="m-8 w-full rounded bg-white p-6 shadow-lg">
               <div className="space-y-2 border-b border-gray-200 pb-6">
                 {providers &&
                   Object.values(providers).map((p) =>
@@ -79,21 +75,23 @@ const Signin = ({ providers, csrfToken }) => {
                           onClick={() => signIn(p.id, { callbackUrl: '/' })}
                           className={`flex h-10 w-full items-center space-x-2 rounded ${
                             p.id === 'google' &&
-                            'bg-blue-700 hover:bg-blue-800 '
+                            'bg-blue-700 hover:bg-blue-800 focus:ring-blue-700'
                           } ${
                             p.id === 'github' &&
                             'bg-gray-600 hover:bg-gray-800 '
                           } justify-center px-4 text-base font-light text-white transition focus:outline-none focus:ring-2 focus:ring-slate-800 focus:ring-offset-2`}
                         >
                           <ProviderIcons provider={p.id} />
-                          <span>Continue with {p.name}</span>
+                          <span className="h-[22px]">
+                            Continue with {p.name}
+                          </span>
                         </button>
                       </div>
                     ) : null
                   )}
               </div>
               <form
-                className="space-y-4 pt-4"
+                className="space-y-4 pt-2"
                 method="post"
                 action="/api/auth/signin/email"
               >
@@ -105,7 +103,7 @@ const Signin = ({ providers, csrfToken }) => {
 
                 <label className="block">
                   <span className="mb-1 block text-left text-xs font-medium text-gray-700">
-                    Your Email
+                    Email Magic Link
                   </span>
                   <input
                     className="block w-full flex-1 rounded-md border-gray-300 font-normal transition placeholder:font-light placeholder:text-slate-400 focus:border-slate-500 focus:ring-slate-500 sm:text-sm"
