@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
-import { getServerSession } from 'next-auth/next'
+import { unstable_getServerSession } from 'next-auth/next'
 
 import Layout from '@/components/layout'
 import TagTableRow from '@/components/tagTableRow'
@@ -194,7 +194,11 @@ export default function Tags() {
 }
 
 export async function getServerSideProps(context) {
-  const session = await getServerSession(context, authOptions)
+  const session = await unstable_getServerSession(
+    context.req,
+    context.res,
+    authOptions
+  )
   const zustandStore = initializeStore()
 
   if (!session) {

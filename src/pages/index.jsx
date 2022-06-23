@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { getServerSession } from 'next-auth/next'
+import { unstable_getServerSession } from 'next-auth/next'
 import { useSession } from 'next-auth/react'
 import {
   useDrop,
@@ -213,7 +213,11 @@ export default function Home() {
 }
 
 export async function getServerSideProps(context) {
-  const session = await getServerSession(context, authOptions)
+  const session = await unstable_getServerSession(
+    context.req,
+    context.res,
+    authOptions
+  )
   const zustandStore = initializeStore()
 
   if (!session) {

@@ -10,6 +10,7 @@ export default async function Imge(req, res) {
           ? await chromium.executablePath
           : '/bin/chromium',
       headless: true,
+      ignoreHTTPSErrors: true,
     })
 
     const page = await browser.newPage()

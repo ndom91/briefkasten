@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
-import { getServerSession } from 'next-auth/next'
+import { unstable_getServerSession } from 'next-auth/next'
 import { useCopyToClipboard } from 'react-use'
 
 import prisma from '@/lib/prisma'
@@ -347,7 +347,11 @@ export default function Settings() {
 }
 
 export async function getServerSideProps(context) {
-  const session = await getServerSession(context, authOptions)
+  const session = await unstable_getServerSession(
+    context.req,
+    context.res,
+    authOptions
+  )
   const zustandStore = initializeStore()
 
   if (!session) {
