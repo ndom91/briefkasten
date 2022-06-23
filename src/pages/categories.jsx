@@ -137,10 +137,10 @@ export default function Categories({ nextauth }) {
                   <CategoryTableRow item={category} key={category.id} />
                 ))}
               <tr className="bg-white even:bg-gray-50 hover:bg-slate-100">
-                <th className={`px-6 py-2`}>
+                <td className={`px-6 py-2`}>
                   <span className="font-semibold">Add new Category</span>
-                </th>
-                <th className={`px-6 py-2`} />
+                </td>
+                <td className={`px-6 py-2`} />
                 <td className={`px-6 py-2`}>
                   <input
                     name="name"
@@ -183,6 +183,7 @@ export default function Categories({ nextauth }) {
                     <span>Save</span>
                   </button>
                 </td>
+                <td className={`px-6 py-2`} />
               </tr>
             </tbody>
           </table>
