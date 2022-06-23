@@ -28,7 +28,6 @@
     "chrome-aws-lambda": "^9.1.0",
     "eslint-plugin-prettier": "^4.0.0",
     "framer-motion": "^6.3.11",
-    "imagekit": "^3.2.5",
     "logrocket": "^3.0.0",
     "logrocket-react": "^5.0.1",
     "metascraper": "^5.29.8",

@@ -1,7 +1,7 @@
 import prisma from '@/lib/prisma'
 import { supabase } from '@/lib/supabaseClient'
 import { getSession } from 'next-auth/react'
-import { asyncFileReader } from '@/lib/helpers'
+import { asyncFileReader, prepareBase64DataUrl } from '@/lib/helpers'
 
 const metascraper = require('metascraper')([
   require('metascraper-description')(),
@@ -41,7 +41,7 @@ const handler = async (req, res) => {
       const resp = await fetch(url)
       metadata = await metascraper({ html: await resp.text(), url: url })
 
-      if (!metadata.image && process.env.IMAGEKIT_PRIV_KEY) {
+      if (!metadata.image) {
         // Generate image with puppeteer if we didnt get one from metadata
         const imageData = await fetch(
           `${baseUrl}/api/bookmarks/image?url=${encodeURIComponent(url)}`
@@ -52,11 +52,11 @@ const handler = async (req, res) => {
         let { data, error } = await supabase.storage
           .from('bookmark-imgs')
           .upload(
-            `${session.user?.userId}/${new URL(url).hostname}.jpg`,
-            // base64ToArrayBuffer(body),
-            imageBlob,
+            `${session.user?.userId}/${fileName}.jpg`,
+            Buffer.from(prepareBase64DataUrl(dataUrl), 'base64'),
             {
               contentType: 'image/jpeg',
+              upsert: true,
             }
           )
 

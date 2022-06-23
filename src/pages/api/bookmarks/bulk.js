@@ -13,29 +13,6 @@ export default async function handler(req, res) {
   if (session) {
     switch (method) {
       case 'POST': {
-        // Schedule Cloudflare Worker to grab images for bulk imported Bookmarks as background job
-        //
-        // // Generate image with puppeteer if we didnt get one from metadata
-        // const imageData = await fetch(
-        //   `${baseUrl}/api/bookmarks/image?url=${encodeURIComponent(url)}`
-        // )
-        // const imageBlob = await imageData.blob()
-        // const dataUrl = await asyncFileReader(imageBlob)
-        //
-        // // Upload Base64 image to ImageKit
-        // const uploadRes = await fetch(
-        //   `${baseUrl}/api/bookmarks/uploadImage?fileName=${
-        //     new URL(url).hostname
-        //   }`,
-        //   {
-        //     method: 'PUT',
-        //     body: dataUrl,
-        //   }
-        // )
-        // const uploadData = await uploadRes.json()
-        // // Set image url
-        // metadata.image = uploadData.image.url
-
         // Begin inserting into db
         // First, bookmark since we need its ID for later inserts
         const upsertBookmarkRes = await prisma.bookmark.createMany({
