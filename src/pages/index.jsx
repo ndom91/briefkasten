@@ -6,6 +6,8 @@ import {
   usePrevious,
   useDeepCompareEffect,
   useToggle,
+  createBreakpoint,
+  useWindowSize,
 } from 'react-use'
 import { authOptions } from '@/api/auth/[...nextauth]'
 import { useStore, initializeStore } from '@/lib/store'
@@ -25,6 +27,14 @@ import prisma from '@/lib/prisma'
 
 const PAGE_SIZE = 15
 
+const useBreakpoint = createBreakpoint({
+  '2xl': 1536,
+  xl: 1280,
+  lg: 1024,
+  md: 768,
+  s: 640,
+})
+
 export default function Home() {
   const { data: session } = useSession()
   const bookmarks = useStore((state) => state.bookmarks)
@@ -37,7 +47,10 @@ export default function Home() {
   const setEditBookmark = useStore((state) => state.setEditBookmark)
   const addBookmark = useStore((state) => state.addBookmark)
   const previousSearchText = usePrevious(searchText)
+  const breakpoint = useBreakpoint()
+  const { width } = useWindowSize()
 
+  const [pageSize, setPageSize] = useState(PAGE_SIZE)
   const [droppedUrl, setDroppedUrl] = useState('')
   const [currentTableData, setCurrentTableData] = useState([])
   const [openModal, toggleModal] = useToggle(false)
@@ -47,14 +60,28 @@ export default function Home() {
   const [currentPage, setCurrentPage] = useState(1)
   const toast = useToast(5000)
 
+  useEffect(() => {
+    if (breakpoint === '2xl') {
+      setPageSize(PAGE_SIZE)
+    } else if (breakpoint === 'xl') {
+      setPageSize(Math.floor(PAGE_SIZE * 0.8))
+    } else if (breakpoint === 'lg') {
+      setPageSize(Math.floor(PAGE_SIZE * 0.65))
+    } else if (breakpoint === 'md') {
+      setPageSize(Math.floor(PAGE_SIZE * 0.4))
+    } else if (breakpoint === 's') {
+      setPageSize(Math.floor(PAGE_SIZE * 0.4))
+    }
+  }, [width])
+
   const initEdit = (bookmark) => {
     setEditBookmark(bookmark)
     toggleEditSidebar()
   }
 
   useDeepCompareEffect(() => {
-    const firstPageIndex = (currentPage - 1) * PAGE_SIZE
-    const lastPageIndex = firstPageIndex + PAGE_SIZE
+    const firstPageIndex = (currentPage - 1) * pageSize
+    const lastPageIndex = firstPageIndex + pageSize
     const currentBookmarks = bookmarks
       .reduce((bookmarks, thisBookmark) => {
         if (categoryFilter || tagFilter) {
@@ -84,7 +111,7 @@ export default function Home() {
       }, [])
       .slice(firstPageIndex, lastPageIndex)
     setCurrentTableData(currentBookmarks)
-  }, [currentPage, categoryFilter, tagFilter, searchText, bookmarks])
+  }, [currentPage, categoryFilter, tagFilter, searchText, bookmarks, pageSize])
 
   useEffect(() => {
     const getLanguage = () =>
