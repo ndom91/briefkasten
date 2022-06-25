@@ -12,7 +12,7 @@ import { useToast, toastTypes } from '@/lib/hooks'
 
 export default function BookmarkTableRow({ item, toggleSidebar }) {
   const { data: session } = useSession()
-  const { id, title, url, desc, category, tags, createdAt } = item
+  const { id, title, url, desc, category, tags, createdAt, image } = item
   const [loading, setLoading] = useState(false)
   const settings = useStore((state) => state.settings)
   const removeBookmark = useStore((state) => state.removeTag)
@@ -21,6 +21,10 @@ export default function BookmarkTableRow({ item, toggleSidebar }) {
   const deleteBookmark = async () => {
     setLoading(true)
     try {
+      const imageUrlPathname = new URL(image).pathname
+      const imageFileName = imageUrlPathname.substring(
+        imageUrlPathname.lastIndexOf('/') + 1
+      )
       const delRes = await fetch('/api/bookmarks', {
         method: 'DELETE',
         headers: {
@@ -29,6 +33,7 @@ export default function BookmarkTableRow({ item, toggleSidebar }) {
         body: JSON.stringify({
           id,
           userId: session?.user?.userId,
+          imageFileName,
         }),
       })
       if (delRes.status === 200) {
@@ -51,7 +56,7 @@ export default function BookmarkTableRow({ item, toggleSidebar }) {
           <img
             src={`https://icon.horse/icon/${new URL(url).hostname}`}
             alt={title}
-            className="h-8 w-8 rounded-full"
+            className="h-8 w-8 rounded object-cover"
           />
         </div>
       </td>

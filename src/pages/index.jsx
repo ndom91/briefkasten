@@ -265,6 +265,7 @@ export async function getServerSideProps(context) {
   }
 
   const bookmarkData = await prisma.bookmark.findMany({
+    orderBy: { createdAt: 'desc' },
     where: {
       userId: session.user.userId,
     },
