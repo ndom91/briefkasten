@@ -12,7 +12,7 @@ export default function DashboardHeader() {
   const setSearchText = useStore((state) => state.setSearchText)
   const [searchFocused, setSearchFocused] = useState(false)
   const searchRef = useRef()
-  const [value, setValue, remove] = useLocalStorage(
+  const [value, setValue] = useLocalStorage(
     'dashboard.activeView',
     settings.currentView
   )

@@ -3,12 +3,13 @@ import { getSession } from 'next-auth/react'
 
 export default async function handler(req, res) {
   const session = await getSession({ req })
-  const { method, headers, body } = req
+  const { method, body } = req
+  // const { method, headers, body } = req
 
-  const protocol = headers['x-forwarded-proto'] || 'http'
-  const baseUrl = req
-    ? `${protocol}://${headers.host}`
-    : 'http://localhost:3001'
+  // const protocol = headers['x-forwarded-proto'] || 'http'
+  // const baseUrl = req
+  //   ? `${protocol}://${headers.host}`
+  //   : 'http://localhost:3001'
 
   if (session) {
     switch (method) {

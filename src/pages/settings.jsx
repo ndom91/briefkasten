@@ -28,7 +28,7 @@ export default function Settings() {
   const [fileContents, setFileContents] = useState('')
   const [fileName, setFileName] = useState('')
   const toast = useToast(5000)
-  const [_, copyToClipboard] = useCopyToClipboard()
+  const [_, copyToClipboard] = useCopyToClipboard() // eslint-disable-line
 
   const enqueueImageFix = () => {
     console.log('Enqeueing Image Fix')
@@ -56,7 +56,7 @@ export default function Settings() {
       let url = ''
       let title = ''
       let desc = ''
-      let tags = ''
+      // let tags = ''
       let date = ''
 
       if (element.tagName === 'DT') {
@@ -66,9 +66,9 @@ export default function Settings() {
           .substring(0, 190)
         url = element.firstElementChild?.attributes?.href.value.trim()
         date = element.firstElementChild?.attributes?.add_date.value.trim()
-        tags = element.firstElementChild?.attributes?.tags.value
-          .trim()
-          .split(',')
+        // tags = element.firstElementChild?.attributes?.tags.value
+        //   .trim()
+        //   .split(',')
         desc = element.nextSibling?.innerText?.replaceAll('\n', '').trim()
 
         return {

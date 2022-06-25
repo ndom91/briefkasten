@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useStore } from '@/lib/store'
 import { useSession } from 'next-auth/react'
 import { useToast, toastTypes } from '@/lib/hooks'
-import { useKeyPress, useToggle } from 'react-use'
+import { useToggle } from 'react-use'
 
 import { Fragment } from 'react'
 import { Combobox, Listbox, Popover, Transition } from '@headlessui/react'
@@ -24,17 +24,6 @@ export default function QuickAdd({ categories }) {
   const [comboQuery, setComboQuery] = useState('')
 
   const toast = useToast(5000)
-
-  useKeyPress((e) => {
-    if (e.type === 'keyup') {
-      if (e.altKey && e.key === 'a') {
-        insertRef?.current?.focus()
-      }
-      if (e.altKey && e.key === 's') {
-        submitUrl()
-      }
-    }
-  })
 
   const clearInputs = () => {
     setUrl('')
