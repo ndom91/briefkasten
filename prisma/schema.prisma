@@ -14,6 +14,7 @@ model Bookmark {
   title       String?
   url         String
   image       String?      @db.Text
+  imageBlur   String?      @db.Text
   desc        String?      @db.Text
   category    Category?    @relation(fields: [categoryId], references: [id], onDelete: SetNull, onUpdate: Cascade)
   categoryId  String?
