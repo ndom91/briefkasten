@@ -1,4 +1,5 @@
 import prisma from '@/lib/prisma'
+import { getPlaiceholder } from 'plaiceholder'
 import { supabase } from '@/lib/supabaseClient'
 import { getSession } from 'next-auth/react'
 import { prepareBase64DataUrl } from '@/lib/helpers'
@@ -36,11 +37,16 @@ export default async function handler(req, res) {
             throw error
           }
 
+          const { base64 } = await getPlaiceholder(
+            `https://exjtybpqdtxkznbmllfi.supabase.co/storage/v1/object/public/${data.Key}`
+          )
+
           // Save absolute image URL to database
           await prisma.bookmark.update({
             where: { id },
             data: {
               image: `https://exjtybpqdtxkznbmllfi.supabase.co/storage/v1/object/public/${data.Key}`,
+              imageBlur: base64,
             },
           })
 

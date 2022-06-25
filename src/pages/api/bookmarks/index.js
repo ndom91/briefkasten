@@ -1,4 +1,5 @@
 import prisma from '@/lib/prisma'
+import { getPlaiceholder } from 'plaiceholder'
 import { supabase } from '@/lib/supabaseClient'
 import { getSession } from 'next-auth/react'
 import { asyncFileReader, prepareBase64DataUrl } from '@/lib/helpers'
@@ -52,7 +53,7 @@ const handler = async (req, res) => {
         let { data, error } = await supabase.storage
           .from('bookmark-imgs')
           .upload(
-            `${session.user?.userId}/${fileName}.jpg`,
+            `${session.user?.userId}/${new URL(url).hostname}.jpg`,
             Buffer.from(prepareBase64DataUrl(dataUrl), 'base64'),
             {
               contentType: 'image/jpeg',
@@ -60,18 +61,16 @@ const handler = async (req, res) => {
             }
           )
 
-        // Error = already exists
-        if (error?.statusCode === '23505') {
-          data = {
-            Key: `bookmark-imgs/${session.user?.userId}/${
-              new URL(url).hostname
-            }.jpg`,
-          }
-        } else if (error) {
+        if (error) {
           throw error
         }
 
+        const { base64 } = await getPlaiceholder(
+          `https://exjtybpqdtxkznbmllfi.supabase.co/storage/v1/object/public/${data.Key}`
+        )
+
         metadata.image = `https://exjtybpqdtxkznbmllfi.supabase.co/storage/v1/object/public/${data.Key}`
+        metadata.imageBlur = base64
       }
 
       // Begin inserting into db
@@ -85,6 +84,7 @@ const handler = async (req, res) => {
           url,
           title: title.length ? title : metadata.title,
           image: metadata.image,
+          imageBlur: metadata.imageBlur,
           desc: desc.length ? desc : metadata.description,
           user: {
             connect: {
@@ -106,6 +106,7 @@ const handler = async (req, res) => {
           url,
           title: title.length ? title : metadata.title,
           image: metadata.image,
+          imageBlur: metadata.imageBlur,
           desc: desc.length ? desc : metadata.description,
           category: category
             ? {
@@ -215,21 +216,11 @@ const handler = async (req, res) => {
     }
     case 'DELETE': {
       if (session) {
-        const { id, userId, tags = [], imageFileName } = body
+        const { id, userId, imageFileName } = body
         if (!id || !userId) {
           return res.status(400).json({ message: 'Missing required field(s)' })
         }
         try {
-          if (tags.length > 0) {
-            await Promise.all(
-              tags.map(
-                async (tag) =>
-                  await prisma.tagsOnBookmarks.delete({
-                    where: { bookmarkId_tagId: { bookmarkId: id, tagId: tag } },
-                  })
-              )
-            )
-          }
           await prisma.bookmark.delete({
             where: { id },
           })
