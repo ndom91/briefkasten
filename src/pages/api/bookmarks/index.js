@@ -191,17 +191,17 @@ const handler = async (req, res) => {
             OR: [
               {
                 desc: {
-                  search: `*${q}*`,
+                  search: q,
                 },
               },
               {
                 url: {
-                  search: `*${q}*`,
+                  search: q,
                 },
               },
               {
                 title: {
-                  search: `*${q}*`,
+                  search: q,
                 },
               },
             ],
