@@ -39,6 +39,9 @@
   "functions": {
     "src/pages/api/**": {
       "memory": 1024
+    },
+    "src/pages/api/bookmarks/images": {
+      "excludeFiles": "/public/*"
     }
   }
 }
