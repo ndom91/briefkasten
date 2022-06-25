@@ -3,20 +3,20 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Layout from '@/components/layout'
 
-export default function FourOhFour() {
+export default function Error({ statusCode }) {
   return (
     <Layout>
       <Head>
-        <title>Briefkasten | 404</title>
+        <title>Briefkasten | Error</title>
       </Head>
       <section className="col-span-2 mx-auto flex max-w-8xl flex-grow flex-col items-center space-y-20 px-4 py-24">
         <div className="mx-auto grid w-full grid-cols-1 items-center gap-10 md:w-4/5 lg:grid-cols-2 xl:gap-32">
           <div>
             <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">
-              Error 404
+              Error {statusCode}
             </p>
             <h1 className="mb-4 text-left text-2xl font-extrabold leading-tight tracking-tight text-gray-900 md:text-4xl">
-              Oops! The page you&apos;re looking for isn&apos;t here.
+              Oops! That wasn&apos;t supposed to happen.
             </h1>
             <p className="mb-5 text-left text-base text-gray-800 md:text-xl">
               You might have the wrong address, or the page may have moved.
@@ -50,4 +50,9 @@ export default function FourOhFour() {
       </section>
     </Layout>
   )
+}
+
+Error.getInitialProps = ({ res, err }) => {
+  const statusCode = res ? res.statusCode : err ? err.statusCode : 404
+  return { statusCode }
 }
