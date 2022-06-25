@@ -59,6 +59,7 @@ export default async function Imge(req, res) {
 }
 
 export const config = {
+  unstable_excludeFiles: ['public/**/*'],
   api: {
     bodyParser: {
       sizeLimit: '4mb',
