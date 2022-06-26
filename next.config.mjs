@@ -19,10 +19,6 @@ const nextConfig = {
       'ik.imagekit.io',
     ],
   },
-  i18n: {
-    locales: ['en'],
-    defaultLocale: 'en',
-  },
 }
 
 export default nextConfig
