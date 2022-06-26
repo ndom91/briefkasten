@@ -17,7 +17,7 @@
     "postvercel-build": "echo 0 & ls -lah & ls -lah dist & ls -lah .vercel",
     "post-vercel-build": "echo 1 & ls -lah & ls -lah dist & ls -lah .vercel",
     "postvercelbuild": "echo 2 & ls -lah & ls -lah dist & ls -lah .vercel",
-    "vercel-build": "prisma generate && prisma migrate deploy && next build && ls -lah && pwd && ls -lah .vercel",
+    "vercel-build": "prisma generate && prisma migrate deploy && next build && ls -lah && pwd && ls -lah ../ && ls -lah ../../",
     "start": "next start",
     "lint": "next lint",
     "db:push": "npx prisma db push",
