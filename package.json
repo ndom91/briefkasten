@@ -14,7 +14,7 @@
     "dev": "next dev -p 3001",
     "dev:local": "vercel dev --listen 3001",
     "build": "next build",
-    "postvercel-build": "npx rimraf .vercel/output/functions/api/bookmarks/image.func/node_modules/.pnpm/registry.npmjs.org+sharp@0.30.7",
+    "postvercel-build": "ls -lah & ls -lah dist & ls -lah .vercel",
     "vercel-build": "prisma generate && prisma migrate deploy && next build",
     "start": "next start",
     "lint": "next lint",
