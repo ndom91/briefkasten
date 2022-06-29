@@ -1,8 +1,9 @@
 import prisma from '@/lib/prisma'
-import { getSession } from 'next-auth/react'
+import { unstable_getServerSession } from 'next-auth/next'
+import { authOptions } from './api/auth/[...nextauth]'
 
 export default async function handler(req, res) {
-  const session = await getSession({ req })
+  const session = await unstable_getServerSession(req, res, authOptions)
   const { method, body } = req
   // const { method, headers, body } = req
 

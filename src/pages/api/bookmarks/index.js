@@ -1,7 +1,8 @@
 import prisma from '@/lib/prisma'
 import { getPlaiceholder } from 'plaiceholder'
 import { supabase } from '@/lib/supabaseClient'
-import { getSession } from 'next-auth/react'
+import { unstable_getServerSession } from 'next-auth/next'
+import { authOptions } from './api/auth/[...nextauth]'
 import { asyncFileReader, prepareBase64DataUrl } from '@/lib/helpers'
 
 const metascraper = require('metascraper')([
@@ -11,7 +12,7 @@ const metascraper = require('metascraper')([
 ])
 
 const handler = async (req, res) => {
-  const session = await getSession({ req })
+  const session = await unstable_getServerSession(req, res, authOptions)
   const { method, headers, query, body } = req
 
   const protocol = headers['x-forwarded-proto'] || 'http'
