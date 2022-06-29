@@ -2,7 +2,7 @@ import prisma from '@/lib/prisma'
 import { getPlaiceholder } from 'plaiceholder'
 import { supabase } from '@/lib/supabaseClient'
 import { unstable_getServerSession } from 'next-auth/next'
-import { authOptions } from './api/auth/[...nextauth]'
+import { authOptions } from '../auth/[...nextauth]'
 import { asyncFileReader, prepareBase64DataUrl } from '@/lib/helpers'
 
 const metascraper = require('metascraper')([
