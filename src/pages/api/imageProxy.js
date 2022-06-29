@@ -1,6 +1,4 @@
 export default async function handler(req) {
-  console.log(req.destination)
-  console.log(req.referrer)
   const { searchParams } = new URL(req.url)
   const url = searchParams.get('url')
   if (url) {
