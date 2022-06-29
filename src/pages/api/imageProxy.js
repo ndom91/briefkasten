@@ -1,4 +1,6 @@
-const handler = async (req) => {
+export default async function handler(req) {
+  console.log(req.destination)
+  console.log(req.referrer)
   const { searchParams } = new URL(req.url)
   const url = searchParams.get('url')
   if (url) {
@@ -8,7 +10,7 @@ const handler = async (req) => {
     return new Response(buffer, {
       status: 200,
       headers: {
-        'content-type': result.headers.get('content-type') ?? 'image/jpeg',
+        'Content-Type': result.headers.get('content-type') ?? 'image/jpeg',
       },
     })
   }
@@ -19,8 +21,6 @@ const handler = async (req) => {
     },
   })
 }
-
-export default handler
 
 export const config = {
   runtime: 'experimental-edge',
