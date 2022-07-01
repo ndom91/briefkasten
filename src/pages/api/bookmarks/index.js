@@ -15,11 +15,6 @@ const handler = async (req, res) => {
   const session = await unstable_getServerSession(req, res, authOptions)
   const { method, headers, query, body } = req
 
-  const protocol = headers['x-forwarded-proto'] || 'http'
-  const baseUrl = req
-    ? `${protocol}://${headers.host}`
-    : 'http://localhost:3001'
-
   switch (method) {
     case 'POST': {
       const {
@@ -46,7 +41,9 @@ const handler = async (req, res) => {
       if (!metadata.image) {
         // Generate image with puppeteer if we didnt get one from metadata
         const imageData = await fetch(
-          `${baseUrl}/api/bookmarks/image?url=${encodeURIComponent(url)}`
+          `https://briefkasten-screenshot.vercel.app/api/image?url=${encodeURIComponent(
+            url
+          )}`
         )
         const imageBlob = await imageData.blob()
         const dataUrl = await asyncFileReader(imageBlob)

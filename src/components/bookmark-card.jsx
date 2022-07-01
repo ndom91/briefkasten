@@ -55,7 +55,9 @@ export default function BookmarkCard({ bookmark, toggleSidebar }) {
   async function fetchFallbackImage(url) {
     try {
       const res = await fetch(
-        `/api/bookmarks/image?url=${encodeURIComponent(url)}`
+        `https://briefkasten-screenshot.vercel.app/api/image?url=${encodeURIComponent(
+          url
+        )}`
       )
       const data = await res.blob()
       if (data.type === 'image/jpeg') {
