@@ -125,12 +125,12 @@ export default function Settings() {
         <div className="flex w-full items-center justify-start space-x-4 p-6">
           <Breadcrumbs breadcrumbs={breadcrumbs} />
         </div>
-        <div className="flex flex-col items-stretch space-y-4 overflow-y-scroll p-4">
-          <section className="flex flex-col items-start justify-center space-y-4 rounded-md bg-slate-50 p-4">
-            <div className="flex items-center">
-              <h2 className="text-lg text-slate-700">API Token</h2>
+        <div className="flex flex-col items-stretch space-y-4 overflow-y-scroll pb-8">
+          <section className="m-4 flex flex-col items-start justify-center space-y-4 rounded-md bg-slate-50">
+            <div className="flex w-full items-center rounded-t-md bg-slate-100 p-4">
+              <h2 className="font-serif text-xl text-slate-700">API Token</h2>
             </div>
-            <label className="text-slate-500">
+            <label className="px-4 text-slate-500">
               For use in the{' '}
               <a
                 href="https://github.com/ndom91/briefkasten-extension"
@@ -142,7 +142,7 @@ export default function Settings() {
               </a>
               , you can use the following token.
             </label>
-            <div className="relative flex">
+            <div className="relative !m-4 flex">
               <pre className="rounded-md bg-slate-200 p-2 pl-4 pr-10">
                 {session?.user?.userId}
               </pre>
@@ -167,9 +167,11 @@ export default function Settings() {
               </button>
             </div>
           </section>
-          <section className="flex flex-col items-start space-y-4 rounded-md bg-slate-50 p-4">
-            <h2 className="text-lg text-slate-700">Import</h2>
-            <label className="text-slate-500">
+          <section className="m-4 flex flex-col items-start space-y-4 rounded-md bg-slate-50">
+            <div className="flex w-full items-center rounded-t-md bg-slate-100 p-4">
+              <h2 className="font-serif text-xl text-slate-700">Import</h2>
+            </div>
+            <label className="px-4 text-slate-500">
               Upload a file exported from another tool, or your browser. Click{' '}
               <q>browse</q> or drop a{' '}
               <code className="rounded-md bg-slate-200 py-1 px-2">*.html</code>{' '}
@@ -177,7 +179,7 @@ export default function Settings() {
               uploaded and its name appears in the upload widget, you can press{' '}
               <q>Import</q> to start the import process.
             </label>
-            <label className="flex w-1/2 cursor-pointer appearance-none justify-center rounded-md border border-dashed border-gray-300 bg-white px-3 py-6 text-sm transition hover:border-gray-400 focus:border-solid focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:opacity-75">
+            <label className="m-4 flex w-1/2 cursor-pointer appearance-none justify-center rounded-md border border-dashed border-gray-300 bg-white px-3 py-6 text-sm transition hover:border-gray-400 focus:border-solid focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:opacity-75">
               <span
                 htmlFor="photo-dropbox"
                 className="flex items-center space-x-2"
@@ -235,17 +237,19 @@ export default function Settings() {
             </label>
             <button
               onClick={importBookmarks}
-              className="inline-block rounded-md bg-slate-800 px-3 py-2 text-white "
+              className="!m-4 inline-block rounded-md bg-slate-800 px-3 py-2 text-white "
             >
               Import
             </button>
           </section>
-          <section className="flex flex-col items-start justify-center space-y-4 rounded-md bg-slate-50 p-4">
-            <div className="flex items-center">
-              <h2 className="text-lg text-slate-700">Export</h2>
-              <span className="ml-4 text-slate-400">(Coming Soon)</span>
+          <section className="m-4 flex flex-col items-start justify-center space-y-4 rounded-md bg-slate-50">
+            <div className="flex w-full items-center rounded-t-md bg-slate-100 p-4">
+              <h2 className="font-serif text-xl text-slate-700">Export</h2>
+              <span className="ml-4 leading-8 text-slate-400">
+                (Coming Soon)
+              </span>
             </div>
-            <label className="text-slate-500">
+            <label className="p-4 text-slate-500">
               Export your saved bookmarks from Briefkasten to a{' '}
               <code className="rounded-md bg-slate-200 py-1 px-2">
                 bookmarks.html
@@ -255,17 +259,21 @@ export default function Settings() {
             </label>
             <button
               onClick={exportBookmarks}
-              className="rounded-md bg-slate-800 px-3 py-2 text-white "
+              className="!m-4 rounded-md bg-slate-800 px-3 py-2 text-white"
             >
               Export
             </button>
           </section>
-          <section className="flex flex-col items-start justify-center space-y-4 rounded-md bg-slate-50 p-4">
-            <div className="flex items-center">
-              <h2 className="text-lg text-slate-700">Manual Image Fetch</h2>
-              <span className="ml-4 text-slate-400">(Coming Soon)</span>
+          <section className="m-4 flex flex-col items-start justify-center space-y-4 rounded-md bg-slate-50">
+            <div className="flex w-full items-center rounded-t-md bg-slate-100 p-4">
+              <h2 className="font-serif text-xl text-slate-700">
+                Manual Image Fetch
+              </h2>
+              <span className="ml-4 leading-8 text-slate-400">
+                (Coming Soon)
+              </span>
             </div>
-            <label className="text-slate-500">
+            <label className="px-4 text-slate-500">
               After importing a large amount of bookmarks, you can kick off a
               manual image fetch, which will tell our systems to go fetch images
               for all your new bookmarks. This is normally done on a regular
@@ -274,14 +282,16 @@ export default function Settings() {
             </label>
             <button
               onClick={enqueueImageFix}
-              className="rounded-md bg-slate-800 px-3 py-2 text-white "
+              className="!m-4 rounded-md bg-slate-800 px-3 py-2 text-white "
             >
               Enqueue Image Fix
             </button>
           </section>
-          <section className="flex flex-col items-start justify-center space-y-4 rounded-md bg-slate-50 p-4">
-            <h2 className="text-lg text-slate-700">About</h2>
-            <label className="text-slate-500">
+          <section className="m-4 flex flex-col items-start justify-center space-y-4 rounded-md bg-slate-50">
+            <div className="flex w-full items-center rounded-t-md bg-slate-100 p-4">
+              <h2 className="font-serif text-xl text-slate-700">About</h2>
+            </div>
+            <label className="px-4 text-slate-500">
               This is an open-source project written mainly by{' '}
               <a
                 href="https://ndo.dev?utm_source=briefkasten-about"
@@ -293,7 +303,7 @@ export default function Settings() {
               </a>
               . More information can be found at the links below.
             </label>
-            <ul className="list-inside list-disc text-slate-500">
+            <ul className="list-inside list-disc p-4 text-slate-500">
               <li>
                 Repository:{' '}
                 <a
@@ -303,6 +313,17 @@ export default function Settings() {
                   className="font-semibold text-slate-600 transition hover:underline"
                 >
                   <code>ndom91/briefkasten</code>
+                </a>
+              </li>
+              <li>
+                Screenshot API:{' '}
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="https://github.com/ndom91/briefkasten-screenshot"
+                  className="font-semibold text-slate-600 transition hover:underline"
+                >
+                  <code>ndom91/briefkasten-screenshot</code>
                 </a>
               </li>
               <li>

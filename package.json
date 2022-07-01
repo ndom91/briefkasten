@@ -17,6 +17,7 @@
     "vercel-build": "prisma generate && prisma migrate deploy && next build",
     "start": "next start",
     "lint": "next lint",
+    "clean": "rm -rf .next node_modules",
     "db:push": "npx prisma db push",
     "db:studio": "npx prisma studio"
   },

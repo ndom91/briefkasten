@@ -198,7 +198,7 @@ export default function Home() {
           <section className="flex h-full flex-col items-center justify-start px-2 md:px-4">
             {currentTableData.length !== 0 &&
               settings.activeView === viewTypes.CARD.name && (
-                <section className="grid w-full grid-cols-[repeat(auto-fill,_minmax(300px,_1fr))] grid-rows-[repeat(auto-fit,_minmax(330px,_1fr))] items-start justify-items-center gap-4 px-2 md:justify-items-start md:justify-self-start md:px-4">
+                <section className="grid w-full grid-cols-[repeat(auto-fill,_minmax(300px,_1fr))] grid-rows-[repeat(auto-fit,_minmax(340px,_1fr))] items-start justify-items-center gap-4 px-2 md:justify-items-start md:justify-self-start md:px-4">
                   {currentTableData.map((bookmark) => (
                     <BookmarkCard
                       bookmark={bookmark}
