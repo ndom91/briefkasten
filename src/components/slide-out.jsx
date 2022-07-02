@@ -327,7 +327,7 @@ export default function SlideOut({ open, toggleOpen, session }) {
                         >
                           Tags
                         </label>
-                        <div className="mt-2 flex w-full flex-1 flex-wrap gap-1 rounded-none rounded-r-md border-slate-300 placeholder:text-slate-300 focus:border-slate-500 focus:ring-slate-500 sm:text-sm">
+                        <div className="my-2 flex w-full flex-1 flex-wrap gap-1 rounded-none rounded-r-md border-slate-300 placeholder:text-slate-300 focus:border-slate-500 focus:ring-slate-500 sm:text-sm">
                           {selectedTags?.filter(Boolean).map((tag) => {
                             return (
                               <Transition
