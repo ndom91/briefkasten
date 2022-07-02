@@ -7,7 +7,9 @@ export const useToast = (delay) => {
   const dispatch = useToastDispatchContext()
 
   function toast(type, title, body = '') {
-    const id = window.crypto.randomUUID()
+    const id = (
+      performance.now().toString(36) + Math.random().toString(36)
+    ).replace(/\./g, '')
 
     dispatch({
       type: 'ADD_TOAST',
