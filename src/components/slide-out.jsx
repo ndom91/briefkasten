@@ -478,18 +478,12 @@ export default function SlideOut({ open, toggleOpen, session }) {
                     <div className="bg-slate-50 p-4">
                       <div className="flex justify-evenly space-x-2 px-4 text-right">
                         <button
-                          onClick={clearInputs}
-                          className="flex flex-1 justify-center rounded-md border border-transparent border-slate-600 py-2 px-4 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
-                        >
-                          Clear
-                        </button>
-                        <button
                           onClick={saveEdit}
                           className="inline-flex flex-1 items-center justify-center rounded-md border border-transparent bg-slate-800 py-2 px-4 text-sm font-medium text-white shadow-sm transition hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
                         >
                           {loading ? (
                             <svg
-                              className="h-5 w-5 animate-spin text-white sm:mr-1"
+                              className="h-5 w-5 animate-spin text-white sm:mr-2"
                               xmlns="http://www.w3.org/2000/svg"
                               fill="none"
                               viewBox="0 0 24 24"
@@ -510,7 +504,7 @@ export default function SlideOut({ open, toggleOpen, session }) {
                             </svg>
                           ) : (
                             <svg
-                              className="h-4 w-4 text-white sm:mr-1"
+                              className="h-4 w-4 text-white sm:mr-2"
                               viewBox="0 0 24 24"
                             >
                               <path
@@ -520,6 +514,12 @@ export default function SlideOut({ open, toggleOpen, session }) {
                             </svg>
                           )}
                           Save
+                        </button>
+                        <button
+                          onClick={clearInputs}
+                          className="flex flex-1 justify-center rounded-md border border-transparent border-slate-600 py-2 px-4 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
+                        >
+                          Clear
                         </button>
                       </div>
                     </div>

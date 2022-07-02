@@ -1,7 +1,7 @@
 export const toastSuccess = ({ title, body, dispatch, id }) => (
   <div
     id="toast"
-    className="space-x relative mb-4 flex w-full max-w-xs items-center justify-start rounded-lg bg-white p-6 text-slate-500 shadow dark:bg-gray-800 dark:text-slate-400"
+    className="space-x group pointer-events-auto relative mb-4 flex w-full max-w-xs items-center justify-start rounded-lg bg-white p-4 text-slate-500 shadow-lg dark:bg-gray-800 dark:text-slate-400"
     role="alert"
   >
     <div className="inline-flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-emerald-100 dark:bg-emerald-800">
@@ -34,10 +34,10 @@ export const toastSuccess = ({ title, body, dispatch, id }) => (
     </div>
     <div
       onClick={() => dispatch({ type: 'DELETE_TOAST', id })}
-      className="pointer-events-auto absolute top-2 right-2 hover:cursor-pointer"
+      className="absolute top-2 right-2 opacity-0 transition hover:cursor-pointer group-hover:opacity-100"
     >
       <svg
-        className="h-6 w-6 text-slate-200"
+        className="h-6 w-6 text-slate-300"
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
@@ -57,7 +57,7 @@ export const toastSuccess = ({ title, body, dispatch, id }) => (
 export const toastError = ({ title, body, dispatch, id }) => (
   <div
     id="toast"
-    className="space-x relative mb-4 flex w-full max-w-xs items-center justify-start rounded-lg bg-white p-5 text-slate-500 shadow dark:bg-gray-800 dark:text-slate-400"
+    className="space-x group pointer-events-auto relative mb-4 flex w-full max-w-xs items-center justify-start rounded-lg bg-white p-4 text-slate-500 shadow-lg dark:bg-gray-800 dark:text-slate-400"
     role="alert"
   >
     <div className="inline-flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-red-100 dark:bg-red-800">
@@ -88,7 +88,7 @@ export const toastError = ({ title, body, dispatch, id }) => (
     </div>
     <div
       onClick={() => dispatch({ type: 'DELETE_TOAST', id })}
-      className="pointer-events-auto absolute top-2 right-2 hover:cursor-pointer"
+      className="absolute top-2 right-2 hidden hover:cursor-pointer group-hover:block"
     >
       <svg
         className="h-6 w-6 text-slate-200"
@@ -111,7 +111,7 @@ export const toastError = ({ title, body, dispatch, id }) => (
 export const toastWarning = ({ title, body, dispatch, id }) => (
   <div
     id="toast"
-    className="space-x relative mb-4 flex w-full max-w-xs items-center justify-start rounded-lg bg-white p-6 text-slate-500 shadow dark:bg-gray-800 dark:text-slate-400"
+    className="space-x group pointer-events-auto relative mb-4 flex w-full max-w-xs items-center justify-start rounded-lg bg-white p-4 text-slate-500 shadow-lg dark:bg-gray-800 dark:text-slate-400"
     role="alert"
   >
     <div className="inline-flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-yellow-50 dark:bg-yellow-800">
@@ -142,7 +142,7 @@ export const toastWarning = ({ title, body, dispatch, id }) => (
     </div>
     <div
       onClick={() => dispatch({ type: 'DELETE_TOAST', id })}
-      className="pointer-events-auto absolute top-2 right-2 hover:cursor-pointer"
+      className="absolute top-2 right-2 hidden hover:cursor-pointer group-hover:block"
     >
       <svg
         className="h-6 w-6 text-slate-200"
