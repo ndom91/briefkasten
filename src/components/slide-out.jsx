@@ -1,14 +1,12 @@
 import { useStore } from '@/lib/store'
 import { useToggle } from 'react-use'
-import { useSession } from 'next-auth/react'
 import { useEffect, useState, Fragment } from 'react'
 import { useToast, toastTypes } from '@/lib/hooks'
 
 import { Combobox, Listbox, Dialog, Transition } from '@headlessui/react'
 import Chip from '@/components/chip'
 
-export default function SlideOut({ open, toggleOpen }) {
-  const { data: session } = useSession()
+export default function SlideOut({ open, toggleOpen, session }) {
   const tags = useStore((state) => state.tags)
   const categories = useStore((state) => state.categories)
   const updateBookmark = useStore((state) => state.updateBookmark)

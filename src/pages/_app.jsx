@@ -25,13 +25,13 @@ export default function Briefkasten({
   }
 
   return (
-    <ZustandProvider createStore={createStore}>
-      <SessionProvider session={session}>
+    <SessionProvider session={session}>
+      <ZustandProvider createStore={createStore}>
         <ToastProvider>
           <Component {...pageProps} />
           <ToastContainer />
         </ToastProvider>
-      </SessionProvider>
-    </ZustandProvider>
+      </ZustandProvider>
+    </SessionProvider>
   )
 }

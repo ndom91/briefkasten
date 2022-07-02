@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useStore } from '@/lib/store'
-import { useSession } from 'next-auth/react'
 import { useToast, toastTypes } from '@/lib/hooks'
 import { useToggle } from 'react-use'
 
@@ -8,9 +7,7 @@ import { Fragment } from 'react'
 import { Combobox, Listbox, Popover, Transition } from '@headlessui/react'
 import Chip from '@/components/chip'
 
-export default function QuickAdd({ categories }) {
-  const { data: session } = useSession()
-
+export default function QuickAdd({ categories, session }) {
   const [open, toggleOpen] = useToggle(false)
   const [url, setUrl] = useState('')
   const [title, setTitle] = useState('')

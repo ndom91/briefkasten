@@ -1,6 +1,5 @@
 import Head from 'next/head'
 import { useState } from 'react'
-import { useSession } from 'next-auth/react'
 import { unstable_getServerSession } from 'next-auth/next'
 import { useCopyToClipboard } from 'react-use'
 
@@ -22,8 +21,7 @@ const breadcrumbs = [
   },
 ]
 
-export default function Settings() {
-  const { data: session } = useSession()
+export default function Settings({ nextauth }) {
   const bookmarks = useStore((state) => state.bookmarks)
   const [fileContents, setFileContents] = useState('')
   const [fileName, setFileName] = useState('')
@@ -79,7 +77,7 @@ export default function Settings() {
             : 0,
           // tags,
           desc,
-          userId: session?.user?.userId,
+          userId: nextauth?.user?.userId,
         }
       }
     })
@@ -112,12 +110,12 @@ export default function Settings() {
   }
 
   const copyUserId = () => {
-    copyToClipboard(session?.user?.userId)
+    copyToClipboard(nextauth?.user?.userId)
     toast(toastTypes.SUCCESS, 'Copied Token')
   }
 
   return (
-    <Layout>
+    <Layout session={nextauth}>
       <Head>
         <title>Briefkasten | Settings</title>
       </Head>
@@ -144,7 +142,7 @@ export default function Settings() {
             </label>
             <div className="relative !m-4 flex">
               <pre className="rounded-md bg-slate-200 p-2 pl-4 pr-10">
-                {session?.user?.userId}
+                {nextauth?.user?.userId}
               </pre>
               <button
                 onClick={() => copyUserId()}
@@ -412,6 +410,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       session,
+      nextauth: session,
       initialZustandState: JSON.parse(JSON.stringify(zustandStore.getState())),
     },
   }

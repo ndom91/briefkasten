@@ -69,7 +69,7 @@ export default function Categories({ nextauth }) {
   }
 
   return (
-    <Layout>
+    <Layout session={nextauth}>
       <Head>
         <title>Briefkasten | Categories</title>
       </Head>
@@ -232,6 +232,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       session,
+      nextauth: session,
       initialZustandState: JSON.parse(JSON.stringify(zustandStore.getState())),
     },
   }

@@ -1,6 +1,5 @@
 import Head from 'next/head'
 import { useState } from 'react'
-import { useSession } from 'next-auth/react'
 import { unstable_getServerSession } from 'next-auth/next'
 
 import Layout from '@/components/layout'
@@ -23,8 +22,7 @@ const breadcrumbs = [
   },
 ]
 
-export default function Tags() {
-  const { data: session } = useSession()
+export default function Tags({ nextauth }) {
   const addTag = useStore((state) => state.addTag)
   const [tagName, setTagName] = useState('')
   const [tagEmoji, setTagEmoji] = useState('')
@@ -55,7 +53,7 @@ export default function Tags() {
         body: JSON.stringify({
           name: tagName,
           emoji: tagEmoji,
-          userId: session.user?.userId,
+          userId: nextauth.user?.userId,
         }),
       })
       if (addRes.status === 200) {
@@ -72,7 +70,7 @@ export default function Tags() {
   }
 
   return (
-    <Layout>
+    <Layout session={nextauth}>
       <Head>
         <title>Briefkasten | Tags</title>
       </Head>
@@ -233,6 +231,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       session,
+      nextauth: session,
       initialZustandState: JSON.parse(JSON.stringify(zustandStore.getState())),
     },
   }

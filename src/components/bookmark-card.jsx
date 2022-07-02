@@ -1,15 +1,13 @@
 import { useState } from 'react'
-import Image from 'next/image'
-import { useSession } from 'next-auth/react'
+import Image from 'next/future/image'
 import { asyncFileReader } from '@/lib/helpers'
 import { useStore } from '@/lib/store'
 import { useToast, toastTypes } from '@/lib/hooks'
 import Chip from '@/components/chip'
 
-export default function BookmarkCard({ bookmark, toggleSidebar }) {
+export default function BookmarkCard({ bookmark, toggleSidebar, session }) {
   const { id, title, url, desc, category, tags, createdAt, image, imageBlur } =
     bookmark
-  const { data: session } = useSession()
 
   const settings = useStore((state) => state.settings)
   const removeBookmark = useStore((state) => state.removeBookmark)
@@ -170,10 +168,9 @@ export default function BookmarkCard({ bookmark, toggleSidebar }) {
           >
             <Image
               className="aspect-2 max-h-[125px] rounded-md border-2 border-slate-50 object-cover object-left-top transition group-focus:ring-4 group-focus:ring-slate-200"
-              // src={imageUrl}
-              // src={`https://cdn.statically.io/img/${imageDomain}${imagePath}`}
               src={`/api/imageProxy?url=${encodeURIComponent(imageUrl)}`}
               placeholder="blur"
+              priority
               blurDataURL={
                 imageBlur ??
                 'data:image/jpeg;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAADAAQDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAf/xAAfEAABBQABBQAAAAAAAAAAAAABAAIDBREEEhMiQVH/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8AolXb2FTYX0XB5crY5bOaZwkPc8nZudW4PjRgHoBERB//2Q=='

@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { Menu, Transition } from '@headlessui/react'
 import { useLocalStorage } from 'react-use'
 import { useRouter } from 'next/router'
-import { signOut, useSession } from 'next-auth/react'
+import { signOut } from 'next-auth/react'
 import { useEffect, useState, useRef, forwardRef, Fragment } from 'react'
 import { useToast, toastTypes } from '@/lib/hooks'
 import { useStore } from '@/lib/store'
@@ -25,9 +25,7 @@ const NextLink = forwardRef((props, ref) => {
 
 NextLink.displayName = 'NextLink'
 
-export default function Sidebar() {
-  const { data: session } = useSession()
-
+export default function Sidebar({ session }) {
   const [hasMounted, setHasMounted] = useState(false)
   const categories = useStore((state) => state.categories)
   const tags = useStore((state) => state.tags)

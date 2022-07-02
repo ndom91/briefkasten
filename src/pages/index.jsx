@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { unstable_getServerSession } from 'next-auth/next'
-import { useSession } from 'next-auth/react'
 import {
   useDrop,
   usePrevious,
@@ -35,8 +34,7 @@ const useBreakpoint = createBreakpoint({
   s: 640,
 })
 
-export default function Home() {
-  const { data: session } = useSession()
+export default function Home({ nextauth }) {
   const bookmarks = useStore((state) => state.bookmarks)
   const categories = useStore((state) => state.categories)
   const categoryFilter = useStore((state) => state.categoryFilter)
@@ -72,7 +70,7 @@ export default function Home() {
     } else if (breakpoint === 's') {
       setPageSize(Math.floor(PAGE_SIZE * 0.4))
     }
-  }, [width])
+  }, [width, breakpoint])
 
   const initEdit = (bookmark) => {
     setEditBookmark(bookmark)
@@ -138,7 +136,7 @@ export default function Home() {
         },
         body: JSON.stringify({
           url,
-          userId: session?.user?.userId,
+          userId: nextauth?.user?.userId,
         }),
       })
       if (res.status === 200) {
@@ -177,7 +175,7 @@ export default function Home() {
   })
 
   return (
-    <Layout>
+    <Layout session={nextauth}>
       <div className="flex h-full flex-col items-center space-y-2">
         <DashboardHeader />
         {bookmarks.length === 0 && <EmptyDashboard />}
@@ -203,6 +201,7 @@ export default function Home() {
                     <BookmarkCard
                       bookmark={bookmark}
                       key={bookmark.id}
+                      session={nextauth}
                       toggleSidebar={() => initEdit(bookmark)}
                     />
                   ))}
@@ -231,8 +230,12 @@ export default function Home() {
           pageSize={pageSize}
           onPageChange={(page) => setCurrentPage(page)}
         />
-        <QuickAdd categories={categories} />
-        <SlideOut open={openEditSidebar} toggleOpen={toggleEditSidebar} />
+        <QuickAdd categories={categories} session={nextauth} />
+        <SlideOut
+          open={openEditSidebar}
+          toggleOpen={toggleEditSidebar}
+          session={nextauth}
+        />
         {openModal && (
           <Modal
             saveBookmark={saveBookmark}
@@ -310,6 +313,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       session,
+      nextauth: session,
       initialZustandState: JSON.parse(JSON.stringify(zustandStore.getState())),
     },
   }

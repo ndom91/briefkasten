@@ -7,6 +7,10 @@ const nextConfig = {
   experimental: {
     legacyBrowsers: false,
     browsersListForSwc: true,
+    images: {
+      dangerouslyAllowSVG: true,
+      allowFutureImage: true,
+    },
   },
   images: {
     domains: [
