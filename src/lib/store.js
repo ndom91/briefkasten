@@ -1,7 +1,7 @@
 import { useLayoutEffect } from 'react'
+import { mountStoreDevtool } from 'simple-zustand-devtools'
 import create from 'zustand'
 import createContext from 'zustand/context'
-import { devtools } from 'zustand/middleware'
 import { viewTypes } from '@/lib/constants'
 
 let store
@@ -128,11 +128,12 @@ export const initializeStore = (preloadedState = {}) => {
     resetEditBookmark: () => set({ editBookmark: initialState.editBookmark }),
   })
 
-  if (process.env.NODE_ENV === 'development') {
-    initialStore = devtools(initialStore)
-  }
+  const store = create(initialStore)
 
-  return create(initialStore)
+  if (process.env.NODE_ENV === 'development') {
+    mountStoreDevtool('Store', store)
+  }
+  return store
 }
 
 export function useCreateStore(initialState) {
