@@ -63,11 +63,13 @@ const handler = async (req, res) => {
           throw error
         }
 
-        const { base64 } = await getPlaiceholder(
-          `https://exjtybpqdtxkznbmllfi.supabase.co/storage/v1/object/public/${data.Key}`
-        )
+        if (data.Key) {
+          metadata.image = `https://exjtybpqdtxkznbmllfi.supabase.co/storage/v1/object/public/${data.Key}`
+        }
+      }
 
-        metadata.image = `https://exjtybpqdtxkznbmllfi.supabase.co/storage/v1/object/public/${data.Key}`
+      if (metadata.image) {
+        const { base64 } = await getPlaiceholder(metadata.image)
         metadata.imageBlur = base64
       }
 
