@@ -51,7 +51,7 @@ const handler = async (req, res) => {
         let { data, error } = await supabase.storage
           .from('bookmark-imgs')
           .upload(
-            `${session.user?.userId}/${new URL(url).hostname}.jpg`,
+            `${session?.user?.userId || userId}/${new URL(url).hostname}.jpg`,
             Buffer.from(prepareBase64DataUrl(dataUrl), 'base64'),
             {
               contentType: 'image/jpeg',
