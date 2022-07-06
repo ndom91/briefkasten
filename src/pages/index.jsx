@@ -27,6 +27,7 @@ import prisma from '@/lib/prisma'
 const PAGE_SIZE = 15
 
 const useBreakpoint = createBreakpoint({
+  '3xl': 2200,
   '2xl': 1536,
   xl: 1280,
   lg: 1024,
@@ -59,7 +60,9 @@ export default function Home({ nextauth }) {
   const toast = useToast(5000)
 
   useEffect(() => {
-    if (breakpoint === '2xl') {
+    if (breakpoint === '3xl') {
+      setPageSize(Math.floor(PAGE_SIZE * 1.2))
+    } else if (breakpoint === '2xl') {
       setPageSize(PAGE_SIZE)
     } else if (breakpoint === 'xl') {
       setPageSize(Math.floor(PAGE_SIZE * 0.8))
