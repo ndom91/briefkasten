@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useStore } from '@/lib/store'
 import { useToast, toastTypes } from '@/lib/hooks'
-import { useToggle } from 'react-use'
+import { useToggle, useClickAway } from 'react-use'
 
 import { Fragment } from 'react'
 import { Combobox, Listbox, Popover, Transition } from '@headlessui/react'
@@ -19,6 +19,9 @@ export default function QuickAdd({ categories, session }) {
   const tags = useStore((state) => state.tags)
   const [selectedTags, setSelectedTags] = useState([])
   const [comboQuery, setComboQuery] = useState('')
+
+  const popoverRef = useRef(null)
+  useClickAway(popoverRef, () => toggleOpen())
 
   const toast = useToast(5000)
 
@@ -86,10 +89,10 @@ export default function QuickAdd({ categories, session }) {
         setCategory('')
         setSelectedTags([])
         setDescription('')
-        open && toggleOpen()
       } else {
         toast(toastTypes.ERROR, 'Error Saving')
       }
+      toggleOpen()
       setLoading(false)
     } catch (error) {
       console.error('[ERROR] Submitting URL', error)
@@ -111,10 +114,11 @@ export default function QuickAdd({ categories, session }) {
 
   return (
     <div>
-      <Popover open={open} className="">
-        {({ open }) => (
+      <Popover className="">
+        {() => (
           <>
             <Popover.Button
+              onClick={toggleOpen}
               className={`${
                 open ? '' : 'text-opacity-90'
               } absolute bottom-8 right-8 z-30 hidden rounded-full bg-slate-800 p-2 outline-none drop-shadow-md transition hover:-translate-y-1 hover:drop-shadow-lg focus:outline-none focus:ring-2 focus:ring-slate-800 focus:ring-offset-2 focus:ring-offset-white md:block`}
@@ -138,6 +142,7 @@ export default function QuickAdd({ categories, session }) {
             </Popover.Button>
             <Transition
               as={Fragment}
+              show={open}
               enter="transition ease-out duration-200"
               enterFrom="opacity-0 translate-y-1"
               enterTo="opacity-100 translate-y-0"
@@ -145,8 +150,14 @@ export default function QuickAdd({ categories, session }) {
               leaveFrom="opacity-100 translate-y-0"
               leaveTo="opacity-0 translate-y-1"
             >
-              <Popover.Panel className="absolute right-8 bottom-24 z-30 mt-3 hidden w-full max-w-sm origin-bottom-right px-4 sm:px-0 md:block md:max-w-xl">
-                <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
+              <Popover.Panel
+                static
+                className="absolute right-8 bottom-24 z-30 mt-3 hidden w-full max-w-sm origin-bottom-right px-4 sm:px-0 md:block md:max-w-xl"
+              >
+                <div
+                  ref={popoverRef}
+                  className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5"
+                >
                   <div className="relative flex flex-col space-y-4 bg-white p-7">
                     <div className="px-4 sm:px-0">
                       <h3 className="text-lg font-medium leading-6 text-slate-900">
@@ -501,7 +512,7 @@ export default function QuickAdd({ categories, session }) {
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <div className="fixed top-0 left-0 z-20 h-full w-full bg-black bg-opacity-40 transition" />
+              <Popover.Overlay className="fixed top-0 left-0 z-20 h-full w-full bg-black bg-opacity-40 transition" />
             </Transition>
           </>
         )}
