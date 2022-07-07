@@ -31,7 +31,7 @@ export default function TagTableRow({ item }) {
         }),
       })
       if (delRes.status === 200) {
-        removeTag({ id })
+        removeTag(id)
         toast(toastTypes.SUCCESS, `Successfully deleted "${name}"`)
       }
       setLoading(false)

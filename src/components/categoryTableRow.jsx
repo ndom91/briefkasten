@@ -31,7 +31,7 @@ export default function CategoryTableRow({ item }) {
         }),
       })
       if (delRes.status === 200) {
-        removeCategory({ id })
+        removeCategory(id)
         toast(toastTypes.SUCCESS, `Successfully deleted "${name}"`)
       }
       setLoading(false)

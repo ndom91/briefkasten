@@ -25,7 +25,6 @@ const initialState = {
 const zustandContext = createContext()
 export const ZustandProvider = zustandContext.Provider
 
-// An example of how to get types
 /** @type {import('zustand/index').UseStore<typeof initialState>} */
 export const useStore = zustandContext.useStore
 
@@ -50,13 +49,10 @@ export const initializeStore = (preloadedState = {}) => {
     addBookmark: (payload) =>
       set(
         produce((draft) => {
-          draft.bookmarks.push(payload)
+          draft.bookmarks.unshift(payload)
         })
       ),
     removeBookmark: (payload) =>
-      // set(() => ({
-      //   bookmarks: [...get().bookmarks.filter((bm) => bm.id !== bookmark.id)],
-      // })),
       set(
         produce((draft) => {
           const bookmarkIndex = draft.bookmarks.findIndex(
@@ -65,59 +61,73 @@ export const initializeStore = (preloadedState = {}) => {
           draft.bookmarks.splice(bookmarkIndex, 1)
         })
       ),
-    updateBookmark: (bookmark) =>
-      set(() => {
-        let intermediateBookmarks = get().bookmarks
-        let updateIndex = intermediateBookmarks.findIndex(
-          (bm) => bm.id === bookmark.id
-        )
-        intermediateBookmarks[updateIndex] = {
-          ...intermediateBookmarks[updateIndex],
-          ...bookmark,
-        }
-        return {
-          bookmarks: intermediateBookmarks,
-        }
-      }),
+    updateBookmark: (payload) =>
+      set(
+        produce((draft) => {
+          const updateIndex = draft.bookmarks.findIndex(
+            (bm) => bm.id === payload.id
+          )
+          draft.bookmarks[updateIndex] = {
+            ...draft.bookmarks[updateIndex],
+            ...payload,
+          }
+        })
+      ),
     resetBookmarks: () => set({ bookmarks: initialState.bookmarks }),
 
     // TAGS
     setTags: (tags) => set(() => ({ tags })),
-    addTag: (tag) => set(() => ({ tags: [...get().tags, tag] })),
-    updateTag: (id, tag) => {
-      const { name, emoji } = tag
-      const newTag = get().tags.find((t) => t.id === id)
-      newTag.name = name
-      newTag.emoji = emoji
-      set(() => ({
-        tags: [...get().tags.filter((t) => t.id !== id), newTag],
-      }))
+    addTag: (payload) => set(produce((draft) => draft.tags.unshift(payload))),
+    updateTag: (id, { name, emoji }) => {
+      set(
+        produce((draft) => {
+          const updateIndex = draft.tags.findIndex((t) => t.id === id)
+          draft.tags[updateIndex] = {
+            ...draft.tags[updateIndex],
+            name,
+            emoji,
+          }
+        })
+      )
     },
-    removeTag: (tag) =>
-      set(() => ({
-        tags: [...get().tags.filter((t) => t.id !== tag.id)],
-      })),
+    removeTag: (payload) =>
+      set(
+        produce((draft) => {
+          const tagIndex = draft.tags.findIndex((t) => t.id === payload)
+          draft.tags.splice(tagIndex, 1)
+        })
+      ),
     resetTags: () => set({ tags: initialState.tags }),
 
     // CATEGORIES
     setCategories: (categories) => set(() => ({ categories })),
-    addCategory: (category) =>
-      set(() => ({ categories: [...get().categories, category] })),
-    updateCategory: (id, category) => {
-      const { name, description } = category
-      const cat = get().categories.find((cat) => cat.id === id)
-      cat.name = name
-      cat.description = description
-      set(() => ({
-        categories: [...get().categories.filter((cat) => cat.id !== id), cat],
-      }))
+    addCategory: (payload) =>
+      set(
+        produce((draft) => {
+          draft.categories.unshift(payload)
+        })
+      ),
+    updateCategory: (id, { name, description }) => {
+      set(
+        produce((draft) => {
+          const updateIndex = draft.categories.findIndex((c) => c.id === id)
+          draft.categories[updateIndex] = {
+            ...draft.categories[updateIndex],
+            name,
+            description,
+          }
+        })
+      )
     },
-    removeCategory: (category) =>
-      set(() => ({
-        categories: [
-          ...get().categories.filter((cat) => cat.id !== category.id),
-        ],
-      })),
+    removeCategory: (payload) =>
+      set(
+        produce((draft) => {
+          const categoryIndex = draft.categories.findIndex(
+            (c) => c.id === payload
+          )
+          draft.categories.splice(categoryIndex, 1)
+        })
+      ),
     resetCategories: () => set({ categories: initialState.categories }),
 
     // USER SETTINGS
@@ -126,19 +136,15 @@ export const initializeStore = (preloadedState = {}) => {
         return { settings: { ...get().settings, ...setting } }
       })
     },
-    addUserSetting: (setting) =>
-      set(() => ({ settings: { ...get().settings, ...setting } })),
-    resetUserSettings: () => set({ settings: initialState.settings }),
 
-    // CURRENTLY EDIT BOOKMARK
-    setEditBookmark: (bookmark) => {
-      set(() => {
-        return { editBookmark: { ...get().editBookmark, ...bookmark } }
-      })
+    // SLIDEOUT - ACTIVE EDIT BOOKMARK
+    setEditBookmark: (payload) => {
+      set(
+        produce((draft) => {
+          draft.editBookmark = payload
+        })
+      )
     },
-    addEditBookmark: (bookmark) =>
-      set(() => ({ editBookmark: { ...get().editBookmark, ...bookmark } })),
-    resetEditBookmark: () => set({ editBookmark: initialState.editBookmark }),
   })
 
   const store = create(initialStore)
