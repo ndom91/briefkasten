@@ -303,10 +303,10 @@ export async function getServerSideProps(context) {
   })
 
   // Convert 'createdAt' to string to pass through as json
-  const bookmarks = bookmarkData.map((boomark) => ({
-    ...boomark,
-    createdAt: boomark.createdAt.toString(),
-    tags: boomark.tags.map((tag) => tag.tag),
+  const bookmarks = bookmarkData.map((bookmark) => ({
+    ...bookmark,
+    createdAt: bookmark.createdAt.toString(),
+    tags: bookmark.tags.map((tag) => tag.tag),
   }))
 
   zustandStore.getState().setBookmarks(bookmarks)
