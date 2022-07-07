@@ -68,8 +68,10 @@ const handler = async (req, res) => {
         }
       }
 
+      console.log('PLAICEHOLDER', metadata.image)
       if (metadata.image) {
         const { base64 } = await getPlaiceholder(metadata.image)
+        console.log('PLAICEHOLDER B64', base64.substring(0, 60))
         metadata.imageBlur = base64
       }
 
@@ -173,6 +175,7 @@ const handler = async (req, res) => {
         .json({ data: { ...upsertBookmarkRes, tags: upsertTagRes ?? [] } })
     }
     case 'GET': {
+      const perfStart = performance.now()
       const { q, limit = 10 } = query
       const { authorization: userId } = headers
 
@@ -184,6 +187,12 @@ const handler = async (req, res) => {
         const bookmarksResults = await prisma.bookmark.findMany({
           take: parseInt(limit),
           distinct: ['url'],
+          select: {
+            id: true,
+            title: true,
+            url: true,
+            createdAt: true,
+          },
           where: {
             AND: {
               userId,
@@ -207,6 +216,14 @@ const handler = async (req, res) => {
             ],
           },
         })
+        const perfStop = performance.now()
+        const dur = perfStop - perfStart
+        res.setHeader('Server-Timing', '*')
+        res.setHeader(
+          'Server-Timing',
+          `search;desc="Execute Search";dur=${dur}
+          `.replace(/\n/g, '')
+        )
         res.setHeader('Access-Control-Allow-Origin', '*')
         return res.status(200).json({ results: bookmarksResults })
       } catch (error) {
