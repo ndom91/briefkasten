@@ -1,7 +1,5 @@
-const prepareBase64DataUrl = (base64) =>
-  base64
-    .replace('data:image/jpeg;', 'data:image/jpeg;charset=utf-8;')
-    .replace(/^.+,/, '')
+const prepareBase64DataUrl = (base64) => base64.replace(/^.+,/, '')
+// .replace('data:image/jpeg;', 'data:image/jpeg;charset=utf-8;')
 
 const asyncFileReader = async (blob) => {
   if (typeof window !== 'undefined') {
@@ -17,8 +15,8 @@ const asyncFileReader = async (blob) => {
       }
     })
   } else {
-    let buffer = Buffer.from(await blob.text())
-    return buffer.toString('base64')
+    let buffer = Buffer.from(await blob.arrayBuffer())
+    return `data:image/jpeg;bas64,${buffer.toString('base64')}`
   }
 }
 
