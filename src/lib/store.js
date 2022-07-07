@@ -3,6 +3,7 @@ import { mountStoreDevtool } from 'simple-zustand-devtools'
 import create from 'zustand'
 import createContext from 'zustand/context'
 import { viewTypes } from '@/lib/constants'
+import produce from 'immer'
 
 let store
 
@@ -46,12 +47,24 @@ export const initializeStore = (preloadedState = {}) => {
 
     // BOOKMARKS
     setBookmarks: (bookmarks) => set(() => ({ bookmarks })),
-    addBookmark: (bookmark) =>
-      set(() => ({ bookmarks: [...get().bookmarks, bookmark] })),
-    removeBookmark: (bookmark) =>
-      set(() => ({
-        bookmarks: [...get().bookmarks.filter((bm) => bm.id !== bookmark.id)],
-      })),
+    addBookmark: (payload) =>
+      set(
+        produce((draft) => {
+          draft.bookmarks.push(payload)
+        })
+      ),
+    removeBookmark: (payload) =>
+      // set(() => ({
+      //   bookmarks: [...get().bookmarks.filter((bm) => bm.id !== bookmark.id)],
+      // })),
+      set(
+        produce((draft) => {
+          const bookmarkIndex = draft.bookmarks.findIndex(
+            (b) => b.id === payload
+          )
+          draft.bookmarks.splice(bookmarkIndex, 1)
+        })
+      ),
     updateBookmark: (bookmark) =>
       set(() => {
         let intermediateBookmarks = get().bookmarks

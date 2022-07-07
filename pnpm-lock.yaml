@@ -16,6 +16,7 @@ specifiers:
   eslint-config-prettier: ^8.5.0
   eslint-plugin-prettier: ^4.0.0
   framer-motion: ^6.3.11
+  immer: ^9.0.15
   lint-staged: ^13.0.1
   logrocket: ^3.0.0
   logrocket-react: ^5.0.1
@@ -48,6 +49,7 @@ dependencies:
   '@prisma/client': 4.0.0_prisma@4.0.0
   '@supabase/supabase-js': 1.35.3
   framer-motion: 6.3.11_ef5jwxihqo6n7gxfmzogljlgcm
+  immer: 9.0.15
   logrocket: 3.0.0
   logrocket-react: 5.0.1_j45o6x2xqcrchbg5xglg5kazze
   metascraper: 5.29.8
@@ -62,7 +64,7 @@ dependencies:
   react-dom: 18.1.0_react@18.1.0
   react-use: 17.4.0_ef5jwxihqo6n7gxfmzogljlgcm
   sharp: 0.30.7
-  zustand: 4.0.0-rc.1_react@18.1.0
+  zustand: 4.0.0-rc.1_immer@9.0.15+react@18.1.0
 
 devDependencies:
   '@commitlint/cli': 17.0.2
@@ -3206,6 +3208,9 @@ packages:
       queue: 6.0.2
     dev: false
 
+  /immer/9.0.15:
+    resolution: {integrity: sha512-2eB/sswms9AEUSkOm4SbV5Y7Vmt/bKRwByd52jfLkW4OLYeaTP3EEiJ9agqU0O/tq6Dk62Zfj+TJSqfm1rLVGQ==}
+
   /import-fresh/3.3.0:
     resolution: {integrity: sha512-veYYhQa+D1QBKznvhUHxb8faxlrwUnxseDAbAp457E0wLNio2bOSKnjYDhMj+YiAq61xrMGhQk9iXVk5FzgQMw==}
     engines: {node: '>=6'}
@@ -5467,7 +5472,7 @@ packages:
     dependencies:
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
-      zustand: 4.0.0-rc.1_react@18.1.0
+      zustand: 4.0.0-rc.1_immer@9.0.15+react@18.1.0
     dev: true
 
   /slash/3.0.0:
@@ -6511,7 +6516,7 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /zustand/4.0.0-rc.1_react@18.1.0:
+  /zustand/4.0.0-rc.1_immer@9.0.15+react@18.1.0:
     resolution: {integrity: sha512-qgcs7zLqBdHu0PuT3GW4WCIY5SgXdsv30GQMu9Qpp1BA2aS+sNS8l4x0hWuyEhjXkN+701aGWawhKDv6oWJAcw==}
     engines: {node: '>=12.7.0'}
     peerDependencies:
@@ -6523,5 +6528,6 @@ packages:
       react:
         optional: true
     dependencies:
+      immer: 9.0.15
       react: 18.1.0
       use-sync-external-store: 1.1.0_react@18.1.0

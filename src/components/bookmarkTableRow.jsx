@@ -37,7 +37,7 @@ export default function BookmarkTableRow({ item, toggleSidebar }) {
         }),
       })
       if (delRes.status === 200) {
-        removeBookmark({ id })
+        removeBookmark(id)
         toast(toastTypes.SUCCESS, 'Successfully deleted', title)
       }
       setLoading(false)

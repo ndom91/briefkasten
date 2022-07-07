@@ -27,6 +27,7 @@
     "@prisma/client": "4.0.0",
     "@supabase/supabase-js": "^1.35.3",
     "framer-motion": "^6.3.11",
+    "immer": "^9.0.15",
     "logrocket": "^3.0.0",
     "logrocket-react": "^5.0.1",
     "metascraper": "^5.29.8",

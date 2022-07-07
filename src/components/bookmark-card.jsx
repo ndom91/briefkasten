@@ -40,7 +40,7 @@ export default function BookmarkCard({ bookmark, toggleSidebar, session }) {
         }),
       })
       if (deleteRes.status === 200) {
-        removeBookmark({ id })
+        removeBookmark(id)
         toast(toastTypes.SUCCESS, 'Successfully deleted', title)
       }
     } catch (error) {
