@@ -72,14 +72,10 @@ const handler = async (req, res) => {
 
         if (data.Key) {
           metadata.image = `https://exjtybpqdtxkznbmllfi.supabase.co/storage/v1/object/public/${data.Key}`
+          const { base64 } = await getPlaiceholder(metadata.image)
+          console.log('PLAICEHOLDER B64', base64.substring(0, 60))
+          metadata.imageBlur = base64
         }
-      }
-
-      console.log('PLAICEHOLDER', metadata.image)
-      if (metadata.image) {
-        const { base64 } = await getPlaiceholder(metadata.image)
-        console.log('PLAICEHOLDER B64', base64.substring(0, 60))
-        metadata.imageBlur = base64
       }
 
       // Begin inserting into db
