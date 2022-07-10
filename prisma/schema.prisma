@@ -22,7 +22,7 @@ model Bookmark {
   user        User?        @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId      String
   createdAt   DateTime     @default(now())
-
+  updatedAt   DateTime     @updatedAt
 
   @@unique([url, userId])
   @@index([categoryId])
@@ -48,6 +48,7 @@ model Tag {
   user        User?        @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId      String
   createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 
   @@unique([name, userId])
   @@index([userId])
@@ -61,6 +62,7 @@ model Category {
   user        User?        @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId      String
   createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 
   @@unique([name, userId])
   @@index([userId])
@@ -82,6 +84,7 @@ model Account {
   session_state      String?
   user               User     @relation(fields: [userId], references: [id], onUpdate: Cascade)
   createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
 
   @@unique([provider, providerAccountId])
   @@index([userId])
