@@ -3,11 +3,10 @@ import { getPlaiceholder } from 'plaiceholder'
 import { supabase } from '@/lib/supabaseClient'
 import { unstable_getServerSession } from 'next-auth/next'
 import { authOptions } from '../auth/[...nextauth]'
-// import { asyncFileReader, prepareBase64DataUrl } from '@/lib/helpers'
+import { isAbsoluteUrl } from '@/lib/helpers'
 
 const metascraper = require('metascraper')([
   require('metascraper-description')(),
-  // require('metascraper-image')(),
   require('metascraper-title')(),
 ])
 
@@ -17,6 +16,7 @@ const handler = async (req, res) => {
 
   switch (method) {
     case 'POST': {
+      const perfStart = performance.now()
       const {
         userId,
         url,
@@ -25,14 +25,11 @@ const handler = async (req, res) => {
         desc = '',
         tags = [],
       } = body
-      const isAbsoluteUrl = (url) => /^[a-z][a-z0-9+.-]*:/.test(url)
 
-      if (!url) {
-        return res.status(400).json({ message: 'Missing required field: url' })
+      if (!url || !isAbsoluteUrl(url)) {
+        return res.status(400).json({ message: 'URL Missing or Invalid' })
       }
-      if (!isAbsoluteUrl(url)) {
-        return res.status(400).json({ message: 'Absolute URLs only' })
-      }
+
       let metadata = {
         title: '',
         image: '',
@@ -43,7 +40,7 @@ const handler = async (req, res) => {
       const resp = await fetch(url)
       metadata = await metascraper({ html: await resp.text(), url: url })
 
-      // Generate image with puppeteeedjk
+      // Generate image with puppeteer
       const imageRes = await fetch(
         `https://briefkasten-screenshot.vercel.app/api/image?url=${encodeURIComponent(
           url
@@ -51,14 +48,10 @@ const handler = async (req, res) => {
       )
       const imageBlob = await imageRes.blob()
       if (imageBlob.type === 'image/jpeg') {
-        // let dataUri = await asyncFileReader(imageBlob)
-        // console.log('dataUri.head', dataUri.substring(0, 30))
-
         let { data, error } = await supabase.storage
           .from('bookmark-imgs')
           .upload(
             `${session?.user?.userId || userId}/${new URL(url).hostname}.jpg`,
-            // Buffer.from(prepareBase64DataUrl(dataUri), 'base64'),
             await imageBlob.arrayBuffer(),
             {
               contentType: 'image/jpeg',
@@ -171,6 +164,13 @@ const handler = async (req, res) => {
         )
       }
 
+      const perfStop = performance.now()
+      const dur = perfStop - perfStart
+      res.setHeader(
+        'Server-Timing',
+        `search;desc="Execute Search";dur=${dur}
+          `.replace(/\n/g, '')
+      )
       res.setHeader('Access-Control-Allow-Origin', '*')
       return res
         .status(200)
@@ -220,7 +220,6 @@ const handler = async (req, res) => {
         })
         const perfStop = performance.now()
         const dur = perfStop - perfStart
-        res.setHeader('Server-Timing', '*')
         res.setHeader(
           'Server-Timing',
           `search;desc="Execute Search";dur=${dur}

@@ -32,7 +32,6 @@
     "logrocket-react": "^5.0.1",
     "metascraper": "^5.29.15",
     "metascraper-description": "^5.29.15",
-    "metascraper-image": "^5.29.15",
     "metascraper-title": "^5.29.15",
     "next": "12.2.2",
     "next-auth": "4.9.0",

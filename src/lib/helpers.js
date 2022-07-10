@@ -1,7 +1,6 @@
-const prepareBase64DataUrl = (base64) => base64.replace(/^.+,/, '')
-// .replace('data:image/jpeg;', 'data:image/jpeg;charset=utf-8;')
+export const prepareBase64DataUrl = (base64) => base64.replace(/^.+,/, '')
 
-const asyncFileReader = async (blob) => {
+export const asyncFileReader = async (blob) => {
   if (typeof window !== 'undefined') {
     return new Promise((resolve, reject) => {
       try {
@@ -20,9 +19,9 @@ const asyncFileReader = async (blob) => {
   }
 }
 
-const range = (start, end) => {
+export const range = (start, end) => {
   let length = end - start + 1
   return Array.from({ length }, (_, i) => i + start)
 }
 
-export { prepareBase64DataUrl, asyncFileReader, range }
+export const isAbsoluteUrl = (url) => /^[a-z][a-z0-9+.-]*:/.test(url)
