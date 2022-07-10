@@ -23,10 +23,10 @@ export default function DataTable({ items, initEdit }) {
           <th scope="col" className="px-6 py-3" width="10%">
             Tags
           </th>
-          <th scope="col" className="px-6 py-3" width="15%">
+          <th scope="col" className="px-6 py-3" width="9%">
             Date Added
           </th>
-          <th scope="col" className="px-6 py-3" width="23%">
+          <th scope="col" className="px-6 py-3" width="6%">
             <span className="sr-only">Edit</span>
           </th>
         </tr>

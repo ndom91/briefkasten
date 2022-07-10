@@ -40,7 +40,7 @@ export default function SlideOut({ open, toggleOpen, session }) {
     try {
       toggleLoading(true)
       const updateRes = await fetch('/api/bookmarks', {
-        method: 'POST',
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },

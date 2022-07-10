@@ -317,7 +317,7 @@ export default function QuickAdd({ categories, session }) {
                               leaveTo="opacity-0"
                             >
                               <Chip
-                                name={`${tag.emoji} ${tag.name}`}
+                                name={`${tag.emoji ?? ''} ${tag.name}`}
                                 id={tag.id}
                                 remove={removeSelectedTag}
                               />

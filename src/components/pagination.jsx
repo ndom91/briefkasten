@@ -23,14 +23,14 @@ export default function Pagination({
     onPageChange(currentPage + 1)
     document
       .querySelectorAll('.bookmark-card')[0]
-      .scrollIntoView(true, { behavior: 'smooth' })
+      ?.scrollIntoView(true, { behavior: 'smooth' })
   }
 
   const onPrevious = () => {
     onPageChange(currentPage - 1)
     document
       .querySelectorAll('.bookmark-card')[0]
-      .scrollIntoView(true, { behavior: 'smooth' })
+      ?.scrollIntoView(true, { behavior: 'smooth' })
   }
 
   let lastPage = paginationRange[paginationRange.length - 1]

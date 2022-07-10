@@ -3,7 +3,7 @@ import { getPlaiceholder } from 'plaiceholder'
 import { supabase } from '@/lib/supabaseClient'
 import { unstable_getServerSession } from 'next-auth/next'
 import { authOptions } from '../auth/[...nextauth]'
-import { isAbsoluteUrl } from '@/lib/helpers'
+import { isAbsoluteUrl, setTiming } from '@/lib/helpers'
 
 const metascraper = require('metascraper')([
   require('metascraper-description')(),
@@ -15,8 +15,120 @@ const handler = async (req, res) => {
   const { method, headers, query, body } = req
 
   switch (method) {
+    case 'PUT': {
+      const perf = {
+        total: {
+          start: performance.now(),
+        },
+      }
+
+      const {
+        userId,
+        url,
+        title = '',
+        category = '',
+        desc = '',
+        tags = [],
+        id,
+      } = body
+
+      if (!url || !isAbsoluteUrl(url)) {
+        return res.status(400).json({ message: 'URL Missing or Invalid' })
+      }
+
+      setTiming('bookmarkUpdate', perf)
+      const upsertBookmarkRes = await prisma.bookmark.update({
+        data: {
+          url,
+          title,
+          desc,
+          category: category
+            ? {
+                connect: {
+                  name_userId: {
+                    name: category,
+                    userId,
+                  },
+                },
+              }
+            : {},
+        },
+        include: {
+          category: true,
+        },
+        where: { id },
+      })
+      setTiming('bookmarkUpdate', perf)
+
+      // Next, if there are tags, insert them sequentially
+      let updateTagRes
+      if (tags && tags.filter(Boolean).length) {
+        setTiming('tagMapUpdate', perf)
+        updateTagRes = await Promise.all(
+          tags.map(async (tag) => {
+            return await prisma.tag.upsert({
+              create: {
+                name: tag,
+                userId,
+              },
+              update: {
+                name: tag,
+              },
+              where: {
+                name_userId: {
+                  name: tag,
+                  userId,
+                },
+              },
+            })
+          })
+        )
+
+        // Finally, link the tags to bookmark in intermediate join table
+        await Promise.all(
+          updateTagRes.map((tag) => {
+            return prisma.tagsOnBookmarks.upsert({
+              create: {
+                bookmarkId: upsertBookmarkRes.id,
+                tagId: tag.id,
+              },
+              update: {
+                bookmarkId: upsertBookmarkRes.id,
+                tagId: tag.id,
+              },
+              where: {
+                bookmarkId_tagId: {
+                  bookmarkId: upsertBookmarkRes.id,
+                  tagId: tag.id,
+                },
+              },
+            })
+          })
+        )
+        setTiming('tagMapUpdate', perf)
+      }
+
+      setTiming('total', perf)
+      res.setHeader(
+        'Server-Timing',
+        Object.entries(perf)
+          .map(([name, measurements]) => {
+            return `${name};dur=${measurements.dur}`
+          })
+          .join(',')
+      )
+      res.setHeader('Access-Control-Allow-Origin', '*')
+      return res
+        .status(200)
+        .json({ data: { ...upsertBookmarkRes, tags: updateTagRes ?? [] } })
+    }
     case 'POST': {
-      const perfStart = performance.now()
+      const perf = {
+        total: {
+          start: performance.now(),
+        },
+      }
+
       const {
         userId,
         url,
@@ -37,17 +149,22 @@ const handler = async (req, res) => {
       }
 
       // First fetch any additional metadata about the URL
+      setTiming('metadata', perf)
       const resp = await fetch(url)
       metadata = await metascraper({ html: await resp.text(), url: url })
+      setTiming('metadata', perf)
 
       // Generate image with puppeteer
+      setTiming('puppeteer', perf)
       const imageRes = await fetch(
         `https://briefkasten-screenshot.vercel.app/api/image?url=${encodeURIComponent(
           url
         )}`
       )
+      setTiming('puppeteer', perf)
       const imageBlob = await imageRes.blob()
       if (imageBlob.type === 'image/jpeg') {
+        setTiming('supabaseUpload', perf)
         let { data, error } = await supabase.storage
           .from('bookmark-imgs')
           .upload(
@@ -58,6 +175,7 @@ const handler = async (req, res) => {
               upsert: true,
             }
           )
+        setTiming('supabaseUpload', perf)
 
         if (error) {
           throw error
@@ -65,21 +183,24 @@ const handler = async (req, res) => {
 
         if (data.Key) {
           metadata.image = `https://exjtybpqdtxkznbmllfi.supabase.co/storage/v1/object/public/${data.Key}`
+          setTiming('blurPlaceholder', perf)
           const { base64 } = await getPlaiceholder(metadata.image)
           metadata.imageBlur = base64
+          setTiming('blurPlaceholder', perf)
         }
       }
 
       // Begin inserting into db
       // First, bookmark since we need its ID for later inserts
       let upsertTagRes
+      setTiming('bookmarkUpsert', perf)
       const upsertBookmarkRes = await prisma.bookmark.upsert({
         include: {
           category: true,
         },
         create: {
           url,
-          title: title.length ? title : metadata.title,
+          title: title ? title : metadata.title,
           image: metadata.image,
           imageBlur: metadata.imageBlur,
           desc: desc.length ? desc : metadata.description,
@@ -118,9 +239,11 @@ const handler = async (req, res) => {
         },
         where: { url_userId: { url: url, userId: userId } },
       })
+      setTiming('bookmarkUpsert', perf)
 
       // Next, if there are tags, insert them sequentially
-      if (tags && tags.filter(Boolean).length > 0) {
+      if (tags && tags.filter(Boolean).length) {
+        setTiming('tagMapUpsert', perf)
         upsertTagRes = await Promise.all(
           tags.map(async (tag) => {
             return await prisma.tag.upsert({
@@ -162,14 +285,17 @@ const handler = async (req, res) => {
             })
           })
         )
+        setTiming('tagMapUpsert', perf)
       }
 
-      const perfStop = performance.now()
-      const dur = perfStop - perfStart
+      setTiming('total', perf)
       res.setHeader(
         'Server-Timing',
-        `search;desc="Execute Search";dur=${dur}
-          `.replace(/\n/g, '')
+        Object.entries(perf)
+          .map(([name, measurements]) => {
+            return `${name};dur=${measurements.dur}`
+          })
+          .join(',')
       )
       res.setHeader('Access-Control-Allow-Origin', '*')
       return res
@@ -261,7 +387,7 @@ const handler = async (req, res) => {
       }
     }
     default: {
-      res.setHeader('Allow', ['GET', 'DELETE', 'POST'])
+      res.setHeader('Allow', ['GET', 'DELETE', 'POST', 'PUT'])
       return res.status(405).end(`Method ${method} Not Allowed`)
     }
   }

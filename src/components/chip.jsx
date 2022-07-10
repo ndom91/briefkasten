@@ -1,10 +1,6 @@
-export default function Chip({ name, color, remove, id }) {
+export default function Chip({ name, remove, id }) {
   return (
-    <div
-      className={`flex items-center justify-center space-x-1 rounded-full py-1 px-3 ${
-        color ? `bg-[${color}]` : 'bg-slate-200'
-      }`}
-    >
+    <div className="flex w-fit items-center justify-center space-x-1 rounded-full bg-gray-200 py-1 px-3">
       <div className="text-xs text-slate-600">{name}</div>
       {remove && (
         <button

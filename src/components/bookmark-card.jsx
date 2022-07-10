@@ -215,7 +215,10 @@ export default function BookmarkCard({ bookmark, toggleSidebar, session }) {
               {tags?.length > 0 && (
                 <div className="flex flex-wrap gap-2">
                   {tags.map((tag) => (
-                    <Chip key={tag.id} name={tag.name} />
+                    <Chip
+                      key={tag.id}
+                      name={`${tag.emoji ?? ''} ${tag.name}`}
+                    />
                   ))}
                 </div>
               )}

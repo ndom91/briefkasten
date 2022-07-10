@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { useStore } from '@/lib/store'
 import { useToast, toastTypes } from '@/lib/hooks'
+import Chip from '@/components/chip'
 
 // Favicon API's
 // https://icon.horse/usage
@@ -61,7 +62,7 @@ export default function BookmarkTableRow({ item, toggleSidebar }) {
         </div>
       </td>
       <td className="px-6 py-4">
-        <span className="text-ellipsis break-all line-clamp-2">{title}</span>
+        <span className="break-word text-ellipsis line-clamp-2">{title}</span>
       </td>
       <td className="max-w-[8rem] px-6 py-4">
         <span className="text-ellipsis break-all line-clamp-2">
@@ -76,14 +77,16 @@ export default function BookmarkTableRow({ item, toggleSidebar }) {
         </span>
       </td>
       <td className="max-w-[8rem] px-6 py-4">
-        <span className="text-ellipsis break-all line-clamp-3">{desc}</span>
+        <span className="break-word text-ellipsis line-clamp-3">{desc}</span>
       </td>
       <td className="px-6 py-4">
-        <span className="text-ellipsis break-all">{category?.name ?? ''}</span>
+        <span className="break-word text-ellipsis">{category?.name ?? ''}</span>
       </td>
       <td className="px-6 py-4">
-        <span className="text-ellipsis break-all">
-          {tags.map((tag) => tag.name).join(', ')}
+        <span className="flex flex-wrap gap-1">
+          {tags.map((tag) => (
+            <Chip key={tag.id} name={`${tag.emoji ?? ''} ${tag.name}`} />
+          ))}
         </span>
       </td>
       <td className="px-6 py-4">

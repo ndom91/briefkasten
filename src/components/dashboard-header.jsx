@@ -5,23 +5,21 @@ import { useStore } from '@/lib/store'
 import Breadcrumbs from '@/components/breadcrumbs'
 
 export default function DashboardHeader() {
+  const [savedView, setSavedView] = useLocalStorage(
+    'dashboard.activeView',
+    viewTypes.CARD.name
+  )
+
   const setUserSetting = useStore((state) => state.setUserSetting)
-  const settings = useStore((state) => state.settings)
+  useEffect(() => {
+    setUserSetting({ activeView: savedView })
+  }, [savedView, setUserSetting])
+  const activeView = useStore((state) => state.settings.activeView)
 
   const searchText = useStore((state) => state.searchText)
   const setSearchText = useStore((state) => state.setSearchText)
   const [searchFocused, setSearchFocused] = useState(false)
   const searchRef = useRef()
-  const [value, setValue] = useLocalStorage(
-    'dashboard.activeView',
-    settings.currentView
-  )
-
-  useEffect(() => {
-    if (value) {
-      setUserSetting({ activeView: value })
-    }
-  }, [])
 
   useKeyPress((e) => {
     if (e.type === 'keydown') {
@@ -33,7 +31,7 @@ export default function DashboardHeader() {
   })
 
   const updateActiveView = (newView) => {
-    setValue(newView)
+    setSavedView(newView)
     setUserSetting({ activeView: newView })
   }
 
@@ -98,7 +96,7 @@ export default function DashboardHeader() {
           aria-label="Card View"
           onClick={() => updateActiveView(viewTypes.CARD.name)}
           className={`inline-flex w-auto cursor-pointer select-none appearance-none items-center justify-center rounded-l-md border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition hover:border-gray-300 hover:bg-gray-100 focus:z-10 focus:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 ${
-            settings.activeView === viewTypes.CARD.name &&
+            activeView === viewTypes.CARD.name &&
             '!bg-slate-800 !text-white hover:!bg-slate-900'
           }`}
         >
@@ -113,7 +111,7 @@ export default function DashboardHeader() {
           aria-label="List View"
           onClick={() => updateActiveView(viewTypes.LIST.name)}
           className={`inline-flex w-auto cursor-pointer select-none appearance-none items-center justify-center rounded-r-md border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition hover:border-gray-300 hover:bg-gray-100 focus:z-10 focus:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 md:rounded-none ${
-            settings.activeView === viewTypes.LIST.name &&
+            activeView === viewTypes.LIST.name &&
             '!bg-slate-800 !text-white hover:!bg-slate-900'
           } `}
         >
@@ -129,7 +127,7 @@ export default function DashboardHeader() {
           disabled={true}
           onClick={() => updateActiveView(viewTypes.DETAIL.name)}
           className={`hidden w-auto cursor-pointer select-none appearance-none items-center justify-center rounded-r-md border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition hover:cursor-not-allowed hover:border-gray-300 hover:bg-gray-100 focus:z-10 focus:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 md:inline-flex ${
-            settings.activeView === viewTypes.DETAIL.name &&
+            activeView === viewTypes.DETAIL.name &&
             '!bg-slate-800 !text-white hover:!bg-slate-900'
           } `}
         >

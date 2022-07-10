@@ -7,6 +7,7 @@ import {
   useToggle,
   createBreakpoint,
   useWindowSize,
+  useLocalStorage,
 } from 'react-use'
 import { authOptions } from '@/api/auth/[...nextauth]'
 import { useStore, initializeStore } from '@/lib/store'
@@ -42,7 +43,7 @@ export default function Home({ nextauth }) {
   const tagFilter = useStore((state) => state.tagFilter)
   const searchText = useStore((state) => state.searchText)
   const setUserSetting = useStore((state) => state.setUserSetting)
-  const settings = useStore((state) => state.settings)
+  const activeView = useStore((state) => state.settings.activeView)
   const setEditBookmark = useStore((state) => state.setEditBookmark)
   const addBookmark = useStore((state) => state.addBookmark)
   const previousSearchText = usePrevious(searchText)
@@ -197,30 +198,31 @@ export default function Home({ nextauth }) {
         )}
         <div className="z-20 w-full grow overflow-x-hidden overflow-y-visible">
           <section className="flex h-full flex-col items-center justify-start px-2 md:px-4">
-            {currentTableData.length !== 0 &&
-              settings.activeView === viewTypes.CARD.name && (
-                <section className="grid w-full grid-cols-[repeat(auto-fill,_minmax(300px,_1fr))] grid-rows-[repeat(auto-fit,_minmax(340px,_1fr))] items-start justify-items-center gap-4 px-2 md:justify-items-start md:justify-self-start md:px-4">
-                  {currentTableData.map((bookmark) => (
-                    <BookmarkCard
-                      bookmark={bookmark}
-                      key={bookmark.id}
-                      session={nextauth}
-                      toggleSidebar={() => initEdit(bookmark)}
-                    />
-                  ))}
-                </section>
-              )}
-            {currentTableData.length !== 0 &&
-              settings.activeView === viewTypes.LIST.name && (
-                <DataTable items={currentTableData} initEdit={initEdit} />
-              )}
-            {currentTableData.length !== 0 &&
-              settings.activeView === viewTypes.DETAIL.name && (
-                <div className="flex justify-center text-lg text-slate-700">
-                  This view has not been implemented yet, please try Card or
-                  List view
-                </div>
-              )}
+            {currentTableData.length !== 0 && (
+              <>
+                {activeView === viewTypes.CARD.name && (
+                  <section className="grid w-full grid-cols-[repeat(auto-fill,_minmax(300px,_1fr))] grid-rows-[repeat(auto-fit,_minmax(340px,_1fr))] items-start justify-items-center gap-4 px-2 md:justify-items-start md:justify-self-start md:px-4">
+                    {currentTableData.map((bookmark) => (
+                      <BookmarkCard
+                        bookmark={bookmark}
+                        key={bookmark.id}
+                        session={nextauth}
+                        toggleSidebar={() => initEdit(bookmark)}
+                      />
+                    ))}
+                  </section>
+                )}
+                {activeView === viewTypes.LIST.name && (
+                  <DataTable items={currentTableData} initEdit={initEdit} />
+                )}
+                {activeView === viewTypes.DETAIL.name && (
+                  <div className="flex justify-center text-lg text-slate-700">
+                    This view has not been implemented yet, please try Card or
+                    List view
+                  </div>
+                )}
+              </>
+            )}
           </section>
         </div>
         <Pagination

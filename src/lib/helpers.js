@@ -24,4 +24,14 @@ export const range = (start, end) => {
   return Array.from({ length }, (_, i) => i + start)
 }
 
+export const setTiming = (name, obj) => {
+  const now = performance.now()
+  if (obj[name]?.start) {
+    obj[name].end = now
+    obj[name].dur = now - obj[name].start
+  } else {
+    obj[name] = { start: now }
+  }
+}
+
 export const isAbsoluteUrl = (url) => /^[a-z][a-z0-9+.-]*:/.test(url)
