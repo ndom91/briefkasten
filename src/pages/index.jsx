@@ -7,7 +7,6 @@ import {
   useToggle,
   createBreakpoint,
   useWindowSize,
-  useLocalStorage,
 } from 'react-use'
 import { authOptions } from '@/api/auth/[...nextauth]'
 import { useStore, initializeStore } from '@/lib/store'
