@@ -6,6 +6,10 @@ import { useToast, toastTypes } from '@/lib/hooks'
 import { Combobox, Listbox, Dialog, Transition } from '@headlessui/react'
 import Chip from '@/components/chip'
 
+const fallbackUnsplash = `https://source.unsplash.com/random/300x201?sig=${Math.floor(
+  Math.random() * 100
+)}`
+
 export default function SlideOut({ open, toggleOpen, session }) {
   const tags = useStore((state) => state.tags)
   const categories = useStore((state) => state.categories)
@@ -16,15 +20,15 @@ export default function SlideOut({ open, toggleOpen, session }) {
   useEffect(() => {
     const { title, desc, url, category, tags } = editBookmark
 
-    setEditTitle(title)
+    setEditTitle(title ?? '')
     setEditCategory(category?.name)
     setEditUrl(url?.indexOf('https://') === 0 ? url.slice(8, url.length) : url)
-    setEditDesc(desc)
+    setEditDesc(desc ?? '')
     setSelectedTags(tags)
   }, [editBookmark])
 
   const [selectedTags, setSelectedTags] = useState([])
-  const [comboQuery, setComboQuery] = useState('')
+  const [comboQuery, setComboBoxQuery] = useState('')
   const [editCategory, setEditCategory] = useState('')
   const [editTitle, setEditTitle] = useState('')
   const [editDesc, setEditDesc] = useState('')
@@ -183,9 +187,9 @@ export default function SlideOut({ open, toggleOpen, session }) {
                       <div className="relative mt-6">
                         {/* eslint-disable @next/next/no-img-element */}
                         <img
-                          src={editBookmark.image}
+                          src={editBookmark.image ?? fallbackUnsplash}
                           alt={`${editBookmark.title} Cover Image`}
-                          className="max-h-[384px] w-full rounded-md border-2 border-slate-300 drop-shadow-sm"
+                          className="aspect-2 max-h-[384px] w-full rounded-md border-2 border-slate-300 drop-shadow-sm"
                         />
                       </div>
                       <div className="flex flex-col items-stretch justify-around">
@@ -359,11 +363,8 @@ export default function SlideOut({ open, toggleOpen, session }) {
                             <div className="relative w-full cursor-default overflow-hidden rounded-md text-left shadow-sm focus:outline-none sm:text-sm">
                               <Combobox.Input
                                 className="block w-full flex-1 rounded-md border-slate-300 outline-none placeholder:text-slate-300 focus:border-slate-600 focus:outline-none sm:text-sm"
-                                // displayValue={(tags) =>
-                                //   tags.map((tag) => tag.name).join(', ')
-                                // }
                                 onChange={(event) => {
-                                  setComboQuery(event.target.value)
+                                  setComboBoxQuery(event.target.value)
                                 }}
                               />
                               <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
@@ -389,7 +390,6 @@ export default function SlideOut({ open, toggleOpen, session }) {
                               leave="transition ease-in duration-100"
                               leaveFrom="opacity-100"
                               leaveTo="opacity-0"
-                              // afterLeave={() => setComboQuery('')}
                             >
                               <Combobox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                                 {tags.length === 0 && comboQuery !== '' ? (

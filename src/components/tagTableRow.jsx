@@ -109,7 +109,7 @@ export default function TagTableRow({ item }) {
         )}
       </td>
       <th className="px-6 py-4">
-        <span className="font-normal">
+        <span className="font-normal" suppressHydrationWarning>
           {createdAt ? new Date(createdAt).toLocaleString(settings.locale) : ''}
         </span>
       </th>

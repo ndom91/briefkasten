@@ -6,6 +6,7 @@ import { viewTypes } from '@/lib/constants'
 import produce from 'immer'
 
 let store
+let devtoolStoreMounted = false
 
 const initialState = {
   bookmarks: [],
@@ -147,18 +148,18 @@ export const initializeStore = (preloadedState = {}) => {
     },
   })
 
-  const store = create(initialStore)
-
-  if (process.env.NODE_ENV === 'development') {
-    mountStoreDevtool('Store', store)
-  }
-  return store
+  return create(initialStore)
 }
 
 export function useCreateStore(initialState) {
   // For SSR & SSG, always use a new store.
   if (typeof window === 'undefined') {
     return () => initializeStore(initialState)
+  }
+
+  if (process.env.NODE_ENV === 'development' && store && !devtoolStoreMounted) {
+    mountStoreDevtool('Briefkasten_Store', store)
+    devtoolStoreMounted = true
   }
 
   // For CSR, always re-use same store.

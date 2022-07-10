@@ -87,7 +87,7 @@ export default function BookmarkTableRow({ item, toggleSidebar }) {
         </span>
       </td>
       <td className="px-6 py-4">
-        <span className="text-ellipsis break-all">
+        <span className="text-ellipsis break-all" suppressHydrationWarning>
           {new Date(createdAt).toLocaleString(settings.locale)}
         </span>
       </td>

@@ -13,7 +13,11 @@ export default function Briefkasten({
 }) {
   const createStore = useCreateStore(pageProps.initialZustandState)
 
-  if (typeof window !== 'undefined' && process.env.NODE_ENV !== 'development') {
+  if (
+    typeof window !== 'undefined' &&
+    window._lr_loaded !== true &&
+    process.env.NODE_ENV !== 'development'
+  ) {
     LogRocket.init('4ayekz/briefkasten')
     setupLogRocketReact(LogRocket)
     if (session?.user) {
@@ -25,13 +29,13 @@ export default function Briefkasten({
   }
 
   return (
-    <SessionProvider session={session}>
-      <ZustandProvider createStore={createStore}>
+    <ZustandProvider createStore={createStore}>
+      <SessionProvider session={session}>
         <ToastProvider>
           <Component {...pageProps} />
           <ToastContainer />
         </ToastProvider>
-      </ZustandProvider>
-    </SessionProvider>
+      </SessionProvider>
+    </ZustandProvider>
   )
 }

@@ -5,6 +5,10 @@ import { useStore } from '@/lib/store'
 import { useToast, toastTypes } from '@/lib/hooks'
 import Chip from '@/components/chip'
 
+const fallbackUnsplash = `https://source.unsplash.com/random/300x201?sig=${Math.floor(
+  Math.random() * 100
+)}`
+
 export default function BookmarkCard({ bookmark, toggleSidebar, session }) {
   const { id, title, url, desc, category, tags, createdAt, image, imageBlur } =
     bookmark
@@ -14,12 +18,7 @@ export default function BookmarkCard({ bookmark, toggleSidebar, session }) {
 
   const toast = useToast(5000)
   const [loadingDel, setLoadingDel] = useState(false)
-  const [imageUrl, setImageUrl] = useState(
-    image ??
-      `https://source.unsplash.com/random/300x201?sig=${Math.floor(
-        Math.random() * 100
-      )}`
-  )
+  const [imageUrl, setImageUrl] = useState(image ?? fallbackUnsplash)
 
   const handleDelete = async () => {
     try {
@@ -72,20 +71,12 @@ export default function BookmarkCard({ bookmark, toggleSidebar, session }) {
         const uploadData = await uploadRes.json()
         setImageUrl(uploadData.image.url)
       } else {
-        setImageUrl(
-          `https://source.unsplash.com/random/300x201?sig=${Math.floor(
-            Math.random() * 100
-          )}`
-        )
+        setImageUrl(fallbackUnsplash)
       }
     } catch (error) {
       console.error(error)
       toast(toastTypes.ERROR, 'Error fetching fallback image', error.message)
-      setImageUrl(
-        `https://source.unsplash.com/random/300x201?sig=${Math.floor(
-          Math.random() * 100
-        )}`
-      )
+      setImageUrl(fallbackUnsplash)
     }
   }
 
