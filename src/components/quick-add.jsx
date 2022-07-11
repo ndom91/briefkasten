@@ -59,7 +59,7 @@ export default function QuickAdd({ categories, session }) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          url: `https://${url}`,
+          url,
           userId: session?.user?.userId,
           description,
           category,
@@ -193,17 +193,14 @@ export default function QuickAdd({ categories, session }) {
                         URL
                       </label>
                       <div className="mt-1 flex rounded-md shadow-sm">
-                        <span className="inline-flex items-center rounded-l-md border border-r-0 border-slate-300 bg-slate-50 px-3 text-sm text-slate-500">
-                          https://
-                        </span>
                         <input
                           type="text"
                           name="url"
                           id="url"
                           value={url}
                           onChange={(e) => setUrl(e.target.value)}
-                          className="block w-full flex-1 rounded-none rounded-r-md border-slate-300 placeholder:text-slate-300 focus:border-slate-500 focus:ring-slate-500 sm:text-sm"
-                          placeholder="www.example.com"
+                          className="block w-full flex-1 rounded-md border-slate-300 placeholder:text-slate-300 focus:border-slate-500 focus:ring-slate-500 sm:text-sm"
+                          placeholder="https://www.example.com"
                         />
                       </div>
                     </div>
