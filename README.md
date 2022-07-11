@@ -54,7 +54,7 @@ To self-host this application, you'll need the following thins:
 3. Database that works with Prisma (i.e. MySQL, Postgres, SQLite, etc.)
 4. Image hosting space (i.e. Supabase / ImageKit / Cloudinary) (**optional**)
 
-These are all relatively straight forward, other than the image hoster. This was chosen to avoid putting the images in the database. The example application at [briefkasten.vercel.app](https://briefkasten.vercel.app) is using [Supabase Storage](https://supabase.com), but any other similar provider like Cloudinary would also do the job. I chose Supabase, because they have an easy to use SDK, a decent free tier, and I was already using their Postgres service. I wanted to avoid using AWS, but a simple S3 Bucket would also work here, for example. If you want to change the image hosting mechanism, it only takes a few lines of code, primarily in the `/src/pages/api/bookmarks/uploadImage.js` file.
+These are all relatively straight forward, other than the image hoster. This was chosen to avoid putting the images in the database. The example application at [briefkasten.vercel.app](https://briefkasten.vercel.app) is using [Supabase Storage](https://supabase.com), but any other similar provider like Cloudinary or a simple S3 Bucket would also do the job. I chose Supabase, because they have an easy to use SDK, a decent free tier, and I was already using their Postgres service.
 
 After you've got an account setup at all of the above providers, or have your own infrastructure ready to go, you can continue on to the next steps below.
 
