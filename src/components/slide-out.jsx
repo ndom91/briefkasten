@@ -22,7 +22,7 @@ export default function SlideOut({ open, toggleOpen, session }) {
 
     setEditTitle(title ?? '')
     setEditCategory(category?.name)
-    setEditUrl(url?.indexOf('https://') === 0 ? url.slice(8, url.length) : url)
+    setEditUrl(url ?? '')
     setEditDesc(desc ?? '')
     setSelectedTags(tags)
   }, [editBookmark])
@@ -48,7 +48,7 @@ export default function SlideOut({ open, toggleOpen, session }) {
           id: editBookmark.id,
           userId: session.user.userId,
           title: editTitle,
-          url: `https://${editUrl}`,
+          url: editUrl,
           desc: editDesc,
           category: editCategory,
           tags: selectedTags.map((tag) => tag.name),
@@ -242,16 +242,13 @@ export default function SlideOut({ open, toggleOpen, session }) {
                           URL
                         </label>
                         <div className="mt-1 flex rounded-md shadow-sm">
-                          <span className="inline-flex items-center rounded-l-md border border-r-0 border-slate-300 bg-slate-50 px-3 text-sm text-slate-500">
-                            https://
-                          </span>
                           <input
                             type="text"
                             name="url"
                             id="url"
                             value={editUrl}
                             onChange={(e) => setEditUrl(e.target.value)}
-                            className="block w-full flex-1 rounded-none rounded-r-md border-slate-300 placeholder:text-slate-300 focus:border-slate-500 focus:ring-slate-500 sm:text-sm"
+                            className="block w-full flex-1 rounded-md border-slate-300 placeholder:text-slate-300 focus:border-slate-500 focus:ring-slate-500 sm:text-sm"
                             placeholder="www.example.com"
                           />
                         </div>
