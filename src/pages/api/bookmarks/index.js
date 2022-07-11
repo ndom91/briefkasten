@@ -16,111 +16,119 @@ const handler = async (req, res) => {
 
   switch (method) {
     case 'PUT': {
-      const perf = {
-        total: {
-          start: performance.now(),
-        },
-      }
+      if (session) {
+        const perf = {
+          total: {
+            start: performance.now(),
+          },
+        }
 
-      const {
-        userId,
-        url,
-        title = '',
-        category = '',
-        desc = '',
-        tags = [],
-        id,
-      } = body
-
-      if (!url || !isAbsoluteUrl(url)) {
-        return res.status(400).json({ message: 'URL Missing or Invalid' })
-      }
-
-      setTiming('bookmarkUpdate', perf)
-      const upsertBookmarkRes = await prisma.bookmark.update({
-        data: {
+        const {
+          userId,
           url,
-          title,
-          desc,
-          category: category
-            ? {
-                connect: {
-                  name_userId: {
-                    name: category,
-                    userId,
-                  },
-                },
-              }
-            : {},
-        },
-        include: {
-          category: true,
-        },
-        where: { id },
-      })
-      setTiming('bookmarkUpdate', perf)
+          title = '',
+          category = '',
+          desc = '',
+          tags = [],
+          id,
+        } = body
 
-      // Next, if there are tags, insert them sequentially
-      let updateTagRes
-      if (tags && tags.filter(Boolean).length) {
-        setTiming('tagMapUpdate', perf)
-        updateTagRes = await Promise.all(
-          tags.map(async (tag) => {
-            return await prisma.tag.upsert({
-              create: {
-                name: tag,
-                userId,
-              },
-              update: {
-                name: tag,
-              },
-              where: {
-                name_userId: {
+        if (!url || !isAbsoluteUrl(url)) {
+          return res.status(400).json({ message: 'URL Missing or Invalid' })
+        }
+
+        setTiming('bookmarkUpdate', perf)
+        const updateBookmarkRes = await prisma.bookmark.update({
+          data: {
+            url,
+            title,
+            desc,
+            category: category
+              ? {
+                  connect: {
+                    name_userId: {
+                      name: category,
+                      userId,
+                    },
+                  },
+                }
+              : {},
+          },
+          include: {
+            category: true,
+          },
+          where: { id },
+        })
+        setTiming('bookmarkUpdate', perf)
+
+        // Next, if there are tags, insert them sequentially
+        let updateTagRes
+        if (tags && tags.filter(Boolean).length) {
+          setTiming('tagMapUpdate', perf)
+          updateTagRes = await Promise.all(
+            tags.map(async (tag) => {
+              return await prisma.tag.upsert({
+                create: {
                   name: tag,
                   userId,
                 },
-              },
+                update: {
+                  name: tag,
+                },
+                where: {
+                  name_userId: {
+                    name: tag,
+                    userId,
+                  },
+                },
+              })
             })
-          })
-        )
+          )
 
-        // Finally, link the tags to bookmark in intermediate join table
-        await Promise.all(
-          updateTagRes.map((tag) => {
-            return prisma.tagsOnBookmarks.upsert({
-              create: {
-                bookmarkId: upsertBookmarkRes.id,
-                tagId: tag.id,
-              },
-              update: {
-                bookmarkId: upsertBookmarkRes.id,
-                tagId: tag.id,
-              },
-              where: {
-                bookmarkId_tagId: {
-                  bookmarkId: upsertBookmarkRes.id,
+          // Finally, link the tags to bookmark in intermediate join table
+          await Promise.all(
+            updateTagRes.map((tag) => {
+              return prisma.tagsOnBookmarks.upsert({
+                create: {
+                  bookmarkId: updateBookmarkRes.id,
                   tagId: tag.id,
                 },
-              },
+                update: {
+                  bookmarkId: updateBookmarkRes.id,
+                  tagId: tag.id,
+                },
+                where: {
+                  bookmarkId_tagId: {
+                    bookmarkId: updateBookmarkRes.id,
+                    tagId: tag.id,
+                  },
+                },
+              })
             })
-          })
-        )
-        setTiming('tagMapUpdate', perf)
-      }
+          )
+          setTiming('tagMapUpdate', perf)
+        }
 
-      setTiming('total', perf)
-      res.setHeader(
-        'Server-Timing',
-        Object.entries(perf)
-          .map(([name, measurements]) => {
-            return `${name};dur=${measurements.dur}`
-          })
-          .join(',')
-      )
-      res.setHeader('Access-Control-Allow-Origin', '*')
-      return res
-        .status(200)
-        .json({ data: { ...upsertBookmarkRes, tags: updateTagRes ?? [] } })
+        setTiming('total', perf)
+        // Generate Server-Timing headers
+        res.setHeader(
+          'Server-Timing',
+          Object.entries(perf)
+            .map(([name, measurements]) => {
+              return `${name};dur=${measurements.dur}`
+            })
+            .join(',')
+        )
+        res.setHeader('Access-Control-Allow-Origin', '*')
+
+        // Return response to client
+        return res
+          .status(200)
+          .json({ data: { ...updateBookmarkRes, tags: updateTagRes ?? [] } })
+      } else {
+        console.error('ERR - Unauthorized attempt to PUT /api/bookmarks')
+        return res.status(403).end('Unauthorized')
+      }
     }
     case 'POST': {
       const perf = {
@@ -141,6 +149,10 @@ const handler = async (req, res) => {
       if (!url || !isAbsoluteUrl(url)) {
         return res.status(400).json({ message: 'URL Missing or Invalid' })
       }
+      if (!userId) {
+        console.error('ERR - Unauthorized attempt to POST /api/bookmarks')
+        return res.status(403).end('Unauthorized')
+      }
 
       let metadata = {
         title: '',
@@ -154,45 +166,51 @@ const handler = async (req, res) => {
       metadata = await metascraper({ html: await resp.text(), url: url })
       setTiming('metadata', perf)
 
-      // Generate image with puppeteer
-      setTiming('puppeteer', perf)
-      const imageRes = await fetch(
-        `https://briefkasten-screenshot.vercel.app/api/image?url=${encodeURIComponent(
-          url
-        )}`
-      )
-      setTiming('puppeteer', perf)
-      const imageBlob = await imageRes.blob()
-      if (imageBlob.type === 'image/jpeg') {
-        setTiming('supabaseUpload', perf)
-        let { data, error } = await supabase.storage
-          .from('bookmark-imgs')
-          .upload(
-            `${session?.user?.userId || userId}/${new URL(url).hostname}.jpg`,
-            await imageBlob.arrayBuffer(),
-            {
-              contentType: 'image/jpeg',
-              upsert: true,
-            }
-          )
-        setTiming('supabaseUpload', perf)
+      // If image hoster is enabled
+      if (process.env.SUPABASE_URL) {
+        // Generate image with puppeteer
+        setTiming('puppeteer', perf)
+        const imageRes = await fetch(
+          `https://briefkasten-screenshot.vercel.app/api/image?url=${encodeURIComponent(
+            url
+          )}`
+        )
+        setTiming('puppeteer', perf)
+        const imageBlob = await imageRes.blob()
+        if (imageBlob.type === 'image/jpeg') {
+          setTiming('supabaseUpload', perf)
 
-        if (error) {
-          throw error
-        }
+          // Upload image blob to Supabase
+          let { data, error } = await supabase.storage
+            .from('bookmark-imgs')
+            .upload(
+              `${session?.user?.userId || userId}/${new URL(url).hostname}.jpg`,
+              await imageBlob.arrayBuffer(),
+              {
+                contentType: 'image/jpeg',
+                upsert: true,
+              }
+            )
+          setTiming('supabaseUpload', perf)
 
-        if (data.Key) {
-          metadata.image = `https://exjtybpqdtxkznbmllfi.supabase.co/storage/v1/object/public/${data.Key}`
-          setTiming('blurPlaceholder', perf)
-          const { base64 } = await getPlaiceholder(metadata.image)
-          metadata.imageBlur = base64
-          setTiming('blurPlaceholder', perf)
+          if (error) {
+            throw error
+          }
+
+          if (data.Key) {
+            metadata.image = `https://exjtybpqdtxkznbmllfi.supabase.co/storage/v1/object/public/${data.Key}`
+
+            // Generate a blur placeholder
+            setTiming('blurPlaceholder', perf)
+            const { base64 } = await getPlaiceholder(metadata.image)
+            metadata.imageBlur = base64
+            setTiming('blurPlaceholder', perf)
+          }
         }
       }
 
-      // Begin inserting into db
-      // First, bookmark since we need its ID for later inserts
-      let upsertTagRes
+      // Begin inserting entry into db
+      // First, the bookmark itself since we need its ID for later inserts
       setTiming('bookmarkUpsert', perf)
       const upsertBookmarkRes = await prisma.bookmark.upsert({
         include: {
@@ -241,6 +259,7 @@ const handler = async (req, res) => {
       })
       setTiming('bookmarkUpsert', perf)
 
+      let upsertTagRes
       // Next, if there are tags, insert them sequentially
       if (tags && tags.filter(Boolean).length) {
         setTiming('tagMapUpsert', perf)
@@ -289,6 +308,7 @@ const handler = async (req, res) => {
       }
 
       setTiming('total', perf)
+      // Generate Server-Timing headers
       res.setHeader(
         'Server-Timing',
         Object.entries(perf)
@@ -298,6 +318,8 @@ const handler = async (req, res) => {
           .join(',')
       )
       res.setHeader('Access-Control-Allow-Origin', '*')
+
+      // Return response to client
       return res
         .status(200)
         .json({ data: { ...upsertBookmarkRes, tags: upsertTagRes ?? [] } })
@@ -382,7 +404,7 @@ const handler = async (req, res) => {
         }
         return res.status(200).json({ message: 'Deleted' })
       } else {
-        console.error('ERR - Unauthorized attempt at /api/bookmarks')
+        console.error('ERR - Unauthorized attempt to DELETE /api/bookmarks')
         return res.status(403).end('Unauthorized')
       }
     }
