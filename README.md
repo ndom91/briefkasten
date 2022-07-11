@@ -69,7 +69,7 @@ $ git clone git@github.com:ndom91/briefkasten.git && cd briefkasten
 2. Install dependencies
 
 ```sh
-$ npm install
+$ pnpm install
 ```
 
 3. Copy the `.env.example` file, and fill in your copy of the environment variables.
@@ -85,16 +85,20 @@ In this environment variables file, make sure to fill in any of the keys / secre
 
 ```sh
 // dev
-$ npm run dev
+$ pnpm run dev
 
 // prod
-$ npm run build
-$ npm start
+$ pnpm run build
+$ pnpm start
 ```
 
 ## 🕸 Related
 
-<img src="screenshot_ext.png" align="right" />
+<img src="public/screenshot_ext.png" align="right" />
+
+### 📲 Save from Android Share Menu
+
+With this open-source application [HTTP Shortcuts](https://http-shortcuts.rmy.ch/), you can create a "Share Menu" item which executes a `POST` request with dynamic input, i.e. a web page's URL and title. This makes it super easy to share items from your phone to Briefkasten!
 
 ### 🌍 Browser Extension
 
