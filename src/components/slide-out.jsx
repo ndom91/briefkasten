@@ -22,7 +22,7 @@ export default function SlideOut({ open, toggleOpen, session }) {
 
     setEditTitle(title ?? '')
     setEditCategory(category?.name)
-    setEditUrl(url?.indexOf('https://') === 0 ? url.slice(8, url.length) : url)
+    setEditUrl(url ?? '')
     setEditDesc(desc ?? '')
     setSelectedTags(tags)
   }, [editBookmark])
@@ -48,7 +48,7 @@ export default function SlideOut({ open, toggleOpen, session }) {
           id: editBookmark.id,
           userId: session.user.userId,
           title: editTitle,
-          url: `https://${editUrl}`,
+          url: editUrl,
           desc: editDesc,
           category: editCategory,
           tags: selectedTags.map((tag) => tag.name),
@@ -85,6 +85,10 @@ export default function SlideOut({ open, toggleOpen, session }) {
     setEditUrl('')
     setEditDesc('')
     setSelectedTags([])
+  }
+
+  const refreshImage = (e) => {
+    console.log(e)
   }
 
   const filteredTags =
@@ -185,6 +189,26 @@ export default function SlideOut({ open, toggleOpen, session }) {
                     </div>
                     <div className="relative mb-6 flex-1 space-y-6 overflow-y-scroll px-4 sm:px-6">
                       <div className="relative mt-6">
+                        <button
+                          title="Refresh Image in Background"
+                          className="absolute top-2 right-2 z-10 text-gray-500 transition hover:animate-spin"
+                          onClick={refreshImage}
+                        >
+                          <svg
+                            className="h-6 w-6"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                            />
+                          </svg>
+                        </button>
                         {/* eslint-disable @next/next/no-img-element */}
                         <img
                           src={editBookmark.image ?? fallbackUnsplash}
@@ -218,16 +242,13 @@ export default function SlideOut({ open, toggleOpen, session }) {
                           URL
                         </label>
                         <div className="mt-1 flex rounded-md shadow-sm">
-                          <span className="inline-flex items-center rounded-l-md border border-r-0 border-slate-300 bg-slate-50 px-3 text-sm text-slate-500">
-                            https://
-                          </span>
                           <input
                             type="text"
                             name="url"
                             id="url"
                             value={editUrl}
                             onChange={(e) => setEditUrl(e.target.value)}
-                            className="block w-full flex-1 rounded-none rounded-r-md border-slate-300 placeholder:text-slate-300 focus:border-slate-500 focus:ring-slate-500 sm:text-sm"
+                            className="block w-full flex-1 rounded-md border-slate-300 placeholder:text-slate-300 focus:border-slate-500 focus:ring-slate-500 sm:text-sm"
                             placeholder="www.example.com"
                           />
                         </div>

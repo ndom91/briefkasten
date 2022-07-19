@@ -8,7 +8,8 @@
 
 Self-hosted bookmarking application. Works with any Prisma compatible database (MySQL, Postgres, SQLite, etc.)
 
-> Demo instance at [briefkasten.vercel.app](https://briefkasten.vercel.app) 👀
+- Cloud Instance: [briefkasten.vercel.app](https://briefkasten.vercel.app)
+- Docs: [briefkasten-docs.vercel.app](https://briefkasten-docs.vercel.app)
 
 ## 📸 Screenshots
 
