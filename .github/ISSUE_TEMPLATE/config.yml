@@ -1,0 +1,7 @@
+contact_links:
+  - name: 💬 Nico's Contact Links
+    url: https://ndo.dev
+    about: Want to discuss / chat with the community? Here you go!
+  - name: ⁉️ Why and How to make a reproduction?
+    url: https://antfu.me/posts/why-reproductions-are-required
+    about: Reproduction is very important for maintainer to help on your issues!
