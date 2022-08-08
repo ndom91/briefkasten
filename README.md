@@ -99,7 +99,7 @@ $ pnpm start
 
 ### 📲 Save from Android Share Menu
 
-With this open-source application [HTTP Shortcuts](https://http-shortcuts.rmy.ch/), you can create a "Share Menu" item which executes a `POST` request with dynamic input, i.e. a web page's URL and title. This makes it super easy to share items from your phone to Briefkasten!
+With this open-source application [HTTP Shortcuts](https://http-shortcuts.rmy.ch/), you can create a "Share Menu" item which executes a `POST` request with dynamic input, i.e. a web page's URL and title. This makes it super easy to share items from your phone to Briefkasten! More information in the [docs](https://briefkasten-docs.vercel.app/docs/getting-started.html#http-shortcuts-android).
 
 ### 🌍 Browser Extension
 
