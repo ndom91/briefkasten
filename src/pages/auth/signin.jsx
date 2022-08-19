@@ -66,7 +66,7 @@ const Signin = ({ providers, csrfToken }) => {
               </span>
             </h2>
             <div className="m-8 w-full rounded bg-white p-6 shadow-lg">
-              <div className="space-y-2 border-b border-gray-200 pb-6">
+              <div className="space-y-2 pb-1">
                 {providers &&
                   Object.values(providers).map((p) =>
                     p.type === 'oauth' ? (
@@ -92,7 +92,7 @@ const Signin = ({ providers, csrfToken }) => {
               </div>
               {process.env.SMTP_SERVER ? (
                 <form
-                  className="space-y-4 pt-2"
+                  className="space-y-4 border-t border-gray-200 pt-6"
                   method="post"
                   action="/api/auth/signin/email"
                 >
