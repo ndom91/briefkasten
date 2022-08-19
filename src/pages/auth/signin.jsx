@@ -40,7 +40,9 @@ const ProviderIcons = ({ provider }) => {
 
 const Signin = ({ providers, csrfToken }) => {
   const [email, setEmail] = useState('')
-
+  const containsOauthProviders = Object.keys(providers).some((p) =>
+    ['google', 'github'].includes(p)
+  )
   return (
     <>
       <Meta />
@@ -66,9 +68,13 @@ const Signin = ({ providers, csrfToken }) => {
               </span>
             </h2>
             <div className="m-8 w-full rounded bg-white p-6 shadow-lg">
-              <div className="space-y-2 pb-1">
-                {providers &&
-                  Object.values(providers).map((p) =>
+              {providers && containsOauthProviders && (
+                <div
+                  className={`space-y-2 ${
+                    Object.keys(providers).includes('email') && 'pb-6'
+                  }`}
+                >
+                  {Object.values(providers).map((p) =>
                     p.type === 'oauth' ? (
                       <div key={p.name} style={{ marginBottom: 0 }}>
                         <button
@@ -89,10 +95,13 @@ const Signin = ({ providers, csrfToken }) => {
                       </div>
                     ) : null
                   )}
-              </div>
+                </div>
+              )}
               {Object.keys(providers).includes('email') ? (
                 <form
-                  className="space-y-4 border-t border-gray-200 pt-6"
+                  className={`${
+                    containsOauthProviders && 'border-t border-gray-200 pt-6'
+                  }`}
                   method="post"
                   action="/api/auth/signin/email"
                 >
@@ -122,7 +131,7 @@ const Signin = ({ providers, csrfToken }) => {
                     type="submit"
                     disabled={false}
                     onClick={() => signIn('email', { callbackUrl: '/', email })}
-                    className="inline-flex w-full justify-center rounded-md border border-transparent bg-slate-800 py-2 px-4 text-sm font-medium text-white shadow-sm transition hover:cursor-pointer hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 disabled:hover:cursor-not-allowed"
+                    className="mt-4 inline-flex w-full justify-center rounded-md border border-transparent bg-slate-800 py-2 px-4 text-sm font-medium text-white shadow-sm transition hover:cursor-pointer hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 disabled:hover:cursor-not-allowed"
                     place="Continue with Magic Link Email"
                   />
                 </form>
