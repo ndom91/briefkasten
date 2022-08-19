@@ -90,41 +90,43 @@ const Signin = ({ providers, csrfToken }) => {
                     ) : null
                   )}
               </div>
-              <form
-                className="space-y-4 pt-2"
-                method="post"
-                action="/api/auth/signin/email"
-              >
-                <input
-                  name="csrfToken"
-                  type="hidden"
-                  defaultValue={csrfToken}
-                />
-
-                <label className="block">
-                  <span className="mb-1 block text-left text-xs font-medium text-gray-700">
-                    Email Magic Link
-                  </span>
+              {process.env.SMTP_SERVER ? (
+                <form
+                  className="space-y-4 pt-2"
+                  method="post"
+                  action="/api/auth/signin/email"
+                >
                   <input
-                    className="block w-full flex-1 rounded-md border-gray-300 font-normal transition placeholder:font-light placeholder:text-slate-400 focus:border-slate-500 focus:ring-slate-500 sm:text-sm"
-                    type="email"
-                    autoComplete="username"
-                    disabled={false}
-                    placeholder="james@bond.com"
-                    inputMode="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    name="csrfToken"
+                    type="hidden"
+                    defaultValue={csrfToken}
                   />
-                </label>
-                <input
-                  type="submit"
-                  disabled={false}
-                  onClick={() => signIn('email', { callbackUrl: '/', email })}
-                  className="inline-flex w-full justify-center rounded-md border border-transparent bg-slate-800 py-2 px-4 text-sm font-medium text-white shadow-sm transition hover:cursor-pointer hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 disabled:hover:cursor-not-allowed"
-                  place="Continue with Magic Link Email"
-                />
-              </form>
+
+                  <label className="block">
+                    <span className="mb-1 block text-left text-xs font-medium text-gray-700">
+                      Email Magic Link
+                    </span>
+                    <input
+                      className="block w-full flex-1 rounded-md border-gray-300 font-normal transition placeholder:font-light placeholder:text-slate-400 focus:border-slate-500 focus:ring-slate-500 sm:text-sm"
+                      type="email"
+                      autoComplete="username"
+                      disabled={false}
+                      placeholder="user@company.com"
+                      inputMode="email"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </label>
+                  <input
+                    type="submit"
+                    disabled={false}
+                    onClick={() => signIn('email', { callbackUrl: '/', email })}
+                    className="inline-flex w-full justify-center rounded-md border border-transparent bg-slate-800 py-2 px-4 text-sm font-medium text-white shadow-sm transition hover:cursor-pointer hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 disabled:hover:cursor-not-allowed"
+                    place="Continue with Magic Link Email"
+                  />
+                </form>
+              ) : null}
             </div>
           </div>
         </div>
