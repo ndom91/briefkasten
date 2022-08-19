@@ -5,22 +5,36 @@ import EmailProvider from 'next-auth/providers/email'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import prisma from '@/lib/prisma'
 
-export const authOptions = {
-  adapter: PrismaAdapter(prisma),
-  providers: [
+const providers = []
+
+if (process.env.GITHUB_ID) {
+  providers.push(
     GithubProvider({
       clientId: process.env.GITHUB_ID,
       clientSecret: process.env.GITHUB_SECRET,
-    }),
+    })
+  )
+}
+if (process.env.GOOGLE_ID) {
+  providers.push(
     GoogleProvider({
       clientId: process.env.GOOGLE_ID,
       clientSecret: process.env.GOOGLE_SECRET,
-    }),
+    })
+  )
+}
+if (process.env.SMTP_SERVER) {
+  providers.push(
     EmailProvider({
       server: process.env.SMTP_SERVER,
-      from: 'briefkasten@ndo.dev',
-    }),
-  ],
+      from: process.env.SMTP_FROM,
+    })
+  )
+}
+
+export const authOptions = {
+  adapter: PrismaAdapter(prisma),
+  providers,
   pages: {
     signIn: '/auth/signin',
   },

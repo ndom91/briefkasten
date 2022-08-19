@@ -73,23 +73,26 @@ $ git clone git@github.com:ndom91/briefkasten.git && cd briefkasten
 $ pnpm install
 ```
 
-3. Copy the `.env.example` file, and fill in your copy of the environment variables.
+3. Copy the `.env.example` file to `.env`, and open it with your favorite text editor to fill in your environment variables.
 
 ```sh
 $ cp .env.example .env
 $ vim .env
 ```
 
-In this environment variables file, make sure to fill in any of the keys / secrets needed for the cloud providers you selected for the components above.
+In this environment variables file, make sure to at least fill in the `DATABASE_URL`, `NEXTAUTH_URL` and `NEXTAUTH_SECRET`. The rest of the environment variables depend on the services / features you want to use. For example, Google/Github for OAuth login and/or Supabase for object storage.
 
 4. Start the server!
 
 ```sh
+// First time only
+$ pnpm db:push
+
 // dev
-$ pnpm run dev
+$ pnpm dev
 
 // prod
-$ pnpm run build
+$ pnpm build
 $ pnpm start
 ```
 
