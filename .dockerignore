@@ -1,0 +1,10 @@
+node_modules
+npm-debug.log
+pnpm-debug.log
+.github
+.git
+.swc
+.vercel
+.env*
+LICENSE
+README.md

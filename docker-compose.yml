@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  postgres:
+    container_name: bk-postgres
+    image: postgres
+    restart: unless-stopped
+    environment:
+      # - DATABASE_HOST=127.0.0.1
+      - POSTGRES_USER=bkAdmin
+      - POSTGRES_PASSWORD=briefkasten
+      - POSTGRES_DB=briefkasten
+    ports:
+      - 5432:5432
+    volumes:
+      - briefkasten-db:/var/lib/postgresql/data
+  briefkasten:
+    container_name: bk-app
+    build:
+      context: .
+      args:
+        - DATABASE_URL=${DATABASE_URL}
+    env_file:
+      - .env
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    depends_on:
+      - 'postgres'
+    command: ['./wait-for-it.sh', 'postgres:5432', '--', 'pnpm', 'start']
+
+    # environment:
+    #   - DATABASE_URL=postgres://bkAdmin:briefkasten@postgres:5432/briefkasten?sslmode=disable
+    #   - NEXTAUTH_URL=http://localhost:3000
+    #   - NEXTAUTH_SECRET=1244054efaed954585e2c1864d25c1e40c414d1dfbd4051f35bd52fe497c9715
+    #   - GOOGLE_ID=
+    #   - GOOGLE_SECRET=
+    #   - GITHUB_ID=
+    #   - GITHUB_SECRET=
+    #   - SMTP_SERVER=
+    #   - SMTP_FROM=
+    #   - SUPABASE_URL=
+    #   - SUPABASE_KEY=
+volumes:
+  briefkasten-db:
