@@ -23,7 +23,7 @@ if (process.env.GOOGLE_ID) {
     })
   )
 }
-if (process.env.SMTP_SERVER) {
+if (process.env.SMTP_SERVER && process.env.SMTP_FROM) {
   providers.push(
     EmailProvider({
       server: process.env.SMTP_SERVER,

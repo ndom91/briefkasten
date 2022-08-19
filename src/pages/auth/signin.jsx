@@ -90,7 +90,7 @@ const Signin = ({ providers, csrfToken }) => {
                     ) : null
                   )}
               </div>
-              {process.env.SMTP_SERVER ? (
+              {Object.keys(providers).includes('email') ? (
                 <form
                   className="space-y-4 border-t border-gray-200 pt-6"
                   method="post"
