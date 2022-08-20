@@ -2,6 +2,7 @@
 /* import setupLogRocketReact from 'logrocket-react' */
 import { useEffect } from 'react'
 import Tracker from '@openreplay/tracker/cjs'
+import trackerFetch from '@openreplay/tracker-fetch/cjs'
 import { SessionProvider } from 'next-auth/react'
 
 import { useCreateStore, ZustandProvider } from '@/lib/store'
@@ -44,6 +45,12 @@ export default function Briefkasten({
         projectKey: process.env.NEXT_PUBLIC_OPENREPLAY_KEY,
         ingestPoint: process.env.NEXT_PUBLIC_OPENREPLAY_URL,
       })
+
+      tracker.use(
+        trackerFetch({
+          overrideGlobal: true,
+        })
+      )
 
       if (session?.user) {
         tracker.start({
