@@ -41,7 +41,7 @@ const Meta = () => {
 
         <meta property="og:title" content="Briefkasten" />
         <meta property="og:description" content="Briefkasten - Bookmarks" />
-        <meta property="og:url" content="https://briefkasten.vercel.app" />
+        <meta property="og:url" content="https://briefkastenhq.com" />
         <meta property="og:image" content={''} />
         <meta name="twitter:image" content={''} />
         <title>Briefkasten</title>
