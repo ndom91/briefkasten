@@ -39,13 +39,16 @@ export default function Briefkasten({
     const tracker = new Tracker({
       projectKey: '8yWHdmOk4sTi352UaFdk',
       ingestPoint: 'https://openreplay.ndo.dev/ingest',
-      onStart: () => {
-        tracker.setUserID(session.user.userId)
-      },
     })
 
     if (session?.user) {
-      tracker.start()
+      tracker.start({
+        userID: session.user.userId,
+        metadata: {
+          name: session.user.name,
+          email: session.user.email,
+        },
+      })
     }
   }
 
