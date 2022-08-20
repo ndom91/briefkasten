@@ -167,7 +167,7 @@ const handler = async (req, res) => {
       setTiming('metadata', perf)
 
       // If image hoster is enabled
-      if (process.env.SUPABASE_URL) {
+      if (process.env.FAKE_SUPABASE_URL) {
         // Generate image with puppeteer
         setTiming('puppeteer', perf)
         const imageRes = await fetch(
