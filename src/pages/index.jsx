@@ -23,6 +23,7 @@ import DataTable from '@/components/table'
 import Modal from '@/components/modal'
 import { viewTypes } from '@/lib/constants'
 import prisma from '@/lib/prisma'
+import Tracker from '@openreplay/tracker/cjs'
 
 const PAGE_SIZE = 15
 
@@ -58,6 +59,15 @@ export default function Home({ nextauth }) {
   const [filteredLength, setFilteredLength] = useState(bookmarks.length)
   const [currentPage, setCurrentPage] = useState(1)
   const toast = useToast(5000)
+
+  const tracker = new Tracker({
+    projectKey: '8yWHdmOk4sTi352UaFdk',
+    ingestPoint: 'https://openreplay.ndo.dev/ingest',
+  })
+
+  useEffect(() => {
+    tracker.start()
+  }, [])
 
   useEffect(() => {
     if (breakpoint === '3xl') {
