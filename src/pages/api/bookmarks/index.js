@@ -3,7 +3,7 @@ import { getPlaiceholder } from 'plaiceholder'
 import { supabase } from '@/lib/supabaseClient'
 import { unstable_getServerSession } from 'next-auth/next'
 import { authOptions } from '../auth/[...nextauth]'
-import { isAbsoluteUrl, setTiming } from '@/lib/helpers'
+import { isAbsoluteUrl, serverTiming } from '@/lib/helpers'
 
 const metascraper = require('metascraper')([
   require('metascraper-description')(),
@@ -17,11 +17,7 @@ const handler = async (req, res) => {
   switch (method) {
     case 'PUT': {
       if (session) {
-        const perf = {
-          total: {
-            start: performance.now(),
-          },
-        }
+        serverTiming.start()
 
         const {
           userId,
@@ -37,7 +33,7 @@ const handler = async (req, res) => {
           return res.status(400).json({ message: 'URL Missing or Invalid' })
         }
 
-        setTiming('bookmarkUpdate', perf)
+        serverTiming.measure('bookmarkUpdate')
         const updateBookmarkRes = await prisma.bookmark.update({
           data: {
             url,
@@ -59,12 +55,12 @@ const handler = async (req, res) => {
           },
           where: { id },
         })
-        setTiming('bookmarkUpdate', perf)
+        serverTiming.measure('bookmarkUpdate')
 
         // Next, if there are tags, insert them sequentially
         let updateTagRes
         if (tags && tags.filter(Boolean).length) {
-          setTiming('tagMapUpdate', perf)
+          serverTiming.measure('tagMapUpdate')
           updateTagRes = await Promise.all(
             tags.map(async (tag) => {
               return await prisma.tag.upsert({
@@ -106,19 +102,11 @@ const handler = async (req, res) => {
               })
             })
           )
-          setTiming('tagMapUpdate', perf)
+          serverTiming.measure('tagMapUpdate')
         }
 
-        setTiming('total', perf)
         // Generate Server-Timing headers
-        res.setHeader(
-          'Server-Timing',
-          Object.entries(perf)
-            .map(([name, measurements]) => {
-              return `${name};dur=${measurements.dur}`
-            })
-            .join(',')
-        )
+        res.setHeader('Server-Timing', serverTiming.setHeader())
         res.setHeader('Access-Control-Allow-Origin', '*')
 
         // Return response to client
@@ -131,11 +119,7 @@ const handler = async (req, res) => {
       }
     }
     case 'POST': {
-      const perf = {
-        total: {
-          start: performance.now(),
-        },
-      }
+      serverTiming.start()
 
       const {
         userId,
@@ -161,24 +145,24 @@ const handler = async (req, res) => {
       }
 
       // First fetch any additional metadata about the URL
-      setTiming('metadata', perf)
+      serverTiming.measure('metadata')
       const resp = await fetch(url)
       metadata = await metascraper({ html: await resp.text(), url: url })
-      setTiming('metadata', perf)
+      serverTiming.measure('metadata')
 
       // If image hoster is enabled
       if (process.env.FAKE_SUPABASE_URL) {
         // Generate image with puppeteer
-        setTiming('puppeteer', perf)
+        serverTiming.measure('puppeteer')
         const imageRes = await fetch(
           `https://screenshot.briefkastenhq.com/api/image?url=${encodeURIComponent(
             url
           )}`
         )
-        setTiming('puppeteer', perf)
+        serverTiming.measure('puppeteer')
         const imageBlob = await imageRes.blob()
         if (imageBlob.type === 'image/jpeg') {
-          setTiming('supabaseUpload', perf)
+          serverTiming.measure('supabaseUpload')
 
           // Upload image blob to Supabase
           let { data, error } = await supabase.storage
@@ -191,7 +175,7 @@ const handler = async (req, res) => {
                 upsert: true,
               }
             )
-          setTiming('supabaseUpload', perf)
+          serverTiming.measure('supabaseUpload')
 
           if (error) {
             throw error
@@ -201,17 +185,17 @@ const handler = async (req, res) => {
             metadata.image = `https://exjtybpqdtxkznbmllfi.supabase.co/storage/v1/object/public/${data.Key}`
 
             // Generate a blur placeholder
-            setTiming('blurPlaceholder', perf)
+            serverTiming.measure('blurPlaceholder')
             const { base64 } = await getPlaiceholder(metadata.image)
             metadata.imageBlur = base64
-            setTiming('blurPlaceholder', perf)
+            serverTiming.measure('blurPlaceholder')
           }
         }
       }
 
       // Begin inserting entry into db
       // First, the bookmark itself since we need its ID for later inserts
-      setTiming('bookmarkUpsert', perf)
+      serverTiming.measure('bookmarkUpsert')
       const upsertBookmarkRes = await prisma.bookmark.upsert({
         include: {
           category: true,
@@ -257,12 +241,12 @@ const handler = async (req, res) => {
         },
         where: { url_userId: { url: url, userId: userId } },
       })
-      setTiming('bookmarkUpsert', perf)
+      serverTiming.measure('bookmarkUpsert')
 
       let upsertTagRes
       // Next, if there are tags, insert them sequentially
       if (tags && tags.filter(Boolean).length) {
-        setTiming('tagMapUpsert', perf)
+        serverTiming.measure('tagMapUpsert')
         upsertTagRes = await Promise.all(
           tags.map(async (tag) => {
             return await prisma.tag.upsert({
@@ -304,19 +288,11 @@ const handler = async (req, res) => {
             })
           })
         )
-        setTiming('tagMapUpsert', perf)
+        serverTiming.measure('tagMapUpsert')
       }
 
-      setTiming('total', perf)
       // Generate Server-Timing headers
-      res.setHeader(
-        'Server-Timing',
-        Object.entries(perf)
-          .map(([name, measurements]) => {
-            return `${name};dur=${measurements.dur}`
-          })
-          .join(',')
-      )
+      res.setHeader('Server-Timing', serverTiming.setHeader())
       res.setHeader('Access-Control-Allow-Origin', '*')
 
       // Return response to client
@@ -325,7 +301,7 @@ const handler = async (req, res) => {
         .json({ data: { ...upsertBookmarkRes, tags: upsertTagRes ?? [] } })
     }
     case 'GET': {
-      const perfStart = performance.now()
+      serverTiming.start()
       const { q, limit = 10 } = query
       const { authorization: userId } = headers
 
@@ -366,13 +342,7 @@ const handler = async (req, res) => {
             ],
           },
         })
-        const perfStop = performance.now()
-        const dur = perfStop - perfStart
-        res.setHeader(
-          'Server-Timing',
-          `search;desc="Execute Search";dur=${dur}
-          `.replace(/\n/g, '')
-        )
+        res.setHeader('Server-Timing', serverTiming.setHeader())
         res.setHeader('Access-Control-Allow-Origin', '*')
         return res.status(200).json({ results: bookmarksResults })
       } catch (error) {

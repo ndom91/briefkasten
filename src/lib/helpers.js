@@ -24,14 +24,32 @@ export const range = (start, end) => {
   return Array.from({ length }, (_, i) => i + start)
 }
 
-export const setTiming = (name, obj) => {
-  const now = performance.now()
-  if (obj[name]?.start) {
-    obj[name].end = now
-    obj[name].dur = now - obj[name].start
-  } else {
-    obj[name] = { start: now }
-  }
+export const serverTiming = {
+  timings: {},
+  start: () => {
+    serverTiming.timings = {
+      total: {
+        start: performance.now(),
+      },
+    }
+  },
+  measure: (name) => {
+    const now = performance.now()
+    if (serverTiming.timings[name]?.start) {
+      serverTiming.timings[name].end = now
+      serverTiming.timings[name].dur = now - serverTiming.timings[name].start
+    } else {
+      serverTiming.timings[name] = { start: now }
+    }
+  },
+  setHeader: () => {
+    serverTiming.measure('total')
+    return Object.entries(serverTiming.timings)
+      .map(([name, measurements]) => {
+        return `${name};dur=${measurements.dur}`
+      })
+      .join(',')
+  },
 }
 
 export const isAbsoluteUrl = (url) => /^[a-z][a-z0-9+.-]*:/.test(url)
