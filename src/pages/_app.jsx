@@ -32,28 +32,29 @@ export default function Briefkasten({
   /* } */
 
   // OpenReplay
-  if (
-    (typeof window !== 'undefined' &&
+  useEffect(() => {
+    if (
       !window.__OPENREPLAY__ &&
-      process.env.NEXT_PUBLIC_OPENREPLAY_KEY,
-    process.env.NEXT_PUBLIC_OPENREPLAY_URL,
-    process.env.NODE_ENV !== 'development')
-  ) {
-    const tracker = new Tracker({
-      projectKey: process.env.NEXT_PUBLIC_OPENREPLAY_KEY,
-      ingestPoint: process.env.NEXT_PUBLIC_OPENREPLAY_URL,
-    })
-
-    if (session?.user) {
-      tracker.start({
-        userID: session.user.userId,
-        metadata: {
-          name: session.user.name,
-          email: session.user.email,
-        },
+      process.env.NEXT_PUBLIC_OPENREPLAY_KEY &&
+      process.env.NEXT_PUBLIC_OPENREPLAY_URL &&
+      process.env.NODE_ENV !== 'development'
+    ) {
+      const tracker = new Tracker({
+        projectKey: process.env.NEXT_PUBLIC_OPENREPLAY_KEY,
+        ingestPoint: process.env.NEXT_PUBLIC_OPENREPLAY_URL,
       })
+
+      if (session?.user) {
+        tracker.start({
+          userID: session.user.userId,
+          metadata: {
+            name: session.user.name,
+            email: session.user.email,
+          },
+        })
+      }
     }
-  }
+  }, [])
 
   return (
     <ZustandProvider createStore={createStore}>
