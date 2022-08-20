@@ -6,7 +6,6 @@ services:
     image: postgres
     restart: unless-stopped
     environment:
-      # - DATABASE_HOST=127.0.0.1
       - POSTGRES_USER=bkAdmin
       - POSTGRES_PASSWORD=briefkasten
       - POSTGRES_DB=briefkasten
@@ -16,10 +15,7 @@ services:
       - briefkasten-db:/var/lib/postgresql/data
   app:
     container_name: bk-app
-    build:
-      context: .
-      args:
-        - DATABASE_URL=${DATABASE_URL}
+    build: .
     env_file:
       - .env
     restart: unless-stopped

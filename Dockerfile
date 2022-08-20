@@ -1,4 +1,3 @@
-# syntax=docker/dockerfile:1
 FROM node:16-bullseye-slim as dependencies
 
 LABEL org.opencontainers.image.title="Briefkasten" \
@@ -14,8 +13,6 @@ LABEL org.opencontainers.image.title="Briefkasten" \
 WORKDIR /app
 
 # Install pnpm
-# RUN curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm
-# RUN curl -fsSL https://get.pnpm.io/install.sh | /usr/bin/env bash -
 RUN npm install -g pnpm; \
  pnpm --version; \
  pnpm setup; \
@@ -33,8 +30,6 @@ RUN pnpm install --frozen-lockfile
 # ---- Build ----
 FROM node:16-bullseye-slim as build
 WORKDIR /app
-
-ARG DATABASE_URL=${DATABASE_URL}
 
 # Install pnpm
 # @TODO: Copy from 'dependencies'
