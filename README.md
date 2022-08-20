@@ -109,6 +109,8 @@ You can also self-host Briefkasten with Docker. To do so, you must:
    2. Then run `pnpm db:push` inside the container. This will push the database schema from prisma to the configured database.
 5. Now your application and database should be up and running at the default `http://localhost:3000`
 
+More details can be found in the [Docker section](https://briefkasten-docs.vercel.app/docs/self-hosting.html#docker) of the docs.
+
 ## 🕸 Related
 
 <img src="public/screenshot_ext.png" align="right" />
