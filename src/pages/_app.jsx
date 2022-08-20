@@ -1,4 +1,5 @@
 import LogRocket from 'logrocket'
+import Tracker from '@openreplay/tracker/cjs'
 import setupLogRocketReact from 'logrocket-react'
 import { SessionProvider } from 'next-auth/react'
 
@@ -13,6 +14,7 @@ export default function Briefkasten({
 }) {
   const createStore = useCreateStore(pageProps.initialZustandState)
 
+  // Logrocket
   if (
     typeof window !== 'undefined' &&
     window._lr_loaded !== true &&
@@ -25,6 +27,25 @@ export default function Briefkasten({
         name: session.user.name,
         email: session.user.email,
       })
+    }
+  }
+
+  // OpenReplay
+  if (
+    typeof window !== 'undefined' &&
+    !window.__OPENREPLAY__ &&
+    process.env.NODE_ENV !== 'development'
+  ) {
+    const tracker = new Tracker({
+      projectKey: '8yWHdmOk4sTi352UaFdk',
+      ingestPoint: 'https://openreplay.ndo.dev/ingest',
+      onStart: () => {
+        tracker.setUserID(session.user.userId)
+      },
+    })
+
+    if (session?.user) {
+      tracker.start()
     }
   }
 
