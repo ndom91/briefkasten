@@ -51,7 +51,7 @@ COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
 
 # build project
-RUN pnpm dlx prisma migrate deploy
+RUN pnpm dlx prisma generate
 RUN pnpm build
 
 # ---- Release ----
@@ -79,6 +79,7 @@ RUN adduser --system --uid 1001 nextjs
 COPY --from=build --chown=nextjs:nodejs /app/next.config.mjs ./
 COPY --from=build --chown=nextjs:nodejs /app/.next ./.next
 COPY --from=build --chown=nextjs:nodejs /app/public ./public
+COPY --from=build --chown=nextjs:nodejs /app/prisma ./prisma
 COPY --from=build --chown=nextjs:nodejs /app/package.json ./package.json
 COPY --from=build --chown=nextjs:nodejs /app/node_modules ./node_modules
 

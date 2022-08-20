@@ -14,7 +14,7 @@ services:
       - 5432:5432
     volumes:
       - briefkasten-db:/var/lib/postgresql/data
-  briefkasten:
+  app:
     container_name: bk-app
     build:
       context: .
@@ -27,19 +27,5 @@ services:
       - 3000:3000
     depends_on:
       - 'postgres'
-    command: ['./wait-for-it.sh', 'postgres:5432', '--', 'pnpm', 'start']
-
-    # environment:
-    #   - DATABASE_URL=postgres://bkAdmin:briefkasten@postgres:5432/briefkasten?sslmode=disable
-    #   - NEXTAUTH_URL=http://localhost:3000
-    #   - NEXTAUTH_SECRET=1244054efaed954585e2c1864d25c1e40c414d1dfbd4051f35bd52fe497c9715
-    #   - GOOGLE_ID=
-    #   - GOOGLE_SECRET=
-    #   - GITHUB_ID=
-    #   - GITHUB_SECRET=
-    #   - SMTP_SERVER=
-    #   - SMTP_FROM=
-    #   - SUPABASE_URL=
-    #   - SUPABASE_KEY=
 volumes:
   briefkasten-db:
