@@ -171,7 +171,7 @@ const handler = async (req, res) => {
         // Generate image with puppeteer
         setTiming('puppeteer', perf)
         const imageRes = await fetch(
-          `https://briefkasten-screenshot.vercel.app/api/image?url=${encodeURIComponent(
+          `https://screenshot.briefkastenhq.com/api/image?url=${encodeURIComponent(
             url
           )}`
         )

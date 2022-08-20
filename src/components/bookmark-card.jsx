@@ -52,7 +52,7 @@ export default function BookmarkCard({ bookmark, toggleSidebar, session }) {
   async function fetchFallbackImage(url) {
     try {
       const res = await fetch(
-        `https://briefkasten-screenshot.vercel.app/api/image?url=${encodeURIComponent(
+        `https://screenshot.briefkastenhq.com/api/image?url=${encodeURIComponent(
           url
         )}`
       )

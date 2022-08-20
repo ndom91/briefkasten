@@ -2,7 +2,7 @@
   "name": "briefkasten",
   "description": "Self-hosted Bookmarks Management Application",
   "author": "ndom91 <yo@ndo.dev>",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "license": "MIT",
   "keywords": [
     "next.js",
