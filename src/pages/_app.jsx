@@ -1,6 +1,6 @@
-import LogRocket from 'logrocket'
+/* import LogRocket from 'logrocket' */
+/* import setupLogRocketReact from 'logrocket-react' */
 import Tracker from '@openreplay/tracker/cjs'
-import setupLogRocketReact from 'logrocket-react'
 import { SessionProvider } from 'next-auth/react'
 
 import { useCreateStore, ZustandProvider } from '@/lib/store'
@@ -15,21 +15,21 @@ export default function Briefkasten({
   const createStore = useCreateStore(pageProps.initialZustandState)
 
   // Logrocket
-  if (
-    (typeof window !== 'undefined' &&
-      window._lr_loaded !== true &&
-      process.env.NEXT_PUBLIC_LOGROCKET_KEY,
-    process.env.NODE_ENV !== 'development')
-  ) {
-    LogRocket.init(process.env.NEXT_PUBLIC_LOGROCKET_KEY)
-    setupLogRocketReact(LogRocket)
-    if (session?.user) {
-      LogRocket.identify(session.user.userId, {
-        name: session.user.name,
-        email: session.user.email,
-      })
-    }
-  }
+  /* if ( */
+  /*   (typeof window !== 'undefined' && */
+  /*     window._lr_loaded !== true && */
+  /*     process.env.NEXT_PUBLIC_LOGROCKET_KEY, */
+  /*   process.env.NODE_ENV !== 'development') */
+  /* ) { */
+  /*   LogRocket.init(process.env.NEXT_PUBLIC_LOGROCKET_KEY) */
+  /*   setupLogRocketReact(LogRocket) */
+  /*   if (session?.user) { */
+  /*     LogRocket.identify(session.user.userId, { */
+  /*       name: session.user.name, */
+  /*       email: session.user.email, */
+  /*     }) */
+  /*   } */
+  /* } */
 
   // OpenReplay
   if (
