@@ -1,5 +1,6 @@
 /* import LogRocket from 'logrocket' */
 /* import setupLogRocketReact from 'logrocket-react' */
+import { useEffect } from 'react'
 import Tracker from '@openreplay/tracker/cjs'
 import { SessionProvider } from 'next-auth/react'
 
