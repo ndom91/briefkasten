@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  postgres:
+    container_name: bk-postgres
+    image: postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=bkAdmin
+      - POSTGRES_PASSWORD=briefkasten
+      - POSTGRES_DB=briefkasten
+    ports:
+      - 5432:5432
+    volumes:
+      - briefkasten-db:/var/lib/postgresql/data
+  app:
+    container_name: bk-app
+    build: .
+    env_file:
+      - .env
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    depends_on:
+      - 'postgres'
+volumes:
+  briefkasten-db:
