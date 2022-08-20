@@ -16,11 +16,12 @@ export default function Briefkasten({
 
   // Logrocket
   if (
-    typeof window !== 'undefined' &&
-    window._lr_loaded !== true &&
-    process.env.NODE_ENV !== 'development'
+    (typeof window !== 'undefined' &&
+      window._lr_loaded !== true &&
+      process.env.NEXT_PUBLIC_LOGROCKET_KEY,
+    process.env.NODE_ENV !== 'development')
   ) {
-    LogRocket.init('4ayekz/briefkasten')
+    LogRocket.init(process.env.NEXT_PUBLIC_LOGROCKET_KEY)
     setupLogRocketReact(LogRocket)
     if (session?.user) {
       LogRocket.identify(session.user.userId, {
@@ -32,13 +33,15 @@ export default function Briefkasten({
 
   // OpenReplay
   if (
-    typeof window !== 'undefined' &&
-    !window.__OPENREPLAY__ &&
-    process.env.NODE_ENV !== 'development'
+    (typeof window !== 'undefined' &&
+      !window.__OPENREPLAY__ &&
+      process.env.NEXT_PUBLIC_OPENREPLAY_KEY,
+    process.env.NEXT_PUBLIC_OPENREPLAY_URL,
+    process.env.NODE_ENV !== 'development')
   ) {
     const tracker = new Tracker({
-      projectKey: '8yWHdmOk4sTi352UaFdk',
-      ingestPoint: 'https://openreplay.ndo.dev/ingest',
+      projectKey: process.env.NEXT_PUBLIC_OPENREPLAY_KEY,
+      ingestPoint: process.env.NEXT_PUBLIC_OPENREPLAY_URL,
     })
 
     if (session?.user) {
