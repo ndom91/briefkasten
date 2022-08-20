@@ -4,12 +4,11 @@
 ![GitHub issues](https://img.shields.io/github/issues/ndom91/briefkasten?style=flat-square)
 ![Checkly](https://api.checklyhq.com/v1/badges/checks/9c682653-d7de-4e32-8183-73d76631b0e2?style=flat-square&responseTime=false)
 ![GitHub](https://img.shields.io/github/license/ndom91/briefkasten?style=flat-square)
-[![Demo](https://img.shields.io/badge/demo-click%20here-brightgreen?style=flat-square)](https://briefkasten.vercel.app)
+[![Demo](https://img.shields.io/badge/demo-click%20here-brightgreen?style=flat-square)](https://briefkastenhq.com)
 
 Self-hosted bookmarking application. Works with any Prisma compatible database (MySQL, Postgres, SQLite, etc.)
 
-- Cloud Instance: [briefkasten.vercel.app](https://briefkasten.vercel.app)
-- Docs: [briefkasten-docs.vercel.app](https://briefkasten-docs.vercel.app)
+### Free Instance: [briefkastenhq.com](https://briefkastenhq.com) [[Docs](https://docs.briefkastenhq.com)]
 
 ## 📸 Screenshots
 
@@ -55,7 +54,7 @@ To self-host this application, you'll need the following thins:
 3. Database that works with Prisma (i.e. MySQL, Postgres, SQLite, etc.)
 4. Image hosting space (i.e. Supabase / ImageKit / Cloudinary) (**optional**)
 
-These are all relatively straight forward, other than the image hoster. This was chosen to avoid putting the images in the database. The example application at [briefkasten.vercel.app](https://briefkasten.vercel.app) is using [Supabase Storage](https://supabase.com), but any other similar provider like Cloudinary or a simple S3 Bucket would also do the job. I chose Supabase, because they have an easy to use SDK, a decent free tier, and I was already using their Postgres service.
+These are all relatively straight forward, other than the image hoster. This was chosen to avoid putting the images in the database. The example application at [briefkastenhq.com](https://briefkastenhq.com) is using [Supabase Storage](https://supabase.com), but any other similar provider like Cloudinary or a simple S3 Bucket would also do the job. I chose Supabase, because they have an easy to use SDK, a decent free tier, and I was already using their Postgres service.
 
 After you've got an account setup at all of the above providers, or have your own infrastructure ready to go, you can continue on to the next steps below.
 
@@ -102,12 +101,12 @@ You can also self-host Briefkasten with Docker. To do so, you must:
 
 1. Install `docker` and `docker-compose`.
 2. Clone the repository and copy the `.env.example` to `.env` file.
-    1. Here you also need to fill out the `DATABASE_URL` and `NEXTAUTH_*` environment variables at minimum.
-    2. The `DATABASE_URL` for the postgres container should be `DATABASE_URL=postgres://bkAdmin:briefkasten@postgres:5432/briefkasten?sslmode=disable`
+   1. Here you also need to fill out the `DATABASE_URL` and `NEXTAUTH_*` environment variables at minimum.
+   2. The `DATABASE_URL` for the postgres container should be `DATABASE_URL=postgres://bkAdmin:briefkasten@postgres:5432/briefkasten?sslmode=disable`
 3. Run `docker-compose up -d` in the root of the repository. This will start the application as well as the database for you.
 4. After the initial start, you still have to manually seed the database. This is most easily done through the app container (`bk-app`).
-    1. Run `docker exec -it bk-app /bin/bash` to enter a terminal session inside the container.
-    2. Then run `pnpm db:push` inside the container. This will push the database schema from prisma to the configured database.
+   1. Run `docker exec -it bk-app /bin/bash` to enter a terminal session inside the container.
+   2. Then run `pnpm db:push` inside the container. This will push the database schema from prisma to the configured database.
 5. Now your application and database should be up and running at the default `http://localhost:3000`
 
 ## 🕸 Related
@@ -116,7 +115,7 @@ You can also self-host Briefkasten with Docker. To do so, you must:
 
 ### 📲 Save from Android Share Menu
 
-With this open-source application [HTTP Shortcuts](https://http-shortcuts.rmy.ch/), you can create a "Share Menu" item which executes a `POST` request with dynamic input, i.e. a web page's URL and title. This makes it super easy to share items from your phone to Briefkasten! More information in the [docs](https://briefkasten-docs.vercel.app/docs/getting-started.html#http-shortcuts-android).
+With this open-source application [HTTP Shortcuts](https://http-shortcuts.rmy.ch/), you can create a "Share Menu" item which executes a `POST` request with dynamic input, i.e. a web page's URL and title. This makes it super easy to share items from your phone to Briefkasten! More information in the [docs](https://docs.briefkastenhq.com/docs/getting-started.html#http-shortcuts-android).
 
 ### 🌍 Browser Extension
 
