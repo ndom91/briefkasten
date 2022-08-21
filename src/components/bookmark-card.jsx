@@ -57,7 +57,7 @@ export default function BookmarkCard({ bookmark, toggleSidebar, session }) {
         )}`
       )
       const data = await res.blob()
-      if (data.type === 'image/jpeg') {
+      if (data.type === 'image/png') {
         const dataUrl = await asyncFileReader(data)
         const uploadRes = await fetch(
           `/api/bookmarks/uploadImage?fileName=${

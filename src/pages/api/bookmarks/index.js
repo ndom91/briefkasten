@@ -161,17 +161,17 @@ const handler = async (req, res) => {
         )
         serverTiming.measure('puppeteer')
         const imageBlob = await imageRes.blob()
-        if (imageBlob.type === 'image/jpeg') {
+        if (imageBlob.type === 'image/png') {
           serverTiming.measure('supabaseUpload')
 
           // Upload image blob to Supabase
           let { data, error } = await supabase.storage
             .from('bookmark-imgs')
             .upload(
-              `${session?.user?.userId || userId}/${new URL(url).hostname}.jpg`,
+              `${session?.user?.userId || userId}/${new URL(url).hostname}.png`,
               await imageBlob.arrayBuffer(),
               {
-                contentType: 'image/jpeg',
+                contentType: 'image/png',
                 upsert: true,
               }
             )

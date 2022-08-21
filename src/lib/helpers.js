@@ -15,7 +15,7 @@ export const asyncFileReader = async (blob) => {
     })
   } else {
     let buffer = Buffer.from(await blob.arrayBuffer())
-    return `data:image/jpeg;bas64,${buffer.toString('base64')}`
+    return `data:image/png;bas64,${buffer.toString('base64')}`
   }
 }
 

@@ -8,7 +8,7 @@ export default async function handler(req) {
     return new Response(buffer, {
       status: 200,
       headers: {
-        'Content-Type': result.headers.get('content-type') ?? 'image/jpeg',
+        'Content-Type': result.headers.get('content-type') ?? 'image/png',
       },
     })
   }
