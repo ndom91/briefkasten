@@ -1,25 +1,22 @@
 !(function () {
   'use strict'
-  var t,
-    a = window.location,
+  var a = window.location,
     r = window.document,
+    t = window.localStorage,
     o = r.currentScript,
     s = o.getAttribute('data-api') || new URL(o.src).origin + '/api/event',
-    l = window.localStorage.plausible_ignore
+    l = t && t.plausible_ignore
   function p(t) {
     console.warn('Ignoring Event: ' + t)
   }
   function e(t, e) {
     if (
-      /^localhost$|^127(?:\.[0-9]+){0,2}\.[0-9]+$|^(?:0*\:)*?:?0*1$/.test(
-        a.hostname
-      ) ||
+      /^localhost$|^127(\.[0-9]+){0,2}\.[0-9]+$|^\[::1?\]$/.test(a.hostname) ||
       'file:' === a.protocol
     )
       return p('localhost')
     if (
       !(
-        window.phantom ||
         window._phantom ||
         window.__nightmare ||
         window.navigator.webdriver ||
@@ -44,10 +41,7 @@
         })
     }
   }
-  function i() {
-    t !== a.pathname && ((t = a.pathname), e('pageview'))
-  }
-  function n(t) {
+  function i(t) {
     for (
       var e = t.target,
         i = 'auxclick' == t.type && 2 == t.which,
@@ -61,7 +55,7 @@
       e.host &&
       e.host !== a.host &&
       ((i || n) &&
-        plausible('Outbound Link: Click', { props: { url: e.href } }),
+        window.plausible('Outbound Link: Click', { props: { url: e.href } }),
       (e.target && !e.target.match(/^_(self|parent|top)$/i)) ||
         t.ctrlKey ||
         t.metaKey ||
@@ -72,22 +66,24 @@
         }, 150),
         t.preventDefault()))
   }
-  var c,
-    d = window.history
-  d.pushState &&
-    ((c = d.pushState),
-    (d.pushState = function () {
-      c.apply(this, arguments), i()
-    }),
-    window.addEventListener('popstate', i)),
-    r.addEventListener('click', n),
-    r.addEventListener('auxclick', n)
-  var u = (window.plausible && window.plausible.q) || []
+  r.addEventListener('click', i), r.addEventListener('auxclick', i)
+  var n = (window.plausible && window.plausible.q) || []
   window.plausible = e
-  for (var w = 0; w < u.length; w++) e.apply(this, u[w])
-  'prerender' === r.visibilityState
-    ? r.addEventListener('visibilitychange', function () {
-        t || 'visible' !== r.visibilityState || i()
-      })
-    : i()
+  for (var c, d = 0; d < n.length; d++) e.apply(this, n[d])
+  function u() {
+    c !== a.pathname && ((c = a.pathname), e('pageview'))
+  }
+  var w,
+    h = window.history
+  h.pushState &&
+    ((w = h.pushState),
+    (h.pushState = function () {
+      w.apply(this, arguments), u()
+    }),
+    window.addEventListener('popstate', u)),
+    'prerender' === r.visibilityState
+      ? r.addEventListener('visibilitychange', function () {
+          c || 'visible' !== r.visibilityState || u()
+        })
+      : u()
 })()
