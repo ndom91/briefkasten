@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { range } from '@/lib/helpers'
+import { perf, range } from '@/lib/helpers'
 import { useToastDispatchContext } from '@/lib/toastContext'
 export { toastTypes } from '@/lib/constants'
 
@@ -7,9 +7,10 @@ export const useToast = (delay) => {
   const dispatch = useToastDispatchContext()
 
   function toast(type, title, body = '') {
-    const id = (
-      performance.now().toString(36) + Math.random().toString(36)
-    ).replace(/\./g, '')
+    const id = (perf().now().toString(36) + Math.random().toString(36)).replace(
+      /\./g,
+      ''
+    )
 
     dispatch({
       type: 'ADD_TOAST',

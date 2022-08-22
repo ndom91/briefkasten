@@ -19,6 +19,10 @@ export const asyncFileReader = async (blob) => {
   }
 }
 
+export const perf = () => {
+  return performance ? performance : { now: () => new Date().getTime() }
+}
+
 export const range = (start, end) => {
   let length = end - start + 1
   return Array.from({ length }, (_, i) => i + start)
@@ -29,12 +33,12 @@ export const serverTiming = {
   start: () => {
     serverTiming.timings = {
       total: {
-        start: performance.now(),
+        start: perf().now(),
       },
     }
   },
   measure: (name, desc) => {
-    const now = performance.now()
+    const now = perf().now()
     if (serverTiming.timings[name]?.start) {
       serverTiming.timings[name].end = now
       serverTiming.timings[name].dur = now - serverTiming.timings[name].start
