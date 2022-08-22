@@ -1,6 +1,6 @@
 import prisma from '@/lib/prisma'
 import { getPlaiceholder } from 'plaiceholder'
-import { supabase } from '@/lib/supabaseClient'
+import { supabaseClient } from '@/lib/supabaseClient'
 import { unstable_getServerSession } from 'next-auth/next'
 import { authOptions } from '../auth/[...nextauth]'
 import { isAbsoluteUrl, serverTiming } from '@/lib/helpers'
@@ -9,6 +9,8 @@ const metascraper = require('metascraper')([
   require('metascraper-description')(),
   require('metascraper-title')(),
 ])
+
+const supabase = supabaseClient()
 
 const handler = async (req, res) => {
   const session = await unstable_getServerSession(req, res, authOptions)
@@ -151,7 +153,7 @@ const handler = async (req, res) => {
       serverTiming.measure('metadata')
 
       // If image hoster is enabled
-      if (process.env.SUPABASE_URL_DISABLEDDDD) {
+      if (process.env.SUPABASE_URL_TEMP_DISABLED) {
         // Generate image with puppeteer
         serverTiming.measure('puppeteer')
         const imageRes = await fetch(
@@ -182,7 +184,7 @@ const handler = async (req, res) => {
           }
 
           if (data.Key) {
-            metadata.image = `https://exjtybpqdtxkznbmllfi.supabase.co/storage/v1/object/public/${data.Key}`
+            metadata.image = `https://${process.env.SUPABASE_BUCKET_ID}.supabase.co/storage/v1/object/public/${data.Key}`
 
             // Generate a blur placeholder
             serverTiming.measure('blurPlaceholder')
@@ -361,12 +363,14 @@ const handler = async (req, res) => {
             where: { id },
           })
 
-          const { error } = await supabase.storage
-            .from('bookmark-imgs')
-            .remove([imageFileName])
+          if (process.env.SUPABASE_URL) {
+            const { error } = await supabase.storage
+              .from('bookmark-imgs')
+              .remove([imageFileName])
 
-          if (error) {
-            throw error
+            if (error) {
+              throw error
+            }
           }
         } catch (error) {
           console.error('ERR', error)
