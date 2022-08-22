@@ -1,8 +1,10 @@
 import prisma from '@/lib/prisma'
 import { getPlaiceholder } from 'plaiceholder'
-import { supabase } from '@/lib/supabaseClient'
+import { supabaseClient } from '@/lib/supabaseClient'
 import { getSession } from 'next-auth/react'
 import { prepareBase64DataUrl } from '@/lib/helpers'
+
+const supabase = supabaseClient()
 
 export default async function handler(req, res) {
   const session = await getSession({ req })
@@ -38,14 +40,14 @@ export default async function handler(req, res) {
           }
 
           const { base64 } = await getPlaiceholder(
-            `https://exjtybpqdtxkznbmllfi.supabase.co/storage/v1/object/public/${data.Key}`
+            `https://${process.env.SUPABASE_BUCKET_ID}.supabase.co/storage/v1/object/public/${data.Key}`
           )
 
           // Save absolute image URL to database
           await prisma.bookmark.update({
             where: { id },
             data: {
-              image: `https://exjtybpqdtxkznbmllfi.supabase.co/storage/v1/object/public/${data.Key}`,
+              image: `https://${process.env.SUPABASE_BUCKET_ID}.supabase.co/storage/v1/object/public/${data.Key}`,
               imageBlur: base64,
             },
           })
@@ -54,7 +56,7 @@ export default async function handler(req, res) {
           return res.status(200).json({
             message: `Uploaded ${session.user?.userId}/${fileName}.jpg`,
             image: {
-              url: `https://exjtybpqdtxkznbmllfi.supabase.co/storage/v1/object/public/${data.Key}`,
+              url: `https://${process.env.SUPABASE_BUCKET_ID}.supabase.co/storage/v1/object/public/${data.Key}`,
               filePath: `${session.user?.userId}/${fileName}.jpg`,
             },
           })
