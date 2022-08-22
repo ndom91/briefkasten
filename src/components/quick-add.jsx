@@ -89,10 +89,10 @@ export default function QuickAdd({ categories, session }) {
         setCategory('')
         setSelectedTags([])
         setDescription('')
+        toggleOpen()
       } else {
         toast(toastTypes.ERROR, 'Error Saving')
       }
-      toggleOpen()
       setLoading(false)
     } catch (error) {
       console.error('[ERROR] Submitting URL', error)
