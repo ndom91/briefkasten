@@ -20,11 +20,7 @@ export const asyncFileReader = async (blob) => {
 }
 
 export const perf = () => {
-  if (performance) {
-    return performance
-  } else {
-    return { now: () => new Date().getTime() }
-  }
+  return { now: () => new Date().getTime() }
 }
 
 export const range = (start, end) => {
