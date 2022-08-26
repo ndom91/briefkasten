@@ -110,7 +110,7 @@ export default function DashboardHeader() {
           type="button"
           aria-label="List View"
           onClick={() => updateActiveView(viewTypes.LIST.name)}
-          className={`inline-flex w-auto cursor-pointer select-none appearance-none items-center justify-center rounded-r-md border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition hover:border-gray-300 hover:bg-gray-100 focus:z-10 focus:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 md:rounded-none ${
+          className={`inline-flex w-auto cursor-pointer select-none appearance-none items-center justify-center rounded-r-md border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition hover:border-gray-300 hover:bg-gray-100 focus:z-10 focus:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 ${
             activeView === viewTypes.LIST.name &&
             '!bg-slate-800 !text-white hover:!bg-slate-900'
           } `}
@@ -119,22 +119,6 @@ export default function DashboardHeader() {
             className="h-5 w-5 shrink-0 font-semibold"
             viewBox="0 0 256 256"
             dangerouslySetInnerHTML={{ __html: viewTypes.LIST.icon }}
-          />
-        </button>
-        <button
-          type="button"
-          aria-label="Detail View"
-          disabled={true}
-          onClick={() => updateActiveView(viewTypes.DETAIL.name)}
-          className={`hidden w-auto cursor-pointer select-none appearance-none items-center justify-center rounded-r-md border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition hover:cursor-not-allowed hover:border-gray-300 hover:bg-gray-100 focus:z-10 focus:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 md:inline-flex ${
-            activeView === viewTypes.DETAIL.name &&
-            '!bg-slate-800 !text-white hover:!bg-slate-900'
-          } `}
-        >
-          <svg
-            className="h-5 w-5 shrink-0 font-semibold"
-            viewBox="0 0 256 256"
-            dangerouslySetInnerHTML={{ __html: viewTypes.DETAIL.icon }}
           />
         </button>
       </div>

@@ -540,35 +540,6 @@ export default function Sidebar({ session }) {
                   <Menu.Item>
                     {({ active }) => (
                       <NextLink
-                        href="/profile"
-                        className={`${
-                          active ? 'bg-slate-500 text-white' : 'text-gray-900'
-                        } group flex w-full items-center justify-start space-x-2 rounded-md px-2 py-2 text-sm`}
-                      >
-                        <svg
-                          className={`h-5 w-5 ${
-                            active ? 'text-slate-200' : 'text-slate-600'
-                          }`}
-                          aria-hidden="true"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                          />
-                        </svg>
-                        <span>Profile</span>
-                      </NextLink>
-                    )}
-                  </Menu.Item>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <NextLink
                         href="/settings"
                         className={`${
                           active ? 'bg-slate-500 text-white' : 'text-gray-900'
