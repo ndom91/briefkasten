@@ -320,6 +320,7 @@ const handler = async (req, res) => {
             title: true,
             url: true,
             createdAt: true,
+            userId: true,
           },
           where: {
             AND: {
@@ -328,17 +329,20 @@ const handler = async (req, res) => {
             OR: [
               {
                 desc: {
-                  search: q,
+                  contains: q,
+                  mode: 'insensitive',
                 },
               },
               {
                 url: {
-                  search: q,
+                  contains: q,
+                  mode: 'insensitive',
                 },
               },
               {
                 title: {
-                  search: q,
+                  contains: q,
+                  mode: 'insensitive',
                 },
               },
             ],
