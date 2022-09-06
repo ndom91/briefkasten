@@ -62,7 +62,7 @@ export default function Briefkasten({
         })
       }
     }
-  }, [])
+  }, [session?.user])
 
   return (
     <ZustandProvider createStore={createStore}>
