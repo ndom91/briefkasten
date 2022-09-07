@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import { useStore } from '@/lib/store'
 import { useToast, toastTypes } from '@/lib/hooks'
 import { useToggle, useClickAway } from 'react-use'
-/* import { useFocusTrap } from 'react-use-focus-trap' */
+import { useFocusTrap } from 'react-use-focus-trap'
 
 import { Fragment } from 'react'
 import { Combobox, Listbox, Popover, Transition } from '@headlessui/react'
@@ -22,7 +22,7 @@ export default function QuickAdd({ categories, session }) {
   const [comboQuery, setComboQuery] = useState('')
 
   const popoverRef = useRef(null)
-  /* const [trapRef] = useFocusTrap() */
+  const [trapRef] = useFocusTrap()
 
   useClickAway(popoverRef, () => toggleOpen())
 
@@ -117,10 +117,7 @@ export default function QuickAdd({ categories, session }) {
 
   return (
     <div>
-      <Popover
-        className=""
-        /* ref={trapRef} */
-      >
+      <Popover className="" ref={trapRef}>
         {() => (
           <>
             <Popover.Button

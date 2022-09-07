@@ -26,8 +26,8 @@
     "@openreplay/tracker": "^3.6.0",
     "@openreplay/tracker-fetch": "^3.5.3",
     "@prisma/client": "4.3.1",
-    "framer-motion": "^7.2.1",
     "@supabase/supabase-js": "2.0.0-rc.8",
+    "framer-motion": "^7.2.1",
     "immer": "^9.0.15",
     "logrocket": "^3.0.1",
     "logrocket-react": "^5.0.1",
@@ -41,7 +41,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-use": "^17.4.0",
-    "react-use-focus-trap": "^1.0.1",
+    "react-use-focus-trap": "1.1.7",
     "sharp": "^0.30.7",
     "zustand": "^4.1.1"
   },

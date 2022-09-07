@@ -36,7 +36,7 @@ specifiers:
   react: 18.2.0
   react-dom: 18.2.0
   react-use: ^17.4.0
-  react-use-focus-trap: ^1.0.1
+  react-use-focus-trap: 1.1.7
   sharp: ^0.30.7
   simple-git-hooks: ^2.8.0
   simple-zustand-devtools: ^1.1.0
@@ -65,7 +65,7 @@ dependencies:
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
   react-use: 17.4.0_biqbaboplfbrettd7655fr4n2y
-  react-use-focus-trap: 1.0.1_react@18.2.0
+  react-use-focus-trap: 1.1.7_react@18.2.0
   sharp: 0.30.7
   zustand: 4.1.1_immer@9.0.15+react@18.2.0
 
@@ -4429,8 +4429,8 @@ packages:
       tslib: 2.4.0
     dev: false
 
-  /react-use-focus-trap/1.0.1_react@18.2.0:
-    resolution: {integrity: sha512-u4ZZxvvTroZFBmn9eMSr8LDmZfQ7C5rDtnDzr1BHcT/BCyB6PkIcd4opgifWkv9pEgLztzmUMxIEUc2/Ch4qAg==}
+  /react-use-focus-trap/1.1.7_react@18.2.0:
+    resolution: {integrity: sha512-TCKWBGF8qmPYfDYb9P3IDD3Q2yTrBW5lztopGGLHe65AAhfL21AHfuiNUZ65ZhFGDt79AR3K+aG8ecLaGfoi9g==}
     peerDependencies:
       react: ^17.0.0
     dependencies:
