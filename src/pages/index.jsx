@@ -27,7 +27,7 @@ import prisma from '@/lib/prisma'
 import Masonry from 'react-masonry-css'
 /* import { useVirtualizer } from '@tanstack/react-virtual' */
 
-const PAGE_SIZE = 45
+const PAGE_SIZE = 15
 
 /* const useBreakpoint = createBreakpoint({ */
 /*   '3xl': 2200, */

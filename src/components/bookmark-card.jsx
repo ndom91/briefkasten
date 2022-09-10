@@ -1,5 +1,5 @@
 import { useState } from 'react'
-/* import Image from 'next/future/image' */
+import Image from 'next/future/image'
 import { asyncFileReader } from '@/lib/helpers'
 import { useStore } from '@/lib/store'
 import { useToast, toastTypes } from '@/lib/hooks'
@@ -10,8 +10,9 @@ const fallbackUnsplash = `https://source.unsplash.com/random/300x201?sig=${Math.
 )}`
 
 export default function BookmarkCard({ bookmark, toggleSidebar, session }) {
-  /* const { id, title, url, desc, category, tags, createdAt, image, imageBlur } = */
-  const { id, title, url, desc, category, tags, createdAt, image } = bookmark
+  const { id, title, url, desc, category, tags, createdAt, image, imageBlur } =
+    bookmark
+  /* const { id, title, url, desc, category, tags, createdAt, image } = bookmark */
 
   const settings = useStore((state) => state.settings)
   const removeBookmark = useStore((state) => state.removeBookmark)
@@ -81,9 +82,7 @@ export default function BookmarkCard({ bookmark, toggleSidebar, session }) {
   }
 
   return (
-    <div
-      className={`bookmark-card group relative flex w-full flex-col overflow-hidden rounded-md border-2 border-slate-100 bg-white p-4 shadow-sm transition hover:shadow-lg`}
-    >
+    <div className="bookmark-card group relative flex flex-col rounded-md border-2 border-slate-100 bg-white p-4 shadow-sm transition hover:shadow-lg">
       <div className="absolute top-3 right-3 z-10 flex flex-row-reverse gap-2 rounded-lg border-0 border-slate-400/50  bg-slate-600/90 px-3 py-2 opacity-0 shadow-md transition group-hover:opacity-100">
         <button
           name="edit"
@@ -158,15 +157,15 @@ export default function BookmarkCard({ bookmark, toggleSidebar, session }) {
           rel="noopener noreferrer"
           className="group rounded-md outline-none"
         >
-          <img
-            className="aspect-2 w-full rounded-md border-2 border-slate-50 object-cover object-left-top transition group-focus:ring-4 group-focus:ring-slate-200"
+          <Image
+            className="aspect-2 w-[485px] rounded-md border-2 border-slate-50 object-cover object-left-top transition group-focus:ring-4 group-focus:ring-slate-200"
             src={`/api/imageProxy?url=${encodeURIComponent(imageUrl)}`}
             placeholder="blur"
             priority
-            /* blurDataURL={ */
-            /*   imageBlur ?? */
-            /*   'data:image/jpeg;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAADAAQDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAf/xAAfEAABBQABBQAAAAAAAAAAAAABAAIDBREEEhMiQVH/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8AolXb2FTYX0XB5crY5bOaZwkPc8nZudW4PjRgHoBERB//2Q==' */
-            /* } */
+            blurDataURL={
+              imageBlur ??
+              'data:image/jpeg;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAADAAQDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAf/xAAfEAABBQABBQAAAAAAAAAAAAABAAIDBREEEhMiQVH/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8AolXb2FTYX0XB5crY5bOaZwkPc8nZudW4PjRgHoBERB//2Q=='
+            }
             width="250"
             height="125"
             onError={() => fetchFallbackImage(url)}
@@ -174,54 +173,50 @@ export default function BookmarkCard({ bookmark, toggleSidebar, session }) {
           />
         </a>
       </div>
-      <div className="flex flex-1 flex-col justify-between">
-        <div className="flex-1">
-          <div className="flex items-center space-x-1 text-sm text-slate-400">
-            <time dateTime={createdAt} title={createdAt} className="">
-              {new Date(createdAt).toLocaleDateString(settings.locale, {
-                dateStyle: 'short',
-              })}
-            </time>
-            {category && (
-              <>
-                <span aria-hidden="true"> · </span>
-                <span className="font-bold">{category.name}</span>
-              </>
-            )}
-          </div>
-          <section className="block space-y-2">
-            <a
-              href={url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-2 block space-y-2 rounded-sm outline-none transition focus:ring-2 focus:ring-slate-200"
-            >
-              <h3 className="text-xl font-semibold leading-none tracking-tighter text-neutral-600 line-clamp-1">
-                {title}
-              </h3>
-            </a>
-            <a
-              href={url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-sm text-xs text-slate-300 outline-none transition line-clamp-1 focus:ring-2 focus:ring-slate-200"
-            >
-              {url}
-            </a>
-            {desc && (
-              <p className="text-sm font-normal text-gray-500 line-clamp-3">
-                {desc}
-              </p>
-            )}
-            {tags?.length > 0 && (
-              <div className="flex flex-wrap gap-2">
-                {tags.map((tag) => (
-                  <Chip key={tag.id} name={`${tag.emoji ?? ''} ${tag.name}`} />
-                ))}
-              </div>
-            )}
-          </section>
+      <div className="flex w-full flex-1 flex-col justify-between space-y-2">
+        <div className="flex items-center space-x-1 text-sm text-slate-400">
+          <time dateTime={createdAt} title={createdAt} className="">
+            {new Date(createdAt).toLocaleDateString(settings.locale, {
+              dateStyle: 'short',
+            })}
+          </time>
+          {category && (
+            <>
+              <span aria-hidden="true"> · </span>
+              <span className="font-bold">{category.name}</span>
+            </>
+          )}
         </div>
+        <a
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-2 block max-w-full space-y-2 rounded-sm outline-none transition focus:ring-2 focus:ring-slate-200"
+        >
+          <h3 className="w-full text-xl font-semibold leading-none tracking-tighter text-neutral-600 line-clamp-1">
+            {title}
+          </h3>
+        </a>
+        <a
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="break-all rounded-sm text-xs text-slate-300 outline-none transition line-clamp-1 focus:ring-2 focus:ring-slate-200"
+        >
+          {url}
+        </a>
+        {desc && (
+          <p className="w-full max-w-full text-sm font-normal text-gray-500 line-clamp-3">
+            {desc}
+          </p>
+        )}
+        {tags?.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {tags.map((tag) => (
+              <Chip key={tag.id} name={`${tag.emoji ?? ''} ${tag.name}`} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )
