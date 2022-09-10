@@ -142,7 +142,7 @@ export default function Sidebar({ session }) {
   return (
     <aside
       className={`z-20 max-h-screen drop-shadow-md ${
-        open ? 'basis-80' : 'basis-24 sm:basis-20'
+        open ? 'basis-72' : 'basis-20 sm:basis-24'
       } flex flex-col rounded-r-md border-r bg-slate-800 pt-5 transition`}
     >
       <div className="flex items-center justify-center px-4">
