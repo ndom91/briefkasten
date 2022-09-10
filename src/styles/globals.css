@@ -214,3 +214,16 @@ div#__next > div {
   /* change div to reference your elements you put in <Masonry> */
   margin-bottom: 30px;
 }
+
+@media (max-width: 800px) {
+  .masonry-grid {
+    margin-left: -20px; /* gutter size offset */
+  }
+  .masonry-grid-col {
+    padding-left: 15px; /* gutter size offset */
+  }
+  .masonry-grid-col > div {
+    margin-bottom: 15px; /* space between items */
+    padding-right: 15px; /* space between items */
+  }
+}

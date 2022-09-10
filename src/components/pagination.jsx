@@ -36,12 +36,12 @@ export default function Pagination({
   let lastPage = paginationRange[paginationRange.length - 1]
 
   return (
-    <div className="absolute bottom-4 z-50 flex w-full items-center justify-between px-4 py-3 sm:w-fit sm:px-6">
-      <div className="flex flex-1 justify-between px-4 sm:hidden">
+    <div className="absolute left-1/2 bottom-4 z-50 flex -translate-x-1/2 items-center justify-between py-3 sm:w-fit sm:px-6">
+      <div className="flex w-full justify-center px-4 sm:hidden">
         <a
           href="#"
           onClick={onPrevious}
-          className={`relative inline-flex w-1/2 items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 ${
+          className={`relative inline-flex w-36 items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-lg hover:bg-gray-50 ${
             currentPage === 1
               ? 'pointer-events-none !bg-slate-50 !text-slate-400 hover:cursor-default'
               : ''
@@ -52,7 +52,7 @@ export default function Pagination({
         <a
           href="#"
           onClick={onNext}
-          className={`relative ml-3 inline-flex w-1/2 items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 ${
+          className={`relative ml-3 inline-flex w-36 items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-lg hover:bg-gray-50 ${
             currentPage === lastPage
               ? 'pointer-events-none !bg-slate-50 !text-slate-400 hover:cursor-default'
               : ''

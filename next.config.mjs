@@ -36,4 +36,5 @@ const nextConfig = {
   },
 }
 
-export default withSentryConfig(nextConfig, sentryWebpackPluginOptions)
+/* export default withSentryConfig(nextConfig, sentryWebpackPluginOptions) */
+export default nextConfig

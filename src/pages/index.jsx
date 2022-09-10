@@ -27,7 +27,7 @@ import prisma from '@/lib/prisma'
 import Masonry from 'react-masonry-css'
 /* import { useVirtualizer } from '@tanstack/react-virtual' */
 
-const PAGE_SIZE = 15
+const PAGE_SIZE = 25
 
 /* const useBreakpoint = createBreakpoint({ */
 /*   '3xl': 2200, */
@@ -40,11 +40,11 @@ const PAGE_SIZE = 15
 
 const breakpointColumnsObj = {
   default: 6,
-  2320: 4,
-  1920: 3,
-  1450: 2,
-  1224: 1,
-  768: 1,
+  2020: 5,
+  1620: 4,
+  1250: 3,
+  1120: 2,
+  940: 2,
   640: 1,
 }
 
@@ -132,8 +132,6 @@ export default function Home({ nextauth }) {
     const lastPageIndex = firstPageIndex + PAGE_SIZE
     const currentBookmarks = bookmarks
       .reduce((bookmarks, thisBookmark) => {
-        thisBookmark.session = nextauth
-        thisBookmark.toggleSidebar = toggleEditSidebar
         if (categoryFilter || tagFilter) {
           // Filter shown bookmarks selected sidebar filters
           if (thisBookmark.categoryId === categoryFilter) {
