@@ -3,10 +3,11 @@ import { getPlaiceholder } from 'plaiceholder'
 import { supabaseClient } from '@/lib/supabaseClient'
 import { getSession } from 'next-auth/react'
 import { prepareBase64DataUrl } from '@/lib/helpers'
+import { withSentry } from '@sentry/nextjs'
 
 const supabase = supabaseClient()
 
-export default async function handler(req, res) {
+export default withSentry(async function handler(req, res) {
   const session = await getSession({ req })
 
   if (session) {
@@ -72,7 +73,7 @@ export default async function handler(req, res) {
     console.error('ERR - Unauthorized attempt at /api/bookmarks/uploadImage')
     return res.status(403).end('Unauthorized')
   }
-}
+})
 
 export const config = {
   api: {

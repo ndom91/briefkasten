@@ -1,8 +1,9 @@
 import prisma from '@/lib/prisma'
 import { unstable_getServerSession } from 'next-auth/next'
 import { authOptions } from '../auth/[...nextauth]'
+import { withSentry } from '@sentry/nextjs'
 
-export default async function handler(req, res) {
+export default withSentry(async function handler(req, res) {
   const session = await unstable_getServerSession(req, res, authOptions)
   const { method, body } = req
   // const { method, headers, body } = req
@@ -35,4 +36,4 @@ export default async function handler(req, res) {
     console.error('ERR - Unauthorized attempt at /api/bookmarks/bulk')
     return res.status(403).end('Unauthorized')
   }
-}
+})

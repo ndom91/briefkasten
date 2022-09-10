@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Head from 'next/head'
 import Link from 'next/link'
 import Layout from '@/components/layout'
+import * as Sentry from '@sentry/nextjs'
 
 export default function Error({ statusCode }) {
   return (
@@ -52,7 +53,10 @@ export default function Error({ statusCode }) {
   )
 }
 
-Error.getInitialProps = ({ res, err }) => {
+Error.getInitialProps = async (contextData) => {
+  const { res, err } = contextData
   const statusCode = res ? res.statusCode : err ? err.statusCode : 404
+  await Sentry.captureUnderscoreErrorException(contextData)
+
   return { statusCode }
 }

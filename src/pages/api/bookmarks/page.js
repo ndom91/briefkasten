@@ -2,6 +2,7 @@ import prisma from '@/lib/prisma'
 import { unstable_getServerSession } from 'next-auth/next'
 import { authOptions } from '../auth/[...nextauth]'
 import { serverTiming } from '@/lib/helpers'
+import { withSentry } from '@sentry/nextjs'
 
 const handler = async (req, res) => {
   const session = await unstable_getServerSession(req, res, authOptions)
@@ -51,4 +52,4 @@ const handler = async (req, res) => {
   }
 }
 
-export default handler
+export default withSentry(handler)

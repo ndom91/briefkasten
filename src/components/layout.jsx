@@ -1,7 +1,11 @@
 import Meta from '@/components/meta'
 import Sidebar from '@/components/sidebar'
+import * as Sentry from '@sentry/nextjs'
 
 export default function Layout({ children, session }) {
+  if (session?.user) {
+    Sentry.setUser({ ...session?.user })
+  }
   return (
     <>
       <Meta />

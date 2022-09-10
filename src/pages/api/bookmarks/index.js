@@ -4,6 +4,7 @@ import { supabaseClient } from '@/lib/supabaseClient'
 import { unstable_getServerSession } from 'next-auth/next'
 import { authOptions } from '../auth/[...nextauth]'
 import { isAbsoluteUrl, serverTiming } from '@/lib/helpers'
+import { withSentry } from '@sentry/nextjs'
 
 const metascraper = require('metascraper')([
   require('metascraper-description')(),
@@ -393,4 +394,4 @@ const handler = async (req, res) => {
   }
 }
 
-export default handler
+export default withSentry(handler)
