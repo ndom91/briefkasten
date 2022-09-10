@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import Image from 'next/future/image'
+/* import Image from 'next/future/image' */
 import { asyncFileReader } from '@/lib/helpers'
 import { useStore } from '@/lib/store'
 import { useToast, toastTypes } from '@/lib/hooks'
@@ -10,8 +10,8 @@ const fallbackUnsplash = `https://source.unsplash.com/random/300x201?sig=${Math.
 )}`
 
 export default function BookmarkCard({ bookmark, toggleSidebar, session }) {
-  const { id, title, url, desc, category, tags, createdAt, image, imageBlur } =
-    bookmark
+  /* const { id, title, url, desc, category, tags, createdAt, image, imageBlur } = */
+  const { id, title, url, desc, category, tags, createdAt, image } = bookmark
 
   const settings = useStore((state) => state.settings)
   const removeBookmark = useStore((state) => state.removeBookmark)

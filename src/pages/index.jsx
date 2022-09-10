@@ -1,11 +1,12 @@
-import { useRef, useState, useEffect } from 'react'
+/* import { useRef, useState, useEffect } from 'react' */
+import { useState, useEffect } from 'react'
 import { unstable_getServerSession } from 'next-auth/next'
 import {
   useDrop,
   usePrevious,
   useDeepCompareEffect,
   useToggle,
-  createBreakpoint,
+  /* createBreakpoint, */
   useWindowSize,
 } from 'react-use'
 import { authOptions } from '@/api/auth/[...nextauth]'
@@ -59,8 +60,9 @@ export default function Home({ nextauth }) {
   const addBookmark = useStore((state) => state.addBookmark)
   const previousSearchText = usePrevious(searchText)
   /* const breakpoint = useBreakpoint() */
-  const { height, width } = useWindowSize()
-  const [pageSize, setPageSize] = useState(PAGE_SIZE)
+  /* const { height, width } = useWindowSize() */
+  /* const [pageSize, setPageSize] = useState(PAGE_SIZE) */
+  const [pageSize] = useState(PAGE_SIZE)
   const [droppedUrl, setDroppedUrl] = useState('')
   const [currentTableData, setCurrentTableData] = useState(bookmarks)
   const [openModal, toggleModal] = useToggle(false)
@@ -101,13 +103,13 @@ export default function Home({ nextauth }) {
   /*   setCurrentTableData(items) */
   /* }, []) */
 
-  const getPagedItems = async (startIndex, stopIndex) => {
-    const pageRes = await fetch(
-      `/api/bookmarks/page?start=${startIndex}&end=${stopIndex}`
-    )
-    const pageData = await pageRes.json()
-    return pageData.results
-  }
+  /* const getPagedItems = async (startIndex, stopIndex) => { */
+  /*   const pageRes = await fetch( */
+  /*     `/api/bookmarks/page?start=${startIndex}&end=${stopIndex}` */
+  /*   ) */
+  /*   const pageData = await pageRes.json() */
+  /*   return pageData.results */
+  /* } */
 
   /* const maybeLoadMore = useInfiniteLoader( */
   /*   async (startIndex, stopIndex, currentItems) => { */
