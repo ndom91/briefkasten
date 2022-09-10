@@ -159,7 +159,8 @@ export default function BookmarkCard({ bookmark, toggleSidebar, session }) {
         >
           <Image
             className="aspect-2 w-[485px] rounded-md border-2 border-slate-50 object-cover object-left-top transition group-focus:ring-4 group-focus:ring-slate-200"
-            src={`/api/imageProxy?url=${encodeURIComponent(imageUrl)}`}
+            /* src={`/api/imageProxy?url=${encodeURIComponent(imageUrl)}`} */
+            src={imageUrl}
             placeholder="blur"
             priority
             blurDataURL={
