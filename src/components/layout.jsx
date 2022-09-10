@@ -4,7 +4,8 @@ import * as Sentry from '@sentry/nextjs'
 
 export default function Layout({ children, session }) {
   if (session?.user) {
-    Sentry.setUser({ ...session?.user })
+    const { email, userId, name } = session
+    Sentry.setUser({ id: userId, email, name })
   }
   return (
     <>
