@@ -61,10 +61,8 @@ export default function Home({ nextauth }) {
   const previousSearchText = usePrevious(searchText)
   /* const breakpoint = useBreakpoint() */
   /* const { height, width } = useWindowSize() */
-  /* const [pageSize, setPageSize] = useState(PAGE_SIZE) */
-  const [pageSize] = useState(PAGE_SIZE)
   const [droppedUrl, setDroppedUrl] = useState('')
-  const [currentTableData, setCurrentTableData] = useState(bookmarks)
+  const [currentTableData, setCurrentTableData] = useState([])
   const [openModal, toggleModal] = useToggle(false)
   const [loading, toggleLoading] = useToggle(false)
   const [openEditSidebar, toggleEditSidebar] = useToggle(false)
@@ -130,8 +128,8 @@ export default function Home({ nextauth }) {
   /* ) */
 
   useDeepCompareEffect(() => {
-    const firstPageIndex = (currentPage - 1) * pageSize
-    const lastPageIndex = firstPageIndex + pageSize
+    const firstPageIndex = (currentPage - 1) * PAGE_SIZE
+    const lastPageIndex = firstPageIndex + PAGE_SIZE
     const currentBookmarks = bookmarks
       .reduce((bookmarks, thisBookmark) => {
         thisBookmark.session = nextauth
@@ -163,7 +161,7 @@ export default function Home({ nextauth }) {
       }, [])
       .slice(firstPageIndex, lastPageIndex)
     setCurrentTableData(currentBookmarks)
-  }, [currentPage, categoryFilter, tagFilter, searchText, bookmarks, pageSize])
+  }, [currentPage, categoryFilter, tagFilter, searchText, bookmarks, PAGE_SIZE])
 
   useEffect(() => {
     const getLanguage = () =>
@@ -285,7 +283,7 @@ export default function Home({ nextauth }) {
               ? filteredLength
               : bookmarks.length
           }
-          pageSize={pageSize}
+          pageSize={PAGE_SIZE}
           onPageChange={(page) => setCurrentPage(page)}
         />
         <QuickAdd categories={categories} session={nextauth} />
