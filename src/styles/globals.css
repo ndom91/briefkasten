@@ -198,3 +198,19 @@ div#__next > div {
   background: #3c3b3b4b;
   cursor: pointer;
 }
+
+.masonry-grid {
+  display: flex;
+  margin-left: -30px; /* gutter size offset */
+  width: 100%;
+}
+.masonry-grid-col {
+  padding-left: 30px; /* gutter size */
+  background-clip: padding-box;
+}
+
+/* Style your items */
+.masonry-grid-col > div {
+  /* change div to reference your elements you put in <Masonry> */
+  margin-bottom: 30px;
+}

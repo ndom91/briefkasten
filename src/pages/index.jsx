@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { unstable_getServerSession } from 'next-auth/next'
 import {
   useDrop,
@@ -23,17 +23,29 @@ import DataTable from '@/components/table'
 import Modal from '@/components/modal'
 import { viewTypes } from '@/lib/constants'
 import prisma from '@/lib/prisma'
+import Masonry from 'react-masonry-css'
+/* import { useVirtualizer } from '@tanstack/react-virtual' */
 
-const PAGE_SIZE = 15
+const PAGE_SIZE = 45
 
-const useBreakpoint = createBreakpoint({
-  '3xl': 2200,
-  '2xl': 1536,
-  xl: 1280,
-  lg: 1024,
-  md: 768,
-  s: 640,
-})
+/* const useBreakpoint = createBreakpoint({ */
+/*   '3xl': 2200, */
+/*   '2xl': 1536, */
+/*   xl: 1280, */
+/*   lg: 1024, */
+/*   md: 768, */
+/*   s: 640, */
+/* }) */
+
+const breakpointColumnsObj = {
+  default: 6,
+  2320: 4,
+  1920: 3,
+  1450: 2,
+  1224: 1,
+  768: 1,
+  640: 1,
+}
 
 export default function Home({ nextauth }) {
   const bookmarks = useStore((state) => state.bookmarks)
@@ -46,12 +58,11 @@ export default function Home({ nextauth }) {
   const setEditBookmark = useStore((state) => state.setEditBookmark)
   const addBookmark = useStore((state) => state.addBookmark)
   const previousSearchText = usePrevious(searchText)
-  const breakpoint = useBreakpoint()
-  const { width } = useWindowSize()
-
+  /* const breakpoint = useBreakpoint() */
+  const { height, width } = useWindowSize()
   const [pageSize, setPageSize] = useState(PAGE_SIZE)
   const [droppedUrl, setDroppedUrl] = useState('')
-  const [currentTableData, setCurrentTableData] = useState([])
+  const [currentTableData, setCurrentTableData] = useState(bookmarks)
   const [openModal, toggleModal] = useToggle(false)
   const [loading, toggleLoading] = useToggle(false)
   const [openEditSidebar, toggleEditSidebar] = useToggle(false)
@@ -59,32 +70,70 @@ export default function Home({ nextauth }) {
   const [currentPage, setCurrentPage] = useState(1)
   const toast = useToast(5000)
 
-  useEffect(() => {
-    if (breakpoint === '3xl') {
-      setPageSize(Math.floor(PAGE_SIZE * 1.2))
-    } else if (breakpoint === '2xl') {
-      setPageSize(PAGE_SIZE)
-    } else if (breakpoint === 'xl') {
-      setPageSize(Math.floor(PAGE_SIZE * 0.8))
-    } else if (breakpoint === 'lg') {
-      setPageSize(Math.floor(PAGE_SIZE * 0.65))
-    } else if (breakpoint === 'md') {
-      setPageSize(Math.floor(PAGE_SIZE * 0.4))
-    } else if (breakpoint === 's') {
-      setPageSize(Math.floor(PAGE_SIZE * 0.4))
-    }
-  }, [width, breakpoint])
+  /* useEffect(() => { */
+  /*   if (breakpoint === '3xl') { */
+  /*     setPageSize(Math.floor(PAGE_SIZE * 1.2)) */
+  /*   } else if (breakpoint === '2xl') { */
+  /*     setPageSize(PAGE_SIZE) */
+  /*   } else if (breakpoint === 'xl') { */
+  /*     setPageSize(Math.floor(PAGE_SIZE * 0.8)) */
+  /*   } else if (breakpoint === 'lg') { */
+  /*     setPageSize(Math.floor(PAGE_SIZE * 0.65)) */
+  /*   } else if (breakpoint === 'md') { */
+  /*     setPageSize(Math.floor(PAGE_SIZE * 0.4)) */
+  /*   } else if (breakpoint === 's') { */
+  /*     setPageSize(Math.floor(PAGE_SIZE * 0.4)) */
+  /*   } */
+  /* }, [width, breakpoint]) */
 
   const initEdit = (bookmark) => {
     setEditBookmark(bookmark)
     toggleEditSidebar()
   }
 
+  /* useEffect(() => { */
+  /*   const fetchInitialItems = async () => { */
+  /*     const items = await getPagedItems(0, 20) */
+  /*     return items */
+  /*   } */
+  /*   const items = fetchInitialItems() */
+  /*   console.log('initial items', items) */
+  /*   setCurrentTableData(items) */
+  /* }, []) */
+
+  const getPagedItems = async (startIndex, stopIndex) => {
+    const pageRes = await fetch(
+      `/api/bookmarks/page?start=${startIndex}&end=${stopIndex}`
+    )
+    const pageData = await pageRes.json()
+    return pageData.results
+  }
+
+  /* const maybeLoadMore = useInfiniteLoader( */
+  /*   async (startIndex, stopIndex, currentItems) => { */
+  /*     console.group(`MAYBELOADMORE${startIndex}`) */
+  /*     console.log('startIndex', startIndex) */
+  /*     console.log('stopIndex', stopIndex) */
+  /*     console.log('currentItems', currentItems) */
+  /*     const nextItems = await getPagedItems(startIndex, stopIndex) */
+  /*     console.log('nextItems', nextItems) */
+  /*     console.groupEnd(`MAYBELOADMORE${startIndex}`) */
+  /*     setCurrentTableData((current) => [...current, ...nextItems]) */
+  /*   }, */
+  /*   { */
+  /*     isItemLoaded: (index, items) => !!items[index], */
+  /*     minimumBatchSize: 32, */
+  /*     threshold: 10, */
+  /*   } */
+  /* ) */
+
   useDeepCompareEffect(() => {
     const firstPageIndex = (currentPage - 1) * pageSize
     const lastPageIndex = firstPageIndex + pageSize
     const currentBookmarks = bookmarks
       .reduce((bookmarks, thisBookmark) => {
+        thisBookmark.session = nextauth
+        thisBookmark.toggleSidebar = toggleEditSidebar
         if (categoryFilter || tagFilter) {
           // Filter shown bookmarks selected sidebar filters
           if (thisBookmark.categoryId === categoryFilter) {
@@ -179,7 +228,7 @@ export default function Home({ nextauth }) {
 
   return (
     <Layout session={nextauth}>
-      <div className="flex h-full flex-col items-center space-y-2">
+      <div className="flex h-full w-full flex-col items-center space-y-2 overflow-x-hidden">
         <DashboardHeader />
         {bookmarks.length === 0 && <EmptyDashboard />}
         {bookmarks.length > 0 && currentTableData.length === 0 && (
@@ -195,22 +244,25 @@ export default function Home({ nextauth }) {
             </span>
           </div>
         )}
-        <div className="z-20 w-full grow overflow-x-hidden overflow-y-visible">
-          <section className="flex h-full flex-col items-center justify-start px-2 md:px-4">
+        <div className="z-20 w-full overflow-x-hidden">
+          <section className="flex items-start justify-start px-2 md:px-4">
             {currentTableData.length !== 0 && (
               <>
-                {activeView === viewTypes.CARD.name && (
-                  <section className="grid w-full grid-cols-[repeat(auto-fill,_minmax(300px,_1fr))] grid-rows-[repeat(auto-fit,_minmax(340px,_1fr))] items-start justify-items-center gap-4 px-2 md:justify-items-start md:justify-self-start md:px-4">
-                    {currentTableData.map((bookmark) => (
-                      <BookmarkCard
-                        bookmark={bookmark}
-                        key={bookmark.id}
-                        session={nextauth}
-                        toggleSidebar={() => initEdit(bookmark)}
-                      />
-                    ))}
-                  </section>
-                )}
+                <Masonry
+                  breakpointCols={breakpointColumnsObj}
+                  className="masonry-grid"
+                  columnClassName="masonry-grid-col"
+                >
+                  {currentTableData.map((bookmark) => (
+                    <BookmarkCard
+                      bookmark={bookmark}
+                      key={bookmark.id}
+                      session={nextauth}
+                      toggleSidebar={() => initEdit(bookmark)}
+                    />
+                  ))}
+                </Masonry>
+
                 {activeView === viewTypes.LIST.name && (
                   <DataTable items={currentTableData} initEdit={initEdit} />
                 )}

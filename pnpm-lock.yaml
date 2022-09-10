@@ -12,6 +12,7 @@ specifiers:
   '@tailwindcss/aspect-ratio': ^0.4.2
   '@tailwindcss/forms': ^0.5.3
   '@tailwindcss/line-clamp': ^0.4.2
+  '@tanstack/react-virtual': 3.0.0-beta.18
   autoprefixer: ^10.4.8
   eslint: 8.23.0
   eslint-config-next: 12.3.0
@@ -35,6 +36,7 @@ specifiers:
   prisma: 4.3.1
   react: 18.2.0
   react-dom: 18.2.0
+  react-masonry-css: ^1.0.16
   react-use: ^17.4.0
   react-use-focus-trap: 1.1.7
   sharp: ^0.31.0
@@ -51,6 +53,7 @@ dependencies:
   '@openreplay/tracker-fetch': 3.6.0_@openreplay+tracker@4.0.1
   '@prisma/client': 4.3.1_prisma@4.3.1
   '@supabase/supabase-js': 2.0.0-rc.8
+  '@tanstack/react-virtual': 3.0.0-beta.18_react@18.2.0
   framer-motion: 7.3.2_biqbaboplfbrettd7655fr4n2y
   immer: 9.0.15
   logrocket: 3.0.1
@@ -64,6 +67,7 @@ dependencies:
   plaiceholder: 2.5.0_sharp@0.31.0
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
+  react-masonry-css: 1.0.16_react@18.2.0
   react-use: 17.4.0_biqbaboplfbrettd7655fr4n2y
   react-use-focus-trap: 1.1.7_react@18.2.0
   sharp: 0.31.0
@@ -765,6 +769,21 @@ packages:
     dependencies:
       tailwindcss: 3.1.8
     dev: true
+
+  /@tanstack/react-virtual/3.0.0-beta.18_react@18.2.0:
+    resolution: {integrity: sha512-mnyCZT6htcRNw1jVb+WyfMUMbd1UmXX/JWPuMf6Bmj92DB/V7Ogk5n5rby5Y5aste7c7mlsBeMF8HtpwERRvEQ==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      '@tanstack/virtual-core': 3.0.0-beta.18
+      react: 18.2.0
+    dev: false
+
+  /@tanstack/virtual-core/3.0.0-beta.18:
+    resolution: {integrity: sha512-tcXutY05NpN9lp3+AXI9Sn85RxSPV0EJC0XMim9oeQj/E7bjXoL0qZ4Er4wwnvIbv/hZjC91EmbIQGjgdr6nZg==}
+    engines: {node: '>=12'}
+    dev: false
 
   /@tootallnate/once/2.0.0:
     resolution: {integrity: sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==}
@@ -4418,6 +4437,14 @@ packages:
   /react-is/16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
     dev: true
+
+  /react-masonry-css/1.0.16_react@18.2.0:
+    resolution: {integrity: sha512-KSW0hR2VQmltt/qAa3eXOctQDyOu7+ZBevtKgpNDSzT7k5LA/0XntNa9z9HKCdz3QlxmJHglTZ18e4sX4V8zZQ==}
+    peerDependencies:
+      react: '>=16.0.0'
+    dependencies:
+      react: 18.2.0
+    dev: false
 
   /react-universal-interface/0.6.2_react@18.2.0+tslib@2.4.0:
     resolution: {integrity: sha512-dg8yXdcQmvgR13RIlZbTRQOoUrDciFVoSBZILwjE2LFISxZZ8loVJKAkuzswl5js8BHda79bIb2b84ehU8IjXw==}

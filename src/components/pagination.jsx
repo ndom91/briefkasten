@@ -36,7 +36,7 @@ export default function Pagination({
   let lastPage = paginationRange[paginationRange.length - 1]
 
   return (
-    <div className="flex w-full items-center justify-between bg-white px-4 py-3 sm:w-fit sm:px-6">
+    <div className="absolute bottom-4 z-50 flex w-full items-center justify-between px-4 py-3 sm:w-fit sm:px-6">
       <div className="flex flex-1 justify-between px-4 sm:hidden">
         <a
           href="#"
@@ -69,9 +69,9 @@ export default function Pagination({
         {/*     <span className="font-medium">97</span> results */}
         {/*   </p> */}
         {/* </div> */}
-        <div>
+        <div className="rounded-md shadow-xl shadow-black/30">
           <nav
-            className="relative z-0 inline-flex -space-x-px rounded-md shadow-sm"
+            className="relative z-0 inline-flex -space-x-px rounded-md shadow-xl"
             aria-label="Pagination"
           >
             <a

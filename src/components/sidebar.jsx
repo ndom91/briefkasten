@@ -141,9 +141,9 @@ export default function Sidebar({ session }) {
 
   return (
     <aside
-      className={`z-20 max-h-screen w-full flex-shrink-0 drop-shadow-md ${
-        open ? 'max-w-[16rem]' : 'max-w-[5rem] sm:max-w-[6rem]'
-      } flex flex-grow flex-col rounded-r-md border-r bg-slate-800 pt-5 transition`}
+      className={`z-20 max-h-screen drop-shadow-md ${
+        open ? 'w-[16rem]' : 'w-[5rem] sm:w-[6rem]'
+      } flex flex-col rounded-r-md border-r bg-slate-800 pt-5 transition`}
     >
       <div className="flex items-center justify-center px-4">
         <Link href="/">
