@@ -23,9 +23,6 @@ const nextConfig = {
     legacyBrowsers: false,
     browsersListForSwc: true,
   },
-  sentry: {
-    disableServerWebpackPlugin: true,
-  },
   images: {
     domains: [
       'images.unsplash.com',
