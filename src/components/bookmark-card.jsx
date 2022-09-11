@@ -5,8 +5,8 @@ import { useStore } from '@/lib/store'
 import { useToast, toastTypes } from '@/lib/hooks'
 import Chip from '@/components/chip'
 
-const fallbackUnsplash = `https://source.unsplash.com/random/300x201?sig=${Math.floor(
-  Math.random() * 100
+const fallbackRandomImage = `https://picsum.photos/250/125?random=${Math.floor(
+  Math.random() * 1000
 )}`
 
 export default function BookmarkCard({ bookmark, toggleSidebar, session }) {
@@ -18,7 +18,7 @@ export default function BookmarkCard({ bookmark, toggleSidebar, session }) {
 
   const toast = useToast(5000)
   const [loadingDel, setLoadingDel] = useState(false)
-  const [imageUrl, setImageUrl] = useState(image ?? fallbackUnsplash)
+  const [imageUrl, setImageUrl] = useState(image ?? fallbackRandomImage)
 
   const handleDelete = async () => {
     try {
@@ -50,7 +50,7 @@ export default function BookmarkCard({ bookmark, toggleSidebar, session }) {
   }
 
   function fetchFallbackImage() {
-    setImageUrl('https://picsum.photos/250/125')
+    setImageUrl(fallbackRandomImage)
   }
 
   return (
