@@ -124,7 +124,7 @@ export default function QuickAdd({ categories, session }) {
               onClick={toggleOpen}
               className={`${
                 open ? '' : 'text-opacity-90'
-              } absolute bottom-8 right-8 z-30 hidden rounded-full bg-slate-800 p-2 outline-none drop-shadow-md transition hover:-translate-y-1 hover:drop-shadow-lg focus:outline-none focus:ring-2 focus:ring-slate-800 focus:ring-offset-2 focus:ring-offset-white md:block`}
+              } absolute bottom-8 right-8 z-[60] hidden rounded-full bg-slate-800 p-2 outline-none drop-shadow-md transition hover:-translate-y-1 hover:drop-shadow-lg focus:outline-none focus:ring-2 focus:ring-slate-800 focus:ring-offset-2 focus:ring-offset-white md:block`}
             >
               <svg
                 className={`h-8 w-8 text-slate-200 transition duration-300 ${
@@ -155,7 +155,7 @@ export default function QuickAdd({ categories, session }) {
             >
               <Popover.Panel
                 static
-                className="absolute right-8 bottom-24 z-30 mt-3 hidden w-full max-w-sm origin-bottom-right px-4 sm:px-0 md:block md:max-w-xl"
+                className="absolute right-8 bottom-24 z-[56] mt-3 hidden w-full max-w-sm origin-bottom-right px-4 sm:px-0 md:block md:max-w-xl"
               >
                 <div
                   ref={popoverRef}
@@ -512,7 +512,7 @@ export default function QuickAdd({ categories, session }) {
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <Popover.Overlay className="fixed top-0 left-0 z-20 h-full w-full bg-black bg-opacity-40 transition" />
+              <Popover.Overlay className="fixed top-0 left-0 z-[55] h-full w-full bg-black bg-opacity-40 transition" />
             </Transition>
           </>
         )}
