@@ -50,35 +50,8 @@ export default function BookmarkCard({ bookmark, toggleSidebar, session }) {
     setLoadingDel(false)
   }
 
-  async function fetchFallbackImage(url) {
-    try {
-      const res = await fetch(
-        `https://screenshot.briefkastenhq.com/api/image?url=${encodeURIComponent(
-          url
-        )}`
-      )
-      const data = await res.blob()
-      if (data.type === 'image/png') {
-        const dataUrl = await asyncFileReader(data)
-        const uploadRes = await fetch(
-          `/api/bookmarks/uploadImage?fileName=${
-            new URL(url).hostname
-          }&id=${id}`,
-          {
-            method: 'PUT',
-            body: dataUrl,
-          }
-        )
-        const uploadData = await uploadRes.json()
-        setImageUrl(uploadData.image.url)
-      } else {
-        setImageUrl(fallbackUnsplash)
-      }
-    } catch (error) {
-      console.error(error)
-      toast(toastTypes.ERROR, 'Error fetching fallback image', error.message)
-      setImageUrl(fallbackUnsplash)
-    }
+  function fetchFallbackImage() {
+    setImageUrl('https://picsum.photos/250/125')
   }
 
   return (
@@ -157,19 +130,17 @@ export default function BookmarkCard({ bookmark, toggleSidebar, session }) {
           rel="noopener noreferrer"
           className="group rounded-md outline-none"
         >
-          <Image
+          <img
             className="aspect-2 w-[485px] rounded-md border-2 border-slate-50 object-cover object-left-top transition group-focus:ring-4 group-focus:ring-slate-200"
             /* src={`/api/imageProxy?url=${encodeURIComponent(imageUrl)}`} */
             src={imageUrl}
             placeholder="blur"
             priority
-            blurDataURL={
-              imageBlur ??
-              'data:image/jpeg;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAADAAQDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAf/xAAfEAABBQABBQAAAAAAAAAAAAABAAIDBREEEhMiQVH/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8AolXb2FTYX0XB5crY5bOaZwkPc8nZudW4PjRgHoBERB//2Q=='
-            }
-            width="250"
-            height="125"
-            onError={() => fetchFallbackImage(url)}
+            /* blurDataURL={ */
+            /*   imageBlur ?? */
+            /*   'data:image/jpeg;base64,/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAADAAQDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAf/xAAfEAABBQABBQAAAAAAAAAAAAABAAIDBREEEhMiQVH/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8AolXb2FTYX0XB5crY5bOaZwkPc8nZudW4PjRgHoBERB//2Q==' */
+            /* } */
+            onError={fetchFallbackImage}
             alt={`${title} Image`}
           />
         </a>
