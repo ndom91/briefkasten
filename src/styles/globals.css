@@ -201,29 +201,27 @@ div#__next > div {
 
 .masonry-grid {
   display: flex;
-  margin-left: -30px; /* gutter size offset */
+  margin-left: -30px;
   width: 100%;
 }
 .masonry-grid-col {
-  padding-left: 30px; /* gutter size */
+  padding-left: 30px;
   background-clip: padding-box;
 }
 
-/* Style your items */
 .masonry-grid-col > div {
-  /* change div to reference your elements you put in <Masonry> */
   margin-bottom: 30px;
 }
 
 @media (max-width: 800px) {
   .masonry-grid {
-    margin-left: -20px; /* gutter size offset */
+    margin-left: -7.5px;
   }
   .masonry-grid-col {
-    padding-left: 15px; /* gutter size offset */
+    padding-left: 15px;
   }
   .masonry-grid-col > div {
-    margin-bottom: 15px; /* space between items */
-    padding-right: 15px; /* space between items */
+    margin-bottom: 15px;
+    padding-right: 15px;
   }
 }

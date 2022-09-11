@@ -1,5 +1,4 @@
 import prisma from '@/lib/prisma'
-import { getPlaiceholder } from 'plaiceholder'
 import { supabaseClient } from '@/lib/supabaseClient'
 import { unstable_getServerSession } from 'next-auth/next'
 import { authOptions } from '../auth/[...nextauth]'
@@ -178,7 +177,6 @@ const handler = async (req, res) => {
                 upsert: true,
               }
             )
-          serverTiming.measure('supabaseUpload')
 
           if (error) {
             throw error
@@ -186,13 +184,8 @@ const handler = async (req, res) => {
 
           if (data.Key) {
             metadata.image = `https://${process.env.SUPABASE_BUCKET_ID}.supabase.co/storage/v1/object/public/${data.Key}`
-
-            // Generate a blur placeholder
-            serverTiming.measure('blurPlaceholder')
-            const { base64 } = await getPlaiceholder(metadata.image)
-            metadata.imageBlur = base64
-            serverTiming.measure('blurPlaceholder')
           }
+          serverTiming.measure('supabaseUpload')
         }
       }
 

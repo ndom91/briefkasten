@@ -1,6 +1,4 @@
 import { useState } from 'react'
-/* import Image from 'next/future/image' */
-/* import { asyncFileReader } from '@/lib/helpers' */
 import { useStore } from '@/lib/store'
 import { useToast, toastTypes } from '@/lib/hooks'
 import Chip from '@/components/chip'
@@ -11,7 +9,6 @@ const fallbackRandomImage = `https://picsum.photos/250/125?random=${Math.floor(
 
 export default function BookmarkCard({ bookmark, toggleSidebar, session }) {
   const { id, title, url, desc, category, tags, createdAt, image } = bookmark
-  /* const { id, title, url, desc, category, tags, createdAt, image, imageBlur } = bookmark */
 
   const settings = useStore((state) => state.settings)
   const removeBookmark = useStore((state) => state.removeBookmark)

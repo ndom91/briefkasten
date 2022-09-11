@@ -1,4 +1,3 @@
-/* import { useRef, useState, useEffect } from 'react' */
 import { useState, useEffect } from 'react'
 import { unstable_getServerSession } from 'next-auth/next'
 import {
@@ -6,8 +5,6 @@ import {
   usePrevious,
   useDeepCompareEffect,
   useToggle,
-  /* createBreakpoint, */
-  /* useWindowSize, */
 } from 'react-use'
 import { authOptions } from '@/api/auth/[...nextauth]'
 import { useStore, initializeStore } from '@/lib/store'
@@ -25,18 +22,8 @@ import Modal from '@/components/modal'
 import { viewTypes } from '@/lib/constants'
 import prisma from '@/lib/prisma'
 import Masonry from 'react-masonry-css'
-/* import { useVirtualizer } from '@tanstack/react-virtual' */
 
 const PAGE_SIZE = 25
-
-/* const useBreakpoint = createBreakpoint({ */
-/*   '3xl': 2200, */
-/*   '2xl': 1536, */
-/*   xl: 1280, */
-/*   lg: 1024, */
-/*   md: 768, */
-/*   s: 640, */
-/* }) */
 
 const breakpointColumnsObj = {
   default: 6,
@@ -59,8 +46,6 @@ export default function Home({ nextauth }) {
   const setEditBookmark = useStore((state) => state.setEditBookmark)
   const addBookmark = useStore((state) => state.addBookmark)
   const previousSearchText = usePrevious(searchText)
-  /* const breakpoint = useBreakpoint() */
-  /* const { height, width } = useWindowSize() */
   const [droppedUrl, setDroppedUrl] = useState('')
   const [currentTableData, setCurrentTableData] = useState([])
   const [openModal, toggleModal] = useToggle(false)
@@ -70,62 +55,10 @@ export default function Home({ nextauth }) {
   const [currentPage, setCurrentPage] = useState(1)
   const toast = useToast(5000)
 
-  /* useEffect(() => { */
-  /*   if (breakpoint === '3xl') { */
-  /*     setPageSize(Math.floor(PAGE_SIZE * 1.2)) */
-  /*   } else if (breakpoint === '2xl') { */
-  /*     setPageSize(PAGE_SIZE) */
-  /*   } else if (breakpoint === 'xl') { */
-  /*     setPageSize(Math.floor(PAGE_SIZE * 0.8)) */
-  /*   } else if (breakpoint === 'lg') { */
-  /*     setPageSize(Math.floor(PAGE_SIZE * 0.65)) */
-  /*   } else if (breakpoint === 'md') { */
-  /*     setPageSize(Math.floor(PAGE_SIZE * 0.4)) */
-  /*   } else if (breakpoint === 's') { */
-  /*     setPageSize(Math.floor(PAGE_SIZE * 0.4)) */
-  /*   } */
-  /* }, [width, breakpoint]) */
-
   const initEdit = (bookmark) => {
     setEditBookmark(bookmark)
     toggleEditSidebar()
   }
-
-  /* useEffect(() => { */
-  /*   const fetchInitialItems = async () => { */
-  /*     const items = await getPagedItems(0, 20) */
-  /*     return items */
-  /*   } */
-  /*   const items = fetchInitialItems() */
-  /*   console.log('initial items', items) */
-  /*   setCurrentTableData(items) */
-  /* }, []) */
-
-  /* const getPagedItems = async (startIndex, stopIndex) => { */
-  /*   const pageRes = await fetch( */
-  /*     `/api/bookmarks/page?start=${startIndex}&end=${stopIndex}` */
-  /*   ) */
-  /*   const pageData = await pageRes.json() */
-  /*   return pageData.results */
-  /* } */
-
-  /* const maybeLoadMore = useInfiniteLoader( */
-  /*   async (startIndex, stopIndex, currentItems) => { */
-  /*     console.group(`MAYBELOADMORE${startIndex}`) */
-  /*     console.log('startIndex', startIndex) */
-  /*     console.log('stopIndex', stopIndex) */
-  /*     console.log('currentItems', currentItems) */
-  /*     const nextItems = await getPagedItems(startIndex, stopIndex) */
-  /*     console.log('nextItems', nextItems) */
-  /*     console.groupEnd(`MAYBELOADMORE${startIndex}`) */
-  /*     setCurrentTableData((current) => [...current, ...nextItems]) */
-  /*   }, */
-  /*   { */
-  /*     isItemLoaded: (index, items) => !!items[index], */
-  /*     minimumBatchSize: 32, */
-  /*     threshold: 10, */
-  /*   } */
-  /* ) */
 
   useDeepCompareEffect(() => {
     const firstPageIndex = (currentPage - 1) * PAGE_SIZE
