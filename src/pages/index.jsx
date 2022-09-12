@@ -1,11 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import { unstable_getServerSession } from 'next-auth/next'
-import {
-  useDrop,
-  usePrevious,
-  useDeepCompareEffect,
-  useToggle,
-} from 'react-use'
+import { useDrop, usePrevious, useToggle } from 'react-use'
 import { authOptions } from '@/api/auth/[...nextauth]'
 import { useStore, initializeStore } from '@/lib/store'
 import { useToast, toastTypes } from '@/lib/hooks'
@@ -60,7 +55,7 @@ export default function Home({ nextauth }) {
     toggleEditSidebar()
   }
 
-  useDeepCompareEffect(() => {
+  const setBookmarks = useMemo(async () => {
     const firstPageIndex = (currentPage - 1) * PAGE_SIZE
     const lastPageIndex = firstPageIndex + PAGE_SIZE
     const currentBookmarks = bookmarks
@@ -92,7 +87,16 @@ export default function Home({ nextauth }) {
       }, [])
       .slice(firstPageIndex, lastPageIndex)
     setCurrentTableData(currentBookmarks)
-  }, [currentPage, categoryFilter, tagFilter, searchText, bookmarks, PAGE_SIZE])
+  }, [
+    currentPage,
+    categoryFilter,
+    tagFilter,
+    searchText,
+    bookmarks,
+    previousSearchText,
+  ])
+
+  !currentTableData && setBookmarks()
 
   useEffect(() => {
     const getLanguage = () =>
@@ -176,23 +180,25 @@ export default function Home({ nextauth }) {
           </div>
         )}
         <div className="z-20 w-full overflow-x-hidden">
-          <section className="flex items-start justify-start px-2 md:px-4">
+          <section className="flex items-start justify-start">
             {currentTableData.length !== 0 && (
               <>
-                <Masonry
-                  breakpointCols={breakpointColumnsObj}
-                  className="masonry-grid"
-                  columnClassName="masonry-grid-col"
-                >
-                  {currentTableData.map((bookmark) => (
-                    <BookmarkCard
-                      bookmark={bookmark}
-                      key={bookmark.id}
-                      session={nextauth}
-                      toggleSidebar={() => initEdit(bookmark)}
-                    />
-                  ))}
-                </Masonry>
+                {activeView === viewTypes.CARD.name && (
+                  <Masonry
+                    breakpointCols={breakpointColumnsObj}
+                    className="masonry-grid px-2 md:px-4"
+                    columnClassName="masonry-grid-col"
+                  >
+                    {currentTableData.map((bookmark) => (
+                      <BookmarkCard
+                        bookmark={bookmark}
+                        key={bookmark.id}
+                        session={nextauth}
+                        toggleSidebar={() => initEdit(bookmark)}
+                      />
+                    ))}
+                  </Masonry>
+                )}
 
                 {activeView === viewTypes.LIST.name && (
                   <DataTable items={currentTableData} initEdit={initEdit} />

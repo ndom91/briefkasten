@@ -3,7 +3,7 @@ import { Menu, Transition } from '@headlessui/react'
 import { useLocalStorage } from 'react-use'
 import { useRouter } from 'next/router'
 import { signOut } from 'next-auth/react'
-import { useEffect, useState, useRef, forwardRef, Fragment } from 'react'
+import { useState, useRef, Fragment } from 'react'
 import { useToast, toastTypes } from '@/lib/hooks'
 import { useStore } from '@/lib/store'
 
@@ -12,21 +12,7 @@ const types = {
   TAG: 'tag',
 }
 
-const NextLink = forwardRef((props, ref) => {
-  let { href, children, ...rest } = props
-  return (
-    <Link href={href}>
-      <a ref={ref} {...rest}>
-        {children}
-      </a>
-    </Link>
-  )
-})
-
-NextLink.displayName = 'NextLink'
-
 export default function Sidebar({ session }) {
-  const [hasMounted, setHasMounted] = useState(false)
   const categories = useStore((state) => state.categories)
   const tags = useStore((state) => state.tags)
   const setCategoryFilter = useStore((state) => state.setCategoryFilter)
@@ -36,7 +22,6 @@ export default function Sidebar({ session }) {
   const addCategory = useStore((state) => state.addCategory)
   const addTag = useStore((state) => state.addTag)
 
-  const [open, setOpen] = useLocalStorage('dashboard.sidebar.open', true)
   const [openCategories, setOpenCategories] = useLocalStorage(
     'dashboard.sidebar.categories',
     true
@@ -45,6 +30,7 @@ export default function Sidebar({ session }) {
     'dashboard.sidebar.tags',
     true
   )
+  const [open, setOpen] = useLocalStorage('dashboard.sidebar.open', true)
 
   const [quickAdd, setQuickAdd] = useState('')
   const [quickAddCategory, setQuickAddCategory] = useState('')
@@ -54,14 +40,6 @@ export default function Sidebar({ session }) {
   const quickAddTagRef = useRef()
   const quickAddCategoryRef = useRef()
   const router = useRouter()
-
-  useEffect(() => {
-    setHasMounted(true)
-  }, [])
-
-  if (!hasMounted) {
-    return null
-  }
 
   const toggleQuickAdd = (type) => {
     if (type === types.CATEGORY) {
@@ -143,7 +121,7 @@ export default function Sidebar({ session }) {
     <aside
       className={`z-20 max-h-screen drop-shadow-md ${
         open ? 'basis-72' : 'basis-20 sm:basis-24'
-      } flex flex-col rounded-r-md border-r bg-slate-800 pt-5 transition`}
+      } flex flex-col rounded-r-md bg-slate-800 pt-5 transition`}
     >
       <div className="flex items-center justify-center px-4">
         <Link href="/">
@@ -176,91 +154,88 @@ export default function Sidebar({ session }) {
       >
         <ul>
           <li>
-            <NextLink
-              href="/"
-              className="focus:shadow-outline mt-1 inline-flex w-full transform items-center rounded-lg px-2 py-2 text-base text-slate-200 outline-none transition duration-500 ease-in-out hover:cursor-pointer hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-slate-900 md:px-4"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className={`${open ? 'h-5 w-5' : 'h-7 w-7'}`}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                ></path>
-              </svg>
-              <span
-                className={`ml-4 font-serif text-lg text-slate-200 ${
-                  !open && 'hidden'
-                }`}
-              >
-                {' '}
-                Home
-              </span>
-            </NextLink>
+            <Link href="/">
+              <div className="focus:shadow-outline mt-1 inline-flex w-full transform items-center rounded-lg px-2 py-2 text-base text-slate-200 outline-none transition duration-500 ease-in-out hover:cursor-pointer hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-slate-900 md:px-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className={`${open ? 'h-5 w-5' : 'h-7 w-7'}`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                  ></path>
+                </svg>
+                <span
+                  className={`ml-4 font-serif text-lg text-slate-200 ${
+                    !open && 'hidden'
+                  }`}
+                >
+                  {' '}
+                  Home
+                </span>
+              </div>
+            </Link>
           </li>
           <li>
-            <NextLink
-              href="/categories"
-              className="focus:shadow-outline mt-1 inline-flex w-full transform items-center rounded-lg px-2 py-2 text-base text-slate-200 outline-none transition duration-500 ease-in-out hover:cursor-pointer hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-slate-900 md:px-4"
-            >
-              <svg
-                className={`${open ? 'h-5 w-5' : 'h-7 w-7'}`}
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                />
-              </svg>
-              <span
-                className={`ml-4 font-serif text-lg text-slate-200 ${
-                  !open && 'hidden'
-                }`}
-              >
-                {' '}
-                Categories
-              </span>
-            </NextLink>
+            <Link href="/categories">
+              <div className="focus:shadow-outline mt-1 inline-flex w-full transform items-center rounded-lg px-2 py-2 text-base text-slate-200 outline-none transition duration-500 ease-in-out hover:cursor-pointer hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-slate-900 md:px-4">
+                <svg
+                  className={`${open ? 'h-5 w-5' : 'h-7 w-7'}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                  />
+                </svg>
+                <span
+                  className={`ml-4 font-serif text-lg text-slate-200 ${
+                    !open && 'hidden'
+                  }`}
+                >
+                  {' '}
+                  Categories
+                </span>
+              </div>
+            </Link>
           </li>
           <li>
-            <NextLink
-              href="/tags"
-              className="focus:shadow-outline mt-1 inline-flex w-full transform items-center rounded-lg px-2 py-2 text-base text-slate-200 outline-none transition duration-500 ease-in-out hover:cursor-pointer hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-slate-900 md:px-4"
-            >
-              <svg
-                className={`${open ? 'h-5 w-5' : 'h-7 w-7'}`}
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
-                />
-              </svg>
-              <span
-                className={`ml-4 font-serif text-lg text-slate-200 ${
-                  !open && 'hidden'
-                }`}
-              >
-                {' '}
-                Tags
-              </span>
-            </NextLink>
+            <Link href="/tags">
+              <div className="focus:shadow-outline mt-1 inline-flex w-full transform items-center rounded-lg px-2 py-2 text-base text-slate-200 outline-none transition duration-500 ease-in-out hover:cursor-pointer hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-slate-900 md:px-4">
+                <svg
+                  className={`${open ? 'h-5 w-5' : 'h-7 w-7'}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+                  />
+                </svg>
+                <span
+                  className={`ml-4 font-serif text-lg text-slate-200 ${
+                    !open && 'hidden'
+                  }`}
+                >
+                  {' '}
+                  Tags
+                </span>
+              </div>
+            </Link>
           </li>
         </ul>
         {open && (
@@ -539,31 +514,32 @@ export default function Sidebar({ session }) {
                 <div className="px-1 py-1">
                   <Menu.Item>
                     {({ active }) => (
-                      <NextLink
-                        href="/settings"
-                        className={`${
-                          active ? 'bg-slate-500 text-white' : 'text-gray-900'
-                        } group flex w-full items-center justify-start space-x-2 rounded-md px-2 py-2 text-sm`}
-                      >
-                        <svg
-                          className={`h-5 w-5 ${
-                            active ? 'text-slate-200' : 'text-slate-600'
-                          }`}
-                          aria-hidden="true"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
+                      <Link href="/settings">
+                        <div
+                          className={`${
+                            active ? 'bg-slate-500 text-white' : 'text-gray-900'
+                          } group flex w-full items-center justify-start space-x-2 rounded-md px-2 py-2 text-sm`}
                         >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
-                          />
-                        </svg>
-                        <span>Settings</span>
-                      </NextLink>
+                          <svg
+                            className={`h-5 w-5 ${
+                              active ? 'text-slate-200' : 'text-slate-600'
+                            }`}
+                            aria-hidden="true"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
+                            />
+                          </svg>
+                          <span>Settings</span>
+                        </div>
+                      </Link>
                     )}
                   </Menu.Item>
                 </div>

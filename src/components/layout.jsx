@@ -1,5 +1,9 @@
 import Meta from '@/components/meta'
-import Sidebar from '@/components/sidebar'
+import dynamic from 'next/dynamic'
+
+const Sidebar = dynamic(() => import('@/components/sidebar'), {
+  ssr: false,
+})
 
 export default function Layout({ children, session }) {
   return (
