@@ -287,6 +287,20 @@ const handler = async (req, res) => {
         serverTiming.measure('tagMapUpsert')
       }
 
+      // Add Screenshot generation to queue
+      if (req.headers.referer.includes('briefkastenhq.com')) {
+        await fetch(
+          'https://inn.gs/e/cd04Oj6h0vSECwYg9EzStibeAUBRaTCvzSmSOcfDzfLPpW7Oq-vInTr-0KDFaVakPjoW-JOAdsfpC0oojFg3Bg',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ url, userId }),
+          }
+        )
+      }
+
       // Generate Server-Timing headers
       res.setHeader('Server-Timing', serverTiming.setHeader())
       res.setHeader('Access-Control-Allow-Origin', '*')
