@@ -1,7 +1,7 @@
 import { withSentryConfig } from '@sentry/nextjs'
 
 const sentryWebpackPluginOptions = {
-  silent: true, // Suppresses all logs
+  silent: process.env.NODE_ENV === 'production' ? true : false, // Suppresses all logs
 }
 
 /**
@@ -14,6 +14,10 @@ const nextConfig = {
   experimental: {
     legacyBrowsers: false,
     browsersListForSwc: true,
+  },
+  sentry: {
+    hideSourceMaps: false,
+    widenClientFileUpload: true,
   },
   images: {
     domains: [
