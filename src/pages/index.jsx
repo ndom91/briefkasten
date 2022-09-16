@@ -101,7 +101,7 @@ export default function Home({ nextauth }) {
 
   useEffect(() => {
     if (nextauth?.user) {
-      const { email, userId } = nextauth
+      const { email, userId } = nextauth.user
       console.log('**** SENTRY USER ****', {
         id: userId,
         username: email,
