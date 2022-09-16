@@ -14,7 +14,7 @@ export default function Modal({
     <Transition.Root show={open} as={Fragment}>
       <Dialog
         as="div"
-        className="relative z-30"
+        className="relative z-[300]"
         initialFocus={cancelButtonRef}
         onClose={toggleModal}
       >
