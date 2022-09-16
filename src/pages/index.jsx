@@ -5,6 +5,7 @@ import { authOptions } from '@/api/auth/[...nextauth]'
 import { useStore, initializeStore } from '@/lib/store'
 import { useToast, toastTypes } from '@/lib/hooks'
 
+import * as Sentry from '@sentry/nextjs'
 import SlideOut from '@/components/slide-out'
 import Pagination from '@/components/pagination'
 import BookmarkCard from '@/components/bookmark-card'
@@ -99,6 +100,11 @@ export default function Home({ nextauth }) {
   !currentTableData && setBookmarks()
 
   useEffect(() => {
+    if (nextauth?.user) {
+      const { email, userId } = nextauth
+      Sentry.setUser({ id: userId, email })
+    }
+
     const getLanguage = () =>
       navigator.userLanguage ||
       (navigator.languages &&
