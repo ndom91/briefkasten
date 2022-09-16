@@ -514,32 +514,31 @@ export default function Sidebar({ session }) {
                 <div className="px-1 py-1">
                   <Menu.Item>
                     {({ active }) => (
-                      <Link href="/settings">
-                        <div
-                          className={`${
-                            active ? 'bg-slate-500 text-white' : 'text-gray-900'
-                          } group flex w-full items-center justify-start space-x-2 rounded-md px-2 py-2 text-sm`}
+                      <button
+                        onClick={() => router.push('/settings')}
+                        className={`${
+                          active ? 'bg-slate-500 text-white' : 'text-gray-900'
+                        } group flex w-full items-center justify-start space-x-2 rounded-md px-2 py-2 text-sm`}
+                      >
+                        <svg
+                          className={`h-5 w-5 ${
+                            active ? 'text-slate-200' : 'text-slate-600'
+                          }`}
+                          aria-hidden="true"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
                         >
-                          <svg
-                            className={`h-5 w-5 ${
-                              active ? 'text-slate-200' : 'text-slate-600'
-                            }`}
-                            aria-hidden="true"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
-                            />
-                          </svg>
-                          <span>Settings</span>
-                        </div>
-                      </Link>
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
+                          />
+                        </svg>
+                        <span>Settings</span>
+                      </button>
                     )}
                   </Menu.Item>
                 </div>
