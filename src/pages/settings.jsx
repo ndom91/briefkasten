@@ -28,15 +28,6 @@ export default function Settings({ nextauth }) {
   const toast = useToast(5000)
   const [_, copyToClipboard] = useCopyToClipboard() // eslint-disable-line
 
-  const enqueueImageFix = () => {
-    console.log('Enqeueing Image Fix')
-    console.log('fetch("workers.cloudflare.dev/fetchScreenshots...)')
-  }
-
-  const exportBookmarks = () => {
-    console.log(bookmarks)
-  }
-
   const handleInputFile = (file) => {
     setFileName(file.name)
     const fileReader = new FileReader()
@@ -44,6 +35,43 @@ export default function Settings({ nextauth }) {
       setFileContents(e.currentTarget.result)
     }
     fileReader.readAsText(file)
+  }
+
+  // According to Microsoft Bookmark File "Spec" - https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/aa753582(v=vs.85)
+  const exportBookmarks = () => {
+    const date = new Date()
+    let output = `<!DOCTYPE NETSCAPE-Bookmark-file-1>
+    <!-- This is an automatically generated file.
+    It will be read and overwritten.
+    DO NOT EDIT! -->
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+    <Title>Bookmarks</Title><H1>Bookmarks</H1><DL><p><DT><H3 FOLDED ADD_DATE="${parseInt(
+      new Date().getTime() / 1000
+    )}">Briefkasten Bookmarks</H3><DL><p>`
+
+    bookmarks.forEach((bk) => {
+      output += `<DT><A HREF="${bk.url}" PRIVATE="0" ADD_DATE="${parseInt(
+        new Date(bk.createdAt).getTime() / 1000
+      )}" LAST_MODIFIED="${parseInt(
+        new Date(bk.updatedAt).getTime() / 1000
+      )}" ${
+        bk.tags.length &&
+        'TAGS="' + bk.tags.map((t) => t.tag.name).join(',') + '"'
+      }>${bk.title}</A>`
+    })
+
+    output += `</DL><p></DL><p>`
+
+    const el = document.createElement('a')
+    el.download = `briefkasten_bookmarks_${date.getDate()}${
+      parseInt(date.getMonth()) + 1
+    }${date.getFullYear()}.html`
+
+    const bookmarksExport = new Blob([output], { type: 'text/html' })
+
+    el.href = window.URL.createObjectURL(bookmarksExport)
+
+    el.click()
   }
 
   const importBookmarks = async () => {
@@ -128,44 +156,46 @@ export default function Settings({ nextauth }) {
             <div className="flex w-full items-center rounded-t-md bg-slate-100 p-4">
               <h2 className="font-serif text-xl text-slate-700">API Token</h2>
             </div>
-            <label className="px-4 text-slate-500">
-              For use in the{' '}
-              <a
-                href="https://github.com/ndom91/briefkasten-extension"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-semibold outline-none transition hover:underline focus:underline"
-              >
-                briefkasten extension
-              </a>
-              , you can use the following token.
-            </label>
-            <div className="relative !m-4 flex">
-              <pre className="rounded-md bg-slate-200 p-2 pl-4 pr-10">
-                {nextauth?.user?.userId}
-              </pre>
-              <button
-                onClick={() => copyUserId()}
-                className="absolute right-2 top-1.5 rounded-md p-1 text-slate-500 outline-none hover:text-slate-700 focus:ring-2 focus:ring-slate-300"
-              >
-                <svg
-                  className="h-5 w-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
+            <div className="flex items-center justify-start pb-4">
+              <label className="px-4 text-slate-500">
+                For use in the{' '}
+                <a
+                  href="https://github.com/ndom91/briefkasten-extension"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-semibold outline-none transition hover:underline focus:underline"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"
-                  />
-                </svg>
-              </button>
+                  briefkasten extension
+                </a>
+                , you can use the following token:
+              </label>
+              <div className="relative flex">
+                <pre className="rounded-md bg-slate-200 p-2 pl-4 pr-10">
+                  {nextauth?.user?.userId}
+                </pre>
+                <button
+                  onClick={() => copyUserId()}
+                  className="absolute right-2 top-1.5 rounded-md p-1 text-slate-500 outline-none hover:text-slate-700 focus:ring-2 focus:ring-slate-300"
+                >
+                  <svg
+                    className="h-5 w-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"
+                    />
+                  </svg>
+                </button>
+              </div>
             </div>
           </section>
-          <section className="m-4 flex flex-col items-start space-y-4 rounded-md bg-slate-50">
+          <section className="m-4 flex flex-col items-stretch justify-start space-y-4 rounded-md bg-slate-50">
             <div className="flex w-full items-center rounded-t-md bg-slate-100 p-4">
               <h2 className="font-serif text-xl text-slate-700">Import</h2>
             </div>
@@ -177,7 +207,7 @@ export default function Settings({ nextauth }) {
               uploaded and its name appears in the upload widget, you can press{' '}
               <q>Import</q> to start the import process.
             </label>
-            <label className="m-4 flex w-1/2 cursor-pointer appearance-none justify-center rounded-md border border-dashed border-gray-300 bg-white px-3 py-6 text-sm transition hover:border-gray-400 focus:border-solid focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:opacity-75">
+            <label className="m-4 flex cursor-pointer appearance-none justify-center rounded-md border border-dashed border-gray-300 bg-white px-3 py-6 text-sm transition hover:border-gray-400 focus:border-solid focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:opacity-75">
               <span
                 htmlFor="photo-dropbox"
                 className="flex items-center space-x-2"
@@ -235,7 +265,7 @@ export default function Settings({ nextauth }) {
             </label>
             <button
               onClick={importBookmarks}
-              className="!m-4 inline-block rounded-md bg-slate-800 px-3 py-2 text-white "
+              className="!m-4 inline-block w-32 rounded-md bg-slate-800 py-2 text-white "
             >
               Import
             </button>
@@ -243,46 +273,17 @@ export default function Settings({ nextauth }) {
           <section className="m-4 flex flex-col items-start justify-center space-y-4 rounded-md bg-slate-50">
             <div className="flex w-full items-center rounded-t-md bg-slate-100 p-4">
               <h2 className="font-serif text-xl text-slate-700">Export</h2>
-              <span className="ml-4 leading-8 text-slate-400">
-                (Coming Soon)
-              </span>
             </div>
-            <label className="p-4 text-slate-500">
-              Export your saved bookmarks from Briefkasten to a{' '}
-              <code className="rounded-md bg-slate-200 py-1 px-2">
-                bookmarks.html
-              </code>{' '}
-              file. This is a standardized bookmarks format which should work
-              with any other bookmarks manager and most browsers.
+            <label className="p-4 pt-0 text-slate-500">
+              Save your bookmarks from Briefkasten to an html file. This is a
+              standardized bookmarks format which you can use to import your
+              saved items to any other bookmarks manager or browser.
             </label>
             <button
               onClick={exportBookmarks}
-              className="!m-4 rounded-md bg-slate-800 px-3 py-2 text-white"
+              className="!m-4 !mt-0 w-32 rounded-md bg-slate-800 py-2 text-white"
             >
               Export
-            </button>
-          </section>
-          <section className="m-4 flex flex-col items-start justify-center space-y-4 rounded-md bg-slate-50">
-            <div className="flex w-full items-center rounded-t-md bg-slate-100 p-4">
-              <h2 className="font-serif text-xl text-slate-700">
-                Manual Image Fetch
-              </h2>
-              <span className="ml-4 leading-8 text-slate-400">
-                (Coming Soon)
-              </span>
-            </div>
-            <label className="px-4 text-slate-500">
-              After importing a large amount of bookmarks, you can kick off a
-              manual image fetch, which will tell our systems to go fetch images
-              for all your new bookmarks. This is normally done on a regular
-              basis every 24hrs any way, but you can initiate it now by clicking
-              below.
-            </label>
-            <button
-              onClick={enqueueImageFix}
-              className="!m-4 rounded-md bg-slate-800 px-3 py-2 text-white "
-            >
-              Enqueue Image Fix
             </button>
           </section>
           <section className="m-4 flex flex-col items-start justify-center space-y-4 rounded-md bg-slate-50">
@@ -301,7 +302,7 @@ export default function Settings({ nextauth }) {
               </a>
               . More information can be found at the links below.
             </label>
-            <ul className="list-inside list-disc p-4 text-slate-500">
+            <ul className="list-inside list-disc p-4 pt-0 text-slate-500">
               <li>
                 Repository:{' '}
                 <a
