@@ -251,11 +251,11 @@ const handler = async (req, res) => {
       }
 
       // Add Screenshot generation to queue if no image found
-      console.log('*** headers', req.headers)
-      if (
-        !metadata.image &&
-        req.headers.referer.includes('briefkastenhq.com')
-      ) {
+      // Referrer/Host header on Vercel/Selfhosted
+      const referrer =
+        req.headers.get('x-forwarded-host') ?? req.headers.referer
+
+      if (!metadata.image && referrer.includes('briefkastenhq.com')) {
         await fetch(
           'https://inn.gs/e/cd04Oj6h0vSECwYg9EzStibeAUBRaTCvzSmSOcfDzfLPpW7Oq-vInTr-0KDFaVakPjoW-JOAdsfpC0oojFg3Bg',
           {
