@@ -28,14 +28,6 @@ export default function QuickAdd({ categories, session }) {
 
   const toast = useToast(5000)
 
-  const clearInputs = () => {
-    setUrl('')
-    setTitle('')
-    setCategory('')
-    setSelectedTags([])
-    setDescription('')
-  }
-
   async function submitUrl() {
     try {
       setLoading(true)
@@ -452,10 +444,10 @@ export default function QuickAdd({ categories, session }) {
                     </div>
                   </div>
                   <div className="bg-slate-50 p-4">
-                    <div className="flex space-x-2 px-4 text-right">
+                    <div className="flex justify-start px-4">
                       <button
                         onClick={submitUrl}
-                        className="inline-flex items-center justify-center rounded-md border border-transparent bg-slate-800 py-2 px-4 text-sm font-medium text-white shadow-sm transition hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
+                        className="inline-flex w-1/3 items-center justify-center rounded-md border border-transparent bg-slate-800 py-2 px-4 text-sm font-medium text-white shadow-sm transition hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
                       >
                         {loading ? (
                           <svg
@@ -490,12 +482,6 @@ export default function QuickAdd({ categories, session }) {
                           </svg>
                         )}
                         Save
-                      </button>
-                      <button
-                        onClick={clearInputs}
-                        className="inline-flex justify-center rounded-md border border-transparent border-slate-600 py-2 px-4 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
-                      >
-                        Clear
                       </button>
                     </div>
                   </div>
