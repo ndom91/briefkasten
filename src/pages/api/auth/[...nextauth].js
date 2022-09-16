@@ -3,7 +3,6 @@ import GithubProvider from 'next-auth/providers/github'
 import GoogleProvider from 'next-auth/providers/google'
 import EmailProvider from 'next-auth/providers/email'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
-import * as Sentry from '@sentry/nextjs'
 import prisma from '@/lib/prisma'
 
 const providers = []
@@ -42,7 +41,6 @@ export const authOptions = {
   callbacks: {
     async session({ session, user }) {
       session.user.userId = user.id
-      Sentry.setUser({ id: user.id, email: user.email })
       return session
     },
   },
