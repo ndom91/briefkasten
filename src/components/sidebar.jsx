@@ -416,20 +416,26 @@ export default function Sidebar({ session }) {
             <ul className="overflow-y-scroll">
               <div className="ml-2 mb-4 flex flex-col items-start space-y-2 md:ml-4">
                 {openTags &&
-                  tags?.map((tag) => (
-                    <button
-                      onClick={() => applyTagFilter(tag.id)}
-                      key={tag.id}
-                      className={`inline-block rounded-md px-2 text-left font-serif text-slate-400 outline-none focus:ring-2 focus:ring-slate-200 ${
-                        tagFilter === tag.id && 'font-extrabold'
-                      }`}
-                    >
-                      {tag.emoji} <span className="ml-1">{tag.name}</span>{' '}
-                      <span className="ml-1 rounded-md bg-slate-700 px-1 text-center text-sm text-slate-200">
-                        {tag['_count']?.bookmarks ?? 0}
-                      </span>
-                    </button>
-                  ))}
+                  tags
+                    ?.sort((a, b) => {
+                      if (a.name.charAt(0) < b.name.charAt(0)) {
+                        return -1
+                      }
+                    })
+                    .map((tag) => (
+                      <button
+                        onClick={() => applyTagFilter(tag.id)}
+                        key={tag.id}
+                        className={`inline-block rounded-md px-2 text-left font-serif text-slate-400 outline-none focus:ring-2 focus:ring-slate-200 ${
+                          tagFilter === tag.id && 'font-extrabold'
+                        }`}
+                      >
+                        {tag.emoji} <span className="ml-1">{tag.name}</span>{' '}
+                        <span className="ml-1 rounded-md bg-slate-700 px-1 text-center text-sm text-slate-200">
+                          {tag['_count']?.bookmarks ?? 0}
+                        </span>
+                      </button>
+                    ))}
                 {quickAdd === types.TAG && (
                   <div className="flex items-center justify-start space-x-1">
                     <input
