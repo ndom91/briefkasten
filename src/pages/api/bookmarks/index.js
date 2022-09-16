@@ -252,8 +252,7 @@ const handler = async (req, res) => {
 
       // Add Screenshot generation to queue if no image found
       // Referrer/Host header on Vercel/Selfhosted
-      const referrer =
-        req.headers.get('x-forwarded-host') ?? req.headers.referer
+      const referrer = req.headers['x-forwarded-host'] ?? req.headers.referer
 
       if (!metadata.image && referrer.includes('briefkastenhq.com')) {
         await fetch(
