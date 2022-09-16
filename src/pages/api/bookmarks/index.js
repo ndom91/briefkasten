@@ -152,43 +152,6 @@ const handler = async (req, res) => {
       metadata = await metascraper({ html: await resp.text(), url: url })
       serverTiming.measure('metadata')
 
-      // If image hoster is enabled
-      if (process.env.SUPABASE_URL_TEMP_DISABLED) {
-        // Generate image with puppeteer
-        serverTiming.measure('puppeteer')
-        const imageRes = await fetch(
-          `https://screenshot.briefkastenhq.com/api/image?url=${encodeURIComponent(
-            url
-          )}`
-        )
-        serverTiming.measure('puppeteer')
-        const imageBlob = await imageRes.blob()
-        if (imageBlob.type === 'image/png') {
-          serverTiming.measure('supabaseUpload')
-
-          // Upload image blob to Supabase
-          let { data, error } = await supabase.storage
-            .from('bookmark-imgs')
-            .upload(
-              `${session?.user?.userId || userId}/${new URL(url).hostname}.png`,
-              await imageBlob.arrayBuffer(),
-              {
-                contentType: 'image/png',
-                upsert: true,
-              }
-            )
-
-          if (error) {
-            throw error
-          }
-
-          if (data.Key) {
-            metadata.image = `https://${process.env.SUPABASE_BUCKET_ID}.supabase.co/storage/v1/object/public/${data.Key}`
-          }
-          serverTiming.measure('supabaseUpload')
-        }
-      }
-
       // Begin inserting entry into db
       // First, the bookmark itself since we need its ID for later inserts
       serverTiming.measure('bookmarkUpsert')
@@ -287,8 +250,12 @@ const handler = async (req, res) => {
         serverTiming.measure('tagMapUpsert')
       }
 
-      // Add Screenshot generation to queue
-      if (req.headers.referer.includes('briefkastenhq.com')) {
+      // Add Screenshot generation to queue if no image found
+      console.log('*** headers', req.headers)
+      if (
+        !metadata.image &&
+        req.headers.referer.includes('briefkastenhq.com')
+      ) {
         await fetch(
           'https://inn.gs/e/cd04Oj6h0vSECwYg9EzStibeAUBRaTCvzSmSOcfDzfLPpW7Oq-vInTr-0KDFaVakPjoW-JOAdsfpC0oojFg3Bg',
           {
