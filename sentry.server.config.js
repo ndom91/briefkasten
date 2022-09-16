@@ -11,5 +11,5 @@ Sentry.init({
     SENTRY_DSN ||
     'https://2b0f5bb15ddd4feeb9fbed676243f0b6@o1287700.ingest.sentry.io/6503207',
   tracesSampleRate: 1.0,
-  allowUrls: ['localhost:3001', 'briefkastenhq.com'],
+  allowUrls: [/localhost:3001/, /briefkastenhq\.com/i],
 })
