@@ -102,6 +102,11 @@ export default function Home({ nextauth }) {
   useEffect(() => {
     if (nextauth?.user) {
       const { email, userId } = nextauth
+      console.log('**** SENTRY USER ****', {
+        id: userId,
+        username: email,
+        email,
+      })
       Sentry.setUser({
         id: userId,
         username: email,
