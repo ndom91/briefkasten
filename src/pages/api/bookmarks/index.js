@@ -254,17 +254,18 @@ const handler = async (req, res) => {
       // Referrer/Host header on Vercel/Selfhosted
       const referrer = req.headers['x-forwarded-host'] ?? req.headers.referer
 
-      if (!metadata.image && referrer.includes('briefkastenhq.com')) {
-        await fetch(
-          'https://inn.gs/e/cd04Oj6h0vSECwYg9EzStibeAUBRaTCvzSmSOcfDzfLPpW7Oq-vInTr-0KDFaVakPjoW-JOAdsfpC0oojFg3Bg',
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ url, userId }),
-          }
-        )
+      if (
+        !metadata.image &&
+        referrer.includes('briefkastenhq.com') &&
+        process.env.INNGEST_URL
+      ) {
+        await fetch(process.env.INNGEST_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ url, userId }),
+        })
       }
 
       // Generate Server-Timing headers
