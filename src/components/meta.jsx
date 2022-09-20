@@ -44,6 +44,7 @@ const Meta = () => {
         <meta property="og:url" content="https://briefkastenhq.com" />
         <meta property="og:image" content={''} />
         <meta name="twitter:image" content={''} />
+        <meta name="darkreader-lock" />
         <title>Briefkasten</title>
       </Head>
       {process.env.NODE_ENV === 'production' && (
