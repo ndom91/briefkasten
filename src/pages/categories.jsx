@@ -221,6 +221,7 @@ export async function getServerSideProps(context) {
     },
   })
   const tags = await prisma.tag.findMany({
+    orderBy: [{ name: 'asc' }],
     where: {
       userId: session.user.userId,
     },

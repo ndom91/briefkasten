@@ -218,6 +218,7 @@ export async function getServerSideProps(context) {
     where: {
       userId: session.user.userId,
     },
+    orderBy: [{ name: 'asc' }],
     include: {
       _count: {
         select: { bookmarks: true },
