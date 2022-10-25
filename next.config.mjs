@@ -1,7 +1,8 @@
 import { withSentryConfig } from '@sentry/nextjs'
 
 const sentryWebpackPluginOptions = {
-  silent: process.env.NODE_ENV === 'production' ? true : false, // Suppresses all logs
+  // silent: process.env.NODE_ENV === 'production' ? true : false, // Suppresses all logs
+  silent: true,
 }
 
 /**
@@ -13,7 +14,7 @@ const nextConfig = {
   swcMinify: true,
   experimental: {
     legacyBrowsers: false,
-    browsersListForSwc: true,
+    appDir: true,
   },
   sentry: {
     hideSourceMaps: false,

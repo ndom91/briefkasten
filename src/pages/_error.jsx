@@ -35,10 +35,11 @@ export default function Error({ statusCode, hasGetInitialPropsRun, err }) {
             </p>
             <NextErrorComponent statusCode={statusCode} />
             <div className="flex">
-              <Link href="/">
-                <a className="mr-4 rounded-lg bg-slate-800 px-5 py-2 text-center text-base font-medium text-white transition duration-500 ease-in-out hover:bg-slate-900 hover:drop-shadow-lg focus:outline-none focus:ring-2 focus:ring-slate-800 focus:ring-offset-2 lg:px-10">
-                  Back to homepage
-                </a>
+              <Link
+                href="/"
+                className="mr-4 rounded-lg bg-slate-800 px-5 py-2 text-center text-base font-medium text-white transition duration-500 ease-in-out hover:bg-slate-900 hover:drop-shadow-lg focus:outline-none focus:ring-2 focus:ring-slate-800 focus:ring-offset-2 lg:px-10"
+              >
+                Back to homepage
               </Link>
               <a
                 href="mailto:support-briefkasten@ndo.dev"
