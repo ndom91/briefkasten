@@ -1,4 +1,7 @@
+'use client'
+
 import Link from 'next/link'
+import { useSession } from 'next-auth/react'
 import { Menu, Transition } from '@headlessui/react'
 import { useLocalStorage } from 'react-use'
 import { useRouter } from 'next/router'
@@ -12,7 +15,8 @@ const types = {
   TAG: 'tag',
 }
 
-export default function Sidebar({ session }) {
+export default function Sidebar() {
+  const session = useSession()
   const categories = useStore((state) => state.categories)
   const tags = useStore((state) => state.tags)
   const setCategoryFilter = useStore((state) => state.setCategoryFilter)
@@ -59,7 +63,7 @@ export default function Sidebar({ session }) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          userId: session?.user?.userId,
+          userId: session?.data?.user?.userId,
           name: quickAddCategory,
         }),
       })
@@ -83,7 +87,7 @@ export default function Sidebar({ session }) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          userId: session?.user?.userId,
+          userId: session?.data?.user?.userId,
           name: quickAddTag,
         }),
       })
@@ -493,9 +497,9 @@ export default function Sidebar({ session }) {
                   open ? 'h-9 w-9' : 'h-8 w-8 md:h-9 md:w-9'
                 }`}
                 src={
-                  session?.user?.image ??
+                  session?.data?.user?.image ??
                   ` https://unavatar.io/${
-                    session?.user?.email ?? session?.user?.id
+                    session?.data?.user?.email ?? session?.data?.user?.id
                   }`
                 }
                 alt="User Avatar"
@@ -579,7 +583,7 @@ export default function Sidebar({ session }) {
           {open && (
             <div className="ml-3">
               <p className="text-sm font-medium text-neutral-200">
-                {session?.user?.name}
+                {session?.data?.user?.name}
               </p>
             </div>
           )}

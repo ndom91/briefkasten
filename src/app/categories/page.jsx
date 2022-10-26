@@ -1,15 +1,15 @@
+'use client'
+
 import Head from 'next/head'
 import { useState } from 'react'
-import { unstable_getServerSession } from 'next-auth/next'
+import { useSession } from 'next-auth/react'
 
-import Layout from '@/components/layout'
 import CategoryTableRow from '@/components/categoryTableRow'
 import Breadcrumbs from '@/components/breadcrumbs'
 
 import prisma from '@/lib/prisma'
-import { useStore, initializeStore } from '@/lib/store'
+import { initializeStore, useStore } from '@/lib/store'
 import { useToast, toastTypes } from '@/lib/hooks'
-import { authOptions } from './api/auth/[...nextauth]'
 
 const breadcrumbs = [
   {
@@ -69,7 +69,7 @@ export default function Categories({ nextauth }) {
   }
 
   return (
-    <Layout session={nextauth}>
+    <>
       <Head>
         <title>Briefkasten | Categories</title>
       </Head>
@@ -189,16 +189,12 @@ export default function Categories({ nextauth }) {
           </table>
         </div>
       </div>
-    </Layout>
+    </>
   )
 }
 
-export async function getServerSideProps(context) {
-  const session = await unstable_getServerSession(
-    context.req,
-    context.res,
-    authOptions
-  )
+export async function getData() {
+  const session = await useSession()
   const zustandStore = initializeStore()
 
   if (!session) {

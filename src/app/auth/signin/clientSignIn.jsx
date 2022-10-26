@@ -1,5 +1,7 @@
+'use client'
+
 import { useState } from 'react'
-import { signIn, getProviders, getCsrfToken } from 'next-auth/react'
+import { signIn } from 'next-auth/react'
 
 import Meta from '@/components/meta'
 
@@ -151,15 +153,3 @@ const Signin = ({ providers, csrfToken }) => {
 }
 
 export default Signin
-
-export async function getServerSideProps(context) {
-  const providers = await getProviders()
-  const csrfToken = await getCsrfToken(context)
-
-  return {
-    props: {
-      providers,
-      csrfToken,
-    },
-  }
-}

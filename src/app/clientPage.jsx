@@ -1,22 +1,27 @@
+'use client'
+
 import { useMemo, useState, useEffect } from 'react'
-import { unstable_getServerSession } from 'next-auth/next'
+// import { unstable_getServerSession } from 'next-auth/next'
+// import { authOptions } from '@/api/auth/[...nextauth]'
+// import { useSession } from 'next-auth/react'
 import { useDrop, usePrevious, useToggle } from 'react-use'
-import { authOptions } from '@/api/auth/[...nextauth]'
 import { useStore, initializeStore } from '@/lib/store'
 import { useToast, toastTypes } from '@/lib/hooks'
+// import { useStore } from '@/lib/store'
+// import { initializeStore } from '@/lib/serverStore'
+import { useRouter } from 'next/navigation'
 
-import * as Sentry from '@sentry/nextjs'
+// import * as Sentry from '@sentry/nextjs'
 import SlideOut from '@/components/slide-out'
 import Pagination from '@/components/pagination'
 import BookmarkCard from '@/components/bookmark-card'
-import Layout from '@/components/layout'
 import EmptyDashboard from '@/components/empty-dashboard'
 import DashboardHeader from '@/components/dashboard-header'
 import QuickAdd from '@/components/quick-add'
 import DataTable from '@/components/table'
 import Modal from '@/components/modal'
 import { viewTypes } from '@/lib/constants'
-import prisma from '@/lib/prisma'
+// import prisma from '@/lib/prisma'
 import Masonry from 'react-masonry-css'
 
 const PAGE_SIZE = 25
@@ -31,7 +36,20 @@ const breakpointColumnsObj = {
   640: 1,
 }
 
-export default function Home({ nextauth }) {
+export default function Home({ session, data }) {
+  const router = useRouter()
+
+  if (!session) {
+    router.push('/auth/signin')
+  }
+
+  const zustandStore = initializeStore()
+  useEffect(() => {
+    zustandStore.setState({ bookmarks: data.bookmarks })
+    zustandStore.setState({ categories: data.categories })
+    zustandStore.setState({ tags: data.tags })
+  }, [zustandStore, data])
+
   const bookmarks = useStore((state) => state.bookmarks)
   const categories = useStore((state) => state.categories)
   const categoryFilter = useStore((state) => state.categoryFilter)
@@ -100,13 +118,13 @@ export default function Home({ nextauth }) {
   !currentTableData && setBookmarks()
 
   useEffect(() => {
-    if (nextauth?.user) {
-      const { email, userId } = nextauth.user
-      Sentry.setUser({
-        id: userId,
-        username: email,
-        email,
-      })
+    if (session?.user) {
+      const { email, userId } = session.user
+      // Sentry.setUser({
+      //   id: userId,
+      //   username: email,
+      //   email,
+      // })
     }
 
     const getLanguage = () =>
@@ -133,7 +151,7 @@ export default function Home({ nextauth }) {
         },
         body: JSON.stringify({
           url,
-          userId: nextauth?.user?.userId,
+          userId: session?.user?.userId,
         }),
       })
       if (res.status === 200) {
@@ -172,7 +190,7 @@ export default function Home({ nextauth }) {
   })
 
   return (
-    <Layout session={nextauth}>
+    <>
       <div className="flex h-full w-full flex-col items-center space-y-2 overflow-x-hidden">
         <DashboardHeader />
         {bookmarks.length === 0 && <EmptyDashboard />}
@@ -203,7 +221,7 @@ export default function Home({ nextauth }) {
                       <BookmarkCard
                         bookmark={bookmark}
                         key={bookmark.id}
-                        session={nextauth}
+                        session={session}
                         toggleSidebar={() => initEdit(bookmark)}
                       />
                     ))}
@@ -233,11 +251,11 @@ export default function Home({ nextauth }) {
           pageSize={PAGE_SIZE}
           onPageChange={(page) => setCurrentPage(page)}
         />
-        <QuickAdd categories={categories} session={nextauth} />
+        <QuickAdd categories={categories} session={session} />
         <SlideOut
           open={openEditSidebar}
           toggleOpen={toggleEditSidebar}
-          session={nextauth}
+          session={session}
         />
         {openModal && (
           <Modal
@@ -249,76 +267,6 @@ export default function Home({ nextauth }) {
           />
         )}
       </div>
-    </Layout>
+    </>
   )
-}
-
-export async function getServerSideProps(context) {
-  const session = await unstable_getServerSession(
-    context.req,
-    context.res,
-    authOptions
-  )
-  const zustandStore = initializeStore()
-
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/auth/signin',
-        permanent: false,
-      },
-    }
-  }
-
-  const bookmarkData = await prisma.bookmark.findMany({
-    orderBy: { createdAt: 'desc' },
-    where: {
-      userId: session.user.userId,
-    },
-    include: {
-      category: true,
-      tags: { include: { tag: true } },
-    },
-  })
-
-  const categories = await prisma.category.findMany({
-    where: {
-      userId: session.user.userId,
-    },
-    include: {
-      _count: {
-        select: { bookmarks: true },
-      },
-    },
-  })
-  const tags = await prisma.tag.findMany({
-    where: {
-      userId: session.user.userId,
-    },
-    orderBy: [{ name: 'asc' }],
-    include: {
-      _count: {
-        select: { bookmarks: true },
-      },
-    },
-  })
-
-  // Convert 'createdAt' to string to pass through as json
-  const bookmarks = bookmarkData.map((bookmark) => ({
-    ...bookmark,
-    createdAt: bookmark.createdAt.toString(),
-    tags: bookmark.tags.map((tag) => tag.tag),
-  }))
-
-  zustandStore.getState().setBookmarks(bookmarks)
-  zustandStore.getState().setCategories(categories)
-  zustandStore.getState().setTags(tags)
-
-  return {
-    props: {
-      session,
-      nextauth: session,
-      initialZustandState: JSON.parse(JSON.stringify(zustandStore.getState())),
-    },
-  }
 }

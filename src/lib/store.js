@@ -1,8 +1,8 @@
 import { useLayoutEffect } from 'react'
-import produce from 'immer'
-import create from 'zustand'
 import createContext from 'zustand/context'
 import { mountStoreDevtool } from 'simple-zustand-devtools'
+import produce from 'immer'
+import create from 'zustand'
 import { viewTypes } from '@/lib/constants'
 
 let store
