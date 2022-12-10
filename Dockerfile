@@ -12,18 +12,14 @@ LABEL org.opencontainers.image.title="Briefkasten" \
 # ---- Dependencies ----
 WORKDIR /app
 
-# RUN apk --no-cache --virtual build-dependencies add python3 make g++ libressl-dev openssl
-
 # Install pnpm
 RUN npm install -g pnpm; \
   pnpm --version; \
   pnpm setup; \
   mkdir -p /usr/local/share/pnpm &&\
   export PNPM_HOME="/usr/local/share/pnpm" &&\
-  export PATH="$PNPM_HOME:$PATH"; \
-  pnpm bin -g
+  export PATH="$PNPM_HOME:$PATH";
 
-# RUN curl -fsSL "https://github.com/pnpm/pnpm/releases/latest/download/pnpm-linuxstatic-x64" -o /bin/pnpm; chmod +x /bin/pnpm;
 RUN apt-get update && apt-get install -y python3 make g++
 
 # Copy package and lockfile
@@ -31,7 +27,6 @@ COPY package.json pnpm-lock.yaml prisma ./
 
 # install dependencies
 RUN pnpm install --frozen-lockfile
-  # apk del build-dependencies
 
 # ---- Build ----
 FROM node:16-bullseye-slim as build
@@ -47,11 +42,10 @@ RUN npm install -g pnpm; \
   export PATH="$PNPM_HOME:$PATH";
 
 # copy all dependencies
-# COPY --from=dependencies /usr/local/bin/pnpm /usr/local/bin/pnpm
 COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
 
-# openssl for prisma
+# openssl for prisma generate
 RUN apt-get update && apt-get install -y openssl
 
 # build project
@@ -69,10 +63,7 @@ RUN npm install -g pnpm; \
   pnpm setup; \
   mkdir -p /usr/local/share/pnpm &&\
   export PNPM_HOME="/usr/local/share/pnpm" &&\
-  export PATH="$PNPM_HOME:$PATH"; \
-  pnpm bin -g 
-
-# COPY --from=build /usr/local/bin/pnpm /usr/local/bin/pnpm
+  export PATH="$PNPM_HOME:$PATH";
 
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
