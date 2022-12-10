@@ -1,6 +1,7 @@
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["referentialIntegrity", "fullTextSearch"]
+  binaryTargets = ["debian-openssl-1.1.x", "linux-arm64-openssl-1.1.x"]
 }
 
 datasource db {

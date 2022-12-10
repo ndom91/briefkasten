@@ -12,6 +12,8 @@ LABEL org.opencontainers.image.title="Briefkasten" \
 # ---- Dependencies ----
 WORKDIR /app
 
+# RUN apk --no-cache --virtual build-dependencies add python3 make g++ libressl-dev openssl
+
 # Install pnpm
 RUN npm install -g pnpm; \
   pnpm --version; \
@@ -19,13 +21,17 @@ RUN npm install -g pnpm; \
   mkdir -p /usr/local/share/pnpm &&\
   export PNPM_HOME="/usr/local/share/pnpm" &&\
   export PATH="$PNPM_HOME:$PATH"; \
-  pnpm bin -g 
+  pnpm bin -g
+
+# RUN curl -fsSL "https://github.com/pnpm/pnpm/releases/latest/download/pnpm-linuxstatic-x64" -o /bin/pnpm; chmod +x /bin/pnpm;
+RUN apt-get update && apt-get install -y python3 make g++
 
 # Copy package and lockfile
 COPY package.json pnpm-lock.yaml prisma ./
 
 # install dependencies
 RUN pnpm install --frozen-lockfile
+  # apk del build-dependencies
 
 # ---- Build ----
 FROM node:16-bullseye-slim as build
@@ -38,12 +44,15 @@ RUN npm install -g pnpm; \
   pnpm setup; \
   mkdir -p /usr/local/share/pnpm &&\
   export PNPM_HOME="/usr/local/share/pnpm" &&\
-  export PATH="$PNPM_HOME:$PATH"; \
-  pnpm bin -g 
+  export PATH="$PNPM_HOME:$PATH";
 
 # copy all dependencies
+# COPY --from=dependencies /usr/local/bin/pnpm /usr/local/bin/pnpm
 COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
+
+# openssl for prisma
+RUN apt-get update && apt-get install -y openssl
 
 # build project
 RUN pnpm dlx prisma generate
@@ -63,12 +72,14 @@ RUN npm install -g pnpm; \
   export PATH="$PNPM_HOME:$PATH"; \
   pnpm bin -g 
 
+# COPY --from=build /usr/local/bin/pnpm /usr/local/bin/pnpm
 
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+RUN pnpm setup;\
+  addgroup --system --gid 1001 nodejs;\
+  adduser --system --uid 1001 nextjs
 
 # copy build
 COPY --from=build --chown=nextjs:nodejs /app/next.config.mjs ./
