@@ -56,6 +56,9 @@ RUN pnpm build
 FROM node:16-bullseye-slim as release
 WORKDIR /app
 
+# openssl for prisma
+RUN apt-get update && apt-get install -y openssl
+
 # Install pnpm
 # @TODO: Copy from 'build'
 RUN npm install -g pnpm; \
