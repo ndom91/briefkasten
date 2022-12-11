@@ -18,8 +18,9 @@ RUN npm install -g pnpm; \
   pnpm setup; \
   mkdir -p /usr/local/share/pnpm &&\
   export PNPM_HOME="/usr/local/share/pnpm" &&\
-  export PATH="$PNPM_HOME:$PATH"; \
-  pnpm bin -g 
+  export PATH="$PNPM_HOME:$PATH";
+
+RUN apt-get update && apt-get install -y python3 make g++
 
 # Copy package and lockfile
 COPY package.json pnpm-lock.yaml prisma ./
@@ -38,12 +39,14 @@ RUN npm install -g pnpm; \
   pnpm setup; \
   mkdir -p /usr/local/share/pnpm &&\
   export PNPM_HOME="/usr/local/share/pnpm" &&\
-  export PATH="$PNPM_HOME:$PATH"; \
-  pnpm bin -g 
+  export PATH="$PNPM_HOME:$PATH";
 
 # copy all dependencies
 COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
+
+# openssl for prisma generate
+RUN apt-get update && apt-get install -y openssl
 
 # build project
 RUN pnpm dlx prisma generate
@@ -60,15 +63,14 @@ RUN npm install -g pnpm; \
   pnpm setup; \
   mkdir -p /usr/local/share/pnpm &&\
   export PNPM_HOME="/usr/local/share/pnpm" &&\
-  export PATH="$PNPM_HOME:$PATH"; \
-  pnpm bin -g 
-
+  export PATH="$PNPM_HOME:$PATH";
 
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+RUN pnpm setup;\
+  addgroup --system --gid 1001 nodejs;\
+  adduser --system --uid 1001 nextjs
 
 # copy build
 COPY --from=build --chown=nextjs:nodejs /app/next.config.mjs ./
