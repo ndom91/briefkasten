@@ -15,7 +15,7 @@ services:
       - briefkasten-db:/var/lib/postgresql/data
   app:
     container_name: bk-app
-    build: .
+    image: ghcr.io/ndom91/briefkasten
     env_file:
       - .env
     restart: unless-stopped
