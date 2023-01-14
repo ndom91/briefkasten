@@ -9,6 +9,7 @@ import Breadcrumbs from '@/components/breadcrumbs'
 import { useStore, initializeStore } from '@/lib/store'
 import { useToast, toastTypes } from '@/lib/hooks'
 import { authOptions } from './api/auth/[...nextauth]'
+import { parseChromeBookmarks, parsePocketBookmarks } from '@/lib/import'
 
 const breadcrumbs = [
   {
@@ -77,42 +78,29 @@ export default function Settings({ nextauth }) {
   }
 
   const importBookmarks = async () => {
+    if (!fileContents) {
+      toast(toastTypes.WARNING, `Could not import. Please upload a file first.`)
+      return
+    }
+    let bookmarks
     const domParser = new DOMParser()
     const doc = domParser.parseFromString(fileContents, 'text/html')
-    const dataElements = doc.querySelectorAll('dl dt')
-    const bookmarks = Array.from(dataElements)
-      .map((element) => {
-        if (
-          element.tagName === 'DT' &&
-          element.firstElementChild.attributes.href
-        ) {
-          const title = element.textContent
-            ?.replaceAll('\n', '')
-            .trim()
-            .substring(0, 190)
-          const url = element.firstElementChild?.attributes?.href?.value?.trim()
-          const date =
-            element.firstElementChild?.attributes?.add_date?.value?.trim()
-          const tags = element.firstElementChild?.attributes?.tags?.value
-            .trim()
-            .split(',')
-          const desc = element.nextSibling?.innerText
-            ?.replaceAll('\n', '')
-            .trim()
+    if (doc.querySelector('title').textContent.includes('Pocket')) {
+      console.log('Pocket')
+      bookmarks = parsePocketBookmarks(doc, nextauth?.user?.userId)
+      console.log('PocketBookmarks', bookmarks)
+    } else {
+      // Default Chrome format
+      bookmarks = parseChromeBookmarks(doc, nextauth?.user?.userId)
+    }
 
-          return {
-            title,
-            url,
-            createdAt: parseInt(date)
-              ? new Date(parseInt(date) * 1000).toISOString()
-              : 0,
-            tags,
-            desc,
-            userId: nextauth?.user?.userId,
-          }
-        }
-      })
-      .filter(Boolean)
+    if (!bookmarks.length) {
+      toast(
+        toastTypes.WARNING,
+        `No bookmarks successfully parsed. See console for any potential errors.`
+      )
+      return
+    }
 
     const bulkCreateRes = await fetch('/api/bookmarks/bulk', {
       method: 'POST',
@@ -121,6 +109,18 @@ export default function Settings({ nextauth }) {
       },
       body: JSON.stringify(bookmarks),
     })
+
+    if (!bulkCreateRes.ok) {
+      if ((await bulkCreateRes.json()).code === 'P2002') {
+        toast(
+          toastTypes.ERROR,
+          `Error saving imported bookmarks\nURL already exists`
+        )
+        return
+      }
+      toast(toastTypes.ERROR, `Error saving imported bookmarks`)
+      return
+    }
 
     const bulkCreateData = await bulkCreateRes.json()
 
