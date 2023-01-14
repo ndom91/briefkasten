@@ -13,7 +13,6 @@ const nextConfig = {
   swcMinify: true,
   experimental: {
     legacyBrowsers: false,
-    browsersListForSwc: true,
   },
   sentry: {
     hideSourceMaps: false,
