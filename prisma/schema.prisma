@@ -5,7 +5,7 @@ generator client {
 }
 
 datasource db {
-  provider             = env("DATABASE_PROVIDER")
+  provider             = "postgres"
   url                  = env("DATABASE_URL")
   referentialIntegrity = "prisma"
 }
