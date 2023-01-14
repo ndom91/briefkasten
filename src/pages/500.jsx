@@ -22,7 +22,7 @@ export default function FiveHundred() {
               You might have the wrong address, or the page may have moved.
             </p>
             <div className="flex">
-              <Link href="/">
+              <Link href="/" legacyBehavior>
                 <a className="mr-4 rounded-xl bg-slate-800 px-5 py-4 text-center text-base font-medium text-white transition duration-500 ease-in-out hover:bg-slate-900 hover:drop-shadow-lg focus:outline-none focus:ring-2 focus:ring-slate-800 focus:ring-offset-2 lg:px-10">
                   Back to homepage
                 </a>

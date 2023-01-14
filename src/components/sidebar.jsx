@@ -124,7 +124,7 @@ export default function Sidebar({ session }) {
       } flex flex-col rounded-r-md bg-slate-800 pt-5 transition`}
     >
       <div className="flex items-center justify-center px-4">
-        <Link href="/">
+        <Link href="/" legacyBehavior>
           <div className="flex items-center hover:cursor-pointer">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -154,7 +154,7 @@ export default function Sidebar({ session }) {
       >
         <ul>
           <li>
-            <Link href="/">
+            <Link href="/" legacyBehavior>
               <div className="focus:shadow-outline mt-1 inline-flex w-full transform items-center rounded-lg px-2 py-2 text-base text-slate-200 outline-none transition duration-500 ease-in-out hover:cursor-pointer hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-slate-900 md:px-4">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -182,7 +182,7 @@ export default function Sidebar({ session }) {
             </Link>
           </li>
           <li>
-            <Link href="/categories">
+            <Link href="/categories" legacyBehavior>
               <div className="focus:shadow-outline mt-1 inline-flex w-full transform items-center rounded-lg px-2 py-2 text-base text-slate-200 outline-none transition duration-500 ease-in-out hover:cursor-pointer hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-slate-900 md:px-4">
                 <svg
                   className={`${open ? 'h-5 w-5' : 'h-7 w-7'}`}
@@ -210,7 +210,7 @@ export default function Sidebar({ session }) {
             </Link>
           </li>
           <li>
-            <Link href="/tags">
+            <Link href="/tags" legacyBehavior>
               <div className="focus:shadow-outline mt-1 inline-flex w-full transform items-center rounded-lg px-2 py-2 text-base text-slate-200 outline-none transition duration-500 ease-in-out hover:cursor-pointer hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-200 focus:ring-offset-2 focus:ring-offset-slate-900 md:px-4">
                 <svg
                   className={`${open ? 'h-5 w-5' : 'h-7 w-7'}`}

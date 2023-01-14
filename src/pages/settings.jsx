@@ -78,37 +78,40 @@ export default function Settings({ nextauth }) {
     const domParser = new DOMParser()
     const doc = domParser.parseFromString(fileContents, 'text/html')
     const dataElements = doc.querySelectorAll('dl dt')
-    const bookmarks = Array.from(dataElements).map((element) => {
-      let url = ''
-      let title = ''
-      let desc = ''
-      // let tags = ''
-      let date = ''
+    // console.log('*DE*', dataElements)
+    const bookmarks = Array.from(dataElements)
+      .map((element) => {
+        if (
+          element.tagName === 'DT' &&
+          element.firstElementChild.attributes.href
+        ) {
+          const title = element.textContent
+            ?.replaceAll('\n', '')
+            .trim()
+            .substring(0, 190)
+          const url = element.firstElementChild?.attributes?.href?.value?.trim()
+          const date =
+            element.firstElementChild?.attributes?.add_date?.value?.trim()
+          const tags = element.firstElementChild?.attributes?.tags?.value
+            .trim()
+            .split(',')
+          const desc = element.nextSibling?.innerText
+            ?.replaceAll('\n', '')
+            .trim()
 
-      if (element.tagName === 'DT') {
-        title = element.textContent
-          ?.replaceAll('\n', '')
-          .trim()
-          .substring(0, 190)
-        url = element.firstElementChild?.attributes?.href.value.trim()
-        date = element.firstElementChild?.attributes?.add_date.value.trim()
-        // tags = element.firstElementChild?.attributes?.tags.value
-        //   .trim()
-        //   .split(',')
-        desc = element.nextSibling?.innerText?.replaceAll('\n', '').trim()
-
-        return {
-          title,
-          url,
-          createdAt: parseInt(date)
-            ? new Date(parseInt(date) * 1000).toISOString()
-            : 0,
-          // tags,
-          desc,
-          userId: nextauth?.user?.userId,
+          return {
+            title,
+            url,
+            createdAt: parseInt(date)
+              ? new Date(parseInt(date) * 1000).toISOString()
+              : 0,
+            tags,
+            desc,
+            userId: nextauth?.user?.userId,
+          }
         }
-      }
-    })
+      })
+      .filter(Boolean)
 
     const bulkCreateRes = await fetch('/api/bookmarks/bulk', {
       method: 'POST',
