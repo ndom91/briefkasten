@@ -29,12 +29,14 @@ export default function Settings({ nextauth }) {
   const [_, copyToClipboard] = useCopyToClipboard() // eslint-disable-line
 
   const handleInputFile = (file) => {
-    setFileName(file.name)
-    const fileReader = new FileReader()
-    fileReader.onloadend = (e) => {
-      setFileContents(e.currentTarget.result)
+    if (file) {
+      setFileName(file.name)
+      const fileReader = new FileReader()
+      fileReader.onloadend = (e) => {
+        setFileContents(e.currentTarget.result)
+      }
+      fileReader.readAsText(file)
     }
-    fileReader.readAsText(file)
   }
 
   // According to Microsoft Bookmark File "Spec" - https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/aa753582(v=vs.85)
