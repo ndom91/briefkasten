@@ -78,7 +78,6 @@ export default function Settings({ nextauth }) {
     const domParser = new DOMParser()
     const doc = domParser.parseFromString(fileContents, 'text/html')
     const dataElements = doc.querySelectorAll('dl dt')
-    // console.log('*DE*', dataElements)
     const bookmarks = Array.from(dataElements)
       .map((element) => {
         if (
