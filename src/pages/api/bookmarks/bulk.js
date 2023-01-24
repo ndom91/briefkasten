@@ -40,3 +40,11 @@ export default withSentry(async function handler(req, res) {
     return res.status(403).end('Unauthorized')
   }
 })
+
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '25mb',
+    },
+  },
+}
