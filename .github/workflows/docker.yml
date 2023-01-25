@@ -28,6 +28,10 @@ jobs:
             maintainer=ndom91
             org.opencontainers.image.title=Briefkasten
             org.opencontainers.image.vendor=ndom91
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+        with:
+          platforms: linux/amd64,linux/arm64,linux/armv7
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
         with:
