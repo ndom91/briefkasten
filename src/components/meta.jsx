@@ -47,13 +47,14 @@ const Meta = () => {
         <meta name="darkreader-lock" />
         <title>Briefkasten</title>
       </Head>
-      {process.env.NODE_ENV === 'production' && (
-        <Script
-          src="/p.js"
-          data-domain="briefkasten.vercel.app"
-          data-api="/a/e"
-        />
-      )}
+      {process.env.NODE_ENV === 'production' &&
+        window.location.host === 'briefkastenhq.com' && (
+          <Script
+            src="/p.js"
+            data-domain="briefkasten.vercel.app"
+            data-api="/a/e"
+          />
+        )}
     </>
   )
 }
