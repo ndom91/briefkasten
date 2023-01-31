@@ -4,6 +4,7 @@ import GoogleProvider from 'next-auth/providers/google'
 import EmailProvider from 'next-auth/providers/email'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import prisma from '@/lib/prisma'
+import { html } from '@/lib/helpers'
 
 const providers = []
 
@@ -23,13 +24,54 @@ if (process.env.GOOGLE_ID) {
     })
   )
 }
-if (process.env.SMTP_SERVER && process.env.SMTP_FROM) {
-  providers.push(
-    EmailProvider({
-      server: process.env.SMTP_SERVER,
-      from: process.env.SMTP_FROM,
-    })
-  )
+if (
+  (process.env.SMTP_SERVER && process.env.SMTP_FROM) ||
+  process.env.SENDGRID_API
+) {
+  const emailProviderSettings = {}
+  if (process.env.SMTP_SERVER && process.env.SMTP_FROM) {
+    emailProviderSettings.server = process.env.SMTP_SERVER
+    emailProviderSettings.from = process.env.SMTP_FROM
+  }
+  if (process.env.SENDGRID_API) {
+    emailProviderSettings.sendVerificationRequest = async (params) => {
+      const { identifier: email } = params
+
+      try {
+        const sendResponse = await fetch(
+          'https://api.sendgrid.com/v3/mail/send',
+          {
+            body: JSON.stringify({
+              personalizations: [{ to: [{ email: email }] }],
+              from: {
+                email: 'noreply@briefkastenhq.com',
+              },
+              subject: 'Briefkasten Sign In',
+              content: [
+                {
+                  type: 'text/html',
+                  value: html(params),
+                },
+              ],
+            }),
+            headers: {
+              Authorization: `Bearer ${process.env.SENDGRID_API}`,
+              'Content-Type': 'application/json',
+            },
+            method: 'POST',
+          }
+        )
+
+        if (!sendResponse.ok) {
+          const responseJson = await sendResponse.json()
+          throw new Error(JSON.stringify(responseJson.errors))
+        }
+      } catch (e) {
+        console.error('Could not send Email', e)
+      }
+    }
+  }
+  providers.push(EmailProvider(emailProviderSettings))
 }
 
 export const authOptions = {
