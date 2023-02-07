@@ -128,7 +128,7 @@ export default function BookmarkCard({ bookmark, toggleSidebar, session }) {
         >
           <img
             className="aspect-2 w-[485px] rounded-md border-2 border-slate-50 object-cover object-left-top transition group-focus:ring-4 group-focus:ring-slate-200"
-            src={imageUrl}
+            src={`/api/imageProxy?url=${encodeURIComponent(imageUrl)}`}
             fetchpriority="high"
             onError={fetchFallbackImage}
             alt={`${title} Image`}
