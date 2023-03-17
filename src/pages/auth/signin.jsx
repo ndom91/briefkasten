@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useRouter } from 'next/router'
 import { signIn, getProviders, getCsrfToken } from 'next-auth/react'
 
 import Meta from '@/components/meta'
@@ -35,14 +36,33 @@ const ProviderIcons = ({ provider }) => {
         ></path>
       </svg>
     )
+  } else if (provider === 'keycloak') {
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-7 w-7"
+        viewBox="0 0 52 52"
+      >
+        <path
+          fill="currentColor"
+          d="M36 16h-2v-4c0-5.52-4.48-10-10-10s-10 4.48-10 10v4h-2c-2.21 0-4 1.79-4 4v20c0 2.21 1.79 4 4 4h24c2.21 0 4-1.79 4-4v-20c0-2.21-1.79-4-4-4zm-12 18c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm6.2-18h-12.4v-4c0-3.42 2.78-6.2 6.2-6.2 3.42 0 6.2 2.78 6.2 6.2v4z"
+        ></path>
+      </svg>
+    )
   }
 }
 
-const Signin = ({ providers, csrfToken }) => {
+const Signin = ({ providers, csrfToken, autoLoginFirstProvider }) => {
   const [email, setEmail] = useState('')
+  const { query } = useRouter()
   const containsOauthProviders = Object.keys(providers).some((p) =>
-    ['google', 'github'].includes(p)
+    ['google', 'github', 'keycloak'].includes(p)
   )
+
+  if (autoLoginFirstProvider && !query.error) {
+    signIn(providers[0])
+  }
+
   return (
     <>
       <Meta />
@@ -84,6 +104,9 @@ const Signin = ({ providers, csrfToken }) => {
                             'bg-blue-700 hover:bg-blue-800 focus:ring-blue-700'
                           } ${
                             p.id === 'github' &&
+                            'bg-gray-600 hover:bg-gray-800 '
+                          } ${
+                            p.id === 'keycloak' &&
                             'bg-gray-600 hover:bg-gray-800 '
                           } justify-center px-4 text-base font-light text-white transition focus:outline-none focus:ring-2 focus:ring-slate-800 focus:ring-offset-2`}
                         >
@@ -155,11 +178,13 @@ export default Signin
 export async function getServerSideProps(context) {
   const providers = await getProviders()
   const csrfToken = await getCsrfToken(context)
+  const autoLoginFirstProvider = process.env.AUTOLOGIN_FIRST_PROVIDER
 
   return {
     props: {
       providers,
       csrfToken,
+      autoLoginFirstProvider,
     },
   }
 }

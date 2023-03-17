@@ -2,6 +2,7 @@ import NextAuth from 'next-auth'
 import GithubProvider from 'next-auth/providers/github'
 import GoogleProvider from 'next-auth/providers/google'
 import EmailProvider from 'next-auth/providers/email'
+import KeycloakProvider from 'next-auth/providers/keycloak'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import prisma from '@/lib/prisma'
 import { html } from '@/lib/helpers'
@@ -21,6 +22,16 @@ if (process.env.GOOGLE_ID) {
     GoogleProvider({
       clientId: process.env.GOOGLE_ID,
       clientSecret: process.env.GOOGLE_SECRET,
+    })
+  )
+}
+if (process.env.KEYCLOAK_ID) {
+  providers.push(
+    KeycloakProvider({
+      clientId: process.env.KEYCLOAK_ID,
+      name: process.env.KEYCLOAK_NAME,
+      clientSecret: process.env.KEYCLOAK_SECRET,
+      issuer: process.env.KEYCLOAK_ISSUER,
     })
   )
 }
@@ -75,7 +86,6 @@ if (
 }
 
 export const authOptions = {
-  adapter: PrismaAdapter(prisma),
   providers,
   pages: {
     signIn: '/auth/signin',
@@ -88,6 +98,18 @@ export const authOptions = {
   },
   secret: process.env.NEXTAUTH_SECRET,
   debug: process.env.NODE_ENV !== 'production',
+}
+
+// Next-auth passes through all options gotten from keycloak, excessive ones must be removed.
+const adapterOverwrite = PrismaAdapter(prisma)
+
+authOptions.adapter = {
+  ...adapterOverwrite,
+  linkAccount: (account) => {
+    delete account['not-before-policy']
+    delete account['refresh_expires_in']
+    return adapterOverwrite.linkAccount(account)
+  },
 }
 
 export default NextAuth(authOptions)
