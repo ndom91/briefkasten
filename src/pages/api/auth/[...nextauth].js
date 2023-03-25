@@ -32,6 +32,7 @@ if (process.env.KEYCLOAK_ID) {
       name: process.env.KEYCLOAK_NAME,
       clientSecret: process.env.KEYCLOAK_SECRET,
       issuer: process.env.KEYCLOAK_ISSUER,
+      allowDangerousEmailAccountLinking: process.env.KEYCLOAK_DANGER_EMAIL_ACC_LINK,
     })
   )
 }
