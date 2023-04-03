@@ -8,6 +8,8 @@
 
 Self-hosted bookmarking application. Works with any Prisma compatible database (MySQL, Postgres, SQLite, etc.)
 
+> **Briefkasten** (Postbox) - am Haus- oder Wohnungseingang angebrachter Behälter für die dem Empfänger zugestellten [Post]sendungen
+
 ### Free Instance: [briefkastenhq.com](https://briefkastenhq.com) [[Docs](https://docs.briefkastenhq.com)]
 
 ## 📸 Screenshots
