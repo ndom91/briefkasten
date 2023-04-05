@@ -3,6 +3,7 @@ import GithubProvider from 'next-auth/providers/github'
 import GoogleProvider from 'next-auth/providers/google'
 import EmailProvider from 'next-auth/providers/email'
 import KeycloakProvider from 'next-auth/providers/keycloak'
+import AuthentikProvider from 'next-auth/providers/authentik'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import prisma from '@/lib/prisma'
 import { html } from '@/lib/helpers'
@@ -32,7 +33,18 @@ if (process.env.KEYCLOAK_ID) {
       name: process.env.KEYCLOAK_NAME,
       clientSecret: process.env.KEYCLOAK_SECRET,
       issuer: process.env.KEYCLOAK_ISSUER,
-      allowDangerousEmailAccountLinking: process.env.KEYCLOAK_DANGER_EMAIL_ACC_LINK,
+      allowDangerousEmailAccountLinking:
+        process.env.KEYCLOAK_DANGER_EMAIL_ACC_LINK,
+    })
+  )
+}
+if (process.env.AUTHENTIK_ID) {
+  providers.push(
+    AuthentikProvider({
+      name: process.env.AUTHENTIK_NAME,
+      clientId: process.env.AUTHENTIK_ID,
+      clientSecret: process.env.AUTHENTIK_SECRET,
+      issuer: process.env.AUTHENTIK_ISSUER,
     })
   )
 }
