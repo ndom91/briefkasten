@@ -256,7 +256,7 @@ const handler = async (req, res) => {
 
       if (
         !metadata.image &&
-        referrer.includes('briefkastenhq.com') &&
+        referrer?.includes('briefkastenhq.com') &&
         process.env.INNGEST_URL
       ) {
         await fetch(process.env.INNGEST_URL, {
