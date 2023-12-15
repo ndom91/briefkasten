@@ -4,7 +4,7 @@ import { useToast, toastTypes } from '@/lib/hooks'
 import Chip from '@/components/chip'
 
 const fallbackRandomImage = `https://picsum.photos/250/125?random=${Math.floor(
-  Math.random() * 1000
+  Math.random() * 1000,
 )}`
 
 export default function BookmarkCard({ bookmark, toggleSidebar, session }) {
@@ -22,7 +22,7 @@ export default function BookmarkCard({ bookmark, toggleSidebar, session }) {
       setLoadingDel(true)
       const imageUrlPathname = new URL(imageUrl).pathname
       const imageFileName = imageUrlPathname.substring(
-        imageUrlPathname.lastIndexOf('/') + 1
+        imageUrlPathname.lastIndexOf('/') + 1,
       )
       const deleteRes = await fetch('/api/bookmarks', {
         method: 'DELETE',
@@ -52,7 +52,7 @@ export default function BookmarkCard({ bookmark, toggleSidebar, session }) {
 
   return (
     <div className="bookmark-card group relative flex flex-col rounded-md border-2 border-slate-100 bg-white p-4 shadow-sm transition hover:shadow-lg">
-      <div className="absolute top-3 right-3 z-10 flex flex-row-reverse gap-2 rounded-lg border-0 border-slate-400/50  bg-slate-600/90 px-3 py-2 opacity-0 shadow-md transition group-hover:opacity-100">
+      <div className="absolute right-3 top-3 z-10 flex flex-row-reverse gap-2 rounded-lg border-0 border-slate-400/50  bg-slate-600/90 px-3 py-2 opacity-0 shadow-md transition group-hover:opacity-100">
         <button
           name="edit"
           tabIndex={-1}
@@ -127,7 +127,7 @@ export default function BookmarkCard({ bookmark, toggleSidebar, session }) {
           className="group rounded-md outline-none"
         >
           <img
-            className="aspect-2 w-[485px] rounded-md border-2 border-slate-50 object-cover object-left-top transition group-focus:ring-4 group-focus:ring-slate-200"
+            className="aspect-[2/1] w-[485px] rounded-md border-2 border-slate-50 object-cover object-left-top transition group-focus:ring-4 group-focus:ring-slate-200"
             src={`/api/imageProxy?url=${encodeURIComponent(imageUrl)}`}
             fetchpriority="high"
             onError={fetchFallbackImage}
@@ -155,7 +155,7 @@ export default function BookmarkCard({ bookmark, toggleSidebar, session }) {
           rel="noopener noreferrer"
           className="mt-2 block max-w-full space-y-2 rounded-sm outline-none transition focus:ring-2 focus:ring-slate-200"
         >
-          <h3 className="w-full text-xl font-semibold leading-none tracking-tighter text-neutral-600 line-clamp-1">
+          <h3 className="line-clamp-1 w-full text-xl font-semibold leading-none tracking-tighter text-neutral-600">
             {title}
           </h3>
         </a>
@@ -163,12 +163,12 @@ export default function BookmarkCard({ bookmark, toggleSidebar, session }) {
           href={url}
           target="_blank"
           rel="noopener noreferrer"
-          className="break-all rounded-sm text-xs text-slate-300 outline-none transition line-clamp-1 focus:ring-2 focus:ring-slate-200"
+          className="line-clamp-1 break-all rounded-sm text-xs text-slate-300 outline-none transition focus:ring-2 focus:ring-slate-200"
         >
           {url}
         </a>
         {desc && (
-          <p className="w-full max-w-full text-sm font-normal text-gray-500 line-clamp-3">
+          <p className="line-clamp-3 w-full max-w-full text-sm font-normal text-gray-500">
             {desc}
           </p>
         )}

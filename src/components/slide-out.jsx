@@ -7,7 +7,7 @@ import { Combobox, Listbox, Dialog, Transition } from '@headlessui/react'
 import Chip from '@/components/chip'
 
 const fallbackUnsplash = `https://source.unsplash.com/random/300x201?sig=${Math.floor(
-  Math.random() * 100
+  Math.random() * 100,
 )}`
 
 export default function SlideOut({ open, toggleOpen, session }) {
@@ -103,10 +103,10 @@ export default function SlideOut({ open, toggleOpen, session }) {
       <Dialog as="div" className="relative z-50" onClose={toggleOpen}>
         <Transition.Child
           as={Fragment}
-          enter="ease-in-out duration-300"
+          enter="duration-300 ease-in-out"
           enterFrom="opacity-0"
           enterTo="opacity-100"
-          leave="ease-in-out duration-300"
+          leave="duration-300 ease-in-out"
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
@@ -118,24 +118,24 @@ export default function SlideOut({ open, toggleOpen, session }) {
             <div className="pointer-events-none fixed inset-y-0 -right-3 flex max-w-full pl-10">
               <Transition.Child
                 as={Fragment}
-                enter="transform transition ease-in-out duration-500 sm:duration-700"
+                enter="transform transition duration-500 ease-in-out sm:duration-700"
                 enterFrom="translate-x-full"
                 enterTo="translate-x-0"
-                leave="transform transition ease-in-out duration-500 sm:duration-700"
+                leave="transform transition duration-500 ease-in-out sm:duration-700"
                 leaveFrom="translate-x-0"
                 leaveTo="translate-x-full"
               >
                 <Dialog.Panel className="pointer-events-auto relative w-screen max-w-md">
                   <Transition.Child
                     as={Fragment}
-                    enter="ease-in-out duration-300"
+                    enter="duration-300 ease-in-out"
                     enterFrom="opacity-0"
                     enterTo="opacity-100"
-                    leave="ease-in-out duration-300"
+                    leave="duration-300 ease-in-out"
                     leaveFrom="opacity-100"
                     leaveTo="opacity-0"
                   >
-                    <div className="absolute top-0 left-0 -ml-8 flex pt-4 pr-2 sm:-ml-10 sm:pr-4">
+                    <div className="absolute left-0 top-0 -ml-8 flex pr-2 pt-4 sm:-ml-10 sm:pr-4">
                       <button
                         type="button"
                         className="rounded-md text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
@@ -182,7 +182,7 @@ export default function SlideOut({ open, toggleOpen, session }) {
                         </svg>
                         <span className="mt-1">
                           {new Date(editBookmark.createdAt).toLocaleString(
-                            settings.locale
+                            settings.locale,
                           )}
                         </span>
                       </p>
@@ -191,7 +191,7 @@ export default function SlideOut({ open, toggleOpen, session }) {
                       <div className="relative mt-6">
                         <button
                           title="Refresh Image in Background"
-                          className="absolute top-2 right-2 z-10 text-gray-500 transition hover:animate-spin"
+                          className="absolute right-2 top-2 z-10 text-gray-500 transition hover:animate-spin"
                           onClick={refreshImage}
                         >
                           <svg
@@ -213,7 +213,7 @@ export default function SlideOut({ open, toggleOpen, session }) {
                         <img
                           src={editBookmark.image ?? fallbackUnsplash}
                           alt={`${editBookmark.title} Cover Image`}
-                          className="aspect-2 max-h-[384px] w-full rounded-md border-2 border-slate-300 drop-shadow-sm"
+                          className="aspect-[2/1] max-h-[384px] w-full rounded-md border-2 border-slate-300 drop-shadow-sm"
                         />
                       </div>
                       <div className="flex flex-col items-stretch justify-around">
@@ -289,7 +289,7 @@ export default function SlideOut({ open, toggleOpen, session }) {
                             </Listbox.Button>
                             <Transition
                               as={Fragment}
-                              leave="transition ease-in duration-100"
+                              leave="transition duration-100 ease-in"
                               leaveFrom="opacity-100"
                               leaveTo="opacity-0"
                             >
@@ -358,10 +358,10 @@ export default function SlideOut({ open, toggleOpen, session }) {
                               <Transition
                                 appear
                                 key={tag.id}
-                                enter="transition ease-in-out duration-250"
+                                enter="duration-250 transition ease-in-out"
                                 enterFrom="opacity-0"
                                 enterTo="opacity-100"
-                                leave="transition ease-in-out duration-250"
+                                leave="duration-250 transition ease-in-out"
                                 leaveFrom="opacity-100"
                                 leaveTo="opacity-0"
                               >
@@ -408,13 +408,13 @@ export default function SlideOut({ open, toggleOpen, session }) {
                             </div>
                             <Transition
                               as={Fragment}
-                              leave="transition ease-in duration-100"
+                              leave="transition duration-100 ease-in"
                               leaveFrom="opacity-100"
                               leaveTo="opacity-0"
                             >
                               <Combobox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                                 {tags.length === 0 && comboQuery !== '' ? (
-                                  <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
+                                  <div className="relative cursor-default select-none px-4 py-2 text-gray-700">
                                     Nothing found.
                                   </div>
                                 ) : (
@@ -500,7 +500,7 @@ export default function SlideOut({ open, toggleOpen, session }) {
                       <div className="flex justify-evenly space-x-2 px-4 text-right">
                         <button
                           onClick={saveEdit}
-                          className="inline-flex flex-1 items-center justify-center rounded-md border border-transparent bg-slate-800 py-2 px-4 text-sm font-medium text-white shadow-sm transition hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
+                          className="inline-flex flex-1 items-center justify-center rounded-md border border-transparent bg-slate-800 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
                         >
                           {loading ? (
                             <svg
@@ -538,7 +538,7 @@ export default function SlideOut({ open, toggleOpen, session }) {
                         </button>
                         <button
                           onClick={clearInputs}
-                          className="flex flex-1 justify-center rounded-md border border-transparent border-slate-600 py-2 px-4 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
+                          className="flex flex-1 justify-center rounded-md border border-slate-600 border-transparent px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
                         >
                           Clear
                         </button>

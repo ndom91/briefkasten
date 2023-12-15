@@ -1,5 +1,5 @@
 import { useLayoutEffect } from 'react'
-import produce from 'immer'
+import { produce } from 'immer'
 import { create } from 'zustand'
 import createContext from 'zustand/context'
 import { mountStoreDevtool } from 'simple-zustand-devtools'
@@ -51,28 +51,28 @@ export const initializeStore = (preloadedState = {}) => {
       set(
         produce((draft) => {
           draft.bookmarks.unshift(payload)
-        })
+        }),
       ),
     removeBookmark: (payload) =>
       set(
         produce((draft) => {
           const bookmarkIndex = draft.bookmarks.findIndex(
-            (b) => b.id === payload
+            (b) => b.id === payload,
           )
           draft.bookmarks.splice(bookmarkIndex, 1)
-        })
+        }),
       ),
     updateBookmark: (payload) =>
       set(
         produce((draft) => {
           const updateIndex = draft.bookmarks.findIndex(
-            (bm) => bm.id === payload.id
+            (bm) => bm.id === payload.id,
           )
           draft.bookmarks[updateIndex] = {
             ...draft.bookmarks[updateIndex],
             ...payload,
           }
-        })
+        }),
       ),
     resetBookmarks: () => set({ bookmarks: initialState.bookmarks }),
 
@@ -88,7 +88,7 @@ export const initializeStore = (preloadedState = {}) => {
             name,
             emoji,
           }
-        })
+        }),
       )
     },
     removeTag: (payload) =>
@@ -96,7 +96,7 @@ export const initializeStore = (preloadedState = {}) => {
         produce((draft) => {
           const tagIndex = draft.tags.findIndex((t) => t.id === payload)
           draft.tags.splice(tagIndex, 1)
-        })
+        }),
       ),
     resetTags: () => set({ tags: initialState.tags }),
 
@@ -106,7 +106,7 @@ export const initializeStore = (preloadedState = {}) => {
       set(
         produce((draft) => {
           draft.categories.unshift(payload)
-        })
+        }),
       ),
     updateCategory: (id, { name, description }) => {
       set(
@@ -117,17 +117,17 @@ export const initializeStore = (preloadedState = {}) => {
             name,
             description,
           }
-        })
+        }),
       )
     },
     removeCategory: (payload) =>
       set(
         produce((draft) => {
           const categoryIndex = draft.categories.findIndex(
-            (c) => c.id === payload
+            (c) => c.id === payload,
           )
           draft.categories.splice(categoryIndex, 1)
-        })
+        }),
       ),
     resetCategories: () => set({ categories: initialState.categories }),
 
@@ -143,7 +143,7 @@ export const initializeStore = (preloadedState = {}) => {
       set(
         produce((draft) => {
           draft.editBookmark = payload
-        })
+        }),
       )
     },
   })
