@@ -1,25 +1,25 @@
-import { useRef, useState } from 'react'
-import { useStore } from '@/lib/store'
-import { useToast, toastTypes } from '@/lib/hooks'
-import { useToggle, useClickAway } from 'react-use'
-import { useFocusTrap } from 'react-use-focus-trap'
+import { useRef, useState } from "react"
+import { useStore } from "@/lib/store"
+import { useToast, toastTypes } from "@/lib/hooks"
+import { useToggle, useClickAway } from "react-use"
+import { useFocusTrap } from "react-use-focus-trap"
 
-import { Fragment } from 'react'
-import { Combobox, Listbox, Popover, Transition } from '@headlessui/react'
-import Chip from '@/components/chip'
+import { Fragment } from "react"
+import { Combobox, Listbox, Popover, Transition } from "@headlessui/react"
+import Chip from "@/components/chip"
 
 export default function QuickAdd({ categories, session }) {
   const [open, toggleOpen] = useToggle(false)
-  const [url, setUrl] = useState('')
-  const [title, setTitle] = useState('')
-  const [category, setCategory] = useState('')
-  const [description, setDescription] = useState('')
+  const [url, setUrl] = useState("")
+  const [title, setTitle] = useState("")
+  const [category, setCategory] = useState("")
+  const [description, setDescription] = useState("")
   const [loading, setLoading] = useState(false)
 
   const addBookmark = useStore((state) => state.addBookmark)
   const tags = useStore((state) => state.tags)
   const [selectedTags, setSelectedTags] = useState([])
-  const [comboQuery, setComboQuery] = useState('')
+  const [comboQuery, setComboQuery] = useState("")
 
   const popoverRef = useRef(null)
   const [trapRef] = useFocusTrap()
@@ -32,7 +32,7 @@ export default function QuickAdd({ categories, session }) {
     try {
       setLoading(true)
       if (!url) {
-        toast(toastTypes.ERROR, 'Missing required field(s)')
+        toast(toastTypes.ERROR, "Missing required field(s)")
         setLoading(false)
         return
       }
@@ -42,16 +42,16 @@ export default function QuickAdd({ categories, session }) {
         title?.length > 190 ||
         description?.length > 190
       ) {
-        toast(toastTypes.WARNING, 'Field too long')
+        toast(toastTypes.WARNING, "Field too long")
         setLoading(false)
         return
       }
 
       // Add Bookmark to DB via API
-      const res = await fetch('/api/bookmarks', {
-        method: 'POST',
+      const res = await fetch("/api/bookmarks", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           url,
@@ -63,7 +63,7 @@ export default function QuickAdd({ categories, session }) {
         }),
       })
       if (res.status === 200) {
-        toast(toastTypes.SUCCESS, 'Successfully added', title)
+        toast(toastTypes.SUCCESS, "Successfully added", title)
         const { data } = await res.json()
 
         // Add new Bookmark to UI
@@ -79,19 +79,19 @@ export default function QuickAdd({ categories, session }) {
         })
 
         // Empty fields and toggle closed
-        setUrl('')
-        setTitle('')
-        setCategory('')
+        setUrl("")
+        setTitle("")
+        setCategory("")
         setSelectedTags([])
-        setDescription('')
+        setDescription("")
         toggleOpen()
       } else {
-        toast(toastTypes.ERROR, 'Error Saving')
+        toast(toastTypes.ERROR, "Error Saving")
       }
       setLoading(false)
     } catch (error) {
-      console.error('[ERROR] Submitting URL', error)
-      toast(toastTypes.ERROR, 'Error adding', title)
+      console.error("[ERROR] Submitting URL", error)
+      toast(toastTypes.ERROR, "Error adding", title)
       setLoading(false)
     }
   }
@@ -101,7 +101,7 @@ export default function QuickAdd({ categories, session }) {
   }
 
   const filteredTags =
-    comboQuery === ''
+    comboQuery === ""
       ? tags
       : tags.filter((tag) => {
           return tag.name.toLowerCase().includes(comboQuery.toLowerCase())
@@ -115,12 +115,12 @@ export default function QuickAdd({ categories, session }) {
             <Popover.Button
               onClick={toggleOpen}
               className={`${
-                open ? '' : 'text-opacity-90'
+                open ? "" : "text-opacity-90"
               } absolute bottom-8 right-8 z-[60] hidden rounded-full bg-slate-800 p-2 outline-none drop-shadow-md transition hover:-translate-y-1 hover:drop-shadow-lg focus:outline-none focus:ring-2 focus:ring-slate-800 focus:ring-offset-2 focus:ring-offset-white md:block`}
             >
               <svg
                 className={`h-8 w-8 text-slate-200 transition duration-300 ${
-                  open ? 'rotate-[225deg]' : 'rotate-0'
+                  open ? "rotate-[225deg]" : "rotate-0"
                 }`}
                 fill="none"
                 stroke="currentColor"
@@ -155,18 +155,13 @@ export default function QuickAdd({ categories, session }) {
                 >
                   <div className="relative flex flex-col space-y-4 bg-white p-7">
                     <div className="px-4 sm:px-0">
-                      <h3 className="text-lg font-medium leading-6 text-slate-900">
-                        Quick Add
-                      </h3>
+                      <h3 className="text-lg font-medium leading-6 text-slate-900">Quick Add</h3>
                       <p className="mt-1 text-sm text-slate-600">
                         Add a new bookmark directly to your collection.
                       </p>
                     </div>
                     <div className="flex flex-col items-stretch justify-around">
-                      <label
-                        htmlFor="url"
-                        className="block text-sm font-medium text-slate-700"
-                      >
+                      <label htmlFor="url" className="block text-sm font-medium text-slate-700">
                         Title
                       </label>
                       <div className="mt-1 flex rounded-md shadow-sm">
@@ -181,10 +176,7 @@ export default function QuickAdd({ categories, session }) {
                       </div>
                     </div>
                     <div className="flex flex-col items-stretch justify-around">
-                      <label
-                        htmlFor="url"
-                        className="block text-sm font-medium text-slate-700"
-                      >
+                      <label htmlFor="url" className="block text-sm font-medium text-slate-700">
                         URL
                       </label>
                       <div className="mt-1 flex rounded-md shadow-sm">
@@ -200,10 +192,7 @@ export default function QuickAdd({ categories, session }) {
                       </div>
                     </div>
                     <div className="flex flex-col items-stretch justify-around">
-                      <label
-                        htmlFor="url"
-                        className="block text-sm font-medium text-slate-700"
-                      >
+                      <label htmlFor="url" className="block text-sm font-medium text-slate-700">
                         Category
                       </label>
                       <Listbox value={category} onChange={setCategory}>
@@ -242,9 +231,7 @@ export default function QuickAdd({ categories, session }) {
                                   key={cat.id}
                                   className={({ active }) =>
                                     `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                                      active
-                                        ? 'bg-slate-100 text-slate-900'
-                                        : 'text-gray-900'
+                                      active ? "bg-slate-100 text-slate-900" : "text-gray-900"
                                     }`
                                   }
                                   value={cat.name}
@@ -253,9 +240,7 @@ export default function QuickAdd({ categories, session }) {
                                     <>
                                       <span
                                         className={`block truncate ${
-                                          selected
-                                            ? 'font-medium'
-                                            : 'font-normal'
+                                          selected ? "font-medium" : "font-normal"
                                         }`}
                                       >
                                         {cat.name}
@@ -289,10 +274,7 @@ export default function QuickAdd({ categories, session }) {
                       </Listbox>
                     </div>
                     <div className="flex flex-col items-stretch justify-around">
-                      <label
-                        htmlFor="url"
-                        className="block text-sm font-medium text-slate-700"
-                      >
+                      <label htmlFor="url" className="block text-sm font-medium text-slate-700">
                         Tags
                       </label>
                       <div className="mt-2 flex w-full flex-1 flex-wrap gap-1 rounded-none rounded-r-md border-slate-300 placeholder:text-slate-300 focus:border-slate-500 focus:ring-slate-500 sm:text-sm">
@@ -309,7 +291,7 @@ export default function QuickAdd({ categories, session }) {
                               leaveTo="opacity-0"
                             >
                               <Chip
-                                name={`${tag.emoji ?? ''} ${tag.name}`}
+                                name={`${tag.emoji ?? ""} ${tag.name}`}
                                 id={tag.id}
                                 remove={removeSelectedTag}
                               />
@@ -317,12 +299,7 @@ export default function QuickAdd({ categories, session }) {
                           )
                         })}
                       </div>
-                      <Combobox
-                        value={selectedTags}
-                        onChange={setSelectedTags}
-                        nullable
-                        multiple
-                      >
+                      <Combobox value={selectedTags} onChange={setSelectedTags} nullable multiple>
                         <div className="relative mt-1">
                           <div className="relative w-full cursor-default overflow-hidden rounded-md text-left shadow-sm focus:outline-none sm:text-sm">
                             <Combobox.Input
@@ -360,7 +337,7 @@ export default function QuickAdd({ categories, session }) {
                             // afterLeave={() => setComboQuery('')}
                           >
                             <Combobox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                              {tags.length === 0 && comboQuery !== '' ? (
+                              {tags.length === 0 && comboQuery !== "" ? (
                                 <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
                                   Nothing found.
                                 </div>
@@ -370,9 +347,7 @@ export default function QuickAdd({ categories, session }) {
                                     key={tag.id}
                                     className={({ active }) =>
                                       `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                                        active
-                                          ? 'bg-slate-800 text-white'
-                                          : 'text-gray-900'
+                                        active ? "bg-slate-800 text-white" : "text-gray-900"
                                       }`
                                     }
                                     value={tag}
@@ -381,9 +356,7 @@ export default function QuickAdd({ categories, session }) {
                                       <>
                                         <span
                                           className={`block truncate ${
-                                            selected
-                                              ? 'font-medium'
-                                              : 'font-normal'
+                                            selected ? "font-medium" : "font-normal"
                                           }`}
                                         >
                                           {tag.name}
@@ -391,9 +364,7 @@ export default function QuickAdd({ categories, session }) {
                                         {selected ? (
                                           <span
                                             className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
-                                              active
-                                                ? 'text-white'
-                                                : 'text-slate-800'
+                                              active ? "text-white" : "text-slate-800"
                                             }`}
                                           >
                                             <svg
@@ -424,10 +395,7 @@ export default function QuickAdd({ categories, session }) {
                       </Combobox>
                     </div>
                     <div className="flex flex-col items-stretch justify-around">
-                      <label
-                        htmlFor="desc"
-                        className="block text-sm font-medium text-gray-700"
-                      >
+                      <label htmlFor="desc" className="block text-sm font-medium text-gray-700">
                         Description
                       </label>
                       <div className="mt-1">
@@ -471,10 +439,7 @@ export default function QuickAdd({ categories, session }) {
                             ></path>
                           </svg>
                         ) : (
-                          <svg
-                            className="h-4 w-4 text-white sm:mr-1"
-                            viewBox="0 0 24 24"
-                          >
+                          <svg className="h-4 w-4 text-white sm:mr-1" viewBox="0 0 24 24">
                             <path
                               fill="currentColor"
                               d="M17 3H5C3.89 3 3 3.9 3 5V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V7L17 3M19 19H5V5H16.17L19 7.83V19M12 12C10.34 12 9 13.34 9 15S10.34 18 12 18 15 16.66 15 15 13.66 12 12 12M6 6H15V10H6V6Z"

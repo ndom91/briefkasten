@@ -11,7 +11,7 @@ export default function EmptyDashboard() {
         It looks like you don&apos;t have any bookmarks yet!
       </h2>
       <p className="mt-4 text-center text-gray-600">
-        This is where you’ll manage your items. Get started by installing the{' '}
+        This is where you’ll manage your items. Get started by installing the{" "}
         <a
           href="https://chrome.google.com/webstore/detail/briefkasten-bookmarks/aighkhofochfjejmhjfkgjfpkpgmjlnd"
           className="underline"

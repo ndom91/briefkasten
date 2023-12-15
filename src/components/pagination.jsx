@@ -1,4 +1,4 @@
-import { usePagination, DOTS } from '../lib/hooks'
+import { usePagination, DOTS } from "../lib/hooks"
 
 export default function Pagination({
   onPageChange,
@@ -21,16 +21,12 @@ export default function Pagination({
 
   const onNext = () => {
     onPageChange(currentPage + 1)
-    document
-      .querySelectorAll('.bookmark-card')[0]
-      ?.scrollIntoView(true, { behavior: 'smooth' })
+    document.querySelectorAll(".bookmark-card")[0]?.scrollIntoView(true, { behavior: "smooth" })
   }
 
   const onPrevious = () => {
     onPageChange(currentPage - 1)
-    document
-      .querySelectorAll('.bookmark-card')[0]
-      ?.scrollIntoView(true, { behavior: 'smooth' })
+    document.querySelectorAll(".bookmark-card")[0]?.scrollIntoView(true, { behavior: "smooth" })
   }
 
   let lastPage = paginationRange[paginationRange.length - 1]
@@ -43,8 +39,8 @@ export default function Pagination({
           onClick={onPrevious}
           className={`relative inline-flex w-36 items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-lg hover:bg-gray-50 ${
             currentPage === 1
-              ? 'pointer-events-none !bg-slate-50 !text-slate-400 hover:cursor-default'
-              : ''
+              ? "pointer-events-none !bg-slate-50 !text-slate-400 hover:cursor-default"
+              : ""
           } `}
         >
           Previous
@@ -54,8 +50,8 @@ export default function Pagination({
           onClick={onNext}
           className={`relative ml-3 inline-flex w-36 items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-lg hover:bg-gray-50 ${
             currentPage === lastPage
-              ? 'pointer-events-none !bg-slate-50 !text-slate-400 hover:cursor-default'
-              : ''
+              ? "pointer-events-none !bg-slate-50 !text-slate-400 hover:cursor-default"
+              : ""
           } `}
         >
           Next
@@ -79,8 +75,8 @@ export default function Pagination({
               onClick={onPrevious}
               className={`relative inline-flex items-center rounded-l-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 ${
                 currentPage === 1
-                  ? 'pointer-events-none !bg-slate-50 !text-slate-400 hover:cursor-default'
-                  : ''
+                  ? "pointer-events-none !bg-slate-50 !text-slate-400 hover:cursor-default"
+                  : ""
               } `}
             >
               <span className="sr-only">Previous</span>
@@ -120,9 +116,7 @@ export default function Pagination({
                   aria-current="page"
                   onClick={() => onPageChange(pageNumber)}
                   className={`relative z-10 inline-flex items-center border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-600 ${
-                    pageNumber === currentPage
-                      ? '!bg-slate-800 text-slate-50'
-                      : ''
+                    pageNumber === currentPage ? "!bg-slate-800 text-slate-50" : ""
                   } `}
                 >
                   {pageNumber}
@@ -134,8 +128,8 @@ export default function Pagination({
               onClick={onNext}
               className={`relative inline-flex items-center rounded-r-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 ${
                 currentPage === lastPage
-                  ? 'pointer-events-none !bg-slate-50 !text-slate-400 hover:cursor-default'
-                  : ''
+                  ? "pointer-events-none !bg-slate-50 !text-slate-400 hover:cursor-default"
+                  : ""
               } `}
             >
               <span className="sr-only">Next</span>

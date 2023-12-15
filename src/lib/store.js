@@ -1,9 +1,9 @@
-import { useLayoutEffect } from 'react'
-import produce from 'immer'
-import { create } from 'zustand'
-import createContext from 'zustand/context'
-import { mountStoreDevtool } from 'simple-zustand-devtools'
-import { viewTypes } from '@/lib/constants'
+import { useLayoutEffect } from "react"
+import produce from "immer"
+import { create } from "zustand"
+import createContext from "zustand/context"
+import { mountStoreDevtool } from "simple-zustand-devtools"
+import { viewTypes } from "@/lib/constants"
 
 let store
 let devtoolStoreMounted = false
@@ -12,12 +12,12 @@ const initialState = {
   bookmarks: [],
   categories: [],
   tags: [],
-  categoryFilter: '',
-  tagFilter: '',
-  searchText: '',
+  categoryFilter: "",
+  tagFilter: "",
+  searchText: "",
   editBookmark: {},
   settings: {
-    locale: 'en-US',
+    locale: "en-US",
     activeView: viewTypes.CARD.name,
     defaultView: viewTypes.CARD.name,
   },
@@ -40,8 +40,7 @@ export const initializeStore = (preloadedState = {}) => {
 
     // SIDEBAR FILTER
     setCategoryFilter: (id) => set(() => ({ categoryFilter: id })),
-    clearCategoryFilter: () =>
-      set(() => ({ categoryFilter: initialState.categoryFilter })),
+    clearCategoryFilter: () => set(() => ({ categoryFilter: initialState.categoryFilter })),
     setTagFilter: (id) => set(() => ({ tagFilter: id })),
     clearTagFilter: () => set(() => ({ tagFilter: initialState.tagFilter })),
 
@@ -51,28 +50,24 @@ export const initializeStore = (preloadedState = {}) => {
       set(
         produce((draft) => {
           draft.bookmarks.unshift(payload)
-        })
+        }),
       ),
     removeBookmark: (payload) =>
       set(
         produce((draft) => {
-          const bookmarkIndex = draft.bookmarks.findIndex(
-            (b) => b.id === payload
-          )
+          const bookmarkIndex = draft.bookmarks.findIndex((b) => b.id === payload)
           draft.bookmarks.splice(bookmarkIndex, 1)
-        })
+        }),
       ),
     updateBookmark: (payload) =>
       set(
         produce((draft) => {
-          const updateIndex = draft.bookmarks.findIndex(
-            (bm) => bm.id === payload.id
-          )
+          const updateIndex = draft.bookmarks.findIndex((bm) => bm.id === payload.id)
           draft.bookmarks[updateIndex] = {
             ...draft.bookmarks[updateIndex],
             ...payload,
           }
-        })
+        }),
       ),
     resetBookmarks: () => set({ bookmarks: initialState.bookmarks }),
 
@@ -88,7 +83,7 @@ export const initializeStore = (preloadedState = {}) => {
             name,
             emoji,
           }
-        })
+        }),
       )
     },
     removeTag: (payload) =>
@@ -96,7 +91,7 @@ export const initializeStore = (preloadedState = {}) => {
         produce((draft) => {
           const tagIndex = draft.tags.findIndex((t) => t.id === payload)
           draft.tags.splice(tagIndex, 1)
-        })
+        }),
       ),
     resetTags: () => set({ tags: initialState.tags }),
 
@@ -106,7 +101,7 @@ export const initializeStore = (preloadedState = {}) => {
       set(
         produce((draft) => {
           draft.categories.unshift(payload)
-        })
+        }),
       ),
     updateCategory: (id, { name, description }) => {
       set(
@@ -117,17 +112,15 @@ export const initializeStore = (preloadedState = {}) => {
             name,
             description,
           }
-        })
+        }),
       )
     },
     removeCategory: (payload) =>
       set(
         produce((draft) => {
-          const categoryIndex = draft.categories.findIndex(
-            (c) => c.id === payload
-          )
+          const categoryIndex = draft.categories.findIndex((c) => c.id === payload)
           draft.categories.splice(categoryIndex, 1)
-        })
+        }),
       ),
     resetCategories: () => set({ categories: initialState.categories }),
 
@@ -143,7 +136,7 @@ export const initializeStore = (preloadedState = {}) => {
       set(
         produce((draft) => {
           draft.editBookmark = payload
-        })
+        }),
       )
     },
   })
@@ -153,12 +146,12 @@ export const initializeStore = (preloadedState = {}) => {
 
 export function useCreateStore(initialState) {
   // For SSR & SSG, always use a new store.
-  if (typeof window === 'undefined') {
+  if (typeof window === "undefined") {
     return () => initializeStore(initialState)
   }
 
-  if (process.env.NODE_ENV === 'development' && store && !devtoolStoreMounted) {
-    mountStoreDevtool('Briefkasten_Store', store)
+  if (process.env.NODE_ENV === "development" && store && !devtoolStoreMounted) {
+    mountStoreDevtool("Briefkasten_Store", store)
     devtoolStoreMounted = true
   }
 

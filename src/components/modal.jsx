@@ -1,13 +1,7 @@
-import { Fragment, useRef } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
+import { Fragment, useRef } from "react"
+import { Dialog, Transition } from "@headlessui/react"
 
-export default function Modal({
-  open,
-  toggleModal,
-  saveBookmark,
-  url,
-  loading,
-}) {
+export default function Modal({ open, toggleModal, saveBookmark, url, loading }) {
   const cancelButtonRef = useRef(null)
 
   return (
@@ -68,9 +62,7 @@ export default function Modal({
                         New Bookmark
                       </Dialog.Title>
                       <div className="mt-4 flex flex-col space-y-2">
-                        <p className="text-sm text-gray-500">
-                          You have dropped the URL:
-                        </p>
+                        <p className="text-sm text-gray-500">You have dropped the URL:</p>
                         <div className="text-semibold text-sm">
                           <a
                             href={url}
@@ -83,9 +75,8 @@ export default function Modal({
                           </a>
                         </div>
                         <p className="text-sm text-gray-500">
-                          If you proceed to add this URL, we will look up a
-                          default title and description for the page which you
-                          can of course edit later.
+                          If you proceed to add this URL, we will look up a default title and
+                          description for the page which you can of course edit later.
                         </p>
                       </div>
                     </div>

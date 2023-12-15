@@ -1,7 +1,7 @@
-import Meta from '@/components/meta'
-import dynamic from 'next/dynamic'
+import Meta from "@/components/meta"
+import dynamic from "next/dynamic"
 
-const Sidebar = dynamic(() => import('@/components/sidebar'), {
+const Sidebar = dynamic(() => import("@/components/sidebar"), {
   ssr: false,
 })
 

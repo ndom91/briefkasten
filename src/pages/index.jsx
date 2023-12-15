@@ -1,23 +1,23 @@
-import { useMemo, useState, useEffect } from 'react'
-import { unstable_getServerSession } from 'next-auth/next'
-import { useDrop, usePrevious, useToggle } from 'react-use'
-import { authOptions } from '@/api/auth/[...nextauth]'
-import { useStore, initializeStore } from '@/lib/store'
-import { useToast, toastTypes } from '@/lib/hooks'
+import { useMemo, useState, useEffect } from "react"
+import { unstable_getServerSession } from "next-auth/next"
+import { useDrop, usePrevious, useToggle } from "react-use"
+import { authOptions } from "@/api/auth/[...nextauth]"
+import { useStore, initializeStore } from "@/lib/store"
+import { useToast, toastTypes } from "@/lib/hooks"
 
-import * as Sentry from '@sentry/nextjs'
-import SlideOut from '@/components/slide-out'
-import Pagination from '@/components/pagination'
-import BookmarkCard from '@/components/bookmark-card'
-import Layout from '@/components/layout'
-import EmptyDashboard from '@/components/empty-dashboard'
-import DashboardHeader from '@/components/dashboard-header'
-import QuickAdd from '@/components/quick-add'
-import DataTable from '@/components/table'
-import Modal from '@/components/modal'
-import { viewTypes } from '@/lib/constants'
-import prisma from '@/lib/prisma'
-import Masonry from 'react-masonry-css'
+import * as Sentry from "@sentry/nextjs"
+import SlideOut from "@/components/slide-out"
+import Pagination from "@/components/pagination"
+import BookmarkCard from "@/components/bookmark-card"
+import Layout from "@/components/layout"
+import EmptyDashboard from "@/components/empty-dashboard"
+import DashboardHeader from "@/components/dashboard-header"
+import QuickAdd from "@/components/quick-add"
+import DataTable from "@/components/table"
+import Modal from "@/components/modal"
+import { viewTypes } from "@/lib/constants"
+import prisma from "@/lib/prisma"
+import Masonry from "react-masonry-css"
 
 const PAGE_SIZE = 25
 
@@ -42,7 +42,7 @@ export default function Home({ nextauth }) {
   const setEditBookmark = useStore((state) => state.setEditBookmark)
   const addBookmark = useStore((state) => state.addBookmark)
   const previousSearchText = usePrevious(searchText)
-  const [droppedUrl, setDroppedUrl] = useState('')
+  const [droppedUrl, setDroppedUrl] = useState("")
   const [currentTableData, setCurrentTableData] = useState([])
   const [openModal, toggleModal] = useToggle(false)
   const [loading, toggleLoading] = useToggle(false)
@@ -72,9 +72,7 @@ export default function Home({ nextauth }) {
           // Filter shown bookmarks on search
           if (
             thisBookmark.url.toLowerCase().includes(searchText.toLowerCase()) ||
-            thisBookmark.title
-              ?.toLowerCase()
-              .includes(searchText.toLowerCase()) ||
+            thisBookmark.title?.toLowerCase().includes(searchText.toLowerCase()) ||
             thisBookmark.desc?.toLowerCase().includes(searchText.toLowerCase())
           ) {
             previousSearchText !== searchText && setCurrentPage(1)
@@ -88,14 +86,7 @@ export default function Home({ nextauth }) {
       }, [])
       .slice(firstPageIndex, lastPageIndex)
     setCurrentTableData(currentBookmarks)
-  }, [
-    currentPage,
-    categoryFilter,
-    tagFilter,
-    searchText,
-    bookmarks,
-    previousSearchText,
-  ])
+  }, [currentPage, categoryFilter, tagFilter, searchText, bookmarks, previousSearchText])
 
   !currentTableData && setBookmarks()
 
@@ -111,13 +102,11 @@ export default function Home({ nextauth }) {
 
     const getLanguage = () =>
       navigator.userLanguage ||
-      (navigator.languages &&
-        navigator.languages.length &&
-        navigator.languages[0]) ||
+      (navigator.languages && navigator.languages.length && navigator.languages[0]) ||
       navigator.language ||
       navigator.browserLanguage ||
       navigator.systemLanguage ||
-      'en-US'
+      "en-US"
 
     setUserSetting({ locale: getLanguage() })
   }, [setUserSetting])
@@ -126,10 +115,10 @@ export default function Home({ nextauth }) {
     try {
       toggleLoading(true)
       // Add Bookmark to DB via API
-      const res = await fetch('/api/bookmarks', {
-        method: 'POST',
+      const res = await fetch("/api/bookmarks", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           url,
@@ -137,7 +126,7 @@ export default function Home({ nextauth }) {
         }),
       })
       if (res.status === 200) {
-        toast(toastTypes.SUCCESS, 'Successfully added', url)
+        toast(toastTypes.SUCCESS, "Successfully added", url)
         const { data } = await res.json()
 
         // Add new Bookmark to UI
@@ -154,11 +143,11 @@ export default function Home({ nextauth }) {
 
         open && toggleModal()
       } else {
-        toast(toastTypes.ERROR, 'Error Saving')
+        toast(toastTypes.ERROR, "Error Saving")
       }
     } catch (error) {
       console.error(`[ERROR] Saving Dropped URL ${url}:`, error)
-      toast(toastTypes.ERROR, 'Error adding', url)
+      toast(toastTypes.ERROR, "Error adding", url)
     }
     toggleLoading(false)
   }
@@ -184,9 +173,7 @@ export default function Home({ nextauth }) {
               className="h-auto w-5/6 lg:w-[32rem]"
               alt="No Results, Please Try Again"
             />
-            <span className="text-2xl font-thin">
-              No results found, please try again!
-            </span>
+            <span className="text-2xl font-thin">No results found, please try again!</span>
           </div>
         )}
         <div className="z-20 w-full overflow-x-hidden">
@@ -215,8 +202,7 @@ export default function Home({ nextauth }) {
                 )}
                 {activeView === viewTypes.DETAIL.name && (
                   <div className="flex justify-center text-lg text-slate-700">
-                    This view has not been implemented yet, please try Card or
-                    List view
+                    This view has not been implemented yet, please try Card or List view
                   </div>
                 )}
               </>
@@ -225,20 +211,12 @@ export default function Home({ nextauth }) {
         </div>
         <Pagination
           currentPage={currentPage}
-          totalCount={
-            searchText || categoryFilter || tagFilter
-              ? filteredLength
-              : bookmarks.length
-          }
+          totalCount={searchText || categoryFilter || tagFilter ? filteredLength : bookmarks.length}
           pageSize={PAGE_SIZE}
           onPageChange={(page) => setCurrentPage(page)}
         />
         <QuickAdd categories={categories} session={nextauth} />
-        <SlideOut
-          open={openEditSidebar}
-          toggleOpen={toggleEditSidebar}
-          session={nextauth}
-        />
+        <SlideOut open={openEditSidebar} toggleOpen={toggleEditSidebar} session={nextauth} />
         {openModal && (
           <Modal
             saveBookmark={saveBookmark}
@@ -254,24 +232,20 @@ export default function Home({ nextauth }) {
 }
 
 export async function getServerSideProps(context) {
-  const session = await unstable_getServerSession(
-    context.req,
-    context.res,
-    authOptions
-  )
+  const session = await unstable_getServerSession(context.req, context.res, authOptions)
   const zustandStore = initializeStore()
 
   if (!session) {
     return {
       redirect: {
-        destination: '/auth/signin',
+        destination: "/auth/signin",
         permanent: false,
       },
     }
   }
 
   const bookmarkData = await prisma.bookmark.findMany({
-    orderBy: { createdAt: 'desc' },
+    orderBy: { createdAt: "desc" },
     where: {
       userId: session.user.userId,
     },
@@ -295,7 +269,7 @@ export async function getServerSideProps(context) {
     where: {
       userId: session.user.userId,
     },
-    orderBy: [{ name: 'asc' }],
+    orderBy: [{ name: "asc" }],
     include: {
       _count: {
         select: { bookmarks: true },

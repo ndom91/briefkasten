@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import { Fragment } from "react"
 import {
   BriefcaseIcon,
   CalendarIcon,
@@ -8,11 +8,11 @@ import {
   LinkIcon,
   LocationMarkerIcon,
   PencilIcon,
-} from '@heroicons/react/solid'
-import { Menu, Transition } from '@headlessui/react'
+} from "@heroicons/react/solid"
+import { Menu, Transition } from "@headlessui/react"
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(" ")
 }
 
 export default function ItemHeader() {
@@ -59,10 +59,7 @@ export default function ItemHeader() {
             type="button"
             className="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >
-            <PencilIcon
-              className="-ml-1 mr-2 h-5 w-5 text-gray-500"
-              aria-hidden="true"
-            />
+            <PencilIcon className="-ml-1 mr-2 h-5 w-5 text-gray-500" aria-hidden="true" />
             Edit
           </button>
         </span>
@@ -72,10 +69,7 @@ export default function ItemHeader() {
             type="button"
             className="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           >
-            <LinkIcon
-              className="-ml-1 mr-2 h-5 w-5 text-gray-500"
-              aria-hidden="true"
-            />
+            <LinkIcon className="-ml-1 mr-2 h-5 w-5 text-gray-500" aria-hidden="true" />
             View
           </button>
         </span>
@@ -94,10 +88,7 @@ export default function ItemHeader() {
         <Menu as="div" className="relative ml-3 sm:hidden">
           <Menu.Button className="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
             More
-            <ChevronDownIcon
-              className="-mr-1 ml-2 h-5 w-5 text-gray-500"
-              aria-hidden="true"
-            />
+            <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5 text-gray-500" aria-hidden="true" />
           </Menu.Button>
 
           <Transition
@@ -115,8 +106,8 @@ export default function ItemHeader() {
                   <a
                     href="#"
                     className={classNames(
-                      active ? 'bg-gray-100' : '',
-                      'block px-4 py-2 text-sm text-gray-700'
+                      active ? "bg-gray-100" : "",
+                      "block px-4 py-2 text-sm text-gray-700",
                     )}
                   >
                     Edit
@@ -128,8 +119,8 @@ export default function ItemHeader() {
                   <a
                     href="#"
                     className={classNames(
-                      active ? 'bg-gray-100' : '',
-                      'block px-4 py-2 text-sm text-gray-700'
+                      active ? "bg-gray-100" : "",
+                      "block px-4 py-2 text-sm text-gray-700",
                     )}
                   >
                     View

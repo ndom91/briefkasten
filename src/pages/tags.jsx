@@ -1,54 +1,52 @@
-import Head from 'next/head'
-import { useState } from 'react'
-import { unstable_getServerSession } from 'next-auth/next'
+import Head from "next/head"
+import { useState } from "react"
+import { unstable_getServerSession } from "next-auth/next"
 
-import Layout from '@/components/layout'
-import TagTableRow from '@/components/tagTableRow'
-import Breadcrumbs from '@/components/breadcrumbs'
+import Layout from "@/components/layout"
+import TagTableRow from "@/components/tagTableRow"
+import Breadcrumbs from "@/components/breadcrumbs"
 
-import prisma from '@/lib/prisma'
-import { useStore, initializeStore } from '@/lib/store'
-import { useToast, toastTypes } from '@/lib/hooks'
-import { authOptions } from './api/auth/[...nextauth]'
+import prisma from "@/lib/prisma"
+import { useStore, initializeStore } from "@/lib/store"
+import { useToast, toastTypes } from "@/lib/hooks"
+import { authOptions } from "./api/auth/[...nextauth]"
 
 const breadcrumbs = [
   {
-    name: 'Dashboard',
+    name: "Dashboard",
     icon: `<svg className="h-4 w-4 shrink-0" aria-hidden="true" viewBox="0 0 256 256" > <path d="M184,32H72A16,16,0,0,0,56,48V224a8.1,8.1,0,0,0,4.1,7,7.6,7.6,0,0,0,3.9,1,7.9,7.9,0,0,0,4.2-1.2L128,193.4l59.7,37.4a8.3,8.3,0,0,0,8.2.2,8.1,8.1,0,0,0,4.1-7V48A16,16,0,0,0,184,32Z"></path> </svg>`,
   },
   {
-    name: 'Tags',
+    name: "Tags",
     icon: `<svg className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" /></svg>`,
   },
 ]
 
 export default function Tags({ nextauth }) {
   const addTag = useStore((state) => state.addTag)
-  const [tagName, setTagName] = useState('')
-  const [tagEmoji, setTagEmoji] = useState('')
+  const [tagName, setTagName] = useState("")
+  const [tagEmoji, setTagEmoji] = useState("")
   const toast = useToast(5000)
 
-  const [searchString, setSearchString] = useState('')
+  const [searchString, setSearchString] = useState("")
   const tags = useStore((state) => {
     if (!searchString) {
       return state.tags
     } else {
-      return state.tags.filter((tag) =>
-        tag.name.toLowerCase().includes(searchString.toLowerCase())
-      )
+      return state.tags.filter((tag) => tag.name.toLowerCase().includes(searchString.toLowerCase()))
     }
   })
 
   const saveNewTag = async () => {
     try {
       if (tagName.length > 190 || tagEmoji.length > 190) {
-        toast(toastTypes.WARNING, 'Name or emoji too long')
+        toast(toastTypes.WARNING, "Name or emoji too long")
         return
       }
-      const addRes = await fetch('/api/tags', {
-        method: 'POST',
+      const addRes = await fetch("/api/tags", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           name: tagName,
@@ -59,8 +57,8 @@ export default function Tags({ nextauth }) {
       if (addRes.status === 200) {
         const addData = await addRes.json()
         addTag(addData.data)
-        setTagName('')
-        setTagEmoji('')
+        setTagName("")
+        setTagEmoji("")
         toast(toastTypes.SUCCESS, `Successfully saved "${tagName}"`)
       }
     } catch (error) {
@@ -133,8 +131,7 @@ export default function Tags({ nextauth }) {
               </tr>
             </thead>
             <tbody>
-              {tags &&
-                tags.map((tag) => <TagTableRow item={tag} key={tag.id} />)}
+              {tags && tags.map((tag) => <TagTableRow item={tag} key={tag.id} />)}
               <tr className="bg-white even:bg-gray-50 hover:bg-slate-100">
                 <td className={`px-6 py-2`}>
                   <span className="font-semibold">Add new Tag</span>
@@ -193,17 +190,13 @@ export default function Tags({ nextauth }) {
 }
 
 export async function getServerSideProps(context) {
-  const session = await unstable_getServerSession(
-    context.req,
-    context.res,
-    authOptions
-  )
+  const session = await unstable_getServerSession(context.req, context.res, authOptions)
   const zustandStore = initializeStore()
 
   if (!session) {
     return {
       redirect: {
-        destination: '/auth/signin',
+        destination: "/auth/signin",
         permanent: false,
       },
     }
@@ -218,7 +211,7 @@ export async function getServerSideProps(context) {
     where: {
       userId: session.user.userId,
     },
-    orderBy: [{ name: 'asc' }],
+    orderBy: [{ name: "asc" }],
     include: {
       _count: {
         select: { bookmarks: true },

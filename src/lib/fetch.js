@@ -1,6 +1,6 @@
-import useSWR from 'swr'
+import useSWR from "swr"
 
-export default async function useFetch({ url, method = 'GET', body }) {
+export default async function useFetch({ url, method = "GET", body }) {
   const options = {
     method,
   }

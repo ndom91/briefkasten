@@ -1,10 +1,10 @@
-import { useState } from 'react'
-import { useStore } from '@/lib/store'
-import { useToast, toastTypes } from '@/lib/hooks'
-import Chip from '@/components/chip'
+import { useState } from "react"
+import { useStore } from "@/lib/store"
+import { useToast, toastTypes } from "@/lib/hooks"
+import Chip from "@/components/chip"
 
 const fallbackRandomImage = `https://picsum.photos/250/125?random=${Math.floor(
-  Math.random() * 1000
+  Math.random() * 1000,
 )}`
 
 export default function BookmarkCard({ bookmark, toggleSidebar, session }) {
@@ -21,13 +21,11 @@ export default function BookmarkCard({ bookmark, toggleSidebar, session }) {
     try {
       setLoadingDel(true)
       const imageUrlPathname = new URL(imageUrl).pathname
-      const imageFileName = imageUrlPathname.substring(
-        imageUrlPathname.lastIndexOf('/') + 1
-      )
-      const deleteRes = await fetch('/api/bookmarks', {
-        method: 'DELETE',
+      const imageFileName = imageUrlPathname.substring(imageUrlPathname.lastIndexOf("/") + 1)
+      const deleteRes = await fetch("/api/bookmarks", {
+        method: "DELETE",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           id,
@@ -37,11 +35,11 @@ export default function BookmarkCard({ bookmark, toggleSidebar, session }) {
       })
       if (deleteRes.status === 200) {
         removeBookmark(id)
-        toast(toastTypes.SUCCESS, 'Successfully deleted', title)
+        toast(toastTypes.SUCCESS, "Successfully deleted", title)
       }
     } catch (error) {
       console.error(error)
-      toast(toastTypes.ERROR, 'Error deleting bookmark', error.message)
+      toast(toastTypes.ERROR, "Error deleting bookmark", error.message)
     }
     setLoadingDel(false)
   }
@@ -139,7 +137,7 @@ export default function BookmarkCard({ bookmark, toggleSidebar, session }) {
         <div className="flex items-center space-x-1 text-sm text-slate-400">
           <time dateTime={createdAt} title={createdAt} className="">
             {new Date(createdAt).toLocaleDateString(settings.locale, {
-              dateStyle: 'short',
+              dateStyle: "short",
             })}
           </time>
           {category && (
@@ -168,14 +166,12 @@ export default function BookmarkCard({ bookmark, toggleSidebar, session }) {
           {url}
         </a>
         {desc && (
-          <p className="w-full max-w-full text-sm font-normal text-gray-500 line-clamp-3">
-            {desc}
-          </p>
+          <p className="w-full max-w-full text-sm font-normal text-gray-500 line-clamp-3">{desc}</p>
         )}
         {tags?.length > 0 && (
           <div className="flex flex-wrap gap-2">
             {tags.map((tag) => (
-              <Chip key={tag.id} name={`${tag.emoji ?? ''} ${tag.name}`} />
+              <Chip key={tag.id} name={`${tag.emoji ?? ""} ${tag.name}`} />
             ))}
           </div>
         )}

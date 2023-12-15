@@ -1,9 +1,9 @@
-import Image from 'next/image'
-import Head from 'next/head'
-import Link from 'next/link'
-import Layout from '@/components/layout'
-import * as Sentry from '@sentry/nextjs'
-import NextErrorComponent from 'next/error'
+import Image from "next/image"
+import Head from "next/head"
+import Link from "next/link"
+import Layout from "@/components/layout"
+import * as Sentry from "@sentry/nextjs"
+import NextErrorComponent from "next/error"
 
 export default function Error({ statusCode, hasGetInitialPropsRun, err }) {
   if (!hasGetInitialPropsRun && err) {
@@ -29,9 +29,8 @@ export default function Error({ statusCode, hasGetInitialPropsRun, err }) {
               Oops! That wasn&apos;t supposed to happen.
             </h1>
             <p className="mb-5 text-left text-base text-gray-800 md:text-xl">
-              You might have the wrong address, or the page may have moved.
-              Please use the buttons below to go back to the homepage, or
-              contact us for support.
+              You might have the wrong address, or the page may have moved. Please use the buttons
+              below to go back to the homepage, or contact us for support.
             </p>
             <NextErrorComponent statusCode={statusCode} />
             <div className="flex">
@@ -64,9 +63,7 @@ export default function Error({ statusCode, hasGetInitialPropsRun, err }) {
 }
 
 Error.getInitialProps = async (contextData) => {
-  const errorInitialProps = await NextErrorComponent.getInitialProps(
-    contextData
-  )
+  const errorInitialProps = await NextErrorComponent.getInitialProps(contextData)
 
   const { res, err, asPath } = contextData
   // Workaround for https://github.com/vercel/next.js/issues/8592, mark when
@@ -104,9 +101,7 @@ Error.getInitialProps = async (contextData) => {
   // If this point is reached, getInitialProps was called without any
   // information about what the error might be. This is unexpected and may
   // indicate a bug introduced in Next.js, so record it in Sentry
-  Sentry.captureException(
-    new Error(`_error.js getInitialProps missing data at path: ${asPath}`)
-  )
+  Sentry.captureException(new Error(`_error.js getInitialProps missing data at path: ${asPath}`))
   await Sentry.flush(2000)
 
   return errorInitialProps

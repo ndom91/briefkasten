@@ -1,8 +1,8 @@
-import { useState } from 'react'
-import { useSession } from 'next-auth/react'
-import { useStore } from '@/lib/store'
-import { useToast, toastTypes } from '@/lib/hooks'
-import Chip from '@/components/chip'
+import { useState } from "react"
+import { useSession } from "next-auth/react"
+import { useStore } from "@/lib/store"
+import { useToast, toastTypes } from "@/lib/hooks"
+import Chip from "@/components/chip"
 
 // Favicon API's
 // https://icon.horse/usage
@@ -23,13 +23,11 @@ export default function BookmarkTableRow({ item, toggleSidebar }) {
     setLoading(true)
     try {
       const imageUrlPathname = new URL(image).pathname
-      const imageFileName = imageUrlPathname.substring(
-        imageUrlPathname.lastIndexOf('/') + 1
-      )
-      const delRes = await fetch('/api/bookmarks', {
-        method: 'DELETE',
+      const imageFileName = imageUrlPathname.substring(imageUrlPathname.lastIndexOf("/") + 1)
+      const delRes = await fetch("/api/bookmarks", {
+        method: "DELETE",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           id,
@@ -39,12 +37,12 @@ export default function BookmarkTableRow({ item, toggleSidebar }) {
       })
       if (delRes.status === 200) {
         removeBookmark(id)
-        toast(toastTypes.SUCCESS, 'Successfully deleted', title)
+        toast(toastTypes.SUCCESS, "Successfully deleted", title)
       }
       setLoading(false)
     } catch (error) {
       console.error(error)
-      toast(toastTypes.ERROR, 'Error deleting', title)
+      toast(toastTypes.ERROR, "Error deleting", title)
       setLoading(false)
     }
   }
@@ -80,12 +78,12 @@ export default function BookmarkTableRow({ item, toggleSidebar }) {
         <span className="break-word text-ellipsis line-clamp-3">{desc}</span>
       </td>
       <td className="px-6 py-4">
-        <span className="break-word text-ellipsis">{category?.name ?? ''}</span>
+        <span className="break-word text-ellipsis">{category?.name ?? ""}</span>
       </td>
       <td className="px-6 py-4">
         <span className="flex flex-wrap gap-1">
           {tags.map((tag) => (
-            <Chip key={tag.id} name={`${tag.emoji ?? ''} ${tag.name}`} />
+            <Chip key={tag.id} name={`${tag.emoji ?? ""} ${tag.name}`} />
           ))}
         </span>
       </td>

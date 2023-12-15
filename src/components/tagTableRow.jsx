@@ -1,8 +1,8 @@
-import { useState } from 'react'
-import { useSession } from 'next-auth/react'
-import { useStore } from '@/lib/store'
-import { useToast, toastTypes } from '@/lib/hooks'
-import { useToggle } from 'react-use'
+import { useState } from "react"
+import { useSession } from "next-auth/react"
+import { useStore } from "@/lib/store"
+import { useToast, toastTypes } from "@/lib/hooks"
+import { useToggle } from "react-use"
 
 export default function TagTableRow({ item }) {
   const { data: session } = useSession()
@@ -10,7 +10,7 @@ export default function TagTableRow({ item }) {
   const count = _count?.bookmarks ?? 0
   const [editMode, toggleEditMode] = useToggle(false)
   const [tagName, setTagName] = useState(name)
-  const [tagEmoji, setTagEmoji] = useState(emoji ?? '')
+  const [tagEmoji, setTagEmoji] = useState(emoji ?? "")
   const [loading, setLoading] = useState(false)
   const settings = useStore((state) => state.settings)
   const removeTag = useStore((state) => state.removeTag)
@@ -20,10 +20,10 @@ export default function TagTableRow({ item }) {
   const deleteTag = async () => {
     setLoading(true)
     try {
-      const delRes = await fetch('/api/tags', {
-        method: 'DELETE',
+      const delRes = await fetch("/api/tags", {
+        method: "DELETE",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           id,
@@ -45,13 +45,13 @@ export default function TagTableRow({ item }) {
   const saveEdit = async () => {
     try {
       if (tagName.length > 190 || tagEmoji.length > 190) {
-        toast(toastTypes.WARNING, 'Name or emoji too long')
+        toast(toastTypes.WARNING, "Name or emoji too long")
         return
       }
-      const editRes = await fetch('/api/tags', {
-        method: 'PUT',
+      const editRes = await fetch("/api/tags", {
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           id,
@@ -82,7 +82,7 @@ export default function TagTableRow({ item }) {
       <th className="px-6 py-4">
         <span className="font-normal">{count ?? 0}</span>
       </th>
-      <td className={`px-6 ${editMode ? 'py-2' : 'py-4'}`}>
+      <td className={`px-6 ${editMode ? "py-2" : "py-4"}`}>
         {!editMode ? (
           <span>{tagName}</span>
         ) : (
@@ -95,7 +95,7 @@ export default function TagTableRow({ item }) {
           />
         )}
       </td>
-      <td className={`px-6 ${editMode ? 'py-2' : 'py-4'}`}>
+      <td className={`px-6 ${editMode ? "py-2" : "py-4"}`}>
         {!editMode ? (
           <span className="text-xl">{tagEmoji}</span>
         ) : (
@@ -110,12 +110,12 @@ export default function TagTableRow({ item }) {
       </td>
       <th className="px-6 py-4">
         <span className="font-normal" suppressHydrationWarning>
-          {createdAt ? new Date(createdAt).toLocaleString(settings.locale) : ''}
+          {createdAt ? new Date(createdAt).toLocaleString(settings.locale) : ""}
         </span>
       </th>
       <td
         className={`flex items-center justify-center space-x-2 ${
-          editMode ? 'px-2' : 'px-6'
+          editMode ? "px-2" : "px-6"
         } py-4 text-right`}
       >
         {!editMode ? (
@@ -139,10 +139,7 @@ export default function TagTableRow({ item }) {
                 />
               </svg>
             </button>
-            <button
-              onClick={() => deleteTag()}
-              className="font-medium text-rose-400 outline-none "
-            >
+            <button onClick={() => deleteTag()} className="font-medium text-rose-400 outline-none ">
               <svg
                 className="h-6 w-6"
                 fill="none"
