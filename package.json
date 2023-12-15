@@ -54,12 +54,8 @@
     "autoprefixer": "^10.4.13",
     "eslint": "8.31.0",
     "eslint-config-next": "13.1.2",
-    "eslint-config-prettier": "^8.6.0",
-    "eslint-plugin-prettier": "^4.2.1",
     "lint-staged": "^13.1.0",
     "postcss": "^8.4.21",
-    "prettier": "^2.8.3",
-    "prettier-plugin-tailwindcss": "^0.2.1",
     "prisma": "4.8.1",
     "simple-git-hooks": "^2.8.1",
     "simple-zustand-devtools": "^1.1.0",
@@ -69,30 +65,16 @@
   "eslintConfig": {
     "extends": [
       "eslint:recommended",
-      "next",
-      "prettier"
+      "next"
     ],
     "env": {
       "browser": true,
       "node": true,
       "es6": true
     },
-    "plugins": [
-      "prettier"
-    ],
     "rules": {
-      "prettier/prettier": "error",
       "@next/next/no-img-element": "off"
     }
-  },
-  "prettier": {
-    "semi": false,
-    "singleQuote": true,
-    "bracketSpacing": true,
-    "arrowSpacing": true,
-    "plugins": [
-      "prettier-plugin-tailwindcss"
-    ]
   },
   "commitlint": {
     "extends": [

@@ -12,6 +12,8 @@
       },
       "a11y": {
         "useValidAnchor": "off",
+        "noRedundantAlt": "off",
+        "useButtonType": "off",
         "noSvgWithoutTitle": "off"
       }
 		}
