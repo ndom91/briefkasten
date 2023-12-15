@@ -12,7 +12,7 @@ function ToastReducer(state, action) {
       }
     }
     case "DELETE_TOAST": {
-      const updatedToasts = state.toasts.filter((e) => e.id != action.id)
+      const updatedToasts = state.toasts.filter((e) => e.id !== action.id)
       return {
         ...state,
         toasts: updatedToasts,

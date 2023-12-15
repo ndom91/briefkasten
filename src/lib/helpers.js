@@ -13,10 +13,9 @@ export const asyncFileReader = async (blob) => {
         reject(e)
       }
     })
-  } else {
-    const buffer = Buffer.from(await blob.arrayBuffer())
-    return `data:image/png;bas64,${buffer.toString("base64")}`
   }
+  const buffer = Buffer.from(await blob.arrayBuffer())
+  return `data:image/png;bas64,${buffer.toString("base64")}`
 }
 
 export const perf = () => {

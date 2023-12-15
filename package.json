@@ -106,9 +106,6 @@
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
       "biome format --write"
-    ],
-    "*.{js,jsx}": [
-      "eslint --fix"
     ]
   }
 }

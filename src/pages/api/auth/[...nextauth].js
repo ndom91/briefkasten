@@ -112,8 +112,8 @@ const adapterOverwrite = PrismaAdapter(prisma)
 authOptions.adapter = {
   ...adapterOverwrite,
   linkAccount: (account) => {
-    delete account["not-before-policy"]
-    delete account["refresh_expires_in"]
+    account["not-before-policy"] = undefined
+    account.refresh_expires_in = undefined
     return adapterOverwrite.linkAccount(account)
   },
 }

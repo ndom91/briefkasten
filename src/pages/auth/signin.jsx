@@ -20,28 +20,31 @@ const ProviderIcons = ({ provider }) => {
           fill="currentColor"
           fillRule="evenodd"
           clipRule="evenodd"
-        ></path>
+        />
       </svg>
     )
-  } else if (provider === "google") {
+  }
+  if (provider === "google") {
     return (
       <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" viewBox="0 0 24 24">
         <path
           fill="currentColor"
           d="m19.76 10.77l-.09-.35h-7.44v3.16h4.45a4.45 4.45 0 0 1-4.36 3.34a5.21 5.21 0 0 1-3.5-1.39A5 5 0 0 1 7.33 12a5.14 5.14 0 0 1 1.46-3.53a5 5 0 0 1 3.48-1.37a4.55 4.55 0 0 1 3 1.16L17.47 6a7.88 7.88 0 0 0-5.27-2a8.14 8.14 0 0 0-5.77 2.35a8.15 8.15 0 0 0-.09 11.21a8.37 8.37 0 0 0 6 2.44a7.45 7.45 0 0 0 5.41-2.27a8 8 0 0 0 2.08-5.54a9.88 9.88 0 0 0-.07-1.42Z"
-        ></path>
+        />
       </svg>
     )
-  } else if (provider === "keycloak") {
+  }
+  if (provider === "keycloak") {
     return (
       <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" viewBox="0 0 52 52">
         <path
           fill="currentColor"
           d="M36 16h-2v-4c0-5.52-4.48-10-10-10s-10 4.48-10 10v4h-2c-2.21 0-4 1.79-4 4v20c0 2.21 1.79 4 4 4h24c2.21 0 4-1.79 4-4v-20c0-2.21-1.79-4-4-4zm-12 18c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm6.2-18h-12.4v-4c0-3.42 2.78-6.2 6.2-6.2 3.42 0 6.2 2.78 6.2 6.2v4z"
-        ></path>
+        />
       </svg>
     )
-  } else if (provider === "authentik") {
+  }
+  if (provider === "authentik") {
     return (
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35 35" width="35" height="35">
         <path
@@ -106,7 +109,7 @@ const Signin = ({ providers, csrfToken, autoLoginFirstProvider }) => {
                 className="h-10 w-10 rounded-full bg-slate-800 p-2 text-white lg:h-12 lg:w-12"
                 viewBox="0 0 24 24"
               >
-                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
               </svg>
               <span className="text-4xl font-medium text-white">Briefkasten</span>
             </h2>

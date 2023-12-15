@@ -131,7 +131,7 @@ export default function Sidebar({ session }) {
               className="h-10 w-10 rounded-full bg-slate-700 p-2 text-white"
               viewBox="0 0 24 24"
             >
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
             </svg>
             {open && (
               <span className="ml-3 font-serif text-xl font-semibold text-slate-200">
@@ -160,7 +160,7 @@ export default function Sidebar({ session }) {
                     strokeLinejoin="round"
                     strokeWidth="2"
                     d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                  ></path>
+                  />
                 </svg>
                 <span className={`ml-4 font-serif text-lg text-slate-200 ${!open && "hidden"}`}>
                   {" "}
@@ -285,7 +285,7 @@ export default function Sidebar({ session }) {
                     >
                       {cat.name}
                       <span className="ml-2 rounded-md bg-slate-700 px-1 text-center text-sm text-slate-200">
-                        {cat["_count"]?.bookmarks ?? 0}
+                        {cat._count?.bookmarks ?? 0}
                       </span>
                     </button>
                   ))}
@@ -401,7 +401,7 @@ export default function Sidebar({ session }) {
                     >
                       {tag.emoji} <span className="ml-1">{tag.name}</span>{" "}
                       <span className="ml-1 rounded-md bg-slate-700 px-1 text-center text-sm text-slate-200">
-                        {tag["_count"]?.bookmarks ?? 0}
+                        {tag._count?.bookmarks ?? 0}
                       </span>
                     </button>
                   ))}

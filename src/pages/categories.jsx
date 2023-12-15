@@ -27,11 +27,10 @@ export default function Categories({ nextauth }) {
   const categories = useStore((state) => {
     if (!searchString) {
       return state.categories
-    } else {
-      return state.categories.filter((cat) =>
-        cat.name.toLowerCase().includes(searchString.toLowerCase()),
-      )
     }
+    return state.categories.filter((cat) =>
+      cat.name.toLowerCase().includes(searchString.toLowerCase()),
+    )
   })
   const addCategory = useStore((state) => state.addCategory)
   const [categoryName, setCategoryName] = useState("")
@@ -132,16 +131,15 @@ export default function Categories({ nextauth }) {
               </tr>
             </thead>
             <tbody>
-              {categories &&
-                categories.map((category) => (
-                  <CategoryTableRow item={category} key={category.id} />
-                ))}
+              {categories?.map((category) => (
+                <CategoryTableRow item={category} key={category.id} />
+              ))}
               <tr className="bg-white even:bg-gray-50 hover:bg-slate-100">
-                <td className={`px-6 py-2`}>
+                <td className={"px-6 py-2"}>
                   <span className="font-semibold">Add new Category</span>
                 </td>
-                <td className={`px-6 py-2`} />
-                <td className={`px-6 py-2`}>
+                <td className={"px-6 py-2"} />
+                <td className={"px-6 py-2"}>
                   <input
                     name="name"
                     value={categoryName}
@@ -151,7 +149,7 @@ export default function Categories({ nextauth }) {
                     className="block w-full rounded-md border-2 border-slate-200 bg-slate-50 p-2 py-1 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500  focus:ring-slate-500 "
                   />
                 </td>
-                <td className={`px-6 py-2`}>
+                <td className={"px-6 py-2"}>
                   <input
                     name="emoji"
                     value={categoryDesc}
@@ -183,7 +181,7 @@ export default function Categories({ nextauth }) {
                     <span>Save</span>
                   </button>
                 </td>
-                <td className={`px-6 py-2`} />
+                <td className={"px-6 py-2"} />
               </tr>
             </tbody>
           </table>

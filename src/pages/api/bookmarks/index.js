@@ -53,7 +53,7 @@ const handler = async (req, res) => {
 
         // Next, if there are tags, insert them sequentially
         let updateTagRes
-        if (tags && tags.filter(Boolean).length) {
+        if (tags?.filter(Boolean).length) {
           serverTiming.measure("tagMapUpdate")
           updateTagRes = await Promise.all(
             tags.map(async (tag) => {
@@ -105,10 +105,9 @@ const handler = async (req, res) => {
 
         // Return response to client
         return res.status(200).json({ data: { ...updateBookmarkRes, tags: updateTagRes ?? [] } })
-      } else {
-        console.error("ERR - Unauthorized attempt to PUT /api/bookmarks")
-        return res.status(403).end("Unauthorized")
       }
+      console.error("ERR - Unauthorized attempt to PUT /api/bookmarks")
+      return res.status(403).end("Unauthorized")
     }
     case "POST": {
       serverTiming.start()
@@ -187,7 +186,7 @@ const handler = async (req, res) => {
 
       let upsertTagRes
       // Next, if there are tags, insert them sequentially
-      if (tags && tags.filter(Boolean).length) {
+      if (tags?.filter(Boolean).length) {
         serverTiming.measure("tagMapUpsert")
         upsertTagRes = await Promise.all(
           tags.map(async (tag) => {
@@ -331,10 +330,9 @@ const handler = async (req, res) => {
           return res.status(500).json({ message: error })
         }
         return res.status(200).json({ message: "Deleted" })
-      } else {
-        console.error("ERR - Unauthorized attempt to DELETE /api/bookmarks")
-        return res.status(403).end("Unauthorized")
       }
+      console.error("ERR - Unauthorized attempt to DELETE /api/bookmarks")
+      return res.status(403).end("Unauthorized")
     }
     default: {
       res.setHeader("Allow", ["GET", "DELETE", "POST", "PUT"])

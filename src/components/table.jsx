@@ -32,14 +32,13 @@ export default function DataTable({ items, initEdit }) {
         </tr>
       </thead>
       <tbody>
-        {items &&
-          items.map((bookmark) => (
-            <BookmarkTableRow
-              item={bookmark}
-              key={bookmark.id}
-              toggleSidebar={() => initEdit(bookmark)}
-            />
-          ))}
+        {items?.map((bookmark) => (
+          <BookmarkTableRow
+            item={bookmark}
+            key={bookmark.id}
+            toggleSidebar={() => initEdit(bookmark)}
+          />
+        ))}
       </tbody>
     </table>
   )

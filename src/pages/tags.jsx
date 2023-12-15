@@ -32,9 +32,8 @@ export default function Tags({ nextauth }) {
   const tags = useStore((state) => {
     if (!searchString) {
       return state.tags
-    } else {
-      return state.tags.filter((tag) => tag.name.toLowerCase().includes(searchString.toLowerCase()))
     }
+    return state.tags.filter((tag) => tag.name.toLowerCase().includes(searchString.toLowerCase()))
   })
 
   const saveNewTag = async () => {
@@ -131,13 +130,15 @@ export default function Tags({ nextauth }) {
               </tr>
             </thead>
             <tbody>
-              {tags && tags.map((tag) => <TagTableRow item={tag} key={tag.id} />)}
+              {tags?.map((tag) => (
+                <TagTableRow item={tag} key={tag.id} />
+              ))}
               <tr className="bg-white even:bg-gray-50 hover:bg-slate-100">
-                <td className={`px-6 py-2`}>
+                <td className={"px-6 py-2"}>
                   <span className="font-semibold">Add new Tag</span>
                 </td>
-                <td className={`px-6 py-2`} />
-                <td className={`px-6 py-2`}>
+                <td className={"px-6 py-2"} />
+                <td className={"px-6 py-2"}>
                   <input
                     name="name"
                     value={tagName}
@@ -147,7 +148,7 @@ export default function Tags({ nextauth }) {
                     className="block w-full rounded-md border-2 border-slate-200 bg-slate-50 p-2 py-1 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500  focus:ring-slate-500 "
                   />
                 </td>
-                <td className={`px-6 py-2`}>
+                <td className={"px-6 py-2"}>
                   <input
                     name="emoji"
                     value={tagEmoji}
@@ -179,7 +180,7 @@ export default function Tags({ nextauth }) {
                     <span>Save</span>
                   </button>
                 </td>
-                <td className={`px-6 py-2`} />
+                <td className={"px-6 py-2"} />
               </tr>
             </tbody>
           </table>

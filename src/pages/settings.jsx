@@ -56,11 +56,11 @@ export default function Settings({ nextauth }) {
       output += `<DT><A HREF="${bk.url}" PRIVATE="0" ADD_DATE="${parseInt(
         new Date(bk.createdAt).getTime() / 1000,
       )}" LAST_MODIFIED="${parseInt(new Date(bk.updatedAt).getTime() / 1000)}" ${
-        bk.tags.length && 'TAGS="' + bk.tags.map((t) => t.tag.name).join(",") + '"'
+        bk.tags.length && `TAGS="${bk.tags.map((t) => t.tag.name).join(",")}"`
       }>${bk.title}</A>`
     })
 
-    output += `</DL><p></DL><p>`
+    output += "</DL><p></DL><p>"
 
     const el = document.createElement("a")
     el.download = `briefkasten_bookmarks_${date.getDate()}${
@@ -76,7 +76,7 @@ export default function Settings({ nextauth }) {
 
   const importBookmarks = async () => {
     if (!fileContents) {
-      toast(toastTypes.WARNING, `Could not import. Please upload a file first.`)
+      toast(toastTypes.WARNING, "Could not import. Please upload a file first.")
       return
     }
     let bookmarks
@@ -94,7 +94,7 @@ export default function Settings({ nextauth }) {
     if (!bookmarks.length) {
       toast(
         toastTypes.WARNING,
-        `No bookmarks successfully parsed. See console for any potential errors.`,
+        "No bookmarks successfully parsed. See console for any potential errors.",
       )
       return
     }
@@ -109,10 +109,10 @@ export default function Settings({ nextauth }) {
 
     if (!bulkCreateRes.ok) {
       if ((await bulkCreateRes.json()).code === "P2002") {
-        toast(toastTypes.ERROR, `Error saving imported bookmarks\nURL already exists`)
+        toast(toastTypes.ERROR, "Error saving imported bookmarks\nURL already exists")
         return
       }
-      toast(toastTypes.ERROR, `Error saving imported bookmarks`)
+      toast(toastTypes.ERROR, "Error saving imported bookmarks")
       return
     }
 
@@ -125,7 +125,7 @@ export default function Settings({ nextauth }) {
       toast(toastTypes.WARNING, `Successfully imported only ${bookmarks.length} bookmarks`)
     } else {
       console.error(bulkCreateData)
-      toast(toastTypes.ERROR, `Error importing bookmarks`)
+      toast(toastTypes.ERROR, "Error importing bookmarks")
     }
   }
 
@@ -206,21 +206,21 @@ export default function Settings({ nextauth }) {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth="24"
-                  ></path>
+                  />
                   <path
                     d="M80,128a80,80,0,1,1,144,48"
                     fill="none"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth="24"
-                  ></path>
+                  />
                   <polyline
                     points="118.1 161.9 152 128 185.9 161.9"
                     fill="none"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth="24"
-                  ></polyline>
+                  />
                   <line
                     x1="152"
                     y1="208"
@@ -230,7 +230,7 @@ export default function Settings({ nextauth }) {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth="24"
-                  ></line>
+                  />
                 </svg>
                 <span className="text-xs font-medium text-gray-600">
                   {!fileName ? (

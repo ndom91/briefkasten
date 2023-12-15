@@ -67,8 +67,7 @@ export default withSentry(async function handler(req, res) {
         return res.status(405).end(`Method ${method} Not Allowed`)
       }
     }
-  } else {
-    console.error("ERR - Unauthorized attempt at /api/categories")
-    return res.status(403).end("Unauthorized")
   }
+  console.error("ERR - Unauthorized attempt at /api/categories")
+  return res.status(403).end("Unauthorized")
 })
