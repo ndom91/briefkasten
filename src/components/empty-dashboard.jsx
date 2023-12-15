@@ -11,7 +11,7 @@ export default function EmptyDashboard() {
         It looks like you don&apos;t have any bookmarks yet!
       </h2>
       <p className="mt-4 text-center text-gray-600">
-        This is where you’ll manage your items. Get started by installing the{' '}
+        This is where you’ll manage your items. Get started by installing the{" "}
         <a
           href="https://chrome.google.com/webstore/detail/briefkasten-bookmarks/aighkhofochfjejmhjfkgjfpkpgmjlnd"
           className="underline"
@@ -31,10 +31,10 @@ export default function EmptyDashboard() {
           Use the <strong>quick-add button</strong> in the bottom right corner
         </li>
       </ul>
-      <div className="mt-4 flex flex-col items-center justify-center space-y-1 md:flex-row md:space-y-0 md:space-x-1">
+      <div className="mt-4 flex flex-col items-center justify-center space-y-1 md:flex-row md:space-x-1 md:space-y-0">
         <a
           href="https://chrome.google.com/webstore/detail/briefkasten-bookmarks/aighkhofochfjejmhjfkgjfpkpgmjlnd"
-          className="text-md inline-flex justify-center rounded-md bg-slate-800 py-2 px-6 font-medium text-white shadow-sm transition hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
+          className="text-md inline-flex justify-center rounded-md bg-slate-800 px-6 py-2 font-medium text-white shadow-sm transition hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
         >
           Install Extension
         </a>

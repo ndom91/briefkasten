@@ -1,10 +1,10 @@
-import { useStore } from '@/lib/store'
-import { useToggle } from 'react-use'
-import { useEffect, useState, Fragment } from 'react'
-import { useToast, toastTypes } from '@/lib/hooks'
+import { useStore } from "@/lib/store"
+import { useToggle } from "react-use"
+import { useEffect, useState, Fragment } from "react"
+import { useToast, toastTypes } from "@/lib/hooks"
 
-import { Combobox, Listbox, Dialog, Transition } from '@headlessui/react'
-import Chip from '@/components/chip'
+import { Combobox, Listbox, Dialog, Transition } from "@headlessui/react"
+import Chip from "@/components/chip"
 
 const fallbackUnsplash = `https://source.unsplash.com/random/300x201?sig=${Math.floor(
   Math.random() * 100,
@@ -20,29 +20,29 @@ export default function SlideOut({ open, toggleOpen, session }) {
   useEffect(() => {
     const { title, desc, url, category, tags } = editBookmark
 
-    setEditTitle(title ?? '')
+    setEditTitle(title ?? "")
     setEditCategory(category?.name)
-    setEditUrl(url ?? '')
-    setEditDesc(desc ?? '')
+    setEditUrl(url ?? "")
+    setEditDesc(desc ?? "")
     setSelectedTags(tags)
   }, [editBookmark])
 
   const [selectedTags, setSelectedTags] = useState([])
-  const [comboQuery, setComboBoxQuery] = useState('')
-  const [editCategory, setEditCategory] = useState('')
-  const [editTitle, setEditTitle] = useState('')
-  const [editDesc, setEditDesc] = useState('')
-  const [editUrl, setEditUrl] = useState('')
+  const [comboQuery, setComboBoxQuery] = useState("")
+  const [editCategory, setEditCategory] = useState("")
+  const [editTitle, setEditTitle] = useState("")
+  const [editDesc, setEditDesc] = useState("")
+  const [editUrl, setEditUrl] = useState("")
   const [loading, toggleLoading] = useToggle(false)
   const toast = useToast(5000)
 
   const saveEdit = async () => {
     try {
       toggleLoading(true)
-      const updateRes = await fetch('/api/bookmarks', {
-        method: 'PUT',
+      const updateRes = await fetch("/api/bookmarks", {
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           id: editBookmark.id,
@@ -65,11 +65,11 @@ export default function SlideOut({ open, toggleOpen, session }) {
           category: data.category,
           tags: data.tags,
         })
-        toast(toastTypes.SUCCESS, 'Successfully edited', editTitle)
+        toast(toastTypes.SUCCESS, "Successfully edited", editTitle)
       }
     } catch (error) {
       console.error(error)
-      toast(toastTypes.ERROR, 'Error editing bookmark', error.message)
+      toast(toastTypes.ERROR, "Error editing bookmark", error.message)
     }
     toggleLoading(false)
     toggleOpen()
@@ -80,10 +80,10 @@ export default function SlideOut({ open, toggleOpen, session }) {
   }
 
   const clearInputs = () => {
-    setEditTitle('')
-    setEditCategory('')
-    setEditUrl('')
-    setEditDesc('')
+    setEditTitle("")
+    setEditCategory("")
+    setEditUrl("")
+    setEditDesc("")
     setSelectedTags([])
   }
 
@@ -92,7 +92,7 @@ export default function SlideOut({ open, toggleOpen, session }) {
   }
 
   const filteredTags =
-    comboQuery === ''
+    comboQuery === ""
       ? tags
       : tags.filter((tag) => {
           return tag.name.toLowerCase().includes(comboQuery.toLowerCase())
@@ -181,9 +181,7 @@ export default function SlideOut({ open, toggleOpen, session }) {
                           />
                         </svg>
                         <span className="mt-1">
-                          {new Date(editBookmark.createdAt).toLocaleString(
-                            settings.locale,
-                          )}
+                          {new Date(editBookmark.createdAt).toLocaleString(settings.locale)}
                         </span>
                       </p>
                     </div>
@@ -217,10 +215,7 @@ export default function SlideOut({ open, toggleOpen, session }) {
                         />
                       </div>
                       <div className="flex flex-col items-stretch justify-around">
-                        <label
-                          htmlFor="url"
-                          className="block text-sm font-medium text-slate-700"
-                        >
+                        <label htmlFor="url" className="block text-sm font-medium text-slate-700">
                           Title
                         </label>
                         <div className="mt-1 flex rounded-md shadow-sm">
@@ -235,10 +230,7 @@ export default function SlideOut({ open, toggleOpen, session }) {
                         </div>
                       </div>
                       <div className="flex flex-col items-stretch justify-around">
-                        <label
-                          htmlFor="url"
-                          className="block text-sm font-medium text-slate-700"
-                        >
+                        <label htmlFor="url" className="block text-sm font-medium text-slate-700">
                           URL
                         </label>
                         <div className="mt-1 flex rounded-md shadow-sm">
@@ -254,16 +246,10 @@ export default function SlideOut({ open, toggleOpen, session }) {
                         </div>
                       </div>
                       <div className="flex flex-col items-stretch justify-around">
-                        <label
-                          htmlFor="url"
-                          className="block text-sm font-medium text-slate-700"
-                        >
+                        <label htmlFor="url" className="block text-sm font-medium text-slate-700">
                           Category
                         </label>
-                        <Listbox
-                          value={editCategory}
-                          onChange={setEditCategory}
-                        >
+                        <Listbox value={editCategory} onChange={setEditCategory}>
                           <div className="relative mt-1 min-h-[38px]">
                             <Listbox.Button className="relative min-h-[38px] w-full cursor-default rounded-md border border-slate-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:outline-none focus-visible:border-slate-700 focus-visible:ring-2 focus-visible:ring-slate-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white sm:text-sm">
                               <span className="block w-full flex-1 rounded-md border-slate-300 outline-none placeholder:text-slate-300 focus:border-slate-600 focus:outline-none sm:text-sm">
@@ -299,9 +285,7 @@ export default function SlideOut({ open, toggleOpen, session }) {
                                     key={cat.id}
                                     className={({ active }) =>
                                       `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                                        active
-                                          ? 'bg-slate-100 text-slate-900'
-                                          : 'text-gray-900'
+                                        active ? "bg-slate-100 text-slate-900" : "text-gray-900"
                                       }`
                                     }
                                     value={cat.name}
@@ -310,9 +294,7 @@ export default function SlideOut({ open, toggleOpen, session }) {
                                       <>
                                         <span
                                           className={`block truncate ${
-                                            selected
-                                              ? 'font-medium'
-                                              : 'font-normal'
+                                            selected ? "font-medium" : "font-normal"
                                           }`}
                                         >
                                           {cat.name}
@@ -346,10 +328,7 @@ export default function SlideOut({ open, toggleOpen, session }) {
                         </Listbox>
                       </div>
                       <div className="flex flex-col items-stretch justify-around">
-                        <label
-                          htmlFor="url"
-                          className="block text-sm font-medium text-slate-700"
-                        >
+                        <label htmlFor="url" className="block text-sm font-medium text-slate-700">
                           Tags
                         </label>
                         <div className="my-2 flex w-full flex-1 flex-wrap gap-1 rounded-none rounded-r-md border-slate-300 placeholder:text-slate-300 focus:border-slate-500 focus:ring-slate-500 sm:text-sm">
@@ -366,7 +345,7 @@ export default function SlideOut({ open, toggleOpen, session }) {
                                 leaveTo="opacity-0"
                               >
                                 <Chip
-                                  name={`${tag.emoji ?? ''} ${tag.name}`}
+                                  name={`${tag.emoji ?? ""} ${tag.name}`}
                                   id={tag.id}
                                   remove={removeSelectedTag}
                                 />
@@ -374,12 +353,7 @@ export default function SlideOut({ open, toggleOpen, session }) {
                             )
                           })}
                         </div>
-                        <Combobox
-                          value={selectedTags}
-                          onChange={setSelectedTags}
-                          nullable
-                          multiple
-                        >
+                        <Combobox value={selectedTags} onChange={setSelectedTags} nullable multiple>
                           <div className="relative mt-1">
                             <div className="relative w-full cursor-default overflow-hidden rounded-md text-left shadow-sm focus:outline-none sm:text-sm">
                               <Combobox.Input
@@ -413,7 +387,7 @@ export default function SlideOut({ open, toggleOpen, session }) {
                               leaveTo="opacity-0"
                             >
                               <Combobox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                                {tags.length === 0 && comboQuery !== '' ? (
+                                {tags.length === 0 && comboQuery !== "" ? (
                                   <div className="relative cursor-default select-none px-4 py-2 text-gray-700">
                                     Nothing found.
                                   </div>
@@ -423,9 +397,7 @@ export default function SlideOut({ open, toggleOpen, session }) {
                                       key={tag.id}
                                       className={({ active }) =>
                                         `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                                          active
-                                            ? 'bg-slate-800 text-white'
-                                            : 'text-gray-900'
+                                          active ? "bg-slate-800 text-white" : "text-gray-900"
                                         }`
                                       }
                                       value={tag}
@@ -434,9 +406,7 @@ export default function SlideOut({ open, toggleOpen, session }) {
                                         <>
                                           <span
                                             className={`block truncate ${
-                                              selected
-                                                ? 'font-medium'
-                                                : 'font-normal'
+                                              selected ? "font-medium" : "font-normal"
                                             }`}
                                           >
                                             {tag.name}
@@ -444,9 +414,7 @@ export default function SlideOut({ open, toggleOpen, session }) {
                                           {selected ? (
                                             <span
                                               className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
-                                                active
-                                                  ? 'text-white'
-                                                  : 'text-slate-800'
+                                                active ? "text-white" : "text-slate-800"
                                               }`}
                                             >
                                               <svg
@@ -477,10 +445,7 @@ export default function SlideOut({ open, toggleOpen, session }) {
                         </Combobox>
                       </div>
                       <div className="flex flex-col items-stretch justify-around">
-                        <label
-                          htmlFor="desc"
-                          className="block text-sm font-medium text-gray-700"
-                        >
+                        <label htmlFor="desc" className="block text-sm font-medium text-gray-700">
                           Description
                         </label>
                         <div className="mt-1">
@@ -524,10 +489,7 @@ export default function SlideOut({ open, toggleOpen, session }) {
                               ></path>
                             </svg>
                           ) : (
-                            <svg
-                              className="h-4 w-4 text-white sm:mr-2"
-                              viewBox="0 0 24 24"
-                            >
+                            <svg className="h-4 w-4 text-white sm:mr-2" viewBox="0 0 24 24">
                               <path
                                 fill="currentColor"
                                 d="M17 3H5C3.89 3 3 3.9 3 5V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V7L17 3M19 19H5V5H16.17L19 7.83V19M12 12C10.34 12 9 13.34 9 15S10.34 18 12 18 15 16.66 15 15 13.66 12 12 12M6 6H15V10H6V6Z"

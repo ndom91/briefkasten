@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="flex w-full max-w-8xl items-center justify-center space-x-4 px-4 pt-2 pb-6 sm:items-start">
+    <footer className="flex w-full max-w-8xl items-center justify-center space-x-4 px-4 pb-6 pt-2 sm:items-start">
       <section className="flex w-full items-center justify-between space-x-3 ">
         <div className="flex space-x-2">
           <a
@@ -22,18 +22,9 @@ export default function Footer() {
             rel="noopener noreferrer"
             className="rounded-lg bg-gray-100 p-1 text-gray-500 transition hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:ring-offset-2 focus:ring-offset-white"
           >
-            <svg
-              name="linkedin"
-              className="h-6 w-6"
-              fill="currentColor"
-              viewBox="0 0 512 512"
-            >
+            <svg name="linkedin" className="h-6 w-6" fill="currentColor" viewBox="0 0 512 512">
               <circle cx="142" cy="138" r="37"></circle>
-              <path
-                stroke="currentColor"
-                strokeWidth="66"
-                d="M244 194v198M142 194v198"
-              ></path>
+              <path stroke="currentColor" strokeWidth="66" d="M244 194v198M142 194v198"></path>
               <path d="M276 282c0-20 13-40 36-40 24 0 33 18 33 45v105h66V279c0-61-32-89-76-89-34 0-51 19-59 32"></path>
             </svg>
           </a>
@@ -65,7 +56,7 @@ export default function Footer() {
           rel="noopener noreferrer"
           className="flex space-x-2 text-xs text-slate-600"
         >
-          .<span className="font-extrabold">domino</span>{' '}
+          .<span className="font-extrabold">domino</span>{" "}
           <span className="">{new Date().getFullYear()}</span>
         </a>
       </section>

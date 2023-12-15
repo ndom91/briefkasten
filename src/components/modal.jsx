@@ -1,13 +1,7 @@
-import { Fragment, useRef } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
+import { Fragment, useRef } from "react"
+import { Dialog, Transition } from "@headlessui/react"
 
-export default function Modal({
-  open,
-  toggleModal,
-  saveBookmark,
-  url,
-  loading,
-}) {
+export default function Modal({ open, toggleModal, saveBookmark, url, loading }) {
   const cancelButtonRef = useRef(null)
 
   return (
@@ -42,7 +36,7 @@ export default function Modal({
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
               <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                   <div className="sm:flex sm:items-start">
                     <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-emerald-100 sm:mx-0 sm:h-10 sm:w-10">
                       <svg
@@ -60,7 +54,7 @@ export default function Modal({
                         />
                       </svg>
                     </div>
-                    <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                    <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                       <Dialog.Title
                         as="h3"
                         className="pt-2 text-lg font-medium leading-6 text-gray-900"
@@ -68,24 +62,21 @@ export default function Modal({
                         New Bookmark
                       </Dialog.Title>
                       <div className="mt-4 flex flex-col space-y-2">
-                        <p className="text-sm text-gray-500">
-                          You have dropped the URL:
-                        </p>
+                        <p className="text-sm text-gray-500">You have dropped the URL:</p>
                         <div className="text-semibold text-sm">
                           <a
                             href={url}
                             alt="New Url"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-ellipsis break-all font-semibold text-slate-900 transition line-clamp-3 hover:underline"
+                            className="line-clamp-3 text-ellipsis break-all font-semibold text-slate-900 transition hover:underline"
                           >
                             {url}
                           </a>
                         </div>
                         <p className="text-sm text-gray-500">
-                          If you proceed to add this URL, we will look up a
-                          default title and description for the page which you
-                          can of course edit later.
+                          If you proceed to add this URL, we will look up a default title and
+                          description for the page which you can of course edit later.
                         </p>
                       </div>
                     </div>
@@ -123,7 +114,7 @@ export default function Modal({
                   </button>
                   <button
                     type="button"
-                    className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm transition hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                    className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm transition hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 sm:ml-3 sm:mt-0 sm:w-auto sm:text-sm"
                     onClick={() => toggleModal()}
                     ref={cancelButtonRef}
                   >

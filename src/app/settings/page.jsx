@@ -1,31 +1,31 @@
-import Head from 'next/head'
-import { useState } from 'react'
-import { unstable_getServerSession } from 'next-auth/next'
-import { useCopyToClipboard } from 'react-use'
+import Head from "next/head"
+import { useState } from "react"
+import { unstable_getServerSession } from "next-auth/next"
+import { useCopyToClipboard } from "react-use"
 
-import prisma from '@/lib/prisma'
-import Layout from '@/components/layout'
-import Breadcrumbs from '@/components/breadcrumbs'
-import { useStore, initializeStore } from '@/lib/store'
-import { useToast, toastTypes } from '@/lib/hooks'
-import { authOptions } from './api/auth/[...nextauth]'
-import { parseChromeBookmarks, parsePocketBookmarks } from '@/lib/import'
+import prisma from "@/lib/prisma"
+import Layout from "@/components/layout"
+import Breadcrumbs from "@/components/breadcrumbs"
+import { useStore, initializeStore } from "@/lib/store"
+import { useToast, toastTypes } from "@/lib/hooks"
+import { authOptions } from "./api/auth/[...nextauth]"
+import { parseChromeBookmarks, parsePocketBookmarks } from "@/lib/import"
 
 const breadcrumbs = [
   {
-    name: 'Dashboard',
+    name: "Dashboard",
     icon: `<svg className="h-4 w-4 shrink-0 fill-gray-500" aria-hidden="true" viewBox="0 0 256 256" > <path d="M184,32H72A16,16,0,0,0,56,48V224a8.1,8.1,0,0,0,4.1,7,7.6,7.6,0,0,0,3.9,1,7.9,7.9,0,0,0,4.2-1.2L128,193.4l59.7,37.4a8.3,8.3,0,0,0,8.2.2,8.1,8.1,0,0,0,4.1-7V48A16,16,0,0,0,184,32Z"></path> </svg>`,
   },
   {
-    name: 'Settings',
+    name: "Settings",
     icon: `<svg className="h-4 w-4 shrink-0 fill-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" /></svg>`,
   },
 ]
 
 export default function Settings({ nextauth }) {
   const bookmarks = useStore((state) => state.bookmarks)
-  const [fileContents, setFileContents] = useState('')
-  const [fileName, setFileName] = useState('')
+  const [fileContents, setFileContents] = useState("")
+  const [fileName, setFileName] = useState("")
   const toast = useToast(5000)
   const [_, copyToClipboard] = useCopyToClipboard() // eslint-disable-line
 
@@ -55,22 +55,19 @@ export default function Settings({ nextauth }) {
     bookmarks.forEach((bk) => {
       output += `<DT><A HREF="${bk.url}" PRIVATE="0" ADD_DATE="${parseInt(
         new Date(bk.createdAt).getTime() / 1000,
-      )}" LAST_MODIFIED="${parseInt(
-        new Date(bk.updatedAt).getTime() / 1000,
-      )}" ${
-        bk.tags.length &&
-        'TAGS="' + bk.tags.map((t) => t.tag.name).join(',') + '"'
+      )}" LAST_MODIFIED="${parseInt(new Date(bk.updatedAt).getTime() / 1000)}" ${
+        bk.tags.length && 'TAGS="' + bk.tags.map((t) => t.tag.name).join(",") + '"'
       }>${bk.title}</A>`
     })
 
     output += `</DL><p></DL><p>`
 
-    const el = document.createElement('a')
+    const el = document.createElement("a")
     el.download = `briefkasten_bookmarks_${date.getDate()}${
       parseInt(date.getMonth()) + 1
     }${date.getFullYear()}.html`
 
-    const bookmarksExport = new Blob([output], { type: 'text/html' })
+    const bookmarksExport = new Blob([output], { type: "text/html" })
 
     el.href = window.URL.createObjectURL(bookmarksExport)
 
@@ -84,11 +81,11 @@ export default function Settings({ nextauth }) {
     }
     let bookmarks
     const domParser = new DOMParser()
-    const doc = domParser.parseFromString(fileContents, 'text/html')
-    if (doc.querySelector('title').textContent.includes('Pocket')) {
-      console.log('Pocket')
+    const doc = domParser.parseFromString(fileContents, "text/html")
+    if (doc.querySelector("title").textContent.includes("Pocket")) {
+      console.log("Pocket")
       bookmarks = parsePocketBookmarks(doc, nextauth?.user?.userId)
-      console.log('PocketBookmarks', bookmarks)
+      console.log("PocketBookmarks", bookmarks)
     } else {
       // Default Chrome format
       bookmarks = parseChromeBookmarks(doc, nextauth?.user?.userId)
@@ -102,20 +99,17 @@ export default function Settings({ nextauth }) {
       return
     }
 
-    const bulkCreateRes = await fetch('/api/bookmarks/bulk', {
-      method: 'POST',
+    const bulkCreateRes = await fetch("/api/bookmarks/bulk", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(bookmarks),
     })
 
     if (!bulkCreateRes.ok) {
-      if ((await bulkCreateRes.json()).code === 'P2002') {
-        toast(
-          toastTypes.ERROR,
-          `Error saving imported bookmarks\nURL already exists`,
-        )
+      if ((await bulkCreateRes.json()).code === "P2002") {
+        toast(toastTypes.ERROR, `Error saving imported bookmarks\nURL already exists`)
         return
       }
       toast(toastTypes.ERROR, `Error saving imported bookmarks`)
@@ -125,16 +119,10 @@ export default function Settings({ nextauth }) {
     const bulkCreateData = await bulkCreateRes.json()
 
     if (bulkCreateData.data.count === bookmarks.length) {
-      toast(
-        toastTypes.SUCCESS,
-        `Successfully imported ${bookmarks.length} bookmarks`,
-      )
+      toast(toastTypes.SUCCESS, `Successfully imported ${bookmarks.length} bookmarks`)
     } else if (bulkCreateData.data.count) {
       console.warn(bulkCreateData)
-      toast(
-        toastTypes.WARNING,
-        `Successfully imported only ${bookmarks.length} bookmarks`,
-      )
+      toast(toastTypes.WARNING, `Successfully imported only ${bookmarks.length} bookmarks`)
     } else {
       console.error(bulkCreateData)
       toast(toastTypes.ERROR, `Error importing bookmarks`)
@@ -143,7 +131,7 @@ export default function Settings({ nextauth }) {
 
   const copyUserId = () => {
     copyToClipboard(nextauth?.user?.userId)
-    toast(toastTypes.SUCCESS, 'Copied Token')
+    toast(toastTypes.SUCCESS, "Copied Token")
   }
 
   return (
@@ -162,7 +150,7 @@ export default function Settings({ nextauth }) {
             </div>
             <div className="flex items-center justify-start pb-4">
               <label className="px-4 text-slate-500">
-                For use in the{' '}
+                For use in the{" "}
                 <a
                   href="https://github.com/ndom91/briefkasten-extension"
                   target="_blank"
@@ -204,18 +192,13 @@ export default function Settings({ nextauth }) {
               <h2 className="font-serif text-xl text-slate-700">Import</h2>
             </div>
             <label className="px-4 text-slate-500">
-              Upload a file exported from another tool, or your browser. Click{' '}
-              <q>browse</q> or drop a{' '}
-              <code className="rounded-md bg-slate-200 px-2 py-1">*.html</code>{' '}
-              file of bookmarks onto the area below. After the file has been
-              uploaded and its name appears in the upload widget, you can press{' '}
-              <q>Import</q> to start the import process.
+              Upload a file exported from another tool, or your browser. Click <q>browse</q> or drop
+              a <code className="rounded-md bg-slate-200 px-2 py-1">*.html</code> file of bookmarks
+              onto the area below. After the file has been uploaded and its name appears in the
+              upload widget, you can press <q>Import</q> to start the import process.
             </label>
             <label className="m-4 flex cursor-pointer appearance-none justify-center rounded-md border border-dashed border-gray-300 bg-white px-3 py-6 text-sm transition hover:border-gray-400 focus:border-solid focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:opacity-75">
-              <span
-                htmlFor="photo-dropbox"
-                className="flex items-center space-x-2"
-              >
+              <span htmlFor="photo-dropbox" className="flex items-center space-x-2">
                 <svg className="h-6 w-6 stroke-gray-400" viewBox="0 0 256 256">
                   <path
                     d="M96,208H72A56,56,0,0,1,72,96a57.5,57.5,0,0,1,13.9,1.7"
@@ -252,7 +235,7 @@ export default function Settings({ nextauth }) {
                 <span className="text-xs font-medium text-gray-600">
                   {!fileName ? (
                     <span>
-                      Drop files to Attach, or{' '}
+                      Drop files to Attach, or{" "}
                       <span className="text-blue-600 underline">browse</span>
                     </span>
                   ) : (
@@ -279,9 +262,9 @@ export default function Settings({ nextauth }) {
               <h2 className="font-serif text-xl text-slate-700">Export</h2>
             </div>
             <label className="p-4 pt-0 text-slate-500">
-              Save your bookmarks from Briefkasten to an html file. This is a
-              standardized bookmarks format which you can use to import your
-              saved items to any other bookmarks manager or browser.
+              Save your bookmarks from Briefkasten to an html file. This is a standardized bookmarks
+              format which you can use to import your saved items to any other bookmarks manager or
+              browser.
             </label>
             <button
               onClick={exportBookmarks}
@@ -295,7 +278,7 @@ export default function Settings({ nextauth }) {
               <h2 className="font-serif text-xl text-slate-700">About</h2>
             </div>
             <label className="px-4 text-slate-500">
-              This is an open-source project written mainly by{' '}
+              This is an open-source project written mainly by{" "}
               <a
                 href="https://ndo.dev?utm_source=briefkasten-about"
                 target="_blank"
@@ -308,7 +291,7 @@ export default function Settings({ nextauth }) {
             </label>
             <ul className="list-inside list-disc p-4 pt-0 text-slate-500">
               <li>
-                Repository:{' '}
+                Repository:{" "}
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
@@ -319,7 +302,7 @@ export default function Settings({ nextauth }) {
                 </a>
               </li>
               <li>
-                Screenshot API:{' '}
+                Screenshot API:{" "}
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
@@ -330,7 +313,7 @@ export default function Settings({ nextauth }) {
                 </a>
               </li>
               <li>
-                Chrome Extension:{' '}
+                Chrome Extension:{" "}
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
@@ -341,7 +324,7 @@ export default function Settings({ nextauth }) {
                 </a>
               </li>
               <li>
-                Missing Image Scraping Job:{' '}
+                Missing Image Scraping Job:{" "}
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
@@ -352,7 +335,7 @@ export default function Settings({ nextauth }) {
                 </a>
               </li>
               <li>
-                License:{' '}
+                License:{" "}
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
@@ -371,17 +354,13 @@ export default function Settings({ nextauth }) {
 }
 
 export async function getServerSideProps(context) {
-  const session = await unstable_getServerSession(
-    context.req,
-    context.res,
-    authOptions,
-  )
+  const session = await unstable_getServerSession(context.req, context.res, authOptions)
   const zustandStore = initializeStore()
 
   if (!session) {
     return {
       redirect: {
-        destination: '/auth/signin',
+        destination: "/auth/signin",
         permanent: false,
       },
     }

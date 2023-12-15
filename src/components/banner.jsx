@@ -1,7 +1,7 @@
 export default function Banner({ title, subtitle, ctaButtonText, close }) {
   return (
     <div className="bg-slate-600">
-      <div className="mx-auto max-w-7xl py-3 px-3 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-3 py-3 sm:px-6 lg:px-8">
         <div className="flex flex-wrap items-center justify-between">
           <div className="flex w-0 flex-1 items-center">
             <span className="flex rounded-lg bg-slate-800 p-2">
@@ -50,11 +50,7 @@ export default function Banner({ title, subtitle, ctaButtonText, close }) {
                 stroke="currentColor"
                 aria-hidden="true"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18L18 6M6 6l12 12"
-                />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
           </div>

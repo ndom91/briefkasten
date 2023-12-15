@@ -80,9 +80,7 @@
   },
   "prettier": {
     "semi": false,
-    "singleQuote": true,
-    "bracketSpacing": true,
-    "arrowSpacing": true,
+    "printWidth": 100,
     "plugins": [
       "prettier-plugin-tailwindcss"
     ]

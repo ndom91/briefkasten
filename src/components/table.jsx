@@ -1,4 +1,4 @@
-import BookmarkTableRow from '@/components/bookmarkTableRow'
+import BookmarkTableRow from "@/components/bookmarkTableRow"
 
 export default function DataTable({ items, initEdit }) {
   return (

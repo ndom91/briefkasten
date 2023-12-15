@@ -1,6 +1,6 @@
 export default function Chip({ name, remove, id }) {
   return (
-    <div className="flex w-fit items-center justify-center space-x-1 rounded-full bg-gray-200 py-1 px-3">
+    <div className="flex w-fit items-center justify-center space-x-1 rounded-full bg-gray-200 px-3 py-1">
       <div className="text-xs text-slate-600">{name}</div>
       {remove && (
         <button

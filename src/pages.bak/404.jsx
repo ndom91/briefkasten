@@ -1,7 +1,7 @@
-import Image from 'next/image'
-import Head from 'next/head'
-import Link from 'next/link'
-import Layout from '@/components/layout'
+import Image from "next/image"
+import Head from "next/head"
+import Link from "next/link"
+import Layout from "@/components/layout"
 
 export default function FourOhFour() {
   return (
@@ -19,9 +19,8 @@ export default function FourOhFour() {
               Oops! The page you&apos;re looking for isn&apos;t here.
             </h1>
             <p className="mb-5 text-left text-base text-gray-800 md:text-xl">
-              You might have the wrong address, or the page may have moved.
-              Please use the buttons below to go back to the homepage, or
-              contact us for support.
+              You might have the wrong address, or the page may have moved. Please use the buttons
+              below to go back to the homepage, or contact us for support.
             </p>
             <div className="flex">
               <Link href="/" legacyBehavior>

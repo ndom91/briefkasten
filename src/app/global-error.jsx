@@ -1,10 +1,10 @@
-'use client'
+"use client"
 
-import Image from 'next/image'
-import Head from 'next/head'
-import Link from 'next/link'
-import { useEffect } from 'react'
-import * as Sentry from '@sentry/nextjs'
+import Image from "next/image"
+import Head from "next/head"
+import Link from "next/link"
+import { useEffect } from "react"
+import * as Sentry from "@sentry/nextjs"
 
 export default function GlobalError({ error, reset }) {
   useEffect(() => {
@@ -28,9 +28,8 @@ export default function GlobalError({ error, reset }) {
               Oops! That wasn&apos;t supposed to happen.
             </h1>
             <p className="mb-5 text-left text-base text-gray-800 md:text-xl">
-              You might have the wrong address, or the page may have moved.
-              Please use the buttons below to go back to the homepage, or
-              contact us for support.
+              You might have the wrong address, or the page may have moved. Please use the buttons
+              below to go back to the homepage, or contact us for support.
             </p>
             <div className="flex">
               <Link href="/" legacyBehavior>

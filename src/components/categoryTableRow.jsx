@@ -1,8 +1,8 @@
-import { useState } from 'react'
-import { useSession } from 'next-auth/react'
-import { useToggle } from 'react-use'
-import { useToast, toastTypes } from '@/lib/hooks'
-import { useStore } from '@/lib/store'
+import { useState } from "react"
+import { useSession } from "next-auth/react"
+import { useToggle } from "react-use"
+import { useToast, toastTypes } from "@/lib/hooks"
+import { useStore } from "@/lib/store"
 
 export default function CategoryTableRow({ item }) {
   const { data: session } = useSession()
@@ -20,10 +20,10 @@ export default function CategoryTableRow({ item }) {
   const deleteCategory = async () => {
     try {
       setLoading(true)
-      const delRes = await fetch('/api/categories', {
-        method: 'DELETE',
+      const delRes = await fetch("/api/categories", {
+        method: "DELETE",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           id,
@@ -45,13 +45,13 @@ export default function CategoryTableRow({ item }) {
   const saveEdit = async () => {
     try {
       if (categoryName.length > 190 || categoryDesc.length > 190) {
-        toast(toastTypes.WARNING, 'Category or name too long')
+        toast(toastTypes.WARNING, "Category or name too long")
         return
       }
-      const editRes = await fetch('/api/categories', {
-        method: 'PUT',
+      const editRes = await fetch("/api/categories", {
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           id,
@@ -76,13 +76,13 @@ export default function CategoryTableRow({ item }) {
 
   return (
     <tr className="bg-white even:bg-gray-50 hover:bg-slate-100">
-      <th className={`px-6 ${editMode ? 'py-2' : 'py-4'}`}>
+      <th className={`px-6 ${editMode ? "py-2" : "py-4"}`}>
         <span className="font-normal">{id}</span>
       </th>
       <th className="px-6 py-4">
         <span className="font-normal">{count ?? 0}</span>
       </th>
-      <td className={`px-6 ${editMode ? 'py-2' : 'py-4'}`}>
+      <td className={`px-6 ${editMode ? "py-2" : "py-4"}`}>
         {!editMode ? (
           <span>{categoryName}</span>
         ) : (
@@ -95,7 +95,7 @@ export default function CategoryTableRow({ item }) {
           />
         )}
       </td>
-      <td className={`px-6 ${editMode ? 'py-2' : 'py-4'}`}>
+      <td className={`px-6 ${editMode ? "py-2" : "py-4"}`}>
         {!editMode ? (
           <span>{categoryDesc}</span>
         ) : (
@@ -104,18 +104,18 @@ export default function CategoryTableRow({ item }) {
             value={categoryDesc}
             type="text"
             onChange={(e) => setCategoryDesc(e.target.value)}
-            className="block w-full rounded-lg border-2 border-slate-200 bg-slate-50 py-1 px-2 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500 focus:ring-slate-500"
+            className="block w-full rounded-lg border-2 border-slate-200 bg-slate-50 px-2 py-1 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500 focus:ring-slate-500"
           />
         )}
       </td>
-      <th className={`px-6 ${editMode ? 'py-2' : 'py-4'}`}>
+      <th className={`px-6 ${editMode ? "py-2" : "py-4"}`}>
         <span className="font-normal" suppressHydrationWarning>
-          {createdAt ? new Date(createdAt).toLocaleString(settings.locale) : ''}
+          {createdAt ? new Date(createdAt).toLocaleString(settings.locale) : ""}
         </span>
       </th>
       <td
         className={`flex items-center justify-center space-x-2 ${
-          editMode ? 'px-0' : 'px-6'
+          editMode ? "px-0" : "px-6"
         } py-4 text-right`}
       >
         {!editMode ? (

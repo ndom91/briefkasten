@@ -1,9 +1,9 @@
-import { useLayoutEffect } from 'react'
-import { produce } from 'immer'
-import { create } from 'zustand'
-import createContext from 'zustand/context'
-import { mountStoreDevtool } from 'simple-zustand-devtools'
-import { viewTypes } from '@/lib/constants'
+import { useLayoutEffect } from "react"
+import { produce } from "immer"
+import { create } from "zustand"
+import createContext from "zustand/context"
+import { mountStoreDevtool } from "simple-zustand-devtools"
+import { viewTypes } from "@/lib/constants"
 
 let store
 let devtoolStoreMounted = false
@@ -12,12 +12,12 @@ const initialState = {
   bookmarks: [],
   categories: [],
   tags: [],
-  categoryFilter: '',
-  tagFilter: '',
-  searchText: '',
+  categoryFilter: "",
+  tagFilter: "",
+  searchText: "",
   editBookmark: {},
   settings: {
-    locale: 'en-US',
+    locale: "en-US",
     activeView: viewTypes.CARD.name,
     defaultView: viewTypes.CARD.name,
   },
@@ -40,8 +40,7 @@ export const initializeStore = (preloadedState = {}) => {
 
     // SIDEBAR FILTER
     setCategoryFilter: (id) => set(() => ({ categoryFilter: id })),
-    clearCategoryFilter: () =>
-      set(() => ({ categoryFilter: initialState.categoryFilter })),
+    clearCategoryFilter: () => set(() => ({ categoryFilter: initialState.categoryFilter })),
     setTagFilter: (id) => set(() => ({ tagFilter: id })),
     clearTagFilter: () => set(() => ({ tagFilter: initialState.tagFilter })),
 
@@ -56,18 +55,14 @@ export const initializeStore = (preloadedState = {}) => {
     removeBookmark: (payload) =>
       set(
         produce((draft) => {
-          const bookmarkIndex = draft.bookmarks.findIndex(
-            (b) => b.id === payload,
-          )
+          const bookmarkIndex = draft.bookmarks.findIndex((b) => b.id === payload)
           draft.bookmarks.splice(bookmarkIndex, 1)
         }),
       ),
     updateBookmark: (payload) =>
       set(
         produce((draft) => {
-          const updateIndex = draft.bookmarks.findIndex(
-            (bm) => bm.id === payload.id,
-          )
+          const updateIndex = draft.bookmarks.findIndex((bm) => bm.id === payload.id)
           draft.bookmarks[updateIndex] = {
             ...draft.bookmarks[updateIndex],
             ...payload,
@@ -123,9 +118,7 @@ export const initializeStore = (preloadedState = {}) => {
     removeCategory: (payload) =>
       set(
         produce((draft) => {
-          const categoryIndex = draft.categories.findIndex(
-            (c) => c.id === payload,
-          )
+          const categoryIndex = draft.categories.findIndex((c) => c.id === payload)
           draft.categories.splice(categoryIndex, 1)
         }),
       ),
@@ -153,12 +146,12 @@ export const initializeStore = (preloadedState = {}) => {
 
 export function useCreateStore(initialState) {
   // For SSR & SSG, always use a new store.
-  if (typeof window === 'undefined') {
+  if (typeof window === "undefined") {
     return () => initializeStore(initialState)
   }
 
-  if (process.env.NODE_ENV === 'development' && store && !devtoolStoreMounted) {
-    mountStoreDevtool('Briefkasten_Store', store)
+  if (process.env.NODE_ENV === "development" && store && !devtoolStoreMounted) {
+    mountStoreDevtool("Briefkasten_Store", store)
     devtoolStoreMounted = true
   }
 

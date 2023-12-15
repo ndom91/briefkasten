@@ -1,11 +1,11 @@
-import { useState } from 'react'
-import { useRouter } from 'next/router'
-import { signIn, getProviders, getCsrfToken } from 'next-auth/react'
+import { useState } from "react"
+import { useRouter } from "next/router"
+import { signIn, getProviders, getCsrfToken } from "next-auth/react"
 
-import Meta from '@/components/meta'
+import Meta from "@/components/meta"
 
 const ProviderIcons = ({ provider }) => {
-  if (provider === 'github') {
+  if (provider === "github") {
     return (
       <svg
         width="15"
@@ -23,40 +23,27 @@ const ProviderIcons = ({ provider }) => {
         ></path>
       </svg>
     )
-  } else if (provider === 'google') {
+  } else if (provider === "google") {
     return (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-7 w-7"
-        viewBox="0 0 24 24"
-      >
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" viewBox="0 0 24 24">
         <path
           fill="currentColor"
           d="m19.76 10.77l-.09-.35h-7.44v3.16h4.45a4.45 4.45 0 0 1-4.36 3.34a5.21 5.21 0 0 1-3.5-1.39A5 5 0 0 1 7.33 12a5.14 5.14 0 0 1 1.46-3.53a5 5 0 0 1 3.48-1.37a4.55 4.55 0 0 1 3 1.16L17.47 6a7.88 7.88 0 0 0-5.27-2a8.14 8.14 0 0 0-5.77 2.35a8.15 8.15 0 0 0-.09 11.21a8.37 8.37 0 0 0 6 2.44a7.45 7.45 0 0 0 5.41-2.27a8 8 0 0 0 2.08-5.54a9.88 9.88 0 0 0-.07-1.42Z"
         ></path>
       </svg>
     )
-  } else if (provider === 'keycloak') {
+  } else if (provider === "keycloak") {
     return (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-7 w-7"
-        viewBox="0 0 52 52"
-      >
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" viewBox="0 0 52 52">
         <path
           fill="currentColor"
           d="M36 16h-2v-4c0-5.52-4.48-10-10-10s-10 4.48-10 10v4h-2c-2.21 0-4 1.79-4 4v20c0 2.21 1.79 4 4 4h24c2.21 0 4-1.79 4-4v-20c0-2.21-1.79-4-4-4zm-12 18c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm6.2-18h-12.4v-4c0-3.42 2.78-6.2 6.2-6.2 3.42 0 6.2 2.78 6.2 6.2v4z"
         ></path>
       </svg>
     )
-  } else if (provider === 'authentik') {
+  } else if (provider === "authentik") {
     return (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 35 35"
-        width="35"
-        height="35"
-      >
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35 35" width="35" height="35">
         <path
           class="cls-1"
           x="546.66"
@@ -91,10 +78,10 @@ const ProviderIcons = ({ provider }) => {
 }
 
 const Signin = ({ providers, csrfToken, autoLoginFirstProvider }) => {
-  const [email, setEmail] = useState('')
+  const [email, setEmail] = useState("")
   const { query } = useRouter()
   const containsOauthProviders = Object.keys(providers).some((p) =>
-    ['google', 'github', 'keycloak', 'authentik'].includes(p),
+    ["google", "github", "keycloak", "authentik"].includes(p),
   )
 
   if (autoLoginFirstProvider && !query.error) {
@@ -121,59 +108,39 @@ const Signin = ({ providers, csrfToken, autoLoginFirstProvider }) => {
               >
                 <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
               </svg>
-              <span className="text-4xl font-medium text-white">
-                Briefkasten
-              </span>
+              <span className="text-4xl font-medium text-white">Briefkasten</span>
             </h2>
             <div className="m-8 w-full rounded bg-white p-6 shadow-lg">
               {providers && containsOauthProviders && (
-                <div
-                  className={`space-y-2 ${
-                    Object.keys(providers).includes('email') && 'pb-6'
-                  }`}
-                >
+                <div className={`space-y-2 ${Object.keys(providers).includes("email") && "pb-6"}`}>
                   {Object.values(providers).map((p) =>
-                    p.type === 'oauth' ? (
+                    p.type === "oauth" ? (
                       <div key={p.name} style={{ marginBottom: 0 }}>
                         <button
-                          onClick={() => signIn(p.id, { callbackUrl: '/' })}
+                          onClick={() => signIn(p.id, { callbackUrl: "/" })}
                           className={`flex h-10 w-full items-center space-x-2 rounded ${
-                            p.id === 'google' &&
-                            'bg-blue-700 hover:bg-blue-800 focus:ring-blue-700'
+                            p.id === "google" && "bg-blue-700 hover:bg-blue-800 focus:ring-blue-700"
+                          } ${p.id === "github" && "bg-gray-600 hover:bg-gray-800 "} ${
+                            p.id === "keycloak" && "bg-gray-600 hover:bg-gray-800 "
                           } ${
-                            p.id === 'github' &&
-                            'bg-gray-600 hover:bg-gray-800 '
-                          } ${
-                            p.id === 'keycloak' &&
-                            'bg-gray-600 hover:bg-gray-800 '
-                          } ${
-                            p.id === 'authentik' &&
-                            'bg-orange-600 hover:bg-orange-800'
+                            p.id === "authentik" && "bg-orange-600 hover:bg-orange-800"
                           } justify-center px-4 text-base font-light text-white transition focus:outline-none focus:ring-2 focus:ring-slate-800 focus:ring-offset-2`}
                         >
                           <ProviderIcons provider={p.id} />
-                          <span className="h-[22px]">
-                            Continue with {p.name}
-                          </span>
+                          <span className="h-[22px]">Continue with {p.name}</span>
                         </button>
                       </div>
                     ) : null,
                   )}
                 </div>
               )}
-              {Object.keys(providers).includes('email') ? (
+              {Object.keys(providers).includes("email") ? (
                 <form
-                  className={`${
-                    containsOauthProviders && 'border-t border-gray-200 pt-6'
-                  }`}
+                  className={`${containsOauthProviders && "border-t border-gray-200 pt-6"}`}
                   method="post"
                   action="/api/auth/signin/email"
                 >
-                  <input
-                    name="csrfToken"
-                    type="hidden"
-                    defaultValue={csrfToken}
-                  />
+                  <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
 
                   <label className="block">
                     <span className="mb-1 block text-left text-xs font-medium text-gray-700">
@@ -194,7 +161,7 @@ const Signin = ({ providers, csrfToken, autoLoginFirstProvider }) => {
                   <input
                     type="submit"
                     disabled={false}
-                    onClick={() => signIn('email', { callbackUrl: '/', email })}
+                    onClick={() => signIn("email", { callbackUrl: "/", email })}
                     className="mt-4 inline-flex w-full justify-center rounded-md border border-transparent bg-slate-800 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:cursor-pointer hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 disabled:hover:cursor-not-allowed"
                     place="Continue with Magic Link Email"
                   />

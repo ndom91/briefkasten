@@ -1,14 +1,11 @@
-import { useEffect, useRef, useState } from 'react'
-import { useKeyPress, useLocalStorage } from 'react-use'
-import { viewTypes } from '@/lib/constants'
-import { useStore } from '@/lib/store'
-import Breadcrumbs from '@/components/breadcrumbs'
+import { useEffect, useRef, useState } from "react"
+import { useKeyPress, useLocalStorage } from "react-use"
+import { viewTypes } from "@/lib/constants"
+import { useStore } from "@/lib/store"
+import Breadcrumbs from "@/components/breadcrumbs"
 
 export default function DashboardHeader() {
-  const [savedView, setSavedView] = useLocalStorage(
-    'dashboard.activeView',
-    viewTypes.CARD.name
-  )
+  const [savedView, setSavedView] = useLocalStorage("dashboard.activeView", viewTypes.CARD.name)
 
   const setUserSetting = useStore((state) => state.setUserSetting)
   useEffect(() => {
@@ -22,8 +19,8 @@ export default function DashboardHeader() {
   const searchRef = useRef()
 
   useKeyPress((e) => {
-    if (e.type === 'keydown') {
-      if (e.ctrlKey && e.key === 'k') {
+    if (e.type === "keydown") {
+      if (e.ctrlKey && e.key === "k") {
         e.preventDefault()
         searchRef?.current?.focus()
       }
@@ -70,12 +67,12 @@ export default function DashboardHeader() {
           onFocus={() => setSearchFocused(true)}
           onBlur={() => setSearchFocused(false)}
           onChange={(e) => setSearchText(e.target.value)}
-          className="w-full rounded-md border-2 border-slate-200 py-1 px-2 pl-8 pr-8 text-base text-slate-600 outline-none placeholder:text-slate-200 focus:border-slate-500 focus:ring-2 focus:ring-white"
+          className="w-full rounded-md border-2 border-slate-200 px-2 py-1 pl-8 pr-8 text-base text-slate-600 outline-none placeholder:text-slate-200 focus:border-slate-500 focus:ring-2 focus:ring-white"
         />
         {searchText.length ? (
           <svg
             className="absolute right-4 top-1.5 h-6 w-6 text-rose-300 hover:cursor-pointer md:right-6"
-            onClick={() => setSearchText('')}
+            onClick={() => setSearchText("")}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -96,8 +93,7 @@ export default function DashboardHeader() {
           aria-label="Card View"
           onClick={() => updateActiveView(viewTypes.CARD.name)}
           className={`inline-flex w-auto cursor-pointer select-none appearance-none items-center justify-center rounded-l-md border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition hover:border-gray-300 hover:bg-gray-100 focus:z-10 focus:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 ${
-            activeView === viewTypes.CARD.name &&
-            '!bg-slate-800 !text-white hover:!bg-slate-900'
+            activeView === viewTypes.CARD.name && "!bg-slate-800 !text-white hover:!bg-slate-900"
           }`}
         >
           <svg
@@ -111,8 +107,7 @@ export default function DashboardHeader() {
           aria-label="List View"
           onClick={() => updateActiveView(viewTypes.LIST.name)}
           className={`inline-flex w-auto cursor-pointer select-none appearance-none items-center justify-center rounded-r-md border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition hover:border-gray-300 hover:bg-gray-100 focus:z-10 focus:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 ${
-            activeView === viewTypes.LIST.name &&
-            '!bg-slate-800 !text-white hover:!bg-slate-900'
+            activeView === viewTypes.LIST.name && "!bg-slate-800 !text-white hover:!bg-slate-900"
           } `}
         >
           <svg

@@ -1,10 +1,6 @@
-import { useToastDispatchContext } from '@/lib/toastContext'
-import { toastTypes } from '@/lib/constants'
-import {
-  toastSuccess,
-  toastError,
-  toastWarning,
-} from '@/components/toastElements'
+import { useToastDispatchContext } from "@/lib/toastContext"
+import { toastTypes } from "@/lib/constants"
+import { toastSuccess, toastError, toastWarning } from "@/components/toastElements"
 
 export default function Toast({ type, title, body, id }) {
   const dispatch = useToastDispatchContext()

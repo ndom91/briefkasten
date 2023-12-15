@@ -1,19 +1,16 @@
-import { useMemo } from 'react'
-import { perf, range } from '@/lib/helpers'
-import { useToastDispatchContext } from '@/lib/toastContext'
-export { toastTypes } from '@/lib/constants'
+import { useMemo } from "react"
+import { perf, range } from "@/lib/helpers"
+import { useToastDispatchContext } from "@/lib/toastContext"
+export { toastTypes } from "@/lib/constants"
 
 export const useToast = (delay) => {
   const dispatch = useToastDispatchContext()
 
-  function toast(type, title, body = '') {
-    const id = (perf().now().toString(36) + Math.random().toString(36)).replace(
-      /\./g,
-      ''
-    )
+  function toast(type, title, body = "") {
+    const id = (perf().now().toString(36) + Math.random().toString(36)).replace(/\./g, "")
 
     dispatch({
-      type: 'ADD_TOAST',
+      type: "ADD_TOAST",
       toast: {
         type,
         title,
@@ -23,21 +20,16 @@ export const useToast = (delay) => {
     })
 
     setTimeout(() => {
-      dispatch({ type: 'DELETE_TOAST', id })
+      dispatch({ type: "DELETE_TOAST", id })
     }, delay)
   }
 
   return toast
 }
 
-export const DOTS = 'DOTS'
+export const DOTS = "DOTS"
 
-export const usePagination = ({
-  totalCount,
-  pageSize,
-  siblingCount = 1,
-  currentPage,
-}) => {
+export const usePagination = ({ totalCount, pageSize, siblingCount = 1, currentPage }) => {
   const paginationRange = useMemo(() => {
     const totalPageCount = Math.ceil(totalCount / pageSize)
 
@@ -57,10 +49,7 @@ export const usePagination = ({
     	Calculate left and right sibling index and make sure they are within range 1 and totalPageCount
     */
     const leftSiblingIndex = Math.max(currentPage - siblingCount, 1)
-    const rightSiblingIndex = Math.min(
-      currentPage + siblingCount,
-      totalPageCount
-    )
+    const rightSiblingIndex = Math.min(currentPage + siblingCount, totalPageCount)
 
     /*
       We do not show dots just when there is just one page number to be inserted between the extremes of sibling and the page limits i.e 1 and totalPageCount. Hence we are using leftSiblingIndex > 2 and rightSiblingIndex < totalPageCount - 2
@@ -86,10 +75,7 @@ export const usePagination = ({
     */
     if (shouldShowLeftDots && !shouldShowRightDots) {
       let rightItemCount = 3 + 2 * siblingCount
-      let rightRange = range(
-        totalPageCount - rightItemCount + 1,
-        totalPageCount
-      )
+      let rightRange = range(totalPageCount - rightItemCount + 1, totalPageCount)
       return [firstPageIndex, DOTS, ...rightRange]
     }
 

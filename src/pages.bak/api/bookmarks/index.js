@@ -1,13 +1,13 @@
-import prisma from '@/lib/prisma'
-import { supabaseClient } from '@/lib/supabaseClient'
-import { unstable_getServerSession } from 'next-auth/next'
-import { authOptions } from '../auth/[...nextauth]'
-import { isAbsoluteUrl, serverTiming } from '@/lib/helpers'
-import { withSentry } from '@sentry/nextjs'
+import prisma from "@/lib/prisma"
+import { supabaseClient } from "@/lib/supabaseClient"
+import { unstable_getServerSession } from "next-auth/next"
+import { authOptions } from "../auth/[...nextauth]"
+import { isAbsoluteUrl, serverTiming } from "@/lib/helpers"
+import { withSentry } from "@sentry/nextjs"
 
-const metascraper = require('metascraper')([
-  require('metascraper-description')(),
-  require('metascraper-title')(),
+const metascraper = require("metascraper")([
+  require("metascraper-description")(),
+  require("metascraper-title")(),
 ])
 
 const supabase = supabaseClient()
@@ -17,25 +17,17 @@ const handler = async (req, res) => {
   const { method, headers, query, body } = req
 
   switch (method) {
-    case 'PUT': {
+    case "PUT": {
       if (session) {
         serverTiming.start()
 
-        const {
-          userId,
-          url,
-          title = '',
-          category = '',
-          desc = '',
-          tags = [],
-          id,
-        } = body
+        const { userId, url, title = "", category = "", desc = "", tags = [], id } = body
 
         if (!url || !isAbsoluteUrl(url)) {
-          return res.status(400).json({ message: 'URL Missing or Invalid' })
+          return res.status(400).json({ message: "URL Missing or Invalid" })
         }
 
-        serverTiming.measure('bookmarkUpdate')
+        serverTiming.measure("bookmarkUpdate")
         const updateBookmarkRes = await prisma.bookmark.update({
           data: {
             url,
@@ -57,12 +49,12 @@ const handler = async (req, res) => {
           },
           where: { id },
         })
-        serverTiming.measure('bookmarkUpdate')
+        serverTiming.measure("bookmarkUpdate")
 
         // Next, if there are tags, insert them sequentially
         let updateTagRes
         if (tags && tags.filter(Boolean).length) {
-          serverTiming.measure('tagMapUpdate')
+          serverTiming.measure("tagMapUpdate")
           updateTagRes = await Promise.all(
             tags.map(async (tag) => {
               return await prisma.tag.upsert({
@@ -104,57 +96,48 @@ const handler = async (req, res) => {
               })
             }),
           )
-          serverTiming.measure('tagMapUpdate')
+          serverTiming.measure("tagMapUpdate")
         }
 
         // Generate Server-Timing headers
-        res.setHeader('Server-Timing', serverTiming.setHeader())
-        res.setHeader('Access-Control-Allow-Origin', '*')
+        res.setHeader("Server-Timing", serverTiming.setHeader())
+        res.setHeader("Access-Control-Allow-Origin", "*")
 
         // Return response to client
-        return res
-          .status(200)
-          .json({ data: { ...updateBookmarkRes, tags: updateTagRes ?? [] } })
+        return res.status(200).json({ data: { ...updateBookmarkRes, tags: updateTagRes ?? [] } })
       } else {
-        console.error('ERR - Unauthorized attempt to PUT /api/bookmarks')
-        return res.status(403).end('Unauthorized')
+        console.error("ERR - Unauthorized attempt to PUT /api/bookmarks")
+        return res.status(403).end("Unauthorized")
       }
     }
-    case 'POST': {
+    case "POST": {
       serverTiming.start()
 
-      const {
-        userId,
-        url,
-        title = '',
-        category = '',
-        desc = '',
-        tags = [],
-      } = body
+      const { userId, url, title = "", category = "", desc = "", tags = [] } = body
 
       if (!url || !isAbsoluteUrl(url)) {
-        return res.status(400).json({ message: 'URL Missing or Invalid' })
+        return res.status(400).json({ message: "URL Missing or Invalid" })
       }
       if (!userId) {
-        console.error('ERR - Unauthorized attempt to POST /api/bookmarks')
-        return res.status(403).end('Unauthorized')
+        console.error("ERR - Unauthorized attempt to POST /api/bookmarks")
+        return res.status(403).end("Unauthorized")
       }
 
       let metadata = {
-        title: '',
-        image: '',
-        description: '',
+        title: "",
+        image: "",
+        description: "",
       }
 
       // First fetch any additional metadata about the URL
-      serverTiming.measure('metadata')
+      serverTiming.measure("metadata")
       const resp = await fetch(url)
       metadata = await metascraper({ html: await resp.text(), url: url })
-      serverTiming.measure('metadata')
+      serverTiming.measure("metadata")
 
       // Begin inserting entry into db
       // First, the bookmark itself since we need its ID for later inserts
-      serverTiming.measure('bookmarkUpsert')
+      serverTiming.measure("bookmarkUpsert")
       const upsertBookmarkRes = await prisma.bookmark.upsert({
         include: {
           category: true,
@@ -200,12 +183,12 @@ const handler = async (req, res) => {
         },
         where: { url_userId: { url: url, userId: userId } },
       })
-      serverTiming.measure('bookmarkUpsert')
+      serverTiming.measure("bookmarkUpsert")
 
       let upsertTagRes
       // Next, if there are tags, insert them sequentially
       if (tags && tags.filter(Boolean).length) {
-        serverTiming.measure('tagMapUpsert')
+        serverTiming.measure("tagMapUpsert")
         upsertTagRes = await Promise.all(
           tags.map(async (tag) => {
             return await prisma.tag.upsert({
@@ -247,49 +230,43 @@ const handler = async (req, res) => {
             })
           }),
         )
-        serverTiming.measure('tagMapUpsert')
+        serverTiming.measure("tagMapUpsert")
       }
 
       // Add Screenshot generation to queue if no image found
       // Referrer/Host header on Vercel/Selfhosted
-      const referrer = req.headers['x-forwarded-host'] ?? req.headers.referer
+      const referrer = req.headers["x-forwarded-host"] ?? req.headers.referer
 
-      if (
-        !metadata.image &&
-        referrer?.includes('briefkastenhq.com') &&
-        process.env.INNGEST_URL
-      ) {
+      if (!metadata.image && referrer?.includes("briefkastenhq.com") && process.env.INNGEST_URL) {
         await fetch(process.env.INNGEST_URL, {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({ url, userId }),
         })
       }
 
       // Generate Server-Timing headers
-      res.setHeader('Server-Timing', serverTiming.setHeader())
-      res.setHeader('Access-Control-Allow-Origin', '*')
+      res.setHeader("Server-Timing", serverTiming.setHeader())
+      res.setHeader("Access-Control-Allow-Origin", "*")
 
       // Return response to client
-      return res
-        .status(200)
-        .json({ data: { ...upsertBookmarkRes, tags: upsertTagRes ?? [] } })
+      return res.status(200).json({ data: { ...upsertBookmarkRes, tags: upsertTagRes ?? [] } })
     }
-    case 'GET': {
+    case "GET": {
       serverTiming.start()
       const { q, limit = 10 } = query
       const { authorization: userId } = headers
 
       if (!userId) {
-        return res.status(400).json({ message: 'Missing required field(s)' })
+        return res.status(400).json({ message: "Missing required field(s)" })
       }
 
       try {
         const bookmarksResults = await prisma.bookmark.findMany({
           take: parseInt(limit),
-          distinct: ['url'],
+          distinct: ["url"],
           select: {
             id: true,
             title: true,
@@ -305,37 +282,37 @@ const handler = async (req, res) => {
               {
                 desc: {
                   contains: q,
-                  mode: 'insensitive',
+                  mode: "insensitive",
                 },
               },
               {
                 url: {
                   contains: q,
-                  mode: 'insensitive',
+                  mode: "insensitive",
                 },
               },
               {
                 title: {
                   contains: q,
-                  mode: 'insensitive',
+                  mode: "insensitive",
                 },
               },
             ],
           },
         })
-        res.setHeader('Server-Timing', serverTiming.setHeader())
-        res.setHeader('Access-Control-Allow-Origin', '*')
+        res.setHeader("Server-Timing", serverTiming.setHeader())
+        res.setHeader("Access-Control-Allow-Origin", "*")
         return res.status(200).json({ results: bookmarksResults })
       } catch (error) {
-        console.error('ERR', error)
+        console.error("ERR", error)
         return res.status(500).json({ message: error })
       }
     }
-    case 'DELETE': {
+    case "DELETE": {
       if (session) {
         const { id, userId, imageFileName } = body
         if (!id || !userId) {
-          return res.status(400).json({ message: 'Missing required field(s)' })
+          return res.status(400).json({ message: "Missing required field(s)" })
         }
         try {
           await prisma.bookmark.delete({
@@ -343,26 +320,24 @@ const handler = async (req, res) => {
           })
 
           if (process.env.SUPABASE_URL) {
-            const { error } = await supabase.storage
-              .from('bookmark-imgs')
-              .remove([imageFileName])
+            const { error } = await supabase.storage.from("bookmark-imgs").remove([imageFileName])
 
             if (error) {
               throw error
             }
           }
         } catch (error) {
-          console.error('ERR', error)
+          console.error("ERR", error)
           return res.status(500).json({ message: error })
         }
-        return res.status(200).json({ message: 'Deleted' })
+        return res.status(200).json({ message: "Deleted" })
       } else {
-        console.error('ERR - Unauthorized attempt to DELETE /api/bookmarks')
-        return res.status(403).end('Unauthorized')
+        console.error("ERR - Unauthorized attempt to DELETE /api/bookmarks")
+        return res.status(403).end("Unauthorized")
       }
     }
     default: {
-      res.setHeader('Allow', ['GET', 'DELETE', 'POST', 'PUT'])
+      res.setHeader("Allow", ["GET", "DELETE", "POST", "PUT"])
       return res.status(405).end(`Method ${method} Not Allowed`)
     }
   }

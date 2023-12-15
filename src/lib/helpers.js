@@ -1,7 +1,7 @@
-export const prepareBase64DataUrl = (base64) => base64.replace(/^.+,/, '')
+export const prepareBase64DataUrl = (base64) => base64.replace(/^.+,/, "")
 
 export const asyncFileReader = async (blob) => {
-  if (typeof window !== 'undefined') {
+  if (typeof window !== "undefined") {
     return new Promise((resolve, reject) => {
       try {
         const reader = new FileReader()
@@ -15,7 +15,7 @@ export const asyncFileReader = async (blob) => {
     })
   } else {
     let buffer = Buffer.from(await blob.arrayBuffer())
-    return `data:image/png;bas64,${buffer.toString('base64')}`
+    return `data:image/png;bas64,${buffer.toString("base64")}`
   }
 }
 
@@ -49,14 +49,14 @@ export const serverTiming = {
     }
   },
   setHeader: () => {
-    serverTiming.measure('total')
+    serverTiming.measure("total")
     return Object.entries(serverTiming.timings)
       .map(([name, measurements]) => {
-        return `${name};${
-          measurements.desc ? `desc="${measurements.desc}";` : ''
-        }dur=${measurements.dur}`
+        return `${name};${measurements.desc ? `desc="${measurements.desc}";` : ""}dur=${
+          measurements.dur
+        }`
       })
-      .join(',')
+      .join(",")
   },
 }
 
@@ -71,14 +71,14 @@ export const serverTiming = {
 export function html(params) {
   const { url, theme } = params
 
-  const brandColor = theme.brandColor || '#346df1'
+  const brandColor = theme.brandColor || "#346df1"
   const color = {
-    background: '#f9f9f9',
-    text: '#444',
-    mainBackground: '#fff',
-    buttonBackground: '#1e293b',
+    background: "#f9f9f9",
+    text: "#444",
+    mainBackground: "#fff",
+    buttonBackground: "#1e293b",
     buttonBorder: brandColor,
-    buttonText: theme.buttonText || '#fff',
+    buttonText: theme.buttonText || "#fff",
   }
 
   return `

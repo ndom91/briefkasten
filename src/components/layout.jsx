@@ -1,7 +1,7 @@
-import Meta from '@/components/meta'
-import dynamic from 'next/dynamic'
+import Meta from "@/components/meta"
+import dynamic from "next/dynamic"
 
-const Sidebar = dynamic(() => import('@/components/sidebar'), {
+const Sidebar = dynamic(() => import("@/components/sidebar"), {
   ssr: false,
 })
 
@@ -13,7 +13,7 @@ export default function Layout({ children, session }) {
         <Sidebar session={session} />
         <main className="flex-grow basis-0">{children}</main>
       </section>
-      <div className="pattern fixed top-0 left-0 -z-[1] h-full w-full" />
+      <div className="pattern fixed left-0 top-0 -z-[1] h-full w-full" />
     </>
   )
 }

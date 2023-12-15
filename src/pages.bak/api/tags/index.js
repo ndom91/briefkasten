@@ -1,7 +1,7 @@
-import prisma from '@/lib/prisma'
-import { unstable_getServerSession } from 'next-auth/next'
-import { authOptions } from '../auth/[...nextauth]'
-import { withSentry } from '@sentry/nextjs'
+import prisma from "@/lib/prisma"
+import { unstable_getServerSession } from "next-auth/next"
+import { authOptions } from "../auth/[...nextauth]"
+import { withSentry } from "@sentry/nextjs"
 
 export default withSentry(async function handler(req, res) {
   const session = await unstable_getServerSession(req, res, authOptions)
@@ -9,10 +9,10 @@ export default withSentry(async function handler(req, res) {
 
   if (session) {
     switch (method) {
-      case 'POST': {
+      case "POST": {
         const { userId, name, emoji } = body
         if (!name || !userId) {
-          return res.status(400).json({ message: 'Missing required field(s)' })
+          return res.status(400).json({ message: "Missing required field(s)" })
         }
 
         try {
@@ -26,14 +26,14 @@ export default withSentry(async function handler(req, res) {
 
           return res.status(200).json({ data: createResult })
         } catch (error) {
-          console.error('ERR', error)
+          console.error("ERR", error)
           return res.status(500).json({ message: error })
         }
       }
-      case 'PUT': {
+      case "PUT": {
         const { id, userId, name, emoji } = body
         if (!id || !userId) {
-          return res.status(400).json({ message: 'Missing required field(s)' })
+          return res.status(400).json({ message: "Missing required field(s)" })
         }
 
         try {
@@ -48,15 +48,15 @@ export default withSentry(async function handler(req, res) {
           })
           return res.status(200).json({ data: updateResult })
         } catch (error) {
-          console.error('ERR', error)
+          console.error("ERR", error)
           return res.status(500).json({ message: error })
         }
       }
-      case 'GET': {
+      case "GET": {
         const { authorization: userId } = headers
 
         if (!userId) {
-          return res.status(400).json({ message: 'Missing required field(s)' })
+          return res.status(400).json({ message: "Missing required field(s)" })
         }
 
         try {
@@ -66,18 +66,18 @@ export default withSentry(async function handler(req, res) {
             },
           })
 
-          res.setHeader('Access-Control-Allow-Origin', '*')
+          res.setHeader("Access-Control-Allow-Origin", "*")
           return res.status(200).json({ tags })
         } catch (error) {
-          console.error('ERR', error)
+          console.error("ERR", error)
           return res.status(500).json({ message: error })
         }
       }
-      case 'DELETE': {
+      case "DELETE": {
         const { id, userId } = body
 
         if (!id || !userId) {
-          return res.status(400).json({ message: 'Missing required field(s)' })
+          return res.status(400).json({ message: "Missing required field(s)" })
         }
         try {
           await prisma.tag.delete({
@@ -87,18 +87,18 @@ export default withSentry(async function handler(req, res) {
             where: { tagId: id },
           })
         } catch (error) {
-          console.error('ERR', error)
+          console.error("ERR", error)
           return res.status(500).json({ message: error })
         }
-        return res.status(200).json({ message: 'Deleted' })
+        return res.status(200).json({ message: "Deleted" })
       }
       default: {
-        res.setHeader('Allow', ['GET', 'DELETE', 'POST', 'PUT'])
+        res.setHeader("Allow", ["GET", "DELETE", "POST", "PUT"])
         return res.status(405).end(`Method ${method} Not Allowed`)
       }
     }
   } else {
-    console.error('ERR - Unauthorized attempt at /api/tags')
-    return res.status(403).end('Unauthorized')
+    console.error("ERR - Unauthorized attempt at /api/tags")
+    return res.status(403).end("Unauthorized")
   }
 })

@@ -1,17 +1,17 @@
-import { createContext, useReducer, useContext } from 'react'
+import { createContext, useReducer, useContext } from "react"
 
 const ToastStateContext = createContext({ toasts: [] })
 const ToastDispatchContext = createContext(null)
 
 function ToastReducer(state, action) {
   switch (action.type) {
-    case 'ADD_TOAST': {
+    case "ADD_TOAST": {
       return {
         ...state,
         toasts: [...state.toasts, action.toast],
       }
     }
-    case 'DELETE_TOAST': {
+    case "DELETE_TOAST": {
       const updatedToasts = state.toasts.filter((e) => e.id != action.id)
       return {
         ...state,
@@ -19,7 +19,7 @@ function ToastReducer(state, action) {
       }
     }
     default: {
-      throw new Error('unhandled action')
+      throw new Error("unhandled action")
     }
   }
 }
@@ -31,9 +31,7 @@ export function ToastProvider({ children }) {
 
   return (
     <ToastStateContext.Provider value={state}>
-      <ToastDispatchContext.Provider value={dispatch}>
-        {children}
-      </ToastDispatchContext.Provider>
+      <ToastDispatchContext.Provider value={dispatch}>{children}</ToastDispatchContext.Provider>
     </ToastStateContext.Provider>
   )
 }

@@ -23,18 +23,12 @@ export const toastSuccess = ({ title, body, dispatch, id }) => (
       </svg>
     </div>
     <div className="flex flex-col items-start justify-start">
-      <div className="truncate text-ellipsis break-all pl-4 text-base font-normal">
-        {title}
-      </div>
-      {body && (
-        <div className="block max-w-[240px] truncate pl-4 text-xs font-normal">
-          {body}
-        </div>
-      )}
+      <div className="truncate text-ellipsis break-all pl-4 text-base font-normal">{title}</div>
+      {body && <div className="block max-w-[240px] truncate pl-4 text-xs font-normal">{body}</div>}
     </div>
     <div
-      onClick={() => dispatch({ type: 'DELETE_TOAST', id })}
-      className="absolute top-2 right-2 opacity-0 transition hover:cursor-pointer group-hover:opacity-100"
+      onClick={() => dispatch({ type: "DELETE_TOAST", id })}
+      className="absolute right-2 top-2 opacity-0 transition hover:cursor-pointer group-hover:opacity-100"
     >
       <svg
         className="h-6 w-6 text-slate-300"
@@ -80,15 +74,11 @@ export const toastError = ({ title, body, dispatch, id }) => (
     </div>
     <div className="flex flex-col items-start justify-start">
       <div className="pl-4 text-base font-normal">{title}</div>
-      {body && (
-        <div className="block max-w-[240px] truncate pl-4 text-xs font-normal">
-          {body}
-        </div>
-      )}
+      {body && <div className="block max-w-[240px] truncate pl-4 text-xs font-normal">{body}</div>}
     </div>
     <div
-      onClick={() => dispatch({ type: 'DELETE_TOAST', id })}
-      className="absolute top-2 right-2 hidden hover:cursor-pointer group-hover:block"
+      onClick={() => dispatch({ type: "DELETE_TOAST", id })}
+      className="absolute right-2 top-2 hidden hover:cursor-pointer group-hover:block"
     >
       <svg
         className="h-6 w-6 text-slate-200"
@@ -134,15 +124,11 @@ export const toastWarning = ({ title, body, dispatch, id }) => (
     </div>
     <div className="flex flex-col items-start justify-start">
       <div className="pl-4 text-base font-normal">{title}</div>
-      {body && (
-        <div className="block max-w-[240px] truncate pl-4 text-xs font-normal">
-          {body}
-        </div>
-      )}
+      {body && <div className="block max-w-[240px] truncate pl-4 text-xs font-normal">{body}</div>}
     </div>
     <div
-      onClick={() => dispatch({ type: 'DELETE_TOAST', id })}
-      className="absolute top-2 right-2 hidden hover:cursor-pointer group-hover:block"
+      onClick={() => dispatch({ type: "DELETE_TOAST", id })}
+      className="absolute right-2 top-2 hidden hover:cursor-pointer group-hover:block"
     >
       <svg
         className="h-6 w-6 text-slate-200"
