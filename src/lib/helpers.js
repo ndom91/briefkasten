@@ -14,7 +14,7 @@ export const asyncFileReader = async (blob) => {
       }
     })
   } else {
-    let buffer = Buffer.from(await blob.arrayBuffer())
+    const buffer = Buffer.from(await blob.arrayBuffer())
     return `data:image/png;bas64,${buffer.toString("base64")}`
   }
 }
@@ -24,7 +24,7 @@ export const perf = () => {
 }
 
 export const range = (start, end) => {
-  let length = end - start + 1
+  const length = end - start + 1
   return Array.from({ length }, (_, i) => i + start)
 }
 

@@ -29,7 +29,7 @@ export default function Pagination({
     document.querySelectorAll(".bookmark-card")[0]?.scrollIntoView(true, { behavior: "smooth" })
   }
 
-  let lastPage = paginationRange[paginationRange.length - 1]
+  const lastPage = paginationRange[paginationRange.length - 1]
 
   return (
     <div className="absolute left-1/2 bottom-4 z-50 flex -translate-x-1/2 items-center justify-between py-3 sm:w-fit sm:px-6">

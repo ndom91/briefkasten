@@ -30,7 +30,7 @@ export const ZustandProvider = zustandContext.Provider
 export const useStore = zustandContext.useStore
 
 export const initializeStore = (preloadedState = {}) => {
-  let initialStore = (set, get) => ({
+  const initialStore = (set, get) => ({
     ...initialState,
     ...preloadedState,
 

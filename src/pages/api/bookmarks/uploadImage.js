@@ -27,7 +27,7 @@ export default async function handler(req, res) {
     switch (method) {
       case "PUT":
         try {
-          let { data, error } = await supabase.storage
+          const { data, error } = await supabase.storage
             .from("bookmark-imgs")
             .upload(
               `${session.user?.userId}/${fileName}.png`,
