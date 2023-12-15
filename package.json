@@ -15,6 +15,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "lint:biome": "biome",
     "clean": "rm -rf .next node_modules",
     "db:push": "npx prisma db push",
     "db:studio": "npx prisma studio"
@@ -44,6 +45,7 @@
     "zustand": "^4.3.2"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.4.1",
     "@commitlint/cli": "^17.4.2",
     "@commitlint/config-conventional": "^17.4.2",
     "@tailwindcss/aspect-ratio": "^0.4.2",
@@ -102,8 +104,8 @@
     "pre-commit": "npx lint-staged"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,css,json}": [
-      "prettier --write"
+    "*.{js,jsx,ts,tsx}": [
+      "biome format --write"
     ],
     "*.{js,jsx}": [
       "eslint --fix"
