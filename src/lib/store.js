@@ -1,7 +1,7 @@
-import { useLayoutEffect } from "react"
+import { useRef, useContext, useLayoutEffect } from "react"
 import { produce } from "immer"
-import { create } from "zustand"
-import createContext from "zustand/context"
+import { createStore, useStore as useZustandStore } from "zustand"
+import { createContext } from "react"
 import { mountStoreDevtool } from "simple-zustand-devtools"
 import { viewTypes } from "@/lib/constants"
 
@@ -26,8 +26,26 @@ const initialState = {
 const zustandContext = createContext()
 export const ZustandProvider = zustandContext.Provider
 
+export const StoreProvider = ({ children, ...props }) => {
+  const storeRef = useRef()
+
+  if (!storeRef.current) {
+    storeRef.current = initializeStore(props)
+  }
+
+  return <ZustandProvider value={storeRef.current}>{children}</ZustandProvider>
+}
+
 /** @type {import('zustand/index').UseStore<typeof initialState>} */
-export const useStore = zustandContext.useStore
+// export const useStore = zustandContext.useStore
+
+export const useStore = (selector) => {
+  const store = useContext(zustandContext)
+
+  if (!store) throw new Error("Store is missing the provider")
+
+  return useZustandStore(store, selector)
+}
 
 export const initializeStore = (preloadedState = {}) => {
   let initialStore = (set, get) => ({
@@ -141,7 +159,7 @@ export const initializeStore = (preloadedState = {}) => {
     },
   })
 
-  return create(initialStore)
+  return createStore(initialStore)
 }
 
 export function useCreateStore(initialState) {
@@ -156,7 +174,7 @@ export function useCreateStore(initialState) {
   }
 
   // For CSR, always re-use same store.
-  store = store ?? initializeStore(initialState)
+  store = store || initializeStore(initialState)
   // And if initialState changes, then merge states in the next render cycle.
   //
   // eslint complaining "React Hooks must be called in the exact same order in every component render"

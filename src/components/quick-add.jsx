@@ -138,12 +138,12 @@ export default function QuickAdd({ categories, session }) {
             <Transition
               as={Fragment}
               show={open}
-              enter="transition ease-out duration-200"
-              enterFrom="opacity-0 translate-y-1"
-              enterTo="opacity-100 translate-y-0"
-              leave="transition ease-in duration-150"
-              leaveFrom="opacity-100 translate-y-0"
-              leaveTo="opacity-0 translate-y-1"
+              enter="transition duration-200 ease-out"
+              enterFrom="translate-y-1 opacity-0"
+              enterTo="translate-y-0 opacity-100"
+              leave="transition duration-150 ease-in"
+              leaveFrom="translate-y-0 opacity-100"
+              leaveTo="translate-y-1 opacity-0"
             >
               <Popover.Panel
                 static
@@ -221,7 +221,7 @@ export default function QuickAdd({ categories, session }) {
                           </Listbox.Button>
                           <Transition
                             as={Fragment}
-                            leave="transition ease-in duration-100"
+                            leave="transition duration-100 ease-in"
                             leaveFrom="opacity-100"
                             leaveTo="opacity-0"
                           >
@@ -283,10 +283,10 @@ export default function QuickAdd({ categories, session }) {
                             <Transition
                               appear
                               key={tag.id}
-                              enter="transition ease-in-out duration-250"
+                              enter="duration-250 transition ease-in-out"
                               enterFrom="opacity-0"
                               enterTo="opacity-100"
-                              leave="transition ease-in-out duration-250"
+                              leave="duration-250 transition ease-in-out"
                               leaveFrom="opacity-100"
                               leaveTo="opacity-0"
                             >
@@ -331,7 +331,7 @@ export default function QuickAdd({ categories, session }) {
                           </div>
                           <Transition
                             as={Fragment}
-                            leave="transition ease-in duration-100"
+                            leave="transition duration-100 ease-in"
                             leaveFrom="opacity-100"
                             leaveTo="opacity-0"
                             // afterLeave={() => setComboQuery('')}
@@ -456,10 +456,10 @@ export default function QuickAdd({ categories, session }) {
             <Transition
               show={open}
               as={Fragment}
-              enter="transition ease-out duration-300"
+              enter="transition duration-300 ease-out"
               enterFrom="opacity-0"
               enterTo="opacity-100"
-              leave="transition ease-in duration-300"
+              leave="transition duration-300 ease-in"
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >

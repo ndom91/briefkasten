@@ -1,15 +1,17 @@
-import { useMemo, useState, useEffect } from "react"
-import { unstable_getServerSession } from "next-auth/next"
+"use client"
+
+// import { auth } from "../../auth"
+// import { authOptions } from "@/api/auth/[...nextauth]"
+import { useMemo, useState, useEffect, useRef } from "react"
+
 import { useDrop, usePrevious, useToggle } from "react-use"
-import { authOptions } from "@/api/auth/[...nextauth]"
-import { useStore, initializeStore } from "@/lib/store"
+import { useStore } from "@/lib/store"
+import { initializeStore } from "@/lib/store"
 import { useToast, toastTypes } from "@/lib/hooks"
 
-import * as Sentry from "@sentry/nextjs"
 import SlideOut from "@/components/slide-out"
 import Pagination from "@/components/pagination"
 import BookmarkCard from "@/components/bookmark-card"
-import Layout from "@/components/layout"
 import EmptyDashboard from "@/components/empty-dashboard"
 import DashboardHeader from "@/components/dashboard-header"
 import QuickAdd from "@/components/quick-add"
@@ -31,7 +33,7 @@ const breakpointColumnsObj = {
   640: 1,
 }
 
-export default function Home({ nextauth }) {
+export default function Home() {
   const bookmarks = useStore((state) => state.bookmarks)
   const categories = useStore((state) => state.categories)
   const categoryFilter = useStore((state) => state.categoryFilter)
@@ -90,26 +92,17 @@ export default function Home({ nextauth }) {
 
   !currentTableData && setBookmarks()
 
-  useEffect(() => {
-    if (nextauth?.user) {
-      const { email, userId } = nextauth.user
-      Sentry.setUser({
-        id: userId,
-        username: email,
-        email,
-      })
-    }
-
-    const getLanguage = () =>
-      navigator.userLanguage ||
-      (navigator.languages && navigator.languages.length && navigator.languages[0]) ||
-      navigator.language ||
-      navigator.browserLanguage ||
-      navigator.systemLanguage ||
-      "en-US"
-
-    setUserSetting({ locale: getLanguage() })
-  }, [setUserSetting])
+  // useEffect(() => {
+  //   const getLanguage = () =>
+  //     navigator.userLanguage ||
+  //     (navigator.languages && navigator.languages.length && navigator.languages[0]) ||
+  //     navigator.language ||
+  //     navigator.browserLanguage ||
+  //     navigator.systemLanguage ||
+  //     "en-US"
+  //
+  //   setUserSetting({ locale: getLanguage() })
+  // }, [setUserSetting])
 
   const saveBookmark = async (url) => {
     try {
@@ -160,8 +153,11 @@ export default function Home({ nextauth }) {
     },
   })
 
+  // const session = await auth()
+  // console.log('SESSION', session)
+
   return (
-    <Layout session={nextauth}>
+    <>
       <div className="flex h-full w-full flex-col items-center space-y-2 overflow-x-hidden">
         <DashboardHeader />
         {bookmarks.length === 0 && <EmptyDashboard />}
@@ -215,8 +211,8 @@ export default function Home({ nextauth }) {
           pageSize={PAGE_SIZE}
           onPageChange={(page) => setCurrentPage(page)}
         />
-        <QuickAdd categories={categories} session={nextauth} />
-        <SlideOut open={openEditSidebar} toggleOpen={toggleEditSidebar} session={nextauth} />
+        <QuickAdd categories={categories} />
+        <SlideOut open={openEditSidebar} toggleOpen={toggleEditSidebar} />
         {openModal && (
           <Modal
             saveBookmark={saveBookmark}
@@ -227,21 +223,26 @@ export default function Home({ nextauth }) {
           />
         )}
       </div>
-    </Layout>
+    </>
   )
 }
 
-export async function getServerSideProps(context) {
-  const session = await unstable_getServerSession(context.req, context.res, authOptions)
-  const zustandStore = initializeStore()
+async function loadData() {
+  // const session = await unstable_getServerSession(context.req, context.res, authOptions)
+  const createZustandStore = initializeStore()
 
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/auth/signin",
-        permanent: false,
-      },
-    }
+  // if (!session) {
+  //   return {
+  //     redirect: {
+  //       destination: "/auth/signin",
+  //       permanent: false,
+  //     },
+  //   }
+  // }
+  const session = {
+    user: {
+      userId: 1,
+    },
   }
 
   const bookmarkData = await prisma.bookmark.findMany({
@@ -284,14 +285,16 @@ export async function getServerSideProps(context) {
     tags: bookmark.tags.map((tag) => tag.tag),
   }))
 
-  zustandStore.getState().setBookmarks(bookmarks)
-  zustandStore.getState().setCategories(categories)
-  zustandStore.getState().setTags(tags)
+  const store = useRef(createZustandStore()).current
+
+  store.getState().setBookmarks(bookmarks)
+  store.getState().setCategories(categories)
+  store.getState().setTags(tags)
 
   return {
     props: {
       session,
-      nextauth: session,
+      // nextauth: session,
       initialZustandState: JSON.parse(JSON.stringify(zustandStore.getState())),
     },
   }

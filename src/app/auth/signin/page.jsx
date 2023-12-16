@@ -1,8 +1,6 @@
 import { useState } from "react"
-import { useRouter } from "next/router"
+// import { useRouter } from "next/router"
 import { signIn, getProviders, getCsrfToken } from "next-auth/react"
-
-import Meta from "@/components/meta"
 
 const ProviderIcons = ({ provider }) => {
   if (provider === "github") {
@@ -79,18 +77,17 @@ const ProviderIcons = ({ provider }) => {
 
 const Signin = ({ providers, csrfToken, autoLoginFirstProvider }) => {
   const [email, setEmail] = useState("")
-  const { query } = useRouter()
+  // const { query } = useRouter()
   const containsOauthProviders = Object.keys(providers).some((p) =>
     ["google", "github", "keycloak", "authentik"].includes(p),
   )
 
-  if (autoLoginFirstProvider && !query.error) {
-    signIn(providers[0])
-  }
+  // if (autoLoginFirstProvider && !query.error) {
+  //   signIn(providers[0])
+  // }
 
   return (
     <>
-      <Meta />
       <div className="absolute h-full min-h-full w-full overflow-hidden">
         <div className="absolute left-0 top-0 z-10 flex h-[250%] w-[110%] translate-x-[-55%] translate-y-[-28%] rotate-[22deg] items-center bg-slate-900 md:w-[70%] md:translate-x-[-30%] md:translate-y-[-20%] md:rotate-[11deg]" />
         <div className="relative z-10 flex h-[calc(100vh_-_64px)] w-full items-center justify-center p-8 text-center font-bold md:justify-start">

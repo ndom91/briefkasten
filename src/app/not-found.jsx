@@ -1,14 +1,13 @@
 import Image from "next/image"
-import Head from "next/head"
 import Link from "next/link"
-import Layout from "@/components/layout"
+
+export const metadata = {
+  title: "Briefkasten | 404",
+}
 
 export default function FourOhFour() {
   return (
-    <Layout>
-      <Head>
-        <title>Briefkasten | 404</title>
-      </Head>
+    <>
       <section className="col-span-2 mx-auto flex max-w-8xl flex-grow flex-col items-center space-y-20 px-4 py-24">
         <div className="mx-auto grid w-full grid-cols-1 items-center gap-10 md:w-4/5 lg:grid-cols-2 xl:gap-32">
           <div>
@@ -47,6 +46,6 @@ export default function FourOhFour() {
           </div>
         </div>
       </section>
-    </Layout>
+    </>
   )
 }

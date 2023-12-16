@@ -1,10 +1,11 @@
-import GitHub from 'next-auth/providers/github'
-import Google from 'next-auth/providers/google'
+import NextAuth from "next-auth"
+import GitHub from "next-auth/providers/github"
+import Google from "next-auth/providers/google"
 // import Email from 'next-auth/providers/email' @NOTE: Removing support
-import Keycloak from 'next-auth/providers/keycloak'
-import Authentik from 'next-auth/providers/authentik'
-import { PrismaAdapter } from '@auth/prisma-adapter'
-import prisma from '@/lib/prisma'
+import Keycloak from "next-auth/providers/keycloak"
+import Authentik from "next-auth/providers/authentik"
+import { PrismaAdapter } from "@auth/prisma-adapter"
+import prisma from "@/lib/prisma"
 
 // import type { NextAuthConfig } from "next-auth"
 const providers = [
@@ -16,8 +17,7 @@ const providers = [
       name: process.env.KEYCLOAK_NAME,
       clientSecret: process.env.KEYCLOAK_SECRET,
       issuer: process.env.KEYCLOAK_ISSUER,
-      allowDangerousEmailAccountLinking:
-        process.env.KEYCLOAK_DANGER_EMAIL_ACC_LINK,
+      allowDangerousEmailAccountLinking: process.env.KEYCLOAK_DANGER_EMAIL_ACC_LINK,
     }),
   process.env.AUTHENTIK_ID &&
     Authentik({
@@ -34,17 +34,19 @@ const adapterOverwrite = PrismaAdapter(prisma)
 const adapter = {
   ...adapterOverwrite,
   linkAccount: (account) => {
-    delete account['not-before-policy']
-    delete account['refresh_expires_in']
+    delete account["not-before-policy"]
+    delete account["refresh_expires_in"]
     return adapterOverwrite.linkAccount(account)
   },
 }
 
-export default {
+const config = {
   providers,
   adapter: adapter,
   pages: {
-    signIn: '/auth/signin',
+    signIn: "/auth/signin",
   },
 }
 // } satisfies NextAuthConfig
+
+export const { handlers, auth, signIn, signOut } = NextAuth(config)

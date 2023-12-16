@@ -1,23 +1,21 @@
 "use client"
 
 import Image from "next/image"
-import Head from "next/head"
 import Link from "next/link"
 import { useEffect } from "react"
-import * as Sentry from "@sentry/nextjs"
+
+export const metadata = {
+  title: "Briefkasten | Error",
+}
 
 export default function GlobalError({ error, reset }) {
   useEffect(() => {
     // Log the error to an error reporting service
-    Sentry.captureException(error)
     console.error(error)
   }, [error])
 
   return (
     <>
-      <Head>
-        <title>Briefkasten | Error</title>
-      </Head>
       <section className="col-span-2 mx-auto flex max-w-8xl flex-grow flex-col items-center space-y-20 px-4 py-24">
         <div className="mx-auto grid w-full grid-cols-1 items-center gap-10 md:w-4/5 lg:grid-cols-2 xl:gap-32">
           <div>
