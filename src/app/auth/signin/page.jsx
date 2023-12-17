@@ -50,7 +50,7 @@ const AuthPage = async () => {
                   key={p.id}
                   action={async () => {
                     "use server"
-                    await signIn(p.id)
+                    await signIn(p.id, { redirectTo: "/" })
                   }}
                 >
                   <button

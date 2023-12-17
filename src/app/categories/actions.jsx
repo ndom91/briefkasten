@@ -20,7 +20,7 @@ const createCategory = async (userId, formData) => {
     name: formData.get("name"),
     description: formData.get("description"),
   })
-  
+
   // Return early if the form data is invalid
   if (!validatedFields.success) {
     return {
@@ -29,10 +29,6 @@ const createCategory = async (userId, formData) => {
   }
 
   try {
-    // if (categoryName.length > 190 || categoryDesc.length > 190) {
-    //   toast(toastTypes.WARNING, "Category or name too long")
-    //   return
-    // }
     const addRes = await fetch("/api/categories", {
       method: "POST",
       headers: {
@@ -44,15 +40,13 @@ const createCategory = async (userId, formData) => {
       }),
     })
     if (addRes.ok) {
-      const addData = await addRes.json()
-      // addCategory({ ...addData.data, desc: addData.data.description })
-      // setCategoryName("")
-      // setCategoryDesc("")
-      // toast(toastTypes.SUCCESS, `Successfully saved "${categoryName}"`)
+      return addRes.json()
     }
   } catch (error) {
     console.error(error)
-    // toast(toastTypes.ERROR, `Error saving ${categoryName}`)
+    return {
+      message: "Error saving new category",
+    }
   }
 }
 

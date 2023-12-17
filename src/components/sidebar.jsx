@@ -3,11 +3,11 @@
 import Link from "next/link"
 import { Menu, Transition } from "@headlessui/react"
 import { useLocalStorage } from "react-use"
-// import { useRouter } from "next/router"
-import { useSession, signOut } from "next-auth/react"
+import { useSession } from "next-auth/react"
 import { useState, useRef, Fragment } from "react"
 import { useToast, toastTypes } from "@/lib/hooks"
 import { useStore } from "@/lib/store"
+import { SignOut } from "@/components/signOut"
 
 const types = {
   CATEGORY: "category",
@@ -36,7 +36,6 @@ export default function Sidebar() {
   const toast = useToast(5000)
   const quickAddTagRef = useRef()
   const quickAddCategoryRef = useRef()
-  // const router = useRouter()
 
   const toggleQuickAdd = (type) => {
     if (type === types.CATEGORY) {
@@ -488,7 +487,7 @@ export default function Sidebar() {
                   <Menu.Item>
                     {({ active }) => (
                       <button
-                        onClick={() => router.push("/settings")}
+                        // onClick={() => router.push("/settings")}
                         className={`${
                           active ? "bg-slate-500 text-white" : "text-gray-900"
                         } group flex w-full items-center justify-start space-x-2 rounded-md px-2 py-2 text-sm`}
@@ -514,33 +513,7 @@ export default function Sidebar() {
                   </Menu.Item>
                 </div>
                 <div className="px-1 py-1">
-                  <Menu.Item>
-                    {({ active }) => (
-                      <button
-                        onClick={signOut}
-                        className={`${
-                          active ? "bg-slate-500 text-white" : "text-gray-900"
-                        } group flex w-full items-center justify-start space-x-2 rounded-md px-2 py-2 text-sm`}
-                      >
-                        <svg
-                          className={`h-5 w-5 ${active ? "text-slate-200" : "text-slate-600"}`}
-                          aria-hidden="true"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-                          />
-                        </svg>
-                        <span>Logout</span>
-                      </button>
-                    )}
-                  </Menu.Item>
+                  <Menu.Item>{({ active }) => <SignOut active={active} />}</Menu.Item>
                 </div>
               </Menu.Items>
             </Transition>
