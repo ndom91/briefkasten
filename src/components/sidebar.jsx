@@ -56,7 +56,7 @@ export default function Sidebar() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          userId: session?.user?.userId,
+          userId: session.data?.user?.userId,
           name: quickAddCategory,
         }),
       })
@@ -80,7 +80,7 @@ export default function Sidebar() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          userId: session?.user?.userId,
+          userId: session.data?.user?.userId,
           name: quickAddTag,
         }),
       })
@@ -468,8 +468,8 @@ export default function Sidebar() {
                   open ? "h-9 w-9" : "h-8 w-8 md:h-9 md:w-9"
                 }`}
                 src={
-                  session?.user?.image ??
-                  ` https://unavatar.io/${session?.user?.email ?? session?.user?.id}`
+                  session.data?.user?.image ??
+                  ` https://unavatar.io/${session.data?.user?.email ?? session.data?.user?.id}`
                 }
                 alt="User Avatar"
               />
@@ -547,7 +547,7 @@ export default function Sidebar() {
           </Menu>
           {open && (
             <div className="ml-3">
-              <p className="text-sm font-medium text-neutral-200">{session?.user?.name}</p>
+              <p className="text-sm font-medium text-neutral-200">{session.data?.user?.name}</p>
             </div>
           )}
         </div>

@@ -1,7 +1,5 @@
 "use client"
 
-// import { auth } from "../../auth"
-// import { authOptions } from "@/api/auth/[...nextauth]"
 import { useMemo, useState, useEffect, useRef } from "react"
 
 import { useDrop, usePrevious, useToggle } from "react-use"
@@ -9,6 +7,7 @@ import { useStore } from "@/lib/store"
 import { initializeStore } from "@/lib/store"
 import { useToast, toastTypes } from "@/lib/hooks"
 
+import Sidebar from "@/components/sidebar"
 import SlideOut from "@/components/slide-out"
 import Pagination from "@/components/pagination"
 import BookmarkCard from "@/components/bookmark-card"
@@ -158,71 +157,76 @@ export default function Home() {
 
   return (
     <>
-      <div className="flex h-full w-full flex-col items-center space-y-2 overflow-x-hidden">
-        <DashboardHeader />
-        {bookmarks.length === 0 && <EmptyDashboard />}
-        {bookmarks.length > 0 && currentTableData.length === 0 && (
-          <div className="flex flex-col items-center justify-center text-lg text-slate-700">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/images/not-found.png"
-              className="h-auto w-5/6 lg:w-[32rem]"
-              alt="No Results, Please Try Again"
-            />
-            <span className="text-2xl font-thin">No results found, please try again!</span>
-          </div>
-        )}
-        <div className="z-20 w-full overflow-x-hidden">
-          <section className="flex items-start justify-start">
-            {currentTableData.length !== 0 && (
-              <>
-                {activeView === viewTypes.CARD.name && (
-                  <Masonry
-                    breakpointCols={breakpointColumnsObj}
-                    className="masonry-grid px-2 md:px-4"
-                    columnClassName="masonry-grid-col"
-                  >
-                    {currentTableData.map((bookmark) => (
-                      <BookmarkCard
-                        bookmark={bookmark}
-                        key={bookmark.id}
-                        session={nextauth}
-                        toggleSidebar={() => initEdit(bookmark)}
-                      />
-                    ))}
-                  </Masonry>
-                )}
+      <Sidebar />
+      <main className="flex-grow basis-0">
+        <div className="flex h-full w-full flex-col items-center space-y-2 overflow-x-hidden">
+          <DashboardHeader />
+          {bookmarks.length === 0 && <EmptyDashboard />}
+          {bookmarks.length > 0 && currentTableData.length === 0 && (
+            <div className="flex flex-col items-center justify-center text-lg text-slate-700">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/not-found.png"
+                className="h-auto w-5/6 lg:w-[32rem]"
+                alt="No Results, Please Try Again"
+              />
+              <span className="text-2xl font-thin">No results found, please try again!</span>
+            </div>
+          )}
+          <div className="z-20 w-full overflow-x-hidden">
+            <section className="flex items-start justify-start">
+              {currentTableData.length !== 0 && (
+                <>
+                  {activeView === viewTypes.CARD.name && (
+                    <Masonry
+                      breakpointCols={breakpointColumnsObj}
+                      className="masonry-grid px-2 md:px-4"
+                      columnClassName="masonry-grid-col"
+                    >
+                      {currentTableData.map((bookmark) => (
+                        <BookmarkCard
+                          bookmark={bookmark}
+                          key={bookmark.id}
+                          session={nextauth}
+                          toggleSidebar={() => initEdit(bookmark)}
+                        />
+                      ))}
+                    </Masonry>
+                  )}
 
-                {activeView === viewTypes.LIST.name && (
-                  <DataTable items={currentTableData} initEdit={initEdit} />
-                )}
-                {activeView === viewTypes.DETAIL.name && (
-                  <div className="flex justify-center text-lg text-slate-700">
-                    This view has not been implemented yet, please try Card or List view
-                  </div>
-                )}
-              </>
-            )}
-          </section>
-        </div>
-        <Pagination
-          currentPage={currentPage}
-          totalCount={searchText || categoryFilter || tagFilter ? filteredLength : bookmarks.length}
-          pageSize={PAGE_SIZE}
-          onPageChange={(page) => setCurrentPage(page)}
-        />
-        <QuickAdd categories={categories} />
-        <SlideOut open={openEditSidebar} toggleOpen={toggleEditSidebar} />
-        {openModal && (
-          <Modal
-            saveBookmark={saveBookmark}
-            open={openModal}
-            loading={loading}
-            toggleModal={toggleModal}
-            url={droppedUrl}
+                  {activeView === viewTypes.LIST.name && (
+                    <DataTable items={currentTableData} initEdit={initEdit} />
+                  )}
+                  {activeView === viewTypes.DETAIL.name && (
+                    <div className="flex justify-center text-lg text-slate-700">
+                      This view has not been implemented yet, please try Card or List view
+                    </div>
+                  )}
+                </>
+              )}
+            </section>
+          </div>
+          <Pagination
+            currentPage={currentPage}
+            totalCount={
+              searchText || categoryFilter || tagFilter ? filteredLength : bookmarks.length
+            }
+            pageSize={PAGE_SIZE}
+            onPageChange={(page) => setCurrentPage(page)}
           />
-        )}
-      </div>
+          <QuickAdd categories={categories} />
+          <SlideOut open={openEditSidebar} toggleOpen={toggleEditSidebar} />
+          {openModal && (
+            <Modal
+              saveBookmark={saveBookmark}
+              open={openModal}
+              loading={loading}
+              toggleModal={toggleModal}
+              url={droppedUrl}
+            />
+          )}
+        </div>
+      </main>
     </>
   )
 }

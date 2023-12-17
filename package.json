@@ -11,7 +11,7 @@
     "selfhost"
   ],
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3001",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -38,6 +38,7 @@
     "react-masonry-css": "^1.0.16",
     "react-use": "^17.4.2",
     "react-use-focus-trap": "1.1.7",
+    "zod": "^3.22.4",
     "zustand": "^4.4.7"
   },
   "devDependencies": {

@@ -1,7 +1,6 @@
 "use client"
 
 import { SessionProvider } from "next-auth/react"
-import Sidebar from "@/components/sidebar"
 import { StoreProvider } from "@/lib/store"
 import "./globals.css"
 
@@ -42,10 +41,7 @@ export default function RootLayout({ children }) {
       <body>
         <section className="mx-auto flex h-full max-w-full items-stretch overflow-hidden selection:bg-slate-800 selection:text-white">
           <SessionProvider>
-            <StoreProvider>
-              <Sidebar />
-              <main className="flex-grow basis-0">{children}</main>
-            </StoreProvider>
+            <StoreProvider>{children}</StoreProvider>
           </SessionProvider>
         </section>
         <div className="pattern fixed left-0 top-0 -z-[1] h-full w-full" />

@@ -1,3 +1,5 @@
+"use client"
+
 import { useRef, useContext, useLayoutEffect } from "react"
 import { produce } from "immer"
 import { createStore, useStore as useZustandStore } from "zustand"

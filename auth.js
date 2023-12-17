@@ -9,8 +9,10 @@ import prisma from "@/lib/prisma"
 
 // import type { NextAuthConfig } from "next-auth"
 const providers = [
-  process.env.GITHUB_ID ? GitHub : null,
-  process.env.GOOGLE_ID ? Google : null,
+  process.env.GITHUB_ID &&
+    GitHub({ clientId: process.env.GITHUB_ID, clientSecret: process.env.GITHUB_SECRET }),
+  process.env.GOOGLE_ID &&
+    Google({ clientId: process.env.GOOGLE_ID, clientSecret: process.env.GOOGLE_SECRET }),
   process.env.KEYCLOAK_ID &&
     Keycloak({
       clientId: process.env.KEYCLOAK_ID,
@@ -43,10 +45,18 @@ const adapter = {
 const config = {
   providers,
   adapter: adapter,
+  callbacks: {
+    async session({ session, user }) {
+      session.user.userId = user.id
+      return session
+    },
+  },
   pages: {
     signIn: "/auth/signin",
   },
 }
 // } satisfies NextAuthConfig
 
-export const { handlers, auth, signIn, signOut } = NextAuth(config)
+const { handlers, auth, signIn, signOut } = NextAuth(config)
+
+export { handlers, auth, signIn, signOut, providers }
