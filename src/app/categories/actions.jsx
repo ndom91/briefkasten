@@ -1,6 +1,8 @@
 "use server"
 
 import { z } from "zod"
+import { headers } from "next/headers"
+import { revalidatePath } from "next/cache"
 
 const schema = z.object({
   name: z
@@ -16,6 +18,12 @@ const schema = z.object({
 })
 
 const createCategory = async (userId, formData) => {
+  const headersList = headers()
+  const referer = headersList.get("referer")
+
+  const host = new URL(referer).host
+  const protocol = new URL(referer).protocol
+
   const validatedFields = schema.safeParse({
     name: formData.get("name"),
     description: formData.get("description"),
@@ -29,7 +37,7 @@ const createCategory = async (userId, formData) => {
   }
 
   try {
-    const addRes = await fetch("/api/categories", {
+    const addRes = await fetch(`${protocol}${host}/api/categories`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -40,6 +48,7 @@ const createCategory = async (userId, formData) => {
       }),
     })
     if (addRes.ok) {
+      revalidatePath("/posts")
       return addRes.json()
     }
   } catch (error) {

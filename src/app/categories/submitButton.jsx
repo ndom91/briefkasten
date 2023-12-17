@@ -3,12 +3,13 @@
 import { useFormStatus } from "react-dom"
 import { LoadingSpinner } from "@/components/loadingSpinner"
 
-export function SubmitButton() {
+export function SubmitButton({ action }) {
   const { pending } = useFormStatus()
 
   return (
     <button
       type="submit"
+      formAction={action}
       className="flex items-center justify-center space-x-1 rounded-md bg-slate-700 px-2 py-1 pr-3 font-medium text-white outline-none"
       aria-disabled={pending}
     >
