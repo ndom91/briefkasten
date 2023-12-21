@@ -107,6 +107,9 @@ const ProviderIcons = ({ provider }) => {
 const Signin = ({ providers, csrfToken, autoLoginFirstProvider }) => {
   const [email, setEmail] = useState('')
   const { query } = useRouter()
+  if (!providers) {
+    throw new Error('Please setup NextAuth.js providers')
+  }
   const containsOauthProviders = Object.keys(providers).some((p) =>
     ['google', 'github', 'keycloak', 'authentik', 'azure-ad'].includes(p)
   )
@@ -119,7 +122,7 @@ const Signin = ({ providers, csrfToken, autoLoginFirstProvider }) => {
     <>
       <Meta />
       <div className="absolute h-full min-h-full w-full overflow-hidden">
-        <div className="absolute top-0 left-0 z-10 flex h-[250%] w-[110%] translate-x-[-55%] translate-y-[-28%] rotate-[22deg] items-center bg-slate-900 md:w-[70%] md:translate-y-[-20%] md:translate-x-[-30%] md:rotate-[11deg]" />
+        <div className="absolute left-0 top-0 z-10 flex h-[250%] w-[110%] translate-x-[-55%] translate-y-[-28%] rotate-[22deg] items-center bg-slate-900 md:w-[70%] md:translate-x-[-30%] md:translate-y-[-20%] md:rotate-[11deg]" />
         <div className="relative z-10 flex h-[calc(100vh_-_64px)] w-full items-center justify-center p-8 text-center font-bold md:justify-start">
           <div className="z-20 flex w-[22rem] flex-col items-center justify-center text-xl md:ml-[15%]">
             <h2 className="mb-4 flex items-center space-x-2 text-3xl font-light text-slate-600">
@@ -212,7 +215,7 @@ const Signin = ({ providers, csrfToken, autoLoginFirstProvider }) => {
                     type="submit"
                     disabled={false}
                     onClick={() => signIn('email', { callbackUrl: '/', email })}
-                    className="mt-4 inline-flex w-full justify-center rounded-md border border-transparent bg-slate-800 py-2 px-4 text-sm font-medium text-white shadow-sm transition hover:cursor-pointer hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 disabled:hover:cursor-not-allowed"
+                    className="mt-4 inline-flex w-full justify-center rounded-md border border-transparent bg-slate-800 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:cursor-pointer hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 disabled:hover:cursor-not-allowed"
                     place="Continue with Magic Link Email"
                   />
                 </form>
@@ -224,7 +227,7 @@ const Signin = ({ providers, csrfToken, autoLoginFirstProvider }) => {
         <img
           src="/login_pattern.svg"
           alt="Pattern Background"
-          className="fixed top-0 right-0 z-[5] min-h-full min-w-full object-cover"
+          className="fixed right-0 top-0 z-[5] min-h-full min-w-full object-cover"
         />
       </div>
     </>

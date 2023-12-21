@@ -87,7 +87,6 @@
     "semi": false,
     "singleQuote": true,
     "bracketSpacing": true,
-    "arrowSpacing": true,
     "plugins": [
       "prettier-plugin-tailwindcss"
     ]
