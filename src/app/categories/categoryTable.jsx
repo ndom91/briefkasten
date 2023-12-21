@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import { SubmitButton } from "./submitButton"
 import CategoryTableRow from "@/components/categoryTableRow"
@@ -20,9 +20,30 @@ const breadcrumbs = [
 ]
 
 export default function CategoryTable({ categories, userId }) {
+  // const toast = useToast(5000)
   const createCategoryWithUser = createCategory.bind(null, userId)
   const [searchString, setSearchString] = useState("")
-  const toast = useToast(5000)
+  const [filteredCategories, setFilteredCategories] = useState(categories)
+
+  // Filter search results
+  useEffect(() => {
+    if (searchString) {
+      setFilteredCategories(
+        categories
+          .map((cat) => {
+            if (
+              cat.name.includes(searchString) ||
+              cat.description?.toLowerCase().includes(searchString.toLowerCase())
+            ) {
+              return cat
+            }
+          })
+          .filter(Boolean),
+      )
+    } else {
+      setFilteredCategories(categories)
+    }
+  }, [searchString, categories])
 
   return (
     <>
@@ -52,6 +73,7 @@ export default function CategoryTable({ categories, userId }) {
             <input
               type="text"
               id="table"
+              value={searchString}
               onChange={(e) => setSearchString(e.target.value)}
               className="w-2/3 rounded-md border-2 border-slate-200 px-2 py-1 pl-8 pr-8 text-base text-slate-600 outline-none placeholder:text-slate-200 focus:border-slate-200 focus:ring-2 focus:ring-slate-200 focus:ring-offset-transparent"
               placeholder="Search for items"
@@ -85,8 +107,8 @@ export default function CategoryTable({ categories, userId }) {
               </tr>
             </thead>
             <tbody>
-              {categories?.map((category) => (
-                <CategoryTableRow item={category} key={category.id} />
+              {filteredCategories?.map((category) => (
+                <CategoryTableRow item={category} key={category.id} userId={userId} />
               ))}
               <tr className="bg-white even:bg-gray-50 hover:bg-slate-100">
                 <td className={`px-6 py-2`}>
@@ -97,22 +119,24 @@ export default function CategoryTable({ categories, userId }) {
                   <input
                     name="name"
                     type="text"
-                    placeholder="Required"
+                    placeholder="Name"
+                    required
+                    maxLength="190"
                     className="block w-full rounded-md border-2 border-slate-200 bg-slate-50 p-2 py-1 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500  focus:ring-slate-500 "
                   />
                 </td>
-                <td className={`px-6 py-2`}>
+                <td className={`px-6 py-2`} colSpan="2">
                   <input
                     name="description"
                     type="text"
-                    placeholder="Optional"
+                    placeholder="Description"
+                    maxLength="190"
                     className="block w-full rounded-md border-2 border-slate-200 bg-slate-50 px-2 py-1 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500 focus:ring-slate-500"
                   />
                 </td>
                 <td className="px-6 py-4 text-right">
                   <SubmitButton action={createCategoryWithUser} />
                 </td>
-                <td className={`px-6 py-2`} />
               </tr>
             </tbody>
           </table>

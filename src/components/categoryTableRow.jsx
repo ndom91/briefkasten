@@ -1,106 +1,73 @@
-import { useState } from "react"
-import { useSession } from "next-auth/react"
-import { useToggle } from "react-use"
-import { useToast, toastTypes } from "@/lib/hooks"
-import { useStore } from "@/lib/store"
+"use client"
 
-export default function CategoryTableRow({ item }) {
-  const { data: session } = useSession()
+import { useState } from "react"
+import { useToggle } from "react-use"
+// import { useToast, toastTypes } from "@/lib/hooks"
+import { useStore } from "@/lib/store"
+import { deleteCategory, saveCategoryEdit } from "../app/categories/actions"
+import { useFormStatus } from "react-dom"
+
+export default function CategoryTableRow({ item, userId }) {
+  const deleteCategoryWithUser = deleteCategory.bind(null, userId)
   const { id, name, description, createdAt, _count } = item
   const count = _count?.bookmarks ?? 0
+  const { pending } = useFormStatus()
+
   const [editMode, toggleEditMode] = useToggle(false)
   const [categoryName, setCategoryName] = useState(name)
   const [categoryDesc, setCategoryDesc] = useState(description)
-  const [loading, setLoading] = useState(false)
-  const removeCategory = useStore((state) => state.removeCategory)
-  const updateCategory = useStore((state) => state.updateCategory)
+  // const [loading, setLoading] = useState(false)
+  // const removeCategory = useStore((state) => state.removeCategory)
+  // const updateCategory = useStore((state) => state.updateCategory)
+  // const toast = useToast(5000)
   const settings = useStore((state) => state.settings)
-  const toast = useToast(5000)
 
-  const deleteCategory = async () => {
+  const handleCategoryEditSave = async (e) => {
     try {
-      setLoading(true)
-      const delRes = await fetch("/api/categories", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id,
-          userId: session?.user?.userId,
-        }),
+      e.preventDefault()
+      await saveCategoryEdit({
+        id: item.id,
+        name: categoryName,
+        description: categoryDesc,
+        userId,
       })
-      if (delRes.status === 200) {
-        removeCategory(id)
-        toast(toastTypes.SUCCESS, `Successfully deleted "${name}"`)
-      }
-      setLoading(false)
-    } catch (error) {
-      console.error(error)
-      toast(toastTypes.ERROR, `Error deleting "${name}"`)
-      setLoading(false)
+    } catch (e) {
+      console.error(e)
+      return
     }
-  }
-
-  const saveEdit = async () => {
-    try {
-      if (categoryName.length > 190 || categoryDesc.length > 190) {
-        toast(toastTypes.WARNING, "Category or name too long")
-        return
-      }
-      const editRes = await fetch("/api/categories", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id,
-          userId: session?.user?.userId,
-          name: categoryName,
-          description: categoryDesc,
-        }),
-      })
-      if (editRes.status === 200) {
-        updateCategory(id, {
-          name: categoryName,
-          description: categoryDesc,
-        })
-        toggleEditMode()
-        toast(toastTypes.SUCCESS, `Successfully edited "${name}"`)
-      }
-    } catch (error) {
-      console.error(error)
-      toast(toastTypes.ERROR, `Error editing "${name}"`)
-    }
+    toggleEditMode()
   }
 
   return (
     <tr className="bg-white even:bg-gray-50 hover:bg-slate-100">
       <th className={`px-6 ${editMode ? "py-2" : "py-4"}`}>
         <span className="font-normal">{id}</span>
+        <input type="hidden" name="categoryId" value={id} />
       </th>
       <th className="px-6 py-4">
         <span className="font-normal">{count ?? 0}</span>
       </th>
       <td className={`px-6 ${editMode ? "py-2" : "py-4"}`}>
         {!editMode ? (
-          <span>{categoryName}</span>
+          <span className="line-clamp-2 max-w-2xl break-all">{categoryName}</span>
         ) : (
           <input
             name="name"
             value={categoryName}
             type="text"
             onChange={(e) => setCategoryName(e.target.value)}
-            className="block w-full rounded-lg border-2 border-slate-200 bg-slate-50 p-2 py-1 text-sm text-slate-900 placeholder-slate-300 focus:border-slate-500  focus:ring-slate-500 "
+            className="block w-full max-w-xl rounded-lg border-2 border-slate-200 bg-slate-50 p-2 py-1 text-sm text-slate-900 placeholder-slate-300  focus:border-slate-500 focus:ring-slate-500"
           />
         )}
       </td>
-      <td className={`px-6 ${editMode ? "py-2" : "py-4"}`}>
+      <td className={`px-6 ${editMode ? "py-2" : "py-4"} line`}>
         {!editMode ? (
-          <span>{categoryDesc}</span>
+          <span className="line-clamp-2 max-w-2xl break-all" title={categoryDesc}>
+            {categoryDesc}
+          </span>
         ) : (
           <input
-            name="emoji"
+            name="description"
             value={categoryDesc}
             type="text"
             onChange={(e) => setCategoryDesc(e.target.value)}
@@ -108,8 +75,8 @@ export default function CategoryTableRow({ item }) {
           />
         )}
       </td>
-      <th className={`px-6 ${editMode ? "py-2" : "py-4"}`}>
-        <span className="font-normal" suppressHydrationWarning>
+      <th className={`px-4 ${editMode ? "py-2" : "py-4"}`}>
+        <span className="max-w-2xl font-normal" suppressHydrationWarning>
           {createdAt ? new Date(createdAt).toLocaleString(settings.locale) : ""}
         </span>
       </th>
@@ -121,7 +88,8 @@ export default function CategoryTableRow({ item }) {
         {!editMode ? (
           <>
             <button
-              onClick={() => toggleEditMode()}
+              onClick={(e) => e.preventDefault() & toggleEditMode()}
+              type="button"
               className="font-medium text-slate-400 outline-none "
             >
               <svg
@@ -140,7 +108,7 @@ export default function CategoryTableRow({ item }) {
               </svg>
             </button>
             <button
-              onClick={() => deleteCategory()}
+              onClick={(e) => e.preventDefault() & deleteCategoryWithUser(id)}
               className="font-medium text-rose-400 outline-none"
             >
               <svg
@@ -162,7 +130,7 @@ export default function CategoryTableRow({ item }) {
         ) : (
           <>
             <button
-              onClick={() => saveEdit()}
+              onClick={handleCategoryEditSave}
               className="font-medium text-emerald-500 outline-none"
             >
               <svg
@@ -181,7 +149,8 @@ export default function CategoryTableRow({ item }) {
               </svg>
             </button>
             <button
-              onClick={() => toggleEditMode()}
+              onClick={(e) => e.preventDefault() & toggleEditMode()}
+              type="button"
               className="font-medium text-rose-400 outline-none"
             >
               <svg
@@ -201,7 +170,7 @@ export default function CategoryTableRow({ item }) {
             </button>
           </>
         )}
-        {loading ? (
+        {pending ? (
           <svg
             className="-ml-1 h-5 w-5 animate-spin text-slate-500"
             xmlns="http://www.w3.org/2000/svg"

@@ -1,17 +1,7 @@
 import prisma from "@/lib/prisma"
 import { auth } from "../../../../auth"
 
-const verifyAuth = async () => {
-  const session = await auth()
-  console.log("AUTH.SESSION", session)
-  if (!session?.user?.userId) {
-    return Response(401)
-  }
-}
-
 export async function GET() {
-  await verifyAuth()
-
   return Response("Hello World!", {
     status: 200,
   })
@@ -19,8 +9,6 @@ export async function GET() {
 
 // export async function POST(request) {
 export const POST = auth(async (request) => {
-  console.log("CATEGORIES.REQ.AUTH", request.auth)
-
   const {
     userId,
     data: { name, description },
@@ -46,12 +34,12 @@ export const POST = auth(async (request) => {
   return Response.json({ data: createResult })
 })
 
-export async function PUT(request) {
-  await verifyAuth()
+export const PUT = auth(async (request) => {
   const { userId, name, id, description } = await request.json()
+  console.log("PUT DATA", { userId, name, id, description })
 
   if (!name || !id || !userId) {
-    return Response(
+    return new Response(
       { message: "Missing required field(s)" },
       {
         status: 400,
@@ -70,10 +58,10 @@ export async function PUT(request) {
   })
 
   return Response.json({ data: updateResult })
-}
-export async function DELETE(request) {
-  await verifyAuth()
-  const { id, userId } = await request.json()
+})
+
+export const DELETE = auth(async (request) => {
+  const { userId, id } = await request.json()
 
   if (!id || !userId) {
     return Response(
@@ -92,4 +80,4 @@ export async function DELETE(request) {
     return Response({ message: error }, { status: 500 })
   }
   return Response.json({ message: "Deleted" })
-}
+})
