@@ -36,6 +36,20 @@ const ProviderIcons = ({ provider }) => {
         ></path>
       </svg>
     )
+  } else if (provider === 'azure-ad') {
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="21"
+        height="21"
+        viewBox="0 0 21 21"
+      >
+        <path fill="currentColor" d="m0,0h10v10H0V0Z"></path>
+        <path fill="currentColor" d="m11,0h10v10h-10V0Z"></path>
+        <path fill="currentColor" d="m0,11h10v10H0v-10Z"></path>
+        <path fill="currentColor" d="m11,11h10v10h-10v-10Z"></path>
+      </svg>
+    )
   } else if (provider === 'keycloak') {
     return (
       <svg
@@ -94,7 +108,7 @@ const Signin = ({ providers, csrfToken, autoLoginFirstProvider }) => {
   const [email, setEmail] = useState('')
   const { query } = useRouter()
   const containsOauthProviders = Object.keys(providers).some((p) =>
-    ['google', 'github', 'keycloak', 'authentik'].includes(p)
+    ['google', 'github', 'keycloak', 'authentik', 'azure-ad'].includes(p)
   )
 
   if (autoLoginFirstProvider && !query.error) {
@@ -139,6 +153,9 @@ const Signin = ({ providers, csrfToken, autoLoginFirstProvider }) => {
                           onClick={() => signIn(p.id, { callbackUrl: '/' })}
                           className={`flex h-10 w-full items-center space-x-2 rounded ${
                             p.id === 'google' &&
+                            'bg-blue-700 hover:bg-blue-800 focus:ring-blue-700'
+                          } ${
+                            p.id === 'azure-ad' &&
                             'bg-blue-700 hover:bg-blue-800 focus:ring-blue-700'
                           } ${
                             p.id === 'github' &&

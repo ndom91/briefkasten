@@ -1,6 +1,7 @@
 import NextAuth from 'next-auth'
 import GithubProvider from 'next-auth/providers/github'
 import GoogleProvider from 'next-auth/providers/google'
+import AzureADProvider from 'next-auth/providers/azure-ad'
 import EmailProvider from 'next-auth/providers/email'
 import KeycloakProvider from 'next-auth/providers/keycloak'
 import AuthentikProvider from 'next-auth/providers/authentik'
@@ -23,6 +24,15 @@ if (process.env.GOOGLE_ID) {
     GoogleProvider({
       clientId: process.env.GOOGLE_ID,
       clientSecret: process.env.GOOGLE_SECRET,
+    })
+  )
+}
+if (process.env.AZURE_AD_CLIENT_ID) {
+  providers.push(
+    AzureADProvider({
+      clientId: process.env.AZURE_AD_CLIENT_ID,
+      clientSecret: process.env.AZURE_AD_CLIENT_SECRET,
+      tenantId: process.env.AZURE_AD_TENANT_ID,
     })
   )
 }
