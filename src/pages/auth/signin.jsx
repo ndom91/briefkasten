@@ -239,7 +239,7 @@ export default Signin
 export async function getServerSideProps(context) {
   const providers = await getProviders()
   const csrfToken = await getCsrfToken(context)
-  const autoLoginFirstProvider = process.env.AUTOLOGIN_FIRST_PROVIDER
+  const autoLoginFirstProvider = process.env.AUTOLOGIN_FIRST_PROVIDER ?? false
 
   return {
     props: {
