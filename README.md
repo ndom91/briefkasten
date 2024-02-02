@@ -123,7 +123,7 @@ With this open-source application [HTTP Shortcuts](https://http-shortcuts.rmy.ch
 
 ### 🌍 Browser Extension
 
-There is a companion browser extension in the works which you can use to add websites to your vault while browsing the web. It can be found at [`ndom91/briefkasten-extension`](https://github.com/ndom91/briefkasten-extension). It is currently not published on any of the Browser Extension Stores, but can be built locally and loaded as a development extension in any Chromium based browser. More details in that repository.
+There is a companion browser extension in the works which you can use to add websites to your vault while browsing the web. It can be found at [`ndom91/briefkasten-extension`](https://github.com/ndom91/briefkasten-extension) and in the [Chrome Extension Store](https://chrome.google.com/webstore/detail/briefkasten-bookmarks/aighkhofochfjejmhjfkgjfpkpgmjlnd). More details in that repository.
 
 ### 🧑‍🏭 Screenshot Job
 
