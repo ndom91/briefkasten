@@ -8,7 +8,11 @@
 
 Self-hosted bookmarking application. Works with any Prisma compatible database (MySQL, Postgres, SQLite, etc.)
 
-> **Briefkasten** (Postbox) - am Haus- oder Wohnungseingang angebrachter Behälter für die dem Empfänger zugestellten [Post]sendungen
+> **Briefkasten** (EN: Mailbox) - am Haus- oder Wohnungseingang angebrachter Behälter für die dem Empfänger zugestellten [Post]sendungen
+
+> [!NOTE]
+> This is the v1 version of Briefkasten! The next iteration is currently available in beta at https://dev.briefkastenhq.com!
+> The new version's database will be wiped after the beta period, but I do plan on migrating all existing data over to the new version once we go GA with v2
 
 ### Free Instance: [briefkastenhq.com](https://briefkastenhq.com) [[Docs](https://docs.briefkastenhq.com)]
 
