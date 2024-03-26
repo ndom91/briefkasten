@@ -6,13 +6,14 @@
 ![GitHub](https://img.shields.io/github/license/ndom91/briefkasten?style=flat-square)
 [![Demo](https://img.shields.io/badge/demo-click%20here-brightgreen?style=flat-square)](https://briefkastenhq.com)
 
-Self-hosted bookmarking application. Works with any Prisma compatible database (MySQL, Postgres, SQLite, etc.)
-
 > **Briefkasten** (EN: Mailbox) - am Haus- oder Wohnungseingang angebrachter Behälter für die dem Empfänger zugestellten [Post]sendungen
 
-> [!NOTE]
-> This is the v1 version of Briefkasten! The next iteration is currently available in beta at https://dev.briefkastenhq.com!
-> The new version's database will be wiped after the beta period, but I do plan on migrating all existing data over to the new version once we go GA with v2
+Self-hosted bookmarking application. Works with any Prisma compatible database (MySQL, Postgres, SQLite, etc.)
+
+> [!WARNING]
+> **Briefkasten v2 is currently available in beta at https://dev.briefkastenhq.com**
+> 
+> After the beta period, **the database will be dropped**, so that we can migrate all existing data from the current (v1) `briefkastenhq.com` over to the new version. I'm working on [the new docs](https://docs.briefkastenhq.com) already, but the v1 docs are of course [still available](https://v1.docs.briefkastenhq.com). If you find any bugs, or otherwise want to help, you can contribute at [`ndom91/sveltekasten`](https://github.com/ndom91/sveltekasten) or [`ndom91/briefkasten-docs`](https://github.com/ndom91/briefkasten-docs).
 
 ### Free Instance: [briefkastenhq.com](https://briefkastenhq.com) [[Docs](https://docs.briefkastenhq.com)]
 
