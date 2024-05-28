@@ -1,4 +1,4 @@
-FROM node:16-bullseye-slim as dependencies
+FROM node:20-bullseye-slim as dependencies
 
 LABEL org.opencontainers.image.title="Briefkasten" \
   org.opencontainers.image.description="Modern Bookmarking Application" \
@@ -29,7 +29,7 @@ COPY package.json pnpm-lock.yaml prisma ./
 RUN pnpm install --frozen-lockfile
 
 # ---- Build ----
-FROM node:16-bullseye-slim as build
+FROM node:20-bullseye-slim as build
 WORKDIR /app
 
 # Install pnpm
@@ -53,7 +53,7 @@ RUN pnpm dlx prisma generate
 RUN pnpm build
 
 # ---- Release ----
-FROM node:16-bullseye-slim as release
+FROM node:20-bullseye-slim as release
 WORKDIR /app
 
 # openssl for prisma
