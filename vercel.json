@@ -27,12 +27,6 @@
       ]
     }
   ],
-  "rewrites": [
-    {
-      "source": "/a/e",
-      "destination": "https://stats.ndo.dev/api/event"
-    }
-  ],
   "github": {
     "autoJobCancelation": true
   },

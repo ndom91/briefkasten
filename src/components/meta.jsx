@@ -1,7 +1,26 @@
 import Head from 'next/head'
 import Script from 'next/script'
+import { usePathname, useSearchParams } from "next/navigation"
+import * as Swetrix from "swetrix"
 
 const Meta = () => {
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
+  if (window.location.host === 'briefkastenhq.com') {
+    Swetrix.init(process.env.NEXT_PUBLIC_SWETRIX_PROJECT, {
+      apiURL: process.env.NEXT_PUBLIC_SWETRIX_API_HOST,
+    })
+    let url = pathname
+    if (searchParams.toString() !== "") {
+      url += `?${searchParams.toString()}`
+    }
+
+    if (typeof document !== "undefined") {
+      Swetrix.trackPageview(url)
+    }
+  }
+
   return (
     <>
       <Head>
@@ -47,11 +66,6 @@ const Meta = () => {
         <meta name="darkreader-lock" />
         <title>Briefkasten</title>
       </Head>
-      {process.env.NODE_ENV === 'production' &&
-        typeof window !== 'undefined' &&
-        window.location.host === 'briefkastenhq.com' && (
-          <Script src="/p.js" data-domain="briefkastenhq.com" data-api="/a/e" />
-        )}
     </>
   )
 }
