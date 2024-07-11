@@ -1,7 +1,20 @@
 import Head from 'next/head'
-import Analytics from './analytics'
+import { useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 
 const Meta = () => {
+  const pathname = usePathname()
+
+  useEffect(() => {
+    if (window.location.host === 'briefkastenhq.com') {
+      Swetrix.init(process.env.NEXT_PUBLIC_SWETRIX_PROJECT, {
+        apiURL: process.env.NEXT_PUBLIC_SWETRIX_API_HOST,
+      })
+      let url = pathname
+      Swetrix.trackPageview(url)
+    }
+  }, [pathname])
+
   return (
     <>
       <Head>
@@ -46,7 +59,6 @@ const Meta = () => {
         <meta name="twitter:image" content={''} />
         <meta name="darkreader-lock" />
         <title>Briefkasten</title>
-        <Analytics />
       </Head>
     </>
   )
