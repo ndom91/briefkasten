@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import Analytics from "./analytics"
+import Analytics from './analytics'
 
 const Meta = () => {
   return (
