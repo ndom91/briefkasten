@@ -1,25 +1,7 @@
 import Head from 'next/head'
-import { usePathname, useSearchParams } from 'next/navigation'
-import * as Swetrix from 'swetrix'
+import Analytics from "./analytics"
 
 const Meta = () => {
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
-
-  if (window.location.host === 'briefkastenhq.com') {
-    Swetrix.init(process.env.NEXT_PUBLIC_SWETRIX_PROJECT, {
-      apiURL: process.env.NEXT_PUBLIC_SWETRIX_API_HOST,
-    })
-    let url = pathname
-    if (searchParams.toString() !== '') {
-      url += `?${searchParams.toString()}`
-    }
-
-    if (typeof document !== 'undefined') {
-      Swetrix.trackPageview(url)
-    }
-  }
-
   return (
     <>
       <Head>
@@ -64,6 +46,7 @@ const Meta = () => {
         <meta name="twitter:image" content={''} />
         <meta name="darkreader-lock" />
         <title>Briefkasten</title>
+        <Analytics />
       </Head>
     </>
   )
