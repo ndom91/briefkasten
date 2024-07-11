@@ -1,7 +1,6 @@
 import Head from 'next/head'
-import Script from 'next/script'
-import { usePathname, useSearchParams } from "next/navigation"
-import * as Swetrix from "swetrix"
+import { usePathname, useSearchParams } from 'next/navigation'
+import * as Swetrix from 'swetrix'
 
 const Meta = () => {
   const pathname = usePathname()
@@ -12,11 +11,11 @@ const Meta = () => {
       apiURL: process.env.NEXT_PUBLIC_SWETRIX_API_HOST,
     })
     let url = pathname
-    if (searchParams.toString() !== "") {
+    if (searchParams.toString() !== '') {
       url += `?${searchParams.toString()}`
     }
 
-    if (typeof document !== "undefined") {
+    if (typeof document !== 'undefined') {
       Swetrix.trackPageview(url)
     }
   }
