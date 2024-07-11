@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import * as Swetrix from 'swetrix'
 import { useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 
