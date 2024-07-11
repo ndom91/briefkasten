@@ -7,10 +7,7 @@ import { usePathname } from 'next/navigation'
 function SwetrixComponent() {
   const pathname = usePathname()
 
-  if (
-    typeof window !== 'undefined' &&
-    window.location.host === 'briefkastenhq.com'
-  ) {
+  if (window.location.host === 'briefkastenhq.com') {
     Swetrix.init(process.env.NEXT_PUBLIC_SWETRIX_PROJECT, {
       apiURL: process.env.NEXT_PUBLIC_SWETRIX_API_HOST,
     })
