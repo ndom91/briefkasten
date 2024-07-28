@@ -1,21 +1,7 @@
 import Head from 'next/head'
-import * as Swetrix from 'swetrix'
-import { useEffect } from 'react'
-import { usePathname } from 'next/navigation'
+import Script from 'next/script'
 
 const Meta = () => {
-  const pathname = usePathname()
-
-  useEffect(() => {
-    if (window.location.host === 'briefkastenhq.com') {
-      Swetrix.init(process.env.NEXT_PUBLIC_SWETRIX_PROJECT, {
-        apiURL: process.env.NEXT_PUBLIC_SWETRIX_API_HOST,
-      })
-      let url = pathname
-      Swetrix.trackPageview(url)
-    }
-  }, [pathname])
-
   return (
     <>
       <Head>
@@ -61,6 +47,11 @@ const Meta = () => {
         <meta name="darkreader-lock" />
         <title>Briefkasten</title>
       </Head>
+      {process.env.NODE_ENV === 'production' &&
+        typeof window !== 'undefined' &&
+        window.location.host === 'briefkastenhq.com' && (
+          <Script src="/p.js" data-domain="briefkastenhq.com" data-api="/a/e" />
+        )}
     </>
   )
 }
