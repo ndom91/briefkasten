@@ -16,8 +16,9 @@
     "start": "next start",
     "lint": "next lint",
     "clean": "rm -rf .next node_modules",
-    "db:push": "npx prisma db push",
-    "db:studio": "npx prisma studio"
+    "db:push": "pnpm exec prisma db push",
+    "db:generate": "pnpm exec prisma generate",
+    "db:studio": "pnpm exec prisma studio"
   },
   "packageManager": "pnpm@9.5.0",
   "dependencies": {
