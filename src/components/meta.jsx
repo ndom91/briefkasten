@@ -50,7 +50,7 @@ const Meta = () => {
       {process.env.NODE_ENV === 'production' &&
         typeof window !== 'undefined' &&
         window.location.host === 'briefkastenhq.com' && (
-          <Script src="/p.js" data-domain="briefkastenhq.com" data-api="/a/e" />
+          <Script src="r.js" data-site-id="3" defer></Script>
         )}
     </>
   )
