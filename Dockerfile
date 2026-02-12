@@ -1,4 +1,4 @@
-FROM node:18-bookworm-slim as dependencies
+FROM node:20.20-bookworm-slim as dependencies
 
 LABEL org.opencontainers.image.title="Briefkasten" \
   org.opencontainers.image.description="Modern Bookmarking Application" \
@@ -29,7 +29,7 @@ COPY package.json pnpm-lock.yaml prisma ./
 RUN pnpm install --frozen-lockfile
 
 # ---- Build ----
-FROM node:18-bookworm-slim as build
+FROM node:20.20-bookworm-slim as build
 WORKDIR /app
 
 # Install pnpm
