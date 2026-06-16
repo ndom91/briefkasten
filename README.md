@@ -1,14 +1,13 @@
 # 📬 Briefkasten v2
 
-![GitHub issues](https://img.shields.io/github/issues/ndom91/sveltekasten?style=for-the-badge&labelColor=black&color=black)
-![GitHub](https://img.shields.io/github/license/ndom91/sveltekasten?style=for-the-badge&labelColor=black&color=black)
+![GitHub issues](https://img.shields.io/github/last-commit/ndom91/briefkasten?style=for-the-badge&labelColor=black&color=black)
+![GitHub](https://img.shields.io/github/license/ndom91/briefkasten?style=for-the-badge&labelColor=black&color=black)
 [![Demo](https://img.shields.io/badge/demo-click%20here-brightgreen?style=for-the-badge&labelColor=black&color=black)](https://dev.briefkastenhq.com)
 
-<h3 align="center"> <pre>  <br>   🚧 Experimental Svelte rewrite of Briefkasten 🚧   <br>  </pre> </h3>
-
-### Links: [Beta Instance](https://dev.briefkastenhq.com) | [Docs](https://docs.briefkastenhq.com)
 > [!NOTE]
-> This is the **temporary** repository for **Briefkasten V2**. I will move this code to the original `ndom91/briefkasten` repository as we get closer to GA release. However, if you'd like to help out, don't hesitate to file issues here, etc. For more info, check out this [discussion post](https://github.com/ndom91/briefkasten/discussions/65).
+> This is **Briefkasten v2**, a complete rewrite in SvelteKit. The previous version (v1) is available on the [`v1` branch](https://github.com/ndom91/briefkasten/tree/v1).
+
+### Links: [Instance](https://briefkastenhq.com) | [Docs](https://docs.briefkastenhq.com)
 
 ## 🚀 Getting Started
 
@@ -17,7 +16,7 @@ This is setup as a monorepo with **(1)** `apps/web` being a SvelteKit web applic
 1. Clone the repository
 
 ```sh
-$ git clone git@github.com:ndom91/sveltekasten.git && cd sveltekasten
+$ git clone git@github.com:ndom91/briefkasten.git && cd briefkasten
 ```
 
 2. Install dependencies
@@ -79,8 +78,6 @@ docker compose -f docker-compose.local-dev.yml up -d
 ## 👷 Contributing
 
 This project is open to all contributions. Please stick to the repo settings and I'll be happy to take a look at your issue / PR!
-
-**Note that this repository will be nuked relatively soon and all code will be moved to the main `ndom91/briefkasten` repository**
 
 ## 📝 License
 
