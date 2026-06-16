@@ -34,7 +34,7 @@ $ cd apps/web && cp .env.example .env
 $ cd apps/backend && cp .env.example .env
 ```
 
-In these environment variable files, make sure to at least fill in the `DATABASE_URL`, `AUTH_SECRET`, `JWT_SECRET`, `WORKER_URL` and one [Auth.js](https://authjs.dev) authentication provider, so for example `AUTH_GITHUB_ID`, `AUTH_GITHUB_SECRET`. The rest of the environment variables depend on the services / features you want to use.
+In these environment variable files, make sure to at least fill in the `DATABASE_URL`, `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`, `PUBLIC_WORKER_URL` and one [Better Auth](https://www.better-auth.com) authentication provider, so for example `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`. The rest of the environment variables depend on the services / features you want to use.
 
 4. Start the server!
 
@@ -55,7 +55,7 @@ $ pnpm start
 You can run the entire stack yourself via Docker, there are multiple variants depending on if you want to self-host everything or want to rely on some cloud services.
 
 - `docker-compose.yml` - Containers for the frontend and backend components of the application
-- `docker-compose.storage.yml` - Additional `postgres` and `minio` containers for a database and object storage. You can skip this container if you want to use a hosted database provider and an S3-compatible object storage provider, for example.
+- `docker-compose.storage.yml` - Additional `postgres` and `rustfs` containers for a database and S3-compatible object storage. You can skip these if you want to use a hosted database provider and an object storage provider, for example.
 
 1. Run web and backend in the background
 
