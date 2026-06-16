@@ -1,0 +1,222 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@import "open-props/shadows" layer(base);
+@import "open-props/easings" layer(base);
+@import "open-props/animations" layer(base);
+
+:root {
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Typography */
+  --font-sans: "GT America", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji";
+
+  /* Border radius */
+  --radius-sm: calc(0.5rem - 4px);
+  --radius-md: calc(0.5rem - 2px);
+  --radius-lg: 0.5rem;
+}
+
+@layer base {
+  @font-face {
+    font-family: "GT America";
+    font-style: normal;
+    font-weight: 800;
+    src: url("/fonts/GT-America-Standard-Black.woff2") format("woff2");
+  }
+
+  @font-face {
+    font-family: "GT America";
+    font-style: normal;
+    font-weight: 700;
+    src: url("/fonts/GT-America-Standard-Bold.woff2") format("woff2");
+  }
+
+  @font-face {
+    font-family: "GT America";
+    font-style: normal;
+    font-weight: 500;
+    src: url("/fonts/GT-America-Standard-Medium.woff2") format("woff2");
+  }
+
+  @font-face {
+    font-family: "GT America";
+    font-style: normal;
+    font-weight: 400;
+    src: url("/fonts/GT-America-Standard-Regular.woff2") format("woff2");
+  }
+
+  @font-face {
+    font-family: "GT America";
+    font-style: normal;
+    font-weight: 300;
+    src: url("/fonts/GT-America-Standard-Light.woff2") format("woff2");
+  }
+
+  @font-face {
+    font-family: "GT America";
+    font-style: normal;
+    font-weight: 200;
+    src: url("/fonts/GT-America-Standard-Thin.woff2") format("woff2");
+  }
+
+  * {
+    @apply border-border
+  }
+
+  body {
+    @apply bg-background text-foreground
+  }
+
+  :where(a[href], button, [role="button"], summary):not(:disabled):not([aria-disabled="true"]) {
+    cursor: pointer;
+  }
+}
+
+/* 2024 Reset */
+@supports (field-sizing: content) {
+  textarea {
+    field-sizing: content;
+  }
+}
+
+h1,
+h2,
+h3,
+h4 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 16px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  transition: all 250ms ease-in-out;
+  cursor: pointer;
+  background-clip: content-box;
+  background-color: #8888883b;
+  border: 5px solid transparent;
+  border-radius: 20px;
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+  background-color: #3c3b3b3b;
+}
+
+::-webkit-scrollbar-button {
+  display: none !important;
+  background: transparent;
+  color: transparent;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+  display: none !important;
+}
+
+/* RSS Feed Content */
+.prose iframe {
+  @apply relative! aspect-video! max-w-(--breakpoint-md)!;
+}
+
+::view-transition {
+  pointer-events: none;
+}

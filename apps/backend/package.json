@@ -1,0 +1,50 @@
+{
+  "name": "sveltekasten-backend",
+  "version": "0.0.1",
+  "license": "MIT",
+  "type": "module",
+  "author": "ndom91 <yo@ndo.dev>",
+  "scripts": {
+    "dev": "DEBUG=backend:* tsx watch --env-file=.env src/index.ts",
+    "dev:bun": "bun --bun --watch run src/index.ts",
+    "build:bun": "bun clean && tsc",
+    "build": "pnpm clean && tsc",
+    "clean": "rm -rf dist",
+    "start:bun": "bun --bun dist/index.js",
+    "start": "node --env-file=.env dist/index.js",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:studio": "prisma studio",
+    "db:generate": "prisma generate"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.1068.0",
+    "@formkit/tempo": "^0.1.2",
+    "@hono/node-server": "^2.0.4",
+    "@hono/zod-validator": "^0.8.0",
+    "@prisma/adapter-pg": "^7.8.0",
+    "@prisma/client": "7.8.0",
+    "@rowanmanning/feed-parser": "^2.1.1",
+    "better-auth": "1.6.18",
+    "croner": "^9.1.0",
+    "debug": "^4.4.3",
+    "fastq": "^1.19.1",
+    "hono": "^4.12.25",
+    "hono-rate-limiter": "^0.4.2",
+    "ipx": "^3.1.1",
+    "lru-cache": "^11.2.2",
+    "playwright-chromium": "^1.60.0",
+    "rss-parser": "^3.13.0",
+    "sharp": "^0.34.4",
+    "thumbhash": "^0.1.1",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/debug": "^4.1.12",
+    "@types/node": "^24.9.1",
+    "@types/xml2js": "^0.4.14",
+    "prisma": "7.8.0",
+    "prisma-zod-generator": "2.1.4",
+    "tsx": "^4.22.4"
+  }
+}

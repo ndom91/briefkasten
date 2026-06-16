@@ -1,97 +1,86 @@
-FROM node:18-bookworm-slim as dependencies
+###########################
+#     BASE CONTAINER      #
+###########################
+FROM node:24-bookworm-slim AS base
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
 
-LABEL org.opencontainers.image.title="Briefkasten" \
-  org.opencontainers.image.description="Modern Bookmarking Application" \
-  org.opencontainers.image.authors="Nico Domino <yo@ndo.dev>" \
-  org.opencontainers.image.url="https://briefkastenhq.com" \
-  org.opencontainers.image.documentation="https://docs.briefkastenhq.com" \
-  org.opencontainers.image.source="https://github.com/ndom91/briefkasten" \
-  org.opencontainers.image.version="0.1.0" \
-  org.opencontainers.image.licenses="MIT"
+# Enable pnpm
+RUN corepack enable
 
-# ---- Dependencies ----
+###########################
+#    BUILDER CONTAINER    #
+###########################
+FROM base AS build
+COPY . /app
 WORKDIR /app
 
-# Install pnpm
-RUN npm install -g pnpm; \
-  pnpm --version; \
-  pnpm setup; \
-  mkdir -p /usr/local/share/pnpm &&\
-  export PNPM_HOME="/usr/local/share/pnpm" &&\
-  export PATH="$PNPM_HOME:$PATH";
+RUN mkdir -p /prod/web \
+  && mkdir -p /prod/backend
+ 
+# Install openssl for prisma
+RUN apt-get update -qq \
+  && apt-get install -y openssl git
 
-RUN apt-get update && apt-get install -y python3 make g++
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 
-# Copy package and lockfile
-COPY package.json pnpm-lock.yaml prisma ./
+# Generate prisma client
+RUN cd apps/backend && pnpm exec prisma generate
+RUN cd apps/web && pnpm exec prisma generate
 
-# install dependencies
-RUN pnpm install --frozen-lockfile
+RUN pnpm run -r build \
+  && pnpm deploy --legacy --filter=sveltekasten-web --prod /prod/web \
+  && pnpm deploy --legacy --filter=sveltekasten-backend --prod /prod/backend
 
-# ---- Build ----
-FROM node:18-bookworm-slim as build
-WORKDIR /app
-
-# Install pnpm
-# @TODO: Copy from 'dependencies'
-RUN npm install -g pnpm; \
-  pnpm --version; \
-  pnpm setup; \
-  mkdir -p /usr/local/share/pnpm &&\
-  export PNPM_HOME="/usr/local/share/pnpm" &&\
-  export PATH="$PNPM_HOME:$PATH";
-
-# copy all dependencies
-COPY --from=dependencies /app/node_modules ./node_modules
-COPY . .
-
-# openssl for prisma generate
-RUN apt-get update && apt-get install -y openssl
-
-# build project
-RUN pnpm dlx prisma generate
-RUN pnpm build
-
-# ---- Release ----
-FROM node:18-bookworm-slim as release
-WORKDIR /app
-
-# openssl for prisma
-RUN apt-get update && apt-get install -y openssl
-
-# Install pnpm
-# @TODO: Copy from 'build'
-RUN npm install -g pnpm; \
-  pnpm --version; \
-  pnpm setup; \
-  mkdir -p /usr/local/share/pnpm &&\
-  export PNPM_HOME="/usr/local/share/pnpm" &&\
-  export PATH="$PNPM_HOME:$PATH";
+###########################
+#      WEB CONTAINER      #
+###########################
+FROM base AS web
 
 ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
+ 
+# Install openssl for prisma
+RUN apt-get update -qq \
+  && apt-get install -y openssl
 
-RUN pnpm setup;\
-  addgroup --system --gid 1001 nodejs;\
-  adduser --system --uid 1001 nextjs
+COPY --chown=node:node --from=build /prod/web /prod/web
 
-# copy build
-COPY --from=build --chown=nextjs:nodejs /app/next.config.mjs ./
-COPY --from=build --chown=nextjs:nodejs /app/.next ./.next
-COPY --from=build --chown=nextjs:nodejs /app/public ./public
-COPY --from=build --chown=nextjs:nodejs /app/prisma ./prisma
-COPY --from=build --chown=nextjs:nodejs /app/package.json ./package.json
-COPY --from=build --chown=nextjs:nodejs /app/node_modules ./node_modules
+# No prisma generate here: the build stage already generated the client (with
+# engineType = "client", Rust-free) and vite bundled it into build/. The prod
+# deploy excludes devDeps (prisma + prisma-zod-generator), so regenerating here
+# would fail ("prisma-zod-generator: not found") and is unnecessary.
 
-# dont run as root
-USER nextjs
+WORKDIR /prod/web
+EXPOSE ${PORT:-3000}
+# Run node directly, not `pnpm start`: pnpm would run a deps-status check that
+# reinstalls + triggers the `prepare` (svelte-kit sync) script, which needs
+# devDeps (vite) and git that aren't in the prod image. Env is injected by
+# compose `env_file:`.
+CMD [ "node", "build/index.js" ]
 
-# expose and set port number to 3000
-EXPOSE 3000
-ENV PORT 3000
+###########################
+#    BACKEND CONTAINER    #
+###########################
+FROM base AS backend
 
-# enable run as production
-ENV NODE_ENV=production
+ENV NODE_ENV production
 
-# start app
-CMD ["pnpm", "start"]
+# Install openssl for prisma
+RUN apt-get update -qq \
+  && apt-get install -y openssl
+
+COPY --chown=node:node --from=build /prod/backend /prod/backend
+
+# Install the Playwright browser the backend needs at runtime.
+# Call the binary directly, NOT via `pnpm exec` - `pnpm exec` runs a deps-status
+# check that re-installs in /prod/backend (re-pulling devDeps and failing on
+# ERR_PNPM_IGNORED_BUILDS, since the allowBuilds config lives in the workspace
+# root which isn't part of the deployed single package).
+RUN cd /prod/backend \
+  && node_modules/.bin/playwright install --with-deps chromium
+
+WORKDIR /prod/backend
+EXPOSE ${PORT:-8000}
+# Run node directly, not `pnpm start` (avoids pnpm's runtime deps-status check /
+# reinstall). Env is injected by compose `env_file:`.
+CMD [ "node", "dist/index.js" ]

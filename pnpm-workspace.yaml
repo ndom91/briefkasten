@@ -1,0 +1,17 @@
+resolutionMode: highest
+packages:
+  - apps/*
+onlyBuiltDependencies:
+  - esbuild
+overrides:
+  typebox: 1.2.9
+allowBuilds:
+  '@parcel/watcher': true
+  '@prisma/engines': true
+  esbuild: true
+  playwright-chromium: true
+  prisma: true
+  prisma-zod-generator: true
+  protobufjs: true
+  re2: true
+  sharp: true

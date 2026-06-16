@@ -1,27 +1,31 @@
-version: '3.8'
-
 services:
-  postgres:
-    container_name: bk-postgres
-    image: postgres
+  sveltekasten-web:
+    build:
+      context: .
+      tags:
+        - web:latest
+      target: web
     restart: unless-stopped
-    environment:
-      - POSTGRES_USER=bkAdmin
-      - POSTGRES_PASSWORD=briefkasten
-      - POSTGRES_DB=briefkasten
+    networks:
+      - briefkasten
     ports:
-      - 5432:5432
-    volumes:
-      - briefkasten-db:/var/lib/postgresql/data
-  app:
-    container_name: bk-app
-    build: .
-    env_file:
-      - .env
+      - ${PORT:-3000}:${PORT:-3000}
+    env_file: ./apps/web/.env
+  sveltekasten-backend:
+    build:
+      context: .
+      tags:
+        - backend:latest
+      target: backend
+    networks:
+      - briefkasten
+    ports:
+      - ${PORT:-8000}:${PORT:-8000}
     restart: unless-stopped
-    ports:
-      - 3000:3000
-    depends_on:
-      - 'postgres'
+    env_file: apps/backend/.env
+
 volumes:
-  briefkasten-db:
+  database:
+
+networks:
+  briefkasten:

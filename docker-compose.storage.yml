@@ -1,0 +1,44 @@
+services:
+  rustfs:
+    image: rustfs/rustfs:1.0.0-alpha.89
+    command: server /data
+    networks:
+      - briefkasten
+    ports:
+      - 9000:9000
+      - 9001:9001
+    environment:
+      - RUSTFS_VOLUMES=/data
+      - RUSTFS_ADDRESS=0.0.0.0:9000
+      - RUSTFS_CONSOLE_ADDRESS=0.0.0.0:9001
+      - RUSTFS_CONSOLE_ENABLE=true
+      - RUSTFS_ACCESS_KEY=${BUCKET_ACCESS_KEY:-AKIAIOSFODNN7EXAMPLE}
+      - RUSTFS_SECRET_KEY=${BUCKET_SECRET_KEY:-wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY}
+    volumes:
+      # RustFS runs as UID/GID 10001. A named volume inherits the image's /data
+      # ownership (10001), avoiding the permission-denied a host bind-mount hits.
+      - rustfs:/data
+  database:
+    image: postgres:18
+    networks:
+      - briefkasten
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+      - POSTGRES_DB=${POSTGRES_DB:-briefkasten}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    volumes:
+      # Postgres 18+ images store data in a version-specific subdirectory, so the
+      # mount must be at /var/lib/postgresql (not /var/lib/postgresql/data).
+      - database:/var/lib/postgresql
+
+volumes:
+  database:
+  rustfs:
+
+networks:
+  briefkasten:

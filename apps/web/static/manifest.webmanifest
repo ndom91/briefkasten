@@ -1,0 +1,100 @@
+{
+  "id": "briefkasten-0bce43d",
+  "name": "Briefkasten",
+  "lang": "en_US",
+  "short_name": "Briefkasten",
+  "description": "Bookmarks, RSS Feeds, and more!",
+  "orientation": "portrait",
+  "theme_color": "#171717",
+  "background_color": "#171717",
+  "display": "standalone",
+  "display_override": [
+    "window-controls-overlay"
+  ],
+  "start_url": "/",
+  "share_target": {
+    "action": "/api/v1/bookmarks/share",
+    "method": "POST",
+    "enctype": "application/x-www-form-urlencoded",
+    "params": {
+      "title": "name",
+      "text": "text",
+      "url": "link"
+    }
+  },
+  "icons": [
+    {
+      "src": "favicon/pwa-64x64.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    },
+    {
+      "src": "favicon/pwa-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "favicon/pwa-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "favicon/maskable-icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "New Item",
+      "short_name": "New Item",
+      "icons": [
+        {
+          "src": "img/quickAdd.svg",
+          "sizes": "96x96",
+          "type": "image/svg+xml"
+        }
+      ],
+      "url": "/bookmarks?quickAdd=true"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshots/0_menu.webp",
+      "sizes": "470x1010",
+      "type": "image/webp",
+      "form_factor": "narrow",
+      "label": "Menu"
+    },
+    {
+      "src": "screenshots/1_dashboard.webp",
+      "sizes": "470x1010",
+      "type": "image/webp",
+      "form_factor": "narrow",
+      "label": "Dashboard"
+    },
+    {
+      "src": "screenshots/2_feed.webp",
+      "sizes": "470x1010",
+      "type": "image/webp",
+      "form_factor": "narrow",
+      "label": "Feed"
+    },
+    {
+      "src": "screenshots/app0-dark.png",
+      "sizes": "1720x1250",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Dashboard"
+    },
+    {
+      "src": "screenshots/app1-feed.png",
+      "sizes": "1720x1250",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Feed"
+    }
+  ]
+}

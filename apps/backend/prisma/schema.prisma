@@ -1,0 +1,220 @@
+generator client {
+  provider        = "prisma-client"
+  previewFeatures = ["fullTextSearchPostgres"]
+  output          = "../src/prisma-client"
+  // Rust-free client engine - required with driver adapters (PrismaPg).
+  // Without it the runtime loads the node-api engine and panics with
+  // "missing field enableTracing".
+  engineType      = "client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+generator zod {
+  provider   = "prisma-zod-generator"
+  pureModels = true
+}
+
+model Account {
+  id                    String   @id @default(cuid())
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
+}
+
+model User {
+  id                String           @id @default(cuid())
+  name             String
+  email            String
+  emailVerified    Boolean     @default(false)
+  image            String?
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+  twoFactorEnabled Boolean?    @default(false)
+  username         String?
+  displayUsername  String?
+  settings         Json?       @default("{}")
+
+  twofactors    TwoFactor[]
+  accounts      Account[]
+  sessions      Session[]
+  bookmarks     Bookmark[]
+  tags          Tag[]
+  feeds         Feed[]
+  feedEntries   FeedEntry[]
+  feedMedia     FeedEntryMedia[]
+  categories    Category[]
+
+  @@unique([email])
+  @@unique([username])
+  @@map("user")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  expiresAt DateTime
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([token])
+  @@unique([token])
+  @@map("session")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}
+
+model TwoFactor {
+  id          String @id
+  secret      String
+  backupCodes String
+  userId      String
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("twoFactor")
+}
+
+model Bookmark {
+  id         String            @id @default(cuid())
+  title      String?
+  url        String
+  image      String?           @db.Text
+  imageBlur  String?           @db.Text
+  desc       String?           @db.Text
+  category   Category?         @relation(fields: [categoryId], references: [id], onDelete: SetNull, onUpdate: Cascade)
+  categoryId String?
+  metadata   Json?
+  archived   Boolean           @default(false)
+  tags       TagsOnBookmarks[]
+  user       User?             @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId     String
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
+
+  @@unique([url, userId])
+  @@index([userId])
+}
+
+model TagsOnBookmarks {
+  bookmarkId String
+  bookmark   Bookmark @relation(fields: [bookmarkId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  tagId      String
+  tag        Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@id([bookmarkId, tagId])
+}
+
+model Tag {
+  id        String            @id @default(cuid())
+  name      String
+  bookmarks TagsOnBookmarks[]
+  user      User?             @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId    String
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+
+  @@unique([name, userId])
+  @@index([userId])
+}
+
+model Category {
+  id          String     @id @default(cuid())
+  name        String
+  description String?
+  bookmarks   Bookmark[]
+  user        User?      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId      String
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@unique([name, userId])
+  @@index([userId])
+}
+
+model Feed {
+  id          String      @id @default(cuid())
+  name        String
+  url         String
+  description String?
+  language    String?
+  copyright   String?
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId      String
+  lastFetched DateTime?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  feedEntries FeedEntry[]
+
+  @@unique([url, userId])
+  @@index([userId])
+}
+
+model FeedEntry {
+  id             String           @id @default(cuid())
+  guid           String?
+  title          String
+  link           String
+  content        String?
+  contentSnippet String?
+  author         String?
+  ingested       DateTime?
+  published      DateTime?
+  unread         Boolean          @default(true)
+  categories     String[]
+  feed           Feed             @relation(fields: [feedId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  feedId         String
+  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId         String
+  feedMedia      FeedEntryMedia[]
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  @@index([guid])
+  @@index([userId])
+  @@index([feedId])
+}
+
+model FeedEntryMedia {
+  id          String    @id @default(cuid())
+  href        String
+  title       String?
+  feedEntry   FeedEntry @relation(fields: [feedEntryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  feedEntryId String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId      String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([feedEntryId])
+}

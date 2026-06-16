@@ -1,0 +1,20 @@
+version: "3.8"
+services:
+  sveltekasten-web:
+    extends:
+      file: docker-compose.yml
+      service: sveltekasten-web
+    volumes:
+      - type: bind
+        source: ./apps/web
+        target: /prod/web
+        read_only: true
+  sveltekasten-backend:
+    extends:
+      file: docker-compose.yml
+      service: sveltekasten-backend
+    volumes:
+      - type: bind
+        source: ./apps/backend
+        target: /prod/backend
+        read_only: true

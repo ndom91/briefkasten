@@ -1,76 +1,23 @@
-# 📮 Briefkasten
+# 📬 Briefkasten v2
 
-![GitHub deployments](https://img.shields.io/github/deployments/ndom91/briefkasten/production?label=ci%2Fcd&style=flat-square)
-![GitHub issues](https://img.shields.io/github/issues/ndom91/briefkasten?style=flat-square)
-![Checkly](https://api.checklyhq.com/v1/badges/checks/9c682653-d7de-4e32-8183-73d76631b0e2?style=flat-square&responseTime=false)
-![GitHub](https://img.shields.io/github/license/ndom91/briefkasten?style=flat-square)
-[![Demo](https://img.shields.io/badge/demo-click%20here-brightgreen?style=flat-square)](https://briefkastenhq.com)
+![GitHub issues](https://img.shields.io/github/issues/ndom91/sveltekasten?style=for-the-badge&labelColor=black&color=black)
+![GitHub](https://img.shields.io/github/license/ndom91/sveltekasten?style=for-the-badge&labelColor=black&color=black)
+[![Demo](https://img.shields.io/badge/demo-click%20here-brightgreen?style=for-the-badge&labelColor=black&color=black)](https://dev.briefkastenhq.com)
 
-> **Briefkasten** (EN: Mailbox) - am Haus- oder Wohnungseingang angebrachter Behälter für die dem Empfänger zugestellten [Post]sendungen
+<h3 align="center"> <pre>  <br>   🚧 Experimental Svelte rewrite of Briefkasten 🚧   <br>  </pre> </h3>
 
-Self-hosted bookmarking application. Works with any Prisma compatible database (MySQL, Postgres, SQLite, etc.)
-
-> [!WARNING]
-> **Briefkasten v2 is currently available in beta at https://dev.briefkastenhq.com**
-> 
-> After the beta period, **the database will be dropped**, so that we can migrate all existing data from the current (v1) `briefkastenhq.com` over to the new version. I'm working on [the new docs](https://docs.briefkastenhq.com) already, but the v1 docs are of course [still available](https://v1.docs.briefkastenhq.com). If you find any bugs, or otherwise want to help, you can contribute at [`ndom91/sveltekasten`](https://github.com/ndom91/sveltekasten) or [`ndom91/briefkasten-docs`](https://github.com/ndom91/briefkasten-docs).
-
-### Free Instance: [briefkastenhq.com](https://briefkastenhq.com) [[Docs](https://docs.briefkastenhq.com)]
-
-## 📸 Screenshots
-
-<table>
-<tr>
-  <td>
-    <a href="https://raw.githubusercontent.com/ndom91/briefkasten/main/public/screenshot_app01.png" target="_blank"><img src="public/screenshot_app01.png"></a>
-  </td>
-  <td>
-    <a href="https://raw.githubusercontent.com/ndom91/briefkasten/main/public/screenshot_app05.png" target="_blank"><img src="public/screenshot_app05.png"></a>
-  </td>
-</tr>
-<tr>
-  <td>
-    <a href="https://raw.githubusercontent.com/ndom91/briefkasten/main/public/screenshot_app06.png" target="_blank"><img src="public/screenshot_app06.png"></a>
-  </td>
-  <td>
-    <a href="https://raw.githubusercontent.com/ndom91/briefkasten/main/public/screenshot_app04.png" target="_blank"><img src="public/screenshot_app04.png"></a>
-  </td>
-</tr>
-</table>
-
-## 🎩 Features
-
-- Save by [Browser Extension](https://github.com/ndom91/briefkasten-extension)
-- Automatic title and description extraction
-- Drag-and-drop URLs on page to save
-- Keyboard shortcuts
-- Organise by categories and tags
-- Import and export bookmarks from standard HTML format
-- Bookmark image fetching [background job](https://github.com/ndom91/briefkasten-scrape)
-- Multiple views
-- Fulltext search
-- REST API
-- OAuth + Email magic link login
-
-## 🧺 Prerequisites
-
-To self-host this application, you'll need the following thins:
-
-1. Server / hosting platform for a Next.js application (i.e. Vercel / Netlify)
-2. For OAuth login, a developer account at any one of the [providers](https://next-auth.js.org/providers) supported by [NextAuth.js](https://github.com/nextauthjs/next-auth)
-3. Database that works with Prisma (i.e. MySQL, Postgres, SQLite, etc.)
-4. Image hosting space (i.e. Supabase / ImageKit / Cloudinary) (**optional**)
-
-These are all relatively straight forward, other than the image hoster. This was chosen to avoid putting the images in the database. The example application at [briefkastenhq.com](https://briefkastenhq.com) is using [Supabase Storage](https://supabase.com), but any other similar provider like Cloudinary or a simple S3 Bucket would also do the job. I chose Supabase, because they have an easy to use SDK, a decent free tier, and I was already using their Postgres service.
-
-After you've got an account setup at all of the above providers, or have your own infrastructure ready to go, you can continue on to the next steps below.
+### Links: [Beta Instance](https://dev.briefkastenhq.com) | [Docs](https://docs.briefkastenhq.com)
+> [!NOTE]
+> This is the **temporary** repository for **Briefkasten V2**. I will move this code to the original `ndom91/briefkasten` repository as we get closer to GA release. However, if you'd like to help out, don't hesitate to file issues here, etc. For more info, check out this [discussion post](https://github.com/ndom91/briefkasten/discussions/65).
 
 ## 🚀 Getting Started
+
+This is setup as a monorepo with **(1)** `apps/web` being a SvelteKit web application and **(2)** `apps/backend` being a Hono-based API. There are npm scripts in the root `package.json` to control most things.
 
 1. Clone the repository
 
 ```sh
-$ git clone git@github.com:ndom91/briefkasten.git && cd briefkasten
+$ git clone git@github.com:ndom91/sveltekasten.git && cd sveltekasten
 ```
 
 2. Install dependencies
@@ -79,19 +26,21 @@ $ git clone git@github.com:ndom91/briefkasten.git && cd briefkasten
 $ pnpm install
 ```
 
-3. Copy the `.env.example` file to `.env`, and open it with your favorite text editor to fill in your environment variables.
+This will install the dependencies for both apps.
+
+3. Both `web` and `backend` need separate `.env` files. Copy both `/apps/{web,backend}/.env.example` files to `.env`, and open them with your favorite text editor to fill in your environment variables.
 
 ```sh
-$ cp .env.example .env
-$ vim .env
+$ cd apps/web && cp .env.example .env
+$ cd apps/backend && cp .env.example .env
 ```
 
-In this environment variables file, make sure to at least fill in the `DATABASE_URL`, `NEXTAUTH_URL` and `NEXTAUTH_SECRET`. The rest of the environment variables depend on the services / features you want to use. For example, Google/Github for OAuth login and/or Supabase for object storage.
+In these environment variable files, make sure to at least fill in the `DATABASE_URL`, `AUTH_SECRET`, `JWT_SECRET`, `WORKER_URL` and one [Auth.js](https://authjs.dev) authentication provider, so for example `AUTH_GITHUB_ID`, `AUTH_GITHUB_SECRET`. The rest of the environment variables depend on the services / features you want to use.
 
 4. Start the server!
 
 ```sh
-// First time only
+// First time only; apply the schema to your database
 $ pnpm db:push
 
 // dev
@@ -102,41 +51,36 @@ $ pnpm build
 $ pnpm start
 ```
 
-## 🐳 Docker
+## 🐋 Docker
 
-You can also self-host Briefkasten with Docker. To do so, you must:
+You can run the entire stack yourself via Docker, there are multiple variants depending on if you want to self-host everything or want to rely on some cloud services.
 
-1. Install `docker` and `docker-compose`.
-2. Clone the repository and copy the `.env.example` to `.env` file.
-   1. Here you also need to fill out the `DATABASE_URL` and `NEXTAUTH_*` environment variables at minimum.
-   2. The `DATABASE_URL` for the postgres container should be `DATABASE_URL=postgres://bkAdmin:briefkasten@postgres:5432/briefkasten?sslmode=disable`
-3. Run `docker-compose up -d` in the root of the repository. This will start the application as well as the database for you.
-4. After the initial start, you still have to manually seed the database. This is most easily done through the app container (`bk-app`).
-   1. Run `docker exec -it bk-app /bin/bash` to enter a terminal session inside the container.
-   2. Then run `pnpm db:push` inside the container. This will push the database schema from prisma to the configured database.
-5. Now your application and database should be up and running at the default `http://localhost:3000`
+- `docker-compose.yml` - Containers for the frontend and backend components of the application
+- `docker-compose.storage.yml` - Additional `postgres` and `minio` containers for a database and object storage. You can skip this container if you want to use a hosted database provider and an S3-compatible object storage provider, for example.
 
-More details can be found in the [Docker section](https://docs.briefkastenhq.com/docs/self-hosting.html#docker) of the docs.
+1. Run web and backend in the background
 
-## 🕸 Related
+```sh
+docker compose up -d
+```
 
-<img src="public/screenshot_ext.png" align="right" />
+2. Run web and backend and additional database and object storage containers
 
-### 📲 Save from Android Share Menu
+```sh
+docker compose -f docker-compose.yml -f docker-compose.storage.yml up -d
+```
 
-With this open-source application [HTTP Shortcuts](https://http-shortcuts.rmy.ch/), you can create a "Share Menu" item which executes a `POST` request with dynamic input, i.e. a web page's URL and title. This makes it super easy to share items from your phone to Briefkasten! More information in the [docs](https://docs.briefkastenhq.com/docs/getting-started.html#http-shortcuts-android).
+3. Run web and backend containers with local code mounted in for development
 
-### 🌍 Browser Extension
-
-There is a companion browser extension in the works which you can use to add websites to your vault while browsing the web. It can be found at [`ndom91/briefkasten-extension`](https://github.com/ndom91/briefkasten-extension) and in the [Chrome Extension Store](https://chrome.google.com/webstore/detail/briefkasten-bookmarks/aighkhofochfjejmhjfkgjfpkpgmjlnd). More details in that repository.
-
-### 🧑‍🏭 Screenshot Job
-
-There is also a background job to fill in bookmarks which do not have a valid image. It can be found in the [`ndom91/briefkasten-scrape`](https://github.com/ndom91/briefkasten-scrape) repository. This job runs every 2 hours in a Github Action and processes 10 bookmarks at a time.
+```sh
+docker compose -f docker-compose.local-dev.yml up -d
+```
 
 ## 👷 Contributing
 
-This project is open to any and all contributions! Please stick to the ESLint / Prettier settings and I'll be happy to take a look at your issue / PR 😀
+This project is open to all contributions. Please stick to the repo settings and I'll be happy to take a look at your issue / PR!
+
+**Note that this repository will be nuked relatively soon and all code will be moved to the main `ndom91/briefkasten` repository**
 
 ## 📝 License
 
