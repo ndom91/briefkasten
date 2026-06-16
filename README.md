@@ -4,11 +4,9 @@
 ![GitHub](https://img.shields.io/github/license/ndom91/sveltekasten?style=for-the-badge&labelColor=black&color=black)
 [![Demo](https://img.shields.io/badge/demo-click%20here-brightgreen?style=for-the-badge&labelColor=black&color=black)](https://dev.briefkastenhq.com)
 
-<h3 align="center"> <pre>  <br>   🚧 Experimental Svelte rewrite of Briefkasten 🚧   <br>  </pre> </h3>
-
-### Links: [Beta Instance](https://dev.briefkastenhq.com) | [Docs](https://docs.briefkastenhq.com)
+### Links: [Instance](https://dev.briefkastenhq.com) | [Docs](https://docs.briefkastenhq.com)
 > [!NOTE]
-> This is the **temporary** repository for **Briefkasten V2**. I will move this code to the original `ndom91/briefkasten` repository as we get closer to GA release. However, if you'd like to help out, don't hesitate to file issues here, etc. For more info, check out this [discussion post](https://github.com/ndom91/briefkasten/discussions/65).
+> This is **Briefkasten v2**, a complete rewrite in SvelteKit. The previous version (v1) is available on the [`v1` branch](https://github.com/ndom91/sveltekasten/tree/v1).
 
 ## 🚀 Getting Started
 
@@ -79,8 +77,6 @@ docker compose -f docker-compose.local-dev.yml up -d
 ## 👷 Contributing
 
 This project is open to all contributions. Please stick to the repo settings and I'll be happy to take a look at your issue / PR!
-
-**Note that this repository will be nuked relatively soon and all code will be moved to the main `ndom91/briefkasten` repository**
 
 ## 📝 License
 
