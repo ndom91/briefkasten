@@ -1,13 +1,13 @@
-# 📬 Briefkasten v2
+# 📬 Briefkasten
 
-![GitHub issues](https://img.shields.io/github/last-commit/ndom91/briefkasten?style=for-the-badge&labelColor=black&color=black)
-![GitHub](https://img.shields.io/github/license/ndom91/briefkasten?style=for-the-badge&labelColor=black&color=black)
-[![Demo](https://img.shields.io/badge/demo-click%20here-brightgreen?style=for-the-badge&labelColor=black&color=black)](https://dev.briefkastenhq.com)
+![GitHub](https://img.shields.io/badge/License-MIT-brightgreen?style=for-the-badge&color=black)
+[![Demo](https://img.shields.io/badge/demo-click%20here-brightgreen?style=for-the-badge&color=black)](https://briefkastenhq.com)
+[![Demo](https://img.shields.io/badge/docs-click%20here-brightgreen?style=for-the-badge&color=black)](https://docs.briefkastenhq.com)
 
 > [!NOTE]
 > This is **Briefkasten v2**, a complete rewrite in SvelteKit. The previous version (v1) is available on the [`v1` branch](https://github.com/ndom91/briefkasten/tree/v1).
-
-### Links: [Instance](https://briefkastenhq.com) | [Docs](https://docs.briefkastenhq.com)
+>
+> If you were using the cloud instance, all of your data has been migrated to the new instance available at the same URL as before.
 
 ## 🚀 Getting Started
 
