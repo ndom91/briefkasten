@@ -35,7 +35,7 @@ const mutate = () => {
 $effect(() => {
   // Hack to get effect to run on sidebar toggle
   ui.metadataSidebarOpen
-  document.startViewTransition ? document.startViewTransition(() => mutate()) : mutate()
+  mutate()
 })
 </script>
 

@@ -1,7 +1,6 @@
 <script lang="ts">
 import { onMount, type Snippet, setContext, untrack } from "svelte"
 import { browser, dev } from "$app/environment"
-import { onNavigate } from "$app/navigation"
 import { page } from "$app/state"
 import { CommandBar } from "$lib/components/command-bar"
 import DragAdd from "$lib/components/DragAdd.svelte"
@@ -42,20 +41,6 @@ const ui = useInterface()
 // Set current user preferences to store
 ui.aiFeaturesPreferences = page.data.session?.user?.settings?.ai ?? defaultAISettings
 ui.userSettings = page.data.session?.user?.settings?.personal ?? {}
-
-// Global View transition
-onNavigate((navigation) => {
-  if (!document.startViewTransition) {
-    return
-  }
-
-  return new Promise<void>((resolve) => {
-    document.startViewTransition(async () => {
-      resolve()
-      await navigation.complete
-    })
-  })
-})
 
 onMount(() => {
   if (browser && "serviceWorker" in navigator) {

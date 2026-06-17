@@ -121,7 +121,7 @@ const mutate = () => {
 watch.pre(
   () => cardOpen,
   () => {
-    void (document.startViewTransition ? document.startViewTransition(() => mutate()) : mutate())
+    mutate()
   }
 )
 

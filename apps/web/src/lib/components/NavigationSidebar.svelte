@@ -32,11 +32,7 @@ const mutate = () => {
 watch.pre(
   () => ui.userSidebarOpen,
   () => {
-    if (document.startViewTransition) {
-      document.startViewTransition(() => mutate())
-    } else {
-      mutate()
-    }
+    mutate()
   }
 )
 
