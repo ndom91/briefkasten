@@ -29,12 +29,12 @@ export class BookmarkSearchService {
     this.ready = true
   }
 
-  search(query: string): Bookmark[] {
+  search(query: string, limit = 50): Bookmark[] {
     const trimmed = query.trim()
     if (!trimmed || !this.fuse) {
       return []
     }
-    return this.fuse.search(trimmed).map((result) => result.item)
+    return this.fuse.search(trimmed, { limit }).map((result) => result.item)
   }
 
   add(bookmark: Bookmark) {
