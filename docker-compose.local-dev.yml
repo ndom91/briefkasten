@@ -1,18 +1,18 @@
 version: "3.8"
 services:
-  sveltekasten-web:
+  briefkasten-web:
     extends:
       file: docker-compose.yml
-      service: sveltekasten-web
+      service: briefkasten-web
     volumes:
       - type: bind
         source: ./apps/web
         target: /prod/web
         read_only: true
-  sveltekasten-backend:
+  briefkasten-backend:
     extends:
       file: docker-compose.yml
-      service: sveltekasten-backend
+      service: briefkasten-backend
     volumes:
       - type: bind
         source: ./apps/backend

@@ -1,5 +1,5 @@
 services:
-  sveltekasten-web:
+  briefkasten-web:
     build:
       context: .
       tags:
@@ -11,7 +11,7 @@ services:
     ports:
       - ${PORT:-3000}:${PORT:-3000}
     env_file: ./apps/web/.env
-  sveltekasten-backend:
+  briefkasten-backend:
     build:
       context: .
       tags:
