@@ -290,7 +290,7 @@ const faviconUrl = $derived.by(() => {
         <div class="mb-2 flex flex-col items-start gap-2">
           <h2>Cover Photo</h2>
           <img
-            src={ui.metadataSidebarData.bookmark.image}
+            src={`${PUBLIC_WORKER_URL}/img/_/${ui.metadataSidebarData.bookmark.id}`}
             alt="Bookmark Screenshot"
             class="w-full max-w-sm rounded-md border-2 border-neutral-100 object-cover dark:border-neutral-800"
           />

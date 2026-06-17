@@ -6,7 +6,7 @@ const { item }: { item: LoadBookmarkFlatTags } = $props()
 
 const imageUrl = $derived.by(() => {
   if (item.image) {
-    return `${PUBLIC_WORKER_URL}/img/s_256x144/${item.image}`
+    return `${PUBLIC_WORKER_URL}/img/s_256x144/${item.id}`
   }
 
   return `${PUBLIC_WORKER_URL}/img/_/https://picsum.photos/seed/${btoa(item.url).substring(item.url.length - 32, item.url.length)}/256/144.webp?bookmarkId=${item.id}`

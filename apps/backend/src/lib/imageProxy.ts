@@ -1,7 +1,9 @@
 import type { Context } from "hono"
 import { createIPX, createIPXWebServer, ipxFSStorage, ipxHttpStorage } from "ipx"
 import { LRUCache } from "lru-cache"
+import { db } from "../plugins/prisma.js"
 import {
+  bookmarkIdPattern,
   enqueueScreenshotRepairForBookmarkId,
   enqueueScreenshotRepairsForImageUrls,
   getSourceImageUrlsFromProxyTarget,
@@ -18,6 +20,14 @@ const ipx = createIPX({
 
 const cache = new LRUCache<string, Blob>({
   max: 500,
+})
+
+// Maps bookmarkId -> resolved image URL so repeat image requests skip the DB
+// lookup. Positive-only: a missing image is never cached, so it re-checks until a
+// screenshot exists. The TTL bounds staleness when a row's image URL changes.
+const bookmarkImageCache = new LRUCache<string, string>({
+  max: 2000,
+  ttl: 10 * 60 * 1000,
 })
 
 const shouldRepairImage = (status: number) => status === 404 || status >= 500
@@ -46,7 +56,44 @@ const queueImageRepair = (imageUrls: string[], reason: string) => {
 }
 
 export const imageProxyHandler = async (c: Context) => {
-  const { repairBookmarkId, targetUrl } = getProxyRequest(c.req.raw.url)
+  let { repairBookmarkId, targetUrl } = getProxyRequest(c.req.raw.url)
+
+  // When the trailing path segment is a bookmarkId (not an http(s) URL), resolve it
+  // to the bookmark's stored image URL via DB lookup. This keeps the source URL off
+  // the client and serves both new screenshots and legacy og:image rows.
+  const idMatch = targetUrl.match(/^(https?:\/\/[^/]+\/[^/]+\/)([^/?]+)$/)
+  const maybeBookmarkId = idMatch?.[2]
+  if (maybeBookmarkId && bookmarkIdPattern.test(maybeBookmarkId)) {
+    let image = bookmarkImageCache.get(maybeBookmarkId)
+
+    if (!image) {
+      const bookmark = await db.bookmark.findUnique({
+        where: { id: maybeBookmarkId },
+        select: { id: true, image: true },
+      })
+
+      if (!bookmark?.image) {
+        if (bookmark) {
+          void enqueueScreenshotRepairForBookmarkId(bookmark.id, "missing-image-request").catch(
+            (error) => console.error(error)
+          )
+        }
+        return new Response("Image not found", {
+          status: 404,
+          headers: {
+            "x-image-proxy": "0.0.1",
+            "cache-control": "no-store",
+          },
+        })
+      }
+
+      image = bookmark.image
+      bookmarkImageCache.set(maybeBookmarkId, image)
+    }
+
+    targetUrl = `${idMatch[1]}${image}`
+  }
+
   const sourceImageUrls = getSourceImageUrlsFromProxyTarget(targetUrl)
   const shouldRepairRequest = isSavedImageRequest(targetUrl)
 

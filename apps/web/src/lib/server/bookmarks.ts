@@ -49,15 +49,13 @@ export const createBookmarks = async ({
         }
       }
 
-      const { imageUrl, imageBlur, metadata } = await fetchBookmarkMetadata(bookmark.url)
+      const { metadata } = await fetchBookmarkMetadata(bookmark.url)
       const tagNames = Array.from(new Set(bookmark.tags?.map((tag) => tag.trim()).filter(Boolean)))
 
       return {
         ...bookmark,
         tags: tagNames,
         userId,
-        image: imageUrl,
-        imageBlur,
         desc: bookmark.desc ?? metadata.description,
         title: bookmark.title ?? metadata.title ?? metadata.description,
         metadata,

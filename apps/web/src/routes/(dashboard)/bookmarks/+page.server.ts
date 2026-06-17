@@ -211,8 +211,6 @@ export const actions: Actions = {
         data: {
           url,
           title,
-          image: bookmarkMetadata.imageUrl,
-          imageBlur: bookmarkMetadata.imageBlur,
           desc: description || bookmarkMetadata.metadata.description,
           metadata: bookmarkMetadata.metadata,
           user: {

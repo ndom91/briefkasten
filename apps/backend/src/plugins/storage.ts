@@ -8,7 +8,7 @@ import {
 
 interface UploadImageArgs {
   image: Buffer
-  url: string
+  bookmarkId: string
   userId: string
 }
 
@@ -47,18 +47,15 @@ export const ensureBucket = async () => {
   }
 }
 
-export const uploadImage = async ({ image, url, userId }: UploadImageArgs) => {
-  const urlObj = new URL(url)
-  const cleanFilename = `${urlObj.hostname}${urlObj.pathname.replace(/\/$/, "").replaceAll("/", "_")}`
-
-  const imagePath = `${userId}/${cleanFilename}.png`
+export const uploadImage = async ({ image, bookmarkId, userId }: UploadImageArgs) => {
+  const imagePath = `${userId}/${bookmarkId}.png`
   const putCommand = new PutObjectCommand({
     ACL: "public-read",
     Bucket: bucket,
     Key: imagePath,
     Metadata: {
       userId,
-      url: url.toString(),
+      bookmarkId,
     },
     Body: image,
     ContentType: "image/png",
@@ -67,6 +64,6 @@ export const uploadImage = async ({ image, url, userId }: UploadImageArgs) => {
 
   await client.send(putCommand)
 
-  // i.e. https://dev-img.briefkastenhq.com/cls57rev90000iw28cg9fl2nr%2Fcloudflare.com.png
+  // i.e. https://dev-img.briefkastenhq.com/cls57rev90000iw28cg9fl2nr/clx0abc123def456.png
   return `${process.env.BUCKET_PUBLIC_URL}/${imagePath}`
 }

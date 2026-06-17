@@ -14,8 +14,7 @@ const debug = debugFactory("backend:create-screenshot")
 interface UpdateImageUrlArgs {
   image: Buffer
   imageUrl: string
-  url: string
-  userId: string
+  bookmarkId: string
 }
 
 interface ScreenshotArgs {
@@ -47,18 +46,28 @@ export const createScreenshot = async (data: CreateScreenshot) => {
     return
   }
 
+  // Resolve the bookmark id so the object is keyed by it
+  const bookmark = await db.bookmark.findUnique({
+    where: { url_userId: { url, userId } },
+    select: { id: true },
+  })
+  if (!bookmark) {
+    debug("No bookmark found for screenshot", { url, userId })
+    return
+  }
+
   // Upload image to storage
   const publicImageUrl = await uploadImage({
     image,
-    url,
+    bookmarkId: bookmark.id,
     userId,
   })
 
   // Update bookmark.imageUrl database entry
-  await updateImageUrl({ image, imageUrl: publicImageUrl, url, userId })
+  await updateImageUrl({ image, imageUrl: publicImageUrl, bookmarkId: bookmark.id })
 }
 
-const updateImageUrl = async ({ image, imageUrl, url, userId }: UpdateImageUrlArgs) => {
+const updateImageUrl = async ({ image, imageUrl, bookmarkId }: UpdateImageUrlArgs) => {
   // Generate thumbhash b64 string from image
   const imageBlur = await getThumbhash(image)
 
@@ -68,10 +77,7 @@ const updateImageUrl = async ({ image, imageUrl, url, userId }: UpdateImageUrlAr
       imageBlur,
     },
     where: {
-      url_userId: {
-        url,
-        userId,
-      },
+      id: bookmarkId,
     },
   })
 }

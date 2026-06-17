@@ -1,8 +1,8 @@
 import { LRUCache } from "lru-cache"
-import { actions } from "./constants.js"
-import debugFactory from "./log.js"
 import { db } from "../plugins/prisma.js"
 import { screenshotQueue } from "../plugins/queue.js"
+import { actions } from "./constants.js"
+import debugFactory from "./log.js"
 
 const debug = debugFactory("backend:bookmark-image-repair")
 
@@ -15,7 +15,7 @@ const repairCache = new LRUCache<string, true>({
   ttl: 30 * 60 * 1000,
 })
 
-const bookmarkIdPattern = /^[a-z0-9]{16,40}$/
+export const bookmarkIdPattern = /^[a-z0-9]{16,40}$/
 
 interface BookmarkRepairTarget {
   id: string
