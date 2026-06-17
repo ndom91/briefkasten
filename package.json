@@ -19,7 +19,8 @@
     "check": "biome check --write .",
     "db:generate": "pnpm run --parallel db:generate",
     "db:studio": "pnpm run --filter sveltekasten-web db:studio",
-    "db:push": "pnpm run --filter sveltekasten-web db:push"
+    "db:push": "pnpm run --filter sveltekasten-web db:push",
+    "db:deploy": "pnpm run --filter sveltekasten-web db:deploy"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.0",

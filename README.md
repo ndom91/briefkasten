@@ -39,8 +39,8 @@ In these environment variable files, make sure to at least fill in the `DATABASE
 4. Start the server!
 
 ```sh
-// First time only; apply the schema to your database
-$ pnpm db:push
+// First time only; create the schema by applying the migrations
+$ pnpm db:deploy
 
 // dev
 $ pnpm dev
@@ -49,6 +49,9 @@ $ pnpm dev
 $ pnpm build
 $ pnpm start
 ```
+
+> [!NOTE]
+> `pnpm db:deploy` runs `prisma migrate deploy` against a **fresh** database. If you are upgrading an existing database whose schema already matches (e.g. a previous v2 instance), baseline it instead with `pnpm --filter sveltekasten-web exec prisma migrate resolve --applied 0_init` so the migration is recorded without re-running the DDL. For quick local iteration you can still use `pnpm db:push` to sync `schema.prisma` directly.
 
 ## 🐋 Docker
 
@@ -73,6 +76,23 @@ docker compose -f docker-compose.yml -f docker-compose.storage.yml up -d
 
 ```sh
 docker compose -f docker-compose.local-dev.yml up -d
+```
+
+4. Initialize the database
+
+On first run you need to create the schema. The web container ships without the Prisma CLI, so apply the baseline migration directly to Postgres. If you started the bundled `database` container from `docker-compose.storage.yml`:
+
+```sh
+docker compose exec -T database \
+  psql -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-briefkasten} \
+  < apps/web/prisma/migrations/0_init/migration.sql
+```
+
+If you use an external / managed database instead, apply the same baseline from a checkout of this repo:
+
+```sh
+psql "$DATABASE_URL" -f apps/web/prisma/migrations/0_init/migration.sql
+# or, with the repo's dependencies installed: pnpm db:deploy
 ```
 
 ## 👷 Contributing

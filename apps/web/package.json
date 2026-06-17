@@ -15,6 +15,7 @@
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "pnpm check --watch",
     "db:push": "prisma db push",
+    "db:deploy": "prisma migrate deploy",
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
     "db:generate": "prisma generate",
