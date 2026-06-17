@@ -30,7 +30,11 @@ const placeholderURL = $derived.by(() => {
     return ""
   }
 
-  return Thumbhash.thumbHashToDataURL(base64ToBinary(thumbhash))
+  try {
+    return Thumbhash.thumbHashToDataURL(base64ToBinary(thumbhash))
+  } catch {
+    return ""
+  }
 })
 
 const onload = (_el: HTMLImageElement) => {
