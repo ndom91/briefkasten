@@ -141,6 +141,10 @@ const screenshotUrl = async ({ url }: ScreenshotArgs) => {
       }
     }
 
+    // Cookie-banner clicks above auto-scroll their target into view; reset to
+    // the top so the screenshot captures the page header, not a footer element.
+    await page.evaluate(() => window.scrollTo(0, 0))
+
     return await page.screenshot({ type: "png", scale: "css" })
   } finally {
     await browser.close()

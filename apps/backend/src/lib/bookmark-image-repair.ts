@@ -94,7 +94,13 @@ export const enqueueScreenshotRepairsForImageUrls = async (imageUrls: string[], 
 
   const bookmarks = await db.bookmark.findMany({
     where: {
-      OR: imageUrls.map((imageUrl) => ({ image: imageUrl })),
+      // Only repair when the saved image is itself stale (supabase/picsum). A
+      // healthy stored screenshot that merely failed to proxy transiently must
+      // not be regenerated, mirroring enqueueScreenshotRepairForBookmarkId.
+      AND: [
+        { OR: imageUrls.map((imageUrl) => ({ image: imageUrl })) },
+        { OR: STALE_IMAGE_PATTERNS.map((pattern) => ({ image: { contains: pattern } })) },
+      ],
     },
     select: {
       id: true,
