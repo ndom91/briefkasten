@@ -1,5 +1,4 @@
 <script lang="ts">
-import { watch } from "runed"
 import { onDestroy, onMount } from "svelte"
 import { InfiniteLoader, LoaderState } from "svelte-infinite"
 import { toast } from "svelte-sonner"
@@ -10,6 +9,7 @@ import { BookmarkRow } from "$lib/components/bookmark-row"
 import EmptyState from "$lib/components/EmptyState.svelte"
 import KeyboardIndicator from "$lib/components/KeyboardIndicator.svelte"
 import { Navbar } from "$lib/components/navbar"
+import { BookmarkSearchService } from "$lib/state/bookmarkSearch.svelte"
 import { BookmarksService } from "$lib/state/bookmarks.svelte"
 import { useInterface } from "$lib/state/ui.svelte"
 import { getContext } from "$lib/utils/context"
@@ -19,8 +19,11 @@ import FilterBar from "./FilterBar.svelte"
 
 const ui = useInterface()
 const bookmarkService = getContext(BookmarksService)
+const searchService = new BookmarkSearchService()
 
 onMount(async () => {
+  void searchService.load().catch((error) => logger.error(String(error)))
+
   const showQuickAdd = page.url.searchParams.get("quickAdd")
   if (showQuickAdd === "true") {
     await goto(resolve("/bookmarks"))
@@ -31,6 +34,7 @@ onMount(async () => {
 const loaderState = new LoaderState()
 let rootElement = $state<HTMLElement>()
 const isSearching = $derived(ui.searchQuery.trim().length > 0)
+const searchResults = $derived(isSearching ? searchService.search(ui.searchQuery) : [])
 
 const limitLoadCount = 20
 const logger = new Logger({ level: loggerLevels.DEBUG })
@@ -53,10 +57,6 @@ const fetchSearchResults = async ({
       limit: String(limit),
     })
 
-    if (ui.searchQuery) {
-      searchParams.set("q", ui.searchQuery)
-    }
-
     const searchResponse = await fetch(`/api/v1/bookmarks?${searchParams}`)
     const { data, count } = await searchResponse.json()
     return {
@@ -75,16 +75,16 @@ const loadMore = async () => {
     const limit = limitLoadCount
     const skip = bookmarkService.bookmarks.length
 
-    const searchResults = await fetchSearchResults({ limit, skip })
-    if (!searchResults?.data) {
+    const pageResults = await fetchSearchResults({ limit, skip })
+    if (!pageResults?.data) {
       return
     }
 
-    if (searchResults.data.length) {
-      bookmarkService.append(searchResults.data)
+    if (pageResults.data.length) {
+      bookmarkService.append(pageResults.data)
     }
 
-    if (bookmarkService.bookmarks.length >= searchResults.count) {
+    if (bookmarkService.bookmarks.length >= pageResults.count) {
       loaderState.complete()
     } else {
       loaderState.loaded()
@@ -95,17 +95,6 @@ const loadMore = async () => {
     loaderState.error()
   }
 }
-
-// Handle search input changes
-// Reset and execute first search for new query
-watch.pre(
-  () => ui.searchQuery,
-  () => {
-    loaderState.reset()
-    bookmarkService.clear()
-    void loadMore()
-  }
-)
 
 // Handle keyboard navigation of items
 const handleKeyDown = (e: KeyboardEvent) => {
@@ -175,7 +164,33 @@ const clearSearch = () => {
   class="align-start flex max-h-[calc(100vh-4rem)] w-full min-w-0 flex-col justify-start gap-2 overflow-y-scroll outline-none"
   bind:this={rootElement}
 >
-  {#if bookmarkService.bookmarks?.length}
+  {#if isSearching}
+    {#if searchResults.length}
+      {#each searchResults as item (item.id)}
+        <BookmarkRow
+          bookmark={item}
+          onArchived={(bookmarkId) => {
+            bookmarkService.remove(bookmarkId)
+            searchService.remove(bookmarkId)
+          }}
+        />
+      {/each}
+    {:else}
+      <EmptyState showArrow={false} />
+      <div
+        class="text-muted-foreground mx-auto flex w-full max-w-md flex-col items-center gap-3 text-center"
+      >
+        <p>No bookmarks found for "{ui.searchQuery}".</p>
+        <button
+          type="button"
+          class="text-foreground rounded-md border px-3 py-2 text-sm hover:bg-muted"
+          onclick={clearSearch}
+        >
+          Clear search
+        </button>
+      </div>
+    {/if}
+  {:else if bookmarkService.bookmarks?.length}
     <FilterBar />
     <InfiniteLoader {loaderState} triggerLoad={loadMore} intersectionOptions={{ root: rootElement }}>
       {#each bookmarkService.bookmarks as item (item.id)}
@@ -187,18 +202,6 @@ const clearSearch = () => {
         {/if}
       {/snippet}
     </InfiniteLoader>
-  {:else if isSearching}
-    <EmptyState showArrow={false} />
-    <div class="text-muted-foreground mx-auto flex w-full max-w-md flex-col items-center gap-3 text-center">
-      <p>No bookmarks found for "{ui.searchQuery}".</p>
-      <button
-        type="button"
-        class="text-foreground rounded-md border px-3 py-2 text-sm hover:bg-muted"
-        onclick={clearSearch}
-      >
-        Clear search
-      </button>
-    </div>
   {:else}
     <EmptyState />
     <ul
