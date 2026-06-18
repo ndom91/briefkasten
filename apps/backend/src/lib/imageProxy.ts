@@ -184,14 +184,15 @@ export const imageProxyHandler = async (c: Context) => {
     queueImageRepair(sourceImageUrls, "failed-proxied-image")
   }
 
-  // Serve-by-id whose stored image is permanently gone (401/403/404/410): force a
-  // regen by id, bypassing the "image already exists" guard.
-  if (
-    maybeBookmarkId &&
-    bookmarkIdPattern.test(maybeBookmarkId) &&
-    isStoredImageGone(responseStatus)
-  ) {
-    void enqueueScreenshotRepairForBookmarkId(maybeBookmarkId, "stored-image-gone", {
+  // Serve-by-id whose stored image is unservable: force a regen by id, bypassing
+  // the "image already exists" guard and the fragile exact-URL match. Covers
+  // permanent client errors (401/403/404/410) and known-dead hosts (stale
+  // supabase/picsum URLs, which fetch-fail with a 5xx). Plain transient 5xx on a
+  // healthy host is intentionally excluded.
+  const storedImageUnservable =
+    isStoredImageGone(responseStatus) || hasStaleSavedImageUrl(sourceImageUrls)
+  if (maybeBookmarkId && bookmarkIdPattern.test(maybeBookmarkId) && storedImageUnservable) {
+    void enqueueScreenshotRepairForBookmarkId(maybeBookmarkId, "stored-image-unservable", {
       force: true,
     }).catch((error) => console.error(error))
   }
