@@ -32,6 +32,12 @@ const bookmarkImageCache = new LRUCache<string, string>({
 
 const shouldRepairImage = (status: number) => status === 404 || status >= 500
 
+// A stored screenshot resolved via serve-by-id that returns a permanent client
+// error is gone/inaccessible (e.g. expired or forbidden object) and should be
+// force-regenerated. 5xx is excluded so transient blips don't regenerate healthy images.
+const isStoredImageGone = (status: number) =>
+  status === 401 || status === 403 || status === 404 || status === 410
+
 const getProxyModifier = (targetUrl: string) => {
   return targetUrl.match(/\/([^/]+)\/https?:\/\/.+$/)?.[1]
 }
@@ -176,6 +182,18 @@ export const imageProxyHandler = async (c: Context) => {
 
   if (shouldRepairRequest && shouldRepairImage(responseStatus)) {
     queueImageRepair(sourceImageUrls, "failed-proxied-image")
+  }
+
+  // Serve-by-id whose stored image is permanently gone (401/403/404/410): force a
+  // regen by id, bypassing the "image already exists" guard.
+  if (
+    maybeBookmarkId &&
+    bookmarkIdPattern.test(maybeBookmarkId) &&
+    isStoredImageGone(responseStatus)
+  ) {
+    void enqueueScreenshotRepairForBookmarkId(maybeBookmarkId, "stored-image-gone", {
+      force: true,
+    }).catch((error) => console.error(error))
   }
 
   // TODO: Clone response body from raw retry to immediately return that

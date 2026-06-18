@@ -118,7 +118,11 @@ export const enqueueScreenshotRepairsForImageUrls = async (imageUrls: string[], 
   return bookmarks.filter((bookmark) => queueBookmarkScreenshotRepair(bookmark, reason)).length
 }
 
-export const enqueueScreenshotRepairForBookmarkId = async (bookmarkId: string, reason: string) => {
+export const enqueueScreenshotRepairForBookmarkId = async (
+  bookmarkId: string,
+  reason: string,
+  { force = false }: { force?: boolean } = {}
+) => {
   if (!bookmarkIdPattern.test(bookmarkId) || repairCache.has(bookmarkId)) {
     return false
   }
@@ -126,15 +130,22 @@ export const enqueueScreenshotRepairForBookmarkId = async (bookmarkId: string, r
   const bookmark = await db.bookmark.findFirst({
     where: {
       id: bookmarkId,
-      OR: [
-        { image: null },
-        { image: "" },
-        ...STALE_IMAGE_PATTERNS.map((pattern) => ({
-          image: {
-            contains: pattern,
-          },
-        })),
-      ],
+      // Force skips the "image missing/stale" filter: the caller already knows
+      // the stored image is gone (permanent client error fetching it), so repair
+      // regardless of the current image value.
+      ...(force
+        ? {}
+        : {
+            OR: [
+              { image: null },
+              { image: "" },
+              ...STALE_IMAGE_PATTERNS.map((pattern) => ({
+                image: {
+                  contains: pattern,
+                },
+              })),
+            ],
+          }),
     },
     select: {
       id: true,
