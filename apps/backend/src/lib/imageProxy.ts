@@ -196,6 +196,11 @@ export const imageProxyHandler = async (c: Context) => {
     }).catch((error) => console.error(error))
   }
 
+  // Only cache successful image responses long-term. Errors (e.g. a transient
+  // 401/403/404 while a screenshot is regenerated) must not be cached, or the
+  // browser/CDN serves the stale failure for a year after the image is fixed.
+  const isOkImage = responseStatus >= 200 && responseStatus < 300 && data.type.startsWith("image/")
+
   // TODO: Clone response body from raw retry to immediately return that
   return new Response(responseBody, {
     status: responseStatus,
@@ -203,7 +208,7 @@ export const imageProxyHandler = async (c: Context) => {
       "x-cache": "MISS",
       "x-image-proxy": "0.0.1",
       "Content-Type": data.type,
-      "cache-control": "max-age=31536000, public, s-maxage=31536000",
+      "cache-control": isOkImage ? "max-age=31536000, public, s-maxage=31536000" : "no-store",
     },
   })
 }
