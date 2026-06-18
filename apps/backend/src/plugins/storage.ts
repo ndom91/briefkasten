@@ -2,6 +2,7 @@ import type { Buffer } from "node:buffer"
 import {
   CreateBucketCommand,
   HeadBucketCommand,
+  PutBucketPolicyCommand,
   PutObjectCommand,
   S3Client,
 } from "@aws-sdk/client-s3"
@@ -28,11 +29,40 @@ export const client = new S3Client({
 
 const bucket = process.env.BUCKET_NAME ?? "briefkasten-dev"
 
+// Grant anonymous read on the bucket's objects. Screenshots are served via the
+// public BUCKET_PUBLIC_URL, so the proxy fetches them unauthenticated. RustFS/MinIO
+// ignore per-object public-read ACLs and require a bucket policy for this. Best-effort:
+// some providers (e.g. R2) manage public access out-of-band and reject PutBucketPolicy.
+const applyPublicReadPolicy = async () => {
+  const policy = JSON.stringify({
+    Version: "2012-10-17",
+    Statement: [
+      {
+        Sid: "PublicReadGetObject",
+        Effect: "Allow",
+        Principal: { AWS: ["*"] },
+        Action: ["s3:GetObject"],
+        Resource: [`arn:aws:s3:::${bucket}/*`],
+      },
+    ],
+  })
+
+  try {
+    await client.send(new PutBucketPolicyCommand({ Bucket: bucket, Policy: policy }))
+  } catch (err) {
+    console.warn(
+      `Could not set public-read policy on "${bucket}" (provider may manage public access separately, e.g. R2):`,
+      err
+    )
+  }
+}
+
 /**
- * Ensure the object-storage bucket exists. Idempotent: a HeadBucket check
- * skips creation when it already exists (e.g. the managed prod bucket on R2),
- * and only creates it when missing (local RustFS dev bootstrap). Never throws -
- * storage provisioning must not block server startup.
+ * Ensure the object-storage bucket exists and is publicly readable. Idempotent: a
+ * HeadBucket check skips creation when it already exists (e.g. the managed prod bucket
+ * on R2), and only creates it when missing (local RustFS dev bootstrap). The public-read
+ * policy is (re)applied on every startup. Never throws - storage provisioning must not
+ * block server startup.
  */
 export const ensureBucket = async () => {
   try {
@@ -45,6 +75,8 @@ export const ensureBucket = async () => {
       console.warn(`Could not ensure object storage bucket "${bucket}":`, err)
     }
   }
+
+  await applyPublicReadPolicy()
 }
 
 export const uploadImage = async ({ image, bookmarkId, userId }: UploadImageArgs) => {
