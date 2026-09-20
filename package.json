@@ -1,5 +1,6 @@
 {
   "name": "root",
+  "description": "Briefkasten - a self-hosted bookmarks and RSS feed reader",
   "author": "ndom91 <yo@ndo.dev>",
   "version": "0.0.0",
   "private": true,

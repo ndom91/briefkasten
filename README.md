@@ -95,6 +95,10 @@ psql "$DATABASE_URL" -f apps/web/prisma/migrations/0_init/migration.sql
 # or, with the repo's dependencies installed: pnpm db:deploy
 ```
 
+## 🧪 Testing
+
+Run `pnpm test:e2e` to execute the end-to-end test suite before opening a PR.
+
 ## 👷 Contributing
 
 This project is open to all contributions. Please stick to the repo settings and I'll be happy to take a look at your issue / PR!
