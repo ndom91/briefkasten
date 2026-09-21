@@ -20,6 +20,7 @@ services:
       - rustfs:/data
   database:
     image: postgres:18
+    restart: unless-stopped
     networks:
       - briefkasten
     environment:
