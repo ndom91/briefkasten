@@ -82,7 +82,7 @@ const updateImageUrl = async ({ image, imageUrl, bookmarkId }: UpdateImageUrlArg
   })
 }
 
-const screenshotUrl = async ({ url }: ScreenshotArgs) => {
+export const screenshotUrl = async ({ url }: ScreenshotArgs) => {
   const localChromiumPath = await getLocalChromiumPath()
   const browser = await chromium.launch({
     executablePath:
@@ -90,6 +90,7 @@ const screenshotUrl = async ({ url }: ScreenshotArgs) => {
     headless: true,
   })
 
+  let screenshotFailed = false
   try {
     const page = await browser.newPage({
       locale: "en-US",
@@ -146,8 +147,14 @@ const screenshotUrl = async ({ url }: ScreenshotArgs) => {
     await page.evaluate(() => window.scrollTo(0, 0))
 
     return await page.screenshot({ type: "png", scale: "css" })
+  } catch (error) {
+    screenshotFailed = true
+    throw error
   } finally {
-    await browser.close()
+    await browser.close().catch((error: unknown) => {
+      if (!screenshotFailed) throw error
+      console.error("Failed to close screenshot browser after screenshot error", error)
+    })
   }
 }
 

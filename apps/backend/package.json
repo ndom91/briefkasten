@@ -9,6 +9,7 @@
     "dev:bun": "bun --bun --watch run src/index.ts",
     "build:bun": "bun clean && tsc",
     "build": "pnpm clean && tsc",
+    "test": "node --import tsx --test test/*.test.mjs",
     "clean": "rm -rf dist",
     "start:bun": "bun --bun dist/index.js",
     "start": "node --env-file=.env dist/index.js",
